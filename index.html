@@ -18,10 +18,13 @@
       --blue: #76a7ff;
       --viewport-width: 100vw;
       --viewport-height: 100vh;
+      --viewport-left: 0px;
+      --viewport-top: 0px;
       --battle-pad-x: 8px;
       --battle-pad-y: 8px;
       --battle-ui-height: 48px;
-      --game-safe-height: calc(var(--viewport-height) - (var(--battle-pad-y) * 2) - var(--battle-ui-height));
+      --game-safe-height: var(--viewport-height);
+      --game-cover-width: calc(var(--game-safe-height) * 540 / 760);
     }
 
     * { box-sizing: border-box; }
@@ -632,33 +635,43 @@
         grid-template-columns: 1fr;
       }
       body.battle #app {
+        position: fixed;
+        left: var(--viewport-left);
+        top: var(--viewport-top);
         width: var(--viewport-width);
         height: var(--viewport-height);
         min-height: 0;
-        padding:
-          max(var(--battle-pad-y), env(safe-area-inset-top))
-          max(var(--battle-pad-x), env(safe-area-inset-right))
-          max(var(--battle-pad-y), env(safe-area-inset-bottom))
-          max(var(--battle-pad-x), env(safe-area-inset-left));
+        padding: 0;
+        overflow: hidden;
         grid-template-rows: minmax(0, 1fr);
+      }
+      body.battle {
+        overflow: hidden;
       }
       .game-shell {
         aspect-ratio: 9 / 14;
         min-height: 560px;
       }
       body.battle .game-shell {
+        border-left-width: 0;
+        border-right-width: 0;
         min-height: 0;
-        width: min(100%, calc(var(--game-safe-height) * 540 / 760));
-        max-height: var(--game-safe-height);
+        width: var(--game-cover-width);
+        margin-left: calc((var(--viewport-width) - var(--game-cover-width)) / 2);
+        max-height: none;
         height: auto;
         aspect-ratio: 540 / 760;
         justify-self: center;
-        align-self: start;
+        align-self: center;
       }
       body.battle .hud {
-        inset: 8px 8px auto 8px;
+        position: fixed;
+        left: calc(var(--viewport-left) + max(var(--battle-pad-x), env(safe-area-inset-left)));
+        right: calc(100vw - var(--viewport-left) - var(--viewport-width) + max(var(--battle-pad-x), env(safe-area-inset-right)));
+        top: calc(var(--viewport-top) + max(var(--battle-pad-y), env(safe-area-inset-top)));
         gap: 6px;
         font-size: 12px;
+        z-index: 5;
       }
       body.battle .hud span {
         min-width: 0;
@@ -666,10 +679,14 @@
         white-space: nowrap;
       }
       body.battle .battle-actions {
-        right: 8px;
-        bottom: 8px;
+        position: fixed;
+        left: calc(var(--viewport-left) + max(var(--battle-pad-x), env(safe-area-inset-left)));
+        right: calc(100vw - var(--viewport-left) - var(--viewport-width) + max(var(--battle-pad-x), env(safe-area-inset-right)));
+        bottom: calc(100vh - var(--viewport-top) - var(--viewport-height) + max(var(--battle-pad-y), env(safe-area-inset-bottom)));
         gap: 6px;
-        max-width: calc(100% - 16px);
+        max-width: none;
+        justify-content: center;
+        z-index: 5;
       }
       body.battle .battle-actions button {
         min-height: 32px;
@@ -815,10 +832,14 @@
       const viewport = window.visualViewport;
       const viewportWidth = Math.floor(viewport?.width || window.innerWidth);
       const viewportHeight = Math.floor(viewport?.height || window.innerHeight);
+      const viewportLeft = Math.floor(viewport?.offsetLeft || 0);
+      const viewportTop = Math.floor(viewport?.offsetTop || 0);
       const actions = document.querySelector('.battle-actions');
       const actionsHeight = actions ? Math.ceil(actions.getBoundingClientRect().height) : 0;
       rootStyle.setProperty('--viewport-width', `${viewportWidth}px`);
       rootStyle.setProperty('--viewport-height', `${viewportHeight}px`);
+      rootStyle.setProperty('--viewport-left', `${viewportLeft}px`);
+      rootStyle.setProperty('--viewport-top', `${viewportTop}px`);
       rootStyle.setProperty('--battle-ui-height', `${Math.max(48, actionsHeight + 16)}px`);
     }
 
