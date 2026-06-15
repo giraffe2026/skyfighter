@@ -1,0 +1,10 @@
+{
+  "name": "giraffe1972",
+  "version": "1.0.0",
+  "private": true,
+  "description": "2D aircraft shooting game project.",
+  "scripts": {
+    "start": "python3 -m http.server 5174",
+    "check": "node -e \"const fs=require('fs'); const html=fs.readFileSync('index.html','utf8'); const scripts=[...html.matchAll(/<script>([\\\\s\\\\S]*?)<\\\\/script>/g)].map(m=>m[1]); for (const s of scripts) new Function(s); console.log('scripts ok', scripts.length);\""
+  }
+}
