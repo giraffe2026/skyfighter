@@ -16,6 +16,12 @@
       --teal: #43d3c4;
       --green: #7ddc7a;
       --blue: #76a7ff;
+      --viewport-width: 100vw;
+      --viewport-height: 100vh;
+      --battle-pad-x: 8px;
+      --battle-pad-y: 8px;
+      --battle-ui-height: 48px;
+      --game-safe-height: calc(var(--viewport-height) - (var(--battle-pad-y) * 2) - var(--battle-ui-height));
     }
 
     * { box-sizing: border-box; }
@@ -626,15 +632,15 @@
         grid-template-columns: 1fr;
       }
       body.battle #app {
-        width: 100vw;
-        height: 100vh;
-        height: 100dvh;
+        width: var(--viewport-width);
+        height: var(--viewport-height);
         min-height: 0;
         padding:
-          max(8px, env(safe-area-inset-top))
-          max(8px, env(safe-area-inset-right))
-          max(8px, env(safe-area-inset-bottom))
-          max(8px, env(safe-area-inset-left));
+          max(var(--battle-pad-y), env(safe-area-inset-top))
+          max(var(--battle-pad-x), env(safe-area-inset-right))
+          max(var(--battle-pad-y), env(safe-area-inset-bottom))
+          max(var(--battle-pad-x), env(safe-area-inset-left));
+        grid-template-rows: minmax(0, 1fr);
       }
       .game-shell {
         aspect-ratio: 9 / 14;
@@ -642,12 +648,12 @@
       }
       body.battle .game-shell {
         min-height: 0;
-        width: min(100%, calc((100dvh - 16px) * 540 / 760));
-        max-height: 100%;
+        width: min(100%, calc(var(--game-safe-height) * 540 / 760));
+        max-height: var(--game-safe-height);
         height: auto;
         aspect-ratio: 540 / 760;
         justify-self: center;
-        align-self: center;
+        align-self: start;
       }
       body.battle .hud {
         inset: 8px 8px auto 8px;
@@ -663,6 +669,7 @@
         right: 8px;
         bottom: 8px;
         gap: 6px;
+        max-width: calc(100% - 16px);
       }
       body.battle .battle-actions button {
         min-height: 32px;
@@ -802,6 +809,24 @@
   </main>
 
   <script>
+    const rootStyle = document.documentElement.style;
+
+    function syncViewportMetrics() {
+      const viewport = window.visualViewport;
+      const viewportWidth = Math.floor(viewport?.width || window.innerWidth);
+      const viewportHeight = Math.floor(viewport?.height || window.innerHeight);
+      const actions = document.querySelector('.battle-actions');
+      const actionsHeight = actions ? Math.ceil(actions.getBoundingClientRect().height) : 0;
+      rootStyle.setProperty('--viewport-width', `${viewportWidth}px`);
+      rootStyle.setProperty('--viewport-height', `${viewportHeight}px`);
+      rootStyle.setProperty('--battle-ui-height', `${Math.max(48, actionsHeight + 16)}px`);
+    }
+
+    addEventListener('resize', syncViewportMetrics);
+    addEventListener('orientationchange', syncViewportMetrics);
+    window.visualViewport?.addEventListener('resize', syncViewportMetrics);
+    window.visualViewport?.addEventListener('scroll', syncViewportMetrics);
+
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
     const W = canvas.width;
@@ -1255,6 +1280,7 @@
       document.body.classList.toggle('touch-mode', inputMode === 'touch');
       const label = document.getElementById('inputMode');
       if (label) label.textContent = inputMode === 'touch' ? 'TOUCH' : 'KEY';
+      requestAnimationFrame(syncViewportMetrics);
     }
 
     function canvasPoint(e) {
@@ -1680,6 +1706,7 @@
       document.getElementById('defeatPanel').classList.toggle('visible', nextMode === 'defeat');
       document.getElementById('clearPanel').classList.toggle('visible', nextMode === 'clear');
       document.getElementById('storyPanel').classList.toggle('visible', nextMode === 'story');
+      requestAnimationFrame(syncViewportMetrics);
     }
 
     function showStory(title, text, action) {
@@ -6654,6 +6681,7 @@
 
     setScreen(mode);
     renderUI();
+    syncViewportMetrics();
     requestAnimationFrame(loop);
   </script>
 </body>
