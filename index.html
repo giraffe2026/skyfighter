@@ -40,6 +40,7 @@
       grid-template-columns: minmax(420px, 560px) minmax(320px, 1fr);
       gap: 16px;
       padding: 16px;
+      min-width: 0;
     }
 
     body.menu #app {
@@ -63,6 +64,7 @@
 
     .game-shell {
       position: relative;
+      min-width: 0;
       min-height: 0;
       border: 1px solid var(--line);
       background: #070b12;
@@ -107,8 +109,11 @@
       right: 10px;
       bottom: 10px;
       display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       gap: 8px;
       z-index: 3;
+      max-width: calc(100% - 20px);
     }
 
     .battle-actions button {
@@ -621,8 +626,15 @@
         grid-template-columns: 1fr;
       }
       body.battle #app {
+        width: 100vw;
         height: 100vh;
+        height: 100dvh;
         min-height: 0;
+        padding:
+          max(8px, env(safe-area-inset-top))
+          max(8px, env(safe-area-inset-right))
+          max(8px, env(safe-area-inset-bottom))
+          max(8px, env(safe-area-inset-left));
       }
       .game-shell {
         aspect-ratio: 9 / 14;
@@ -630,7 +642,32 @@
       }
       body.battle .game-shell {
         min-height: 0;
-        height: 100%;
+        width: min(100%, calc((100dvh - 16px) * 540 / 760));
+        max-height: 100%;
+        height: auto;
+        aspect-ratio: 540 / 760;
+        justify-self: center;
+        align-self: center;
+      }
+      body.battle .hud {
+        inset: 8px 8px auto 8px;
+        gap: 6px;
+        font-size: 12px;
+      }
+      body.battle .hud span {
+        min-width: 0;
+        padding: 5px 7px;
+        white-space: nowrap;
+      }
+      body.battle .battle-actions {
+        right: 8px;
+        bottom: 8px;
+        gap: 6px;
+      }
+      body.battle .battle-actions button {
+        min-height: 32px;
+        padding: 6px 8px;
+        font-size: 13px;
       }
       .top-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .profile-panel { grid-template-columns: 1fr; }
