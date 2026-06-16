@@ -52,8 +52,12 @@
       min-width: 0;
     }
 
-    body.menu .hud,
-    body.menu .battle-actions {
+    body.menu #app {
+      width: min(100vw, 760px);
+      grid-template-columns: 1fr;
+    }
+
+    body.menu .game-shell {
       display: none;
     }
 
