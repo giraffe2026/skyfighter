@@ -780,6 +780,8 @@
 
       <div class="profile-panel">
         <select id="profileSelect" aria-label="계정 선택"></select>
+        <button id="exportSave">저장 복사</button>
+        <button id="importSave">저장 붙여넣기</button>
       </div>
 
       <div class="tabs">
@@ -1673,6 +1675,60 @@
         localStorage.setItem('skyfront1949-save', JSON.stringify(profile.save));
       } catch {
         // Some file:// browser settings block localStorage; the game still runs without saving.
+      }
+    }
+
+    function saveTransferPayload() {
+      storeSave();
+      return JSON.stringify({
+        app: 'giraffe1972',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        currentId: currentProfileId,
+        profiles
+      });
+    }
+
+    function exportSaveTransfer() {
+      const payload = saveTransferPayload();
+      const copied = navigator.clipboard?.writeText(payload);
+      if (copied?.then) {
+        copied.then(() => {
+          setLog('저장 데이터를 클립보드에 복사했다. 다른 주소에서 저장 붙여넣기를 누르면 이어서 할 수 있어.');
+        }).catch(() => {
+          prompt('아래 저장 데이터를 복사해 주세요.', payload);
+        });
+      } else {
+        prompt('아래 저장 데이터를 복사해 주세요.', payload);
+      }
+    }
+
+    function importSaveTransfer() {
+      const text = prompt('저장 복사로 만든 데이터를 붙여넣어 주세요.');
+      if (!text) return;
+      try {
+        const parsed = JSON.parse(text);
+        const incomingProfiles = parsed?.profiles;
+        if (!incomingProfiles?.list?.length) throw new Error('프로필 데이터가 없습니다.');
+        profiles = {
+          currentId: String(parsed.currentId || incomingProfiles.currentId || incomingProfiles.list[0].id),
+          list: incomingProfiles.list.map((profile, index) => ({
+            id: String(profile.id || createProfileId()),
+            name: cleanProfileName(profile.name || `파일럿 ${index + 1}`),
+            save: normalizeSave(profile.save || freshSave())
+          }))
+        };
+        if (!profiles.list.some(p => p.id === profiles.currentId)) profiles.currentId = profiles.list[0].id;
+        currentProfileId = profiles.currentId;
+        save = loadSave();
+        storeProfiles(profiles);
+        resetBattleState();
+        mode = 'menu';
+        setScreen(mode);
+        setLog('저장 데이터를 복원했다. 이제 이 주소에서도 같은 진행상황으로 플레이할 수 있어.');
+        renderUI();
+      } catch (err) {
+        setLog(`저장 복원 실패: ${err.message || err}`);
       }
     }
 
@@ -6743,6 +6799,8 @@
     document.getElementById('tabCodex').onclick = () => setTab('codex');
     document.getElementById('tabSecret').onclick = () => setTab('secret');
     document.getElementById('profileSelect').onchange = e => switchLocalProfile(e.target.value);
+    document.getElementById('exportSave').onclick = exportSaveTransfer;
+    document.getElementById('importSave').onclick = importSaveTransfer;
     document.getElementById('gateProfileCreate').onclick = () => createLocalProfile('gateProfileInput');
     document.getElementById('gateEnter').onclick = enterSelectedProfile;
     document.getElementById('accountDeleteOption').onclick = () => {
