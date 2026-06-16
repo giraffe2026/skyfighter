@@ -1015,6 +1015,56 @@
       { kind: 'arsenal', color: '#4c1d65', accent: '#f472b6', hp: 1.78, size: 1.28, pattern: '균열 중심 복합 탄막' }
     ];
 
+    function bossTerrainForStage(stage) {
+      const text = `${stage?.name || ''} ${stage?.boss || ''}`;
+      if (/해상|해안|함대|해협|대서양|지중해|항구|상륙|봉쇄/.test(text)) return 'sea';
+      if (/고공|우주|궤도|무중력|차원|공허 함대|균열 중심|균열 외곽|관문|항로/.test(text)) return 'sky';
+      return 'land';
+    }
+
+    function terrainBossProfile(stage) {
+      if (stage?.name === '기초 비행 훈련장') {
+        return { kind: 'carrier', name: 'Training Drone', color: '#9aa7b2', accent: '#93c5fd', hp: 1, size: .82, pattern: '기초 부채꼴 훈련탄' };
+      }
+      if (isWorldWarChapter() && stage.boss.includes('Ratte')) {
+        return { kind: 'megaTank', name: 'Landkreuzer P.1000 Ratte', color: '#5f6656', accent: '#facc15', hp: 1.55, size: .88, pattern: '초중전차 주포와 측면 기관포' };
+      }
+      const st = Number(stage?.id || 1);
+      const voidStage = !isWorldWarChapter() && st >= 11;
+      const terrain = bossTerrainForStage(stage);
+      if (terrain === 'sea') {
+        return {
+          kind: 'seaCarrier',
+          name: voidStage ? 'Rift Tide Carrier' : 'Leviathan Carrier',
+          color: voidStage ? '#31516a' : '#506b78',
+          accent: voidStage ? '#22d3ee' : '#60a5fa',
+          hp: voidStage ? 1.42 : 1.2,
+          size: voidStage ? 1.05 : 1,
+          pattern: '갑판 포대와 함재기 부채꼴 포격'
+        };
+      }
+      if (terrain === 'sky') {
+        return {
+          kind: 'skyCarrier',
+          name: voidStage ? 'Void Sky Ark' : 'Aegis Sky Carrier',
+          color: voidStage ? '#3b2b62' : '#4f5f78',
+          accent: voidStage ? '#c084fc' : '#38bdf8',
+          hp: voidStage ? 1.5 : 1.28,
+          size: voidStage ? 1.08 : 1.02,
+          pattern: '공중 갑판 회전포와 요격 포대'
+        };
+      }
+      return {
+        kind: 'megaTank',
+        name: voidStage ? 'Abyss Siege Crawler' : 'Continental Siege Tank',
+        color: voidStage ? '#6f4a3c' : '#626853',
+        accent: voidStage ? '#f97316' : '#facc15',
+        hp: voidStage ? 1.48 : 1.3,
+        size: voidStage ? .92 : .88,
+        pattern: '초대형 전차 주포와 측면 기관포'
+      };
+    }
+
     const enemyTypes = [
       { name: '경전투기', color: '#e05f5f', hp: 8, power: 1, shots: 1, speed: 1.55, score: 20, minStage: 1, form: 'needle' },
       { name: '쌍발 공격기', color: '#d98d54', hp: 17, power: 1, shots: 1, speed: 1.16, score: 35, minStage: 1, form: 'twin' },
@@ -2321,7 +2371,9 @@
         const r = stats.errorRoll;
         setLog(`에러 랜덤 출격: 공격 ${r.power}, 체력 ${r.maxHp}, 탄 ${r.shots}, 연사 ${r.fireStat}, 속도 ${r.speed}, 탄속 ${r.bulletSpeed}, 폭탄 ${r.startBombs}`);
       } else {
-        setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${currentStage().name} 출격. 보스 ${currentStage().boss}를 격파해.`);
+        const stage = currentStage();
+        const bossName = terrainBossProfile(stage).name;
+        setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격. 보스 ${bossName}를 격파해.`);
       }
       if (save.selectedMode === 'tutorial') {
         nextBossTime = 18000;
@@ -2468,17 +2520,14 @@
     function spawnBoss() {
       const st = difficultyStage();
       const stage = currentStage();
-      const ratte = isWorldWarChapter() && stage.boss.includes('Ratte');
-      const blueprint = ratte
-        ? { kind: 'ratte', color: '#5f6656', accent: '#facc15', hp: 1.55, size: .88, pattern: '초중전차 주포와 측면 기관포' }
-        : bossBlueprints[(st - 1) % bossBlueprints.length];
+      const blueprint = terrainBossProfile(stage);
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 150 : ww ? 240 + st * 62 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
       const hp = Math.round(hpBase * blueprint.hp);
       boss = {
-        name: stage.boss,
+        name: blueprint.name,
         kind: blueprint.kind,
         accent: blueprint.accent,
         size: blueprint.size,
@@ -2493,11 +2542,13 @@
         inv: 3000,
         phase: 1,
         t: 0,
+        hitW: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 126 : blueprint.kind === 'megaTank' ? 140 : 76,
+        hitH: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 86 : blueprint.kind === 'megaTank' ? 76 : 54,
         color: blueprint.color
       };
       markBossEncounter(stage.id);
       flash('BOSS');
-      setLog(`${stage.boss} 접근 중. 패턴: ${blueprint.pattern}`);
+      setLog(`${blueprint.name} 접근 중. 패턴: ${blueprint.pattern}`);
     }
 
     function shootPlayer(now) {
@@ -2865,17 +2916,26 @@
     function shootBoss() {
       const st = difficultyStage();
       const count = boss.shots + boss.phase;
-      if (boss.kind === 'ratte') {
+      if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
         const a = aimAtPlayer(boss.x, boss.y - 80);
         for (const offset of [-.08, .08]) bossBullet(boss.x, boss.y - 78, a + offset, 2.9 + st * .08, 1);
         for (const ox of [-105, -52, 52, 105]) {
           bossBullet(boss.x + ox, boss.y + 14, aimAtPlayer(boss.x + ox, boss.y + 14), 2.25 + st * .06, 0);
         }
-      } else if (boss.kind === 'carrier') {
+      } else if (boss.kind === 'carrier' || boss.kind === 'seaCarrier') {
         const base = Math.sin(boss.t / 480) * .38;
         for (let i = 0; i < count + 2; i++) {
           bossBullet(boss.x, boss.y + 58, base + (i - (count + 1) / 2) * .2, 2.38 + st * .09);
         }
+        if (boss.kind === 'seaCarrier' && boss.phase >= 2) {
+          for (const ox of [-86, 86]) bossBullet(boss.x + ox, boss.y + 22, aimAtPlayer(boss.x + ox, boss.y + 22), 2.2 + st * .07, 1);
+        }
+      } else if (boss.kind === 'skyCarrier') {
+        const ring = 6 + boss.phase * 2;
+        for (let i = 0; i < ring; i++) {
+          bossBullet(boss.x, boss.y + 18, boss.t / 620 + i * Math.PI * 2 / ring, 2.0 + st * .08, i % 2);
+        }
+        for (const ox of [-92, 92]) bossBullet(boss.x + ox, boss.y + 44, aimAtPlayer(boss.x + ox, boss.y + 44), 2.45 + st * .08);
       } else if (boss.kind === 'hydra') {
         const heads = [[-52, 20], [0, 34], [52, 20]];
         heads.forEach(([ox, oy], index) => {
@@ -3337,7 +3397,16 @@
         boss.inv = Math.max(0, boss.inv - dt);
         boss.y += (boss.targetY - boss.y) * .025;
         const st = difficultyStage();
-        if (boss.kind === 'phantom') {
+        if (boss.kind === 'megaTank') {
+          boss.x = W / 2 + Math.sin(boss.t / 1450) * 38;
+          boss.targetY = 132 + Math.sin(boss.t / 900) * 8;
+        } else if (boss.kind === 'seaCarrier') {
+          boss.x = W / 2 + Math.sin(boss.t / 1280) * 62;
+          boss.targetY = 124 + Math.sin(boss.t / 780) * 10;
+        } else if (boss.kind === 'skyCarrier') {
+          boss.x = W / 2 + Math.sin(boss.t / 980) * 86 + Math.sin(boss.t / 390) * 14;
+          boss.targetY = 118 + Math.cos(boss.t / 860) * 14;
+        } else if (boss.kind === 'phantom') {
           boss.x = W / 2 + Math.sin(boss.t / 520) * (132 + st * 7);
         } else if (boss.kind === 'hydra') {
           boss.x = W / 2 + Math.sin(boss.t / 760) * (92 + st * 8);
@@ -3385,7 +3454,7 @@
             break;
           }
         }
-        if (boss && !b.hit && Math.abs(b.x - boss.x) < 76 && Math.abs(b.y - boss.y) < 54) {
+        if (boss && !b.hit && Math.abs(b.x - boss.x) < (boss.hitW || 76) && Math.abs(b.y - boss.y) < (boss.hitH || 54)) {
           if (boss.inv > 0) {
             b.hit = true;
             explosions.push({ x: b.x, y: b.y, r: 4, life: 120 });
@@ -5362,7 +5431,7 @@
       ctx.fillStyle = boss.color;
       ctx.strokeStyle = 'rgba(255,255,255,.22)';
       ctx.lineWidth = 2;
-      if (boss.kind === 'ratte') {
+      if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
         ctx.fillStyle = boss.color;
         ctx.fillRect(-132, -34, 264, 74);
         ctx.fillStyle = shade(boss.color, -.18);
@@ -5383,6 +5452,66 @@
         for (const x of [-104, -52, 52, 104]) ctx.fillRect(x - 12, -46, 24, 16);
         ctx.fillStyle = boss.accent || '#facc15';
         ctx.fillRect(-6, -116, 12, 24);
+      } else if (boss.kind === 'seaCarrier') {
+        ctx.fillStyle = shade(boss.color, -.08);
+        poly([[0,-104],[96,-66],[132,36],[42,94],[-42,94],[-132,36],[-96,-66]]);
+        ctx.fillStyle = boss.color;
+        poly([[0,-86],[74,-50],[98,34],[30,72],[-30,72],[-98,34],[-74,-50]]);
+        ctx.fillStyle = shade(boss.color, .18);
+        ctx.fillRect(-78, -58, 156, 22);
+        ctx.fillRect(-70, -14, 140, 18);
+        ctx.fillRect(-58, 31, 116, 16);
+        ctx.fillStyle = shade(boss.color, -.25);
+        ctx.fillRect(44, -72, 34, 50);
+        ctx.fillRect(54, -92, 18, 20);
+        ctx.fillStyle = 'rgba(15,23,42,.82)';
+        for (const y of [-46, -2, 42]) ctx.fillRect(-18, y - 5, 36, 10);
+        ctx.fillStyle = boss.accent || '#60a5fa';
+        for (const [x, y] of [[-86, 18], [-48, 58], [0, 62], [48, 58], [86, 18]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = 'rgba(255,255,255,.26)';
+        ctx.beginPath();
+        ctx.moveTo(-52, -72);
+        ctx.lineTo(48, 78);
+        ctx.moveTo(-6, -88);
+        ctx.lineTo(86, 38);
+        ctx.stroke();
+      } else if (boss.kind === 'skyCarrier') {
+        ctx.fillStyle = shade(boss.color, -.12);
+        poly([[0,-112],[38,-82],[52,72],[0,108],[-52,72],[-38,-82]]);
+        ctx.fillStyle = boss.color;
+        poly([[-40,-58],[-168,-18],[-144,30],[-44,18]]);
+        poly([[40,-58],[168,-18],[144,30],[44,18]]);
+        ctx.fillStyle = shade(boss.color, .14);
+        poly([[-24,-78],[-116,-66],[-86,-28],[-32,-34]]);
+        poly([[24,-78],[116,-66],[86,-28],[32,-34]]);
+        ctx.fillStyle = shade(boss.color, -.2);
+        ctx.fillRect(-26, -72, 52, 148);
+        ctx.fillStyle = 'rgba(15,23,42,.82)';
+        ctx.beginPath();
+        ctx.ellipse(0, -54, 14, 24, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = shade(boss.color, .25);
+        for (const x of [-124, -82, 82, 124]) {
+          ctx.beginPath();
+          ctx.ellipse(x, 8, 16, 22, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.fillStyle = boss.accent || '#38bdf8';
+        for (const [x, y] of [[-86, 42], [-38, 56], [0, 66], [38, 56], [86, 42]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 5.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = boss.accent || 'rgba(56,189,248,.78)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 86, 48, 0, 0, Math.PI * 2);
+        ctx.stroke();
       } else {
         const heavy = boss.kind === 'carrier' || boss.kind === 'fortress' || boss.kind === 'arsenal';
         const swept = boss.kind === 'phantom' || boss.kind === 'emperor';
@@ -5449,10 +5578,7 @@
     }
 
     function bossPreviewBlueprint(stage) {
-      if (isWorldWarChapter() && stage.boss.includes('Ratte')) {
-        return { kind: 'ratte', color: '#5f6656', accent: '#facc15', size: .88, pattern: '초중전차 주포와 측면 기관포' };
-      }
-      return bossBlueprints[(stage.id - 1) % bossBlueprints.length];
+      return terrainBossProfile(stage);
     }
 
     function drawBossPreview(canvas, stage) {
@@ -5467,7 +5593,7 @@
       g.clearRect(0, 0, cssW, cssH);
       const blueprint = bossPreviewBlueprint(stage);
       const previewBoss = {
-        name: stage.boss,
+        name: blueprint.name,
         kind: blueprint.kind,
         color: blueprint.color,
         accent: blueprint.accent,
@@ -5493,7 +5619,7 @@
       g.scale(model.size || 1, model.size || 1);
       g.strokeStyle = 'rgba(255,255,255,.24)';
       g.lineWidth = 2;
-      if (model.kind === 'ratte') {
+      if (model.kind === 'ratte' || model.kind === 'megaTank') {
         g.fillStyle = model.color;
         g.fillRect(-132, -34, 264, 74);
         g.strokeRect(-132, -34, 264, 74);
@@ -5515,6 +5641,50 @@
         }
         g.fillStyle = model.accent || '#facc15';
         g.fillRect(-6, -116, 12, 24);
+        return;
+      }
+      if (model.kind === 'seaCarrier') {
+        g.fillStyle = shade(model.color, -.08);
+        p([[0,-104],[96,-66],[132,36],[42,94],[-42,94],[-132,36],[-96,-66]]);
+        g.fillStyle = model.color;
+        p([[0,-86],[74,-50],[98,34],[30,72],[-30,72],[-98,34],[-74,-50]]);
+        g.fillStyle = shade(model.color, .18);
+        g.fillRect(-78, -58, 156, 22);
+        g.fillRect(-70, -14, 140, 18);
+        g.fillRect(-58, 31, 116, 16);
+        g.fillStyle = shade(model.color, -.25);
+        g.fillRect(44, -72, 34, 50);
+        g.fillRect(54, -92, 18, 20);
+        g.fillStyle = model.accent || '#60a5fa';
+        for (const [x, y] of [[-86, 18], [-48, 58], [0, 62], [48, 58], [86, 18]]) {
+          g.beginPath();
+          g.arc(x, y, 6, 0, Math.PI * 2);
+          g.fill();
+        }
+        return;
+      }
+      if (model.kind === 'skyCarrier') {
+        g.fillStyle = shade(model.color, -.12);
+        p([[0,-112],[38,-82],[52,72],[0,108],[-52,72],[-38,-82]]);
+        g.fillStyle = model.color;
+        p([[-40,-58],[-168,-18],[-144,30],[-44,18]]);
+        p([[40,-58],[168,-18],[144,30],[44,18]]);
+        g.fillStyle = shade(model.color, .14);
+        p([[-24,-78],[-116,-66],[-86,-28],[-32,-34]]);
+        p([[24,-78],[116,-66],[86,-28],[32,-34]]);
+        g.fillStyle = shade(model.color, -.2);
+        g.fillRect(-26, -72, 52, 148);
+        g.fillStyle = shade(model.color, .25);
+        for (const x of [-124, -82, 82, 124]) {
+          g.beginPath();
+          g.ellipse(x, 8, 16, 22, 0, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+        }
+        g.strokeStyle = model.accent || 'rgba(56,189,248,.78)';
+        g.beginPath();
+        g.ellipse(0, 0, 86, 48, 0, 0, Math.PI * 2);
+        g.stroke();
         return;
       }
       const heavy = model.kind === 'carrier' || model.kind === 'fortress' || model.kind === 'arsenal';
@@ -6324,11 +6494,12 @@
         const unlockedLimit = currentUnlockedStage();
         document.getElementById('stages').innerHTML = stageList.map(s => {
           const locked = s.id > unlockedLimit;
+          const bossName = bossPreviewBlueprint(s).name;
           return `<button class="stage-card ${save.selectedMode === 'stage' && s.id === save.selectedStage ? 'selected' : ''}" data-stage="${s.id}" ${locked ? 'disabled' : ''}>
             <div class="card-head"><span class="name">Stage ${s.id}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
             <div class="small">${s.name}</div>
             <div class="small">${stagePartLabel(s.id)}</div>
-            <div class="small">보스: ${s.boss}</div>
+            <div class="small">보스: ${bossName}</div>
             <div class="small">난이도 ${difficultyMeter(s.id)}</div>
           </button>`;
         }).join('') + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
@@ -6513,8 +6684,8 @@
       const bossCards = (seenBosses.length ? seenBosses.map(s => {
         const blueprint = bossPreviewBlueprint(s);
         return `<div class="stage-card">
-        <div class="card-head"><span class="name">${s.boss}</span><span class="tag">BOSS</span></div>
-        <canvas class="boss-preview" data-boss-preview="${s.id}" aria-label="${s.boss} 이미지"></canvas>
+        <div class="card-head"><span class="name">${blueprint.name}</span><span class="tag">BOSS</span></div>
+        <canvas class="boss-preview" data-boss-preview="${s.id}" aria-label="${blueprint.name} 이미지"></canvas>
         <div class="small">Stage ${s.id}: ${s.name}</div>
         <div class="small">${blueprint.pattern}</div>
       </div>`;
