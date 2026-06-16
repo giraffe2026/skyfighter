@@ -780,8 +780,6 @@
 
       <div class="profile-panel">
         <select id="profileSelect" aria-label="계정 선택"></select>
-        <button id="exportSave">저장 복사</button>
-        <button id="importSave">저장 붙여넣기</button>
       </div>
 
       <div class="tabs">
@@ -6799,8 +6797,6 @@
     document.getElementById('tabCodex').onclick = () => setTab('codex');
     document.getElementById('tabSecret').onclick = () => setTab('secret');
     document.getElementById('profileSelect').onchange = e => switchLocalProfile(e.target.value);
-    document.getElementById('exportSave').onclick = exportSaveTransfer;
-    document.getElementById('importSave').onclick = importSaveTransfer;
     document.getElementById('gateProfileCreate').onclick = () => createLocalProfile('gateProfileInput');
     document.getElementById('gateEnter').onclick = enterSelectedProfile;
     document.getElementById('accountDeleteOption').onclick = () => {
