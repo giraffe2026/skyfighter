@@ -852,7 +852,8 @@
     const ctx = canvas.getContext('2d');
     const W = canvas.width;
     const H = canvas.height;
-    const MAX_STAGE = 20;
+    const VOID_STAGE_END = 20;
+    const MAX_STAGE = 30;
     const MAX_UPGRADE_LEVEL = 12;
 
     const jets = [
@@ -881,6 +882,8 @@
     ];
 
     const retiredJetIds = new Set(['fxx', 'error']);
+    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'admin']);
+    const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
       { id: 'ww_camel', name: '소프위드 카멜', role: '연합국 복엽 에이스', color: '#9b7a4d', power: 7, hp: 8, shots: 2, fireRate: 112, speed: 5.95, bulletSpeed: 8.8, hitbox: 7, startBombs: 1, faction: 'allies', special: '복엽기 선회 난사' },
@@ -961,7 +964,17 @@
       { id: 17, name: '무중력 파편 지대', theme: '#20243a', enemyRate: 570, reward: 1710, boss: 'Gravemind Array' },
       { id: 18, name: '공허 함대 관문', theme: '#221b34', enemyRate: 545, reward: 1880, boss: 'Void Armada' },
       { id: 19, name: '차원 균열 외곽', theme: '#2b2138', enemyRate: 520, reward: 2070, boss: 'Rift Crown' },
-      { id: 20, name: '차원 균열 중심부', theme: '#321d44', enemyRate: 500, reward: 2300, boss: 'Rift Origin' }
+      { id: 20, name: '차원 균열 중심부', theme: '#321d44', enemyRate: 500, reward: 2300, boss: 'Rift Origin' },
+      { id: 21, name: 'The Last War: 침묵한 전선', theme: '#3b2332', enemyRate: 490, reward: 2600, boss: 'Last War Vanguard' },
+      { id: 22, name: 'The Last War: 잿빛 항구', theme: '#24394a', enemyRate: 470, reward: 2850, boss: 'Ashen Dreadnought' },
+      { id: 23, name: 'The Last War: 무너진 수도', theme: '#332a3d', enemyRate: 455, reward: 3120, boss: 'Capital Revenant' },
+      { id: 24, name: 'The Last War: 유리 사막', theme: '#4a332b', enemyRate: 440, reward: 3400, boss: 'Glassland Behemoth' },
+      { id: 25, name: 'The Last War: 역행 항로', theme: '#202f45', enemyRate: 425, reward: 3700, boss: 'Chrono Sky Ark' },
+      { id: 26, name: 'The Last War: 검은 설원', theme: '#2b3442', enemyRate: 410, reward: 4020, boss: 'Black Frost Engine' },
+      { id: 27, name: 'The Last War: 무명 함대', theme: '#1d3340', enemyRate: 395, reward: 4360, boss: 'Nameless Armada' },
+      { id: 28, name: 'The Last War: 붉은 궤도', theme: '#3f1f32', enemyRate: 380, reward: 4720, boss: 'Red Orbit Crown' },
+      { id: 29, name: 'The Last War: 마지막 관문', theme: '#2b1c3f', enemyRate: 365, reward: 5100, boss: 'Final Gatekeeper' },
+      { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 350, reward: 5600, boss: 'The Last War' }
     ];
 
     const stageStories = {
@@ -985,6 +998,16 @@
       18: { before: '공허 함대 관문은 침공의 대문이다. 이곳에서는 군함급 적과 절단기가 함께 등장한다. Void Armada를 막지 못하면 전선은 다시 지구로 밀려난다.', after: 'Void Armada가 관문 안쪽으로 무너졌다. 남은 것은 균열 외곽을 지키는 왕관형 지휘체뿐이다.', fail: '관문이 완전히 열렸다. 공허 함대가 현실의 하늘로 쏟아지기 시작했다.' },
       19: { before: '차원 균열 외곽은 시간과 공간이 흔들리는 전장이다. 적의 탄막은 가장 거칠지만 중심부까지 가기 전 마지막 방어선이다. Rift Crown을 격파하라.', after: 'Rift Crown이 깨지며 중심부로 가는 길이 열렸다. 모든 균열의 시작점, Rift Origin이 기다리고 있다.', fail: '외곽 방어선이 무너지지 않았다. 균열은 더 깊고 넓게 현실을 삼키고 있다.' },
       20: { before: '차원 균열 중심부에 도달했다. 세계에는 평화가 찾아왔지만, 이 정체 불명의 균열이 다시 한번 싸움을 강요했다. Rift Origin을 격파하고 두 번째 전쟁을 끝내라.', after: 'Rift Origin이 붕괴하며 균열이 닫혔다. 다시 찾아온 침묵은 이번엔 진짜 평화의 소리처럼 들렸다.', fail: '균열 중심부가 기체를 삼켰다. Rift Origin은 또 다른 전장을 열 준비를 하고 있다.' },
+      21: { before: '모든 기체와 강화가 준비되자 닫힌 줄 알았던 전쟁 기록이 다시 열렸다. 침묵한 전선에는 어느 편에도 속하지 않는 잔존 병력이 모여 있다. Last War Vanguard를 격파하라.', after: '첫 전선이 무너졌다. 오래된 교신 기록은 잿빛 항구로 이어지는 마지막 보급 항로를 가리킨다.', fail: '침묵한 전선이 다시 닫혔다. 마지막 전쟁은 준비되지 않은 파일럿을 받아들이지 않는다.' },
+      22: { before: '잿빛 항구에는 공허 기술과 구형 군함이 뒤섞인 함대가 정박해 있다. Ashen Dreadnought를 침몰시켜 마지막 보급선을 끊어라.', after: '항구가 불길에 잠기고 함대가 흩어졌다. 다음 좌표는 이미 무너진 수도의 중심부다.', fail: '항구 함포가 하늘을 봉쇄했다. Ashen Dreadnought는 다시 보급선을 정렬한다.' },
+      23: { before: '무너진 수도에는 과거 보스들의 전투 데이터가 망령처럼 재생된다. Capital Revenant를 파괴해 도시의 전쟁 기억을 끝내라.', after: '수도의 잔향이 멈췄다. 유리처럼 굳은 사막에서 거대한 지상 병기가 깨어난다.', fail: '도시는 다시 같은 패배 장면을 반복한다. Capital Revenant가 기억을 붙잡고 있다.' },
+      24: { before: '유리 사막은 폭격과 균열 에너지로 굳어버린 전장이다. Glassland Behemoth의 초중장갑을 뚫어 지상 전선을 정리하라.', after: 'Behemoth가 모래 아래로 가라앉았다. 하늘에는 시간이 거꾸로 흐르는 항로가 열렸다.', fail: '유리 사막의 반사가 조준을 흐렸다. Glassland Behemoth는 계속 전선을 밀고 온다.' },
+      25: { before: '역행 항로에서는 과거의 탄막과 미래의 병기가 동시에 나타난다. Chrono Sky Ark를 격추해야 시간 왜곡이 멈춘다.', after: 'Chrono Sky Ark가 찢어진 시간 속으로 사라졌다. 검은 설원에서 얼어붙은 엔진 신호가 잡힌다.', fail: '항로가 뒤틀리며 출격 기록이 되감겼다. Chrono Sky Ark는 다음 공격을 이미 알고 있다.' },
+      26: { before: '검은 설원은 모든 레이더가 느려지는 침묵 지대다. Black Frost Engine이 전장을 얼리기 전에 핵심 엔진을 파괴하라.', after: '검은 서리가 깨지고 통신이 회복됐다. 무명 함대가 마지막 바다 위로 모습을 드러냈다.', fail: '엔진 냉각파가 전장을 덮었다. Black Frost Engine은 다음 편대를 얼려버릴 준비를 한다.' },
+      27: { before: '무명 함대는 어느 국가 기록에도 남지 않은 군함들의 묘지다. Nameless Armada를 격파해 바다의 마지막 전쟁을 끝내라.', after: '무명 함대가 침몰하며 붉은 궤도로 향하는 상승 통로가 열렸다.', fail: '함대의 이름 없는 포대가 다시 장전됐다. 바다는 아직 전쟁을 놓아주지 않는다.' },
+      28: { before: '붉은 궤도에는 전쟁을 감시하던 위성 병기가 남아 있다. Red Orbit Crown을 파괴해야 지상 전체의 조준망이 꺼진다.', after: '궤도 왕관이 깨졌다. 남은 신호는 마지막 관문 하나뿐이다.', fail: '궤도 조준망이 살아남았다. Red Orbit Crown은 지상 모든 전선을 다시 표시한다.' },
+      29: { before: '마지막 관문은 현대전, 세계대전, 공허 전쟁의 잔재가 겹친 방어선이다. Final Gatekeeper를 쓰러뜨려 최종 전장으로 진입하라.', after: '관문이 열렸다. 전쟁 그 자체를 기록한 핵심, The Last War가 기다리고 있다.', fail: '관문이 닫혔다. Final Gatekeeper는 모든 승리를 마지막 문 앞에서 멈춰 세운다.' },
+      30: { before: '전쟁의 끝에 도달했다. The Last War는 모든 보스와 모든 전장의 흔적을 하나로 묶은 최후의 핵심이다. 이 전투를 끝내면 더 이상 숨겨진 전쟁은 없다.', after: 'The Last War가 붕괴했다. 모든 기체의 기록과 모든 전장의 승리가 하나로 이어졌고, 마지막 전쟁은 파일럿의 이름 아래 끝났다.', fail: '최후의 핵심이 다시 전쟁 기록을 감았다. The Last War는 아직 끝나지 않았다.' },
       endless: {
         before: '끝없는 전장이 열린다. 임무는 단순하다. 최대한 오래 버티고, 점수를 쌓고, 살아남아라.',
         after: '전장은 아직 끝나지 않았다. 다음 적 편대가 이미 레이더에 잡히고 있다.',
@@ -1032,6 +1055,19 @@
       const st = Number(stage?.id || 1);
       const voidStage = !isWorldWarChapter() && st >= 11;
       const terrain = bossTerrainForStage(stage);
+      const lastWarBosses = {
+        21: { kind: 'arsenal', name: 'Last War Vanguard', color: '#5f3149', accent: '#fb7185', hp: 1.86, size: 1.18, pattern: '전쟁 기록 복합 탄막' },
+        22: { kind: 'seaCarrier', name: 'Ashen Dreadnought', color: '#3f5865', accent: '#facc15', hp: 1.92, size: 1.12, pattern: '잿빛 전함 함포와 갑판 포대' },
+        23: { kind: 'emperor', name: 'Capital Revenant', color: '#57415f', accent: '#c084fc', hp: 1.98, size: 1.16, pattern: '망령 지휘기 회전 탄막' },
+        24: { kind: 'megaTank', name: 'Glassland Behemoth', color: '#7a5548', accent: '#f97316', hp: 2.04, size: .98, pattern: '유리 사막 초중전차 포격' },
+        25: { kind: 'skyCarrier', name: 'Chrono Sky Ark', color: '#31486b', accent: '#38bdf8', hp: 2.1, size: 1.15, pattern: '시간차 공중 갑판 탄막' },
+        26: { kind: 'hydra', name: 'Black Frost Engine', color: '#3f4b5d', accent: '#93c5fd', hp: 2.16, size: 1.08, pattern: '빙결 엔진 삼중 교차 사격' },
+        27: { kind: 'seaCarrier', name: 'Nameless Armada', color: '#2d4e5b', accent: '#22d3ee', hp: 2.22, size: 1.2, pattern: '무명 함대 일제 함포' },
+        28: { kind: 'skyCarrier', name: 'Red Orbit Crown', color: '#5a2745', accent: '#f43f5e', hp: 2.28, size: 1.18, pattern: '붉은 궤도 왕관형 포격' },
+        29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 2.36, size: 1.24, pattern: '최종 관문 복합 무장' },
+        30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 2.5, size: 1.3, pattern: '모든 전쟁의 최후 탄막' }
+      };
+      if (!isWorldWarChapter() && lastWarBosses[st]) return lastWarBosses[st];
       const aerialLandBosses = {
         2: { kind: 'phantom', name: 'Mirage Interceptor', color: '#8fa4b8', accent: '#93c5fd', hp: 1.16, size: .9, pattern: '고속 요격기 순간 저격탄' },
         5: { kind: 'hydra', name: 'Tri-Wing Ace', color: '#b08a58', accent: '#facc15', hp: 1.22, size: .98, pattern: '삼각 편대 교차 사격' },
@@ -1268,6 +1304,7 @@
       chapter: 'main',
       wwFaction: '',
       wwUnlockedStage: { allies: 1, axis: 1 },
+      lastWarUnlocked: false,
       bestEndlessScore: 0,
       secretWindowHintSeen: false,
       tutorialDone: false,
@@ -1645,6 +1682,7 @@
       fixed.tutorialDone = !!fixed.tutorialDone;
       fixed.chapter = fixed.chapter === 'worldWar' ? 'worldWar' : 'main';
       fixed.wwFaction = fixed.wwFaction === 'axis' ? 'axis' : fixed.wwFaction === 'allies' ? 'allies' : '';
+      fixed.lastWarUnlocked = !!fixed.lastWarUnlocked;
       fixed.wwUnlockedStage = fixed.wwUnlockedStage && typeof fixed.wwUnlockedStage === 'object' ? fixed.wwUnlockedStage : {};
       fixed.wwUnlockedStage.allies = clamp(Math.round(fixed.wwUnlockedStage.allies || 1), 1, 20);
       fixed.wwUnlockedStage.axis = clamp(Math.round(fixed.wwUnlockedStage.axis || 1), 1, 20);
@@ -1654,7 +1692,8 @@
       fixed.jetMastery = fixed.jetMastery && typeof fixed.jetMastery === 'object' ? fixed.jetMastery : {};
       fixed.unlockedSkins = fixed.unlockedSkins && typeof fixed.unlockedSkins === 'object' ? fixed.unlockedSkins : {};
       fixed.equippedSkins = fixed.equippedSkins && typeof fixed.equippedSkins === 'object' ? fixed.equippedSkins : {};
-      fixed.unlockedStage = clamp(Math.round(fixed.unlockedStage || 1), 1, MAX_STAGE);
+      const mainStageCap = fixed.lastWarUnlocked ? MAX_STAGE : VOID_STAGE_END;
+      fixed.unlockedStage = clamp(Math.round(fixed.unlockedStage || 1), 1, mainStageCap);
       fixed.selectedMode = fixed.chapter === 'worldWar' ? 'stage' : fixed.selectedMode === 'endless' ? 'endless' : 'stage';
       const stageLimit = fixed.chapter === 'worldWar' ? (fixed.wwUnlockedStage[fixed.wwFaction || 'allies'] || 1) : fixed.unlockedStage;
       fixed.selectedStage = clamp(Math.round(fixed.selectedStage || 1), 1, stageLimit);
@@ -2041,8 +2080,44 @@
       return source?.chapter === 'worldWar';
     }
 
+    function lastWarEligibleJets() {
+      return jets.filter(j => !lastWarExcludedJetIds.has(j.id));
+    }
+
+    function allLastWarJetsUnlocked(source = save) {
+      return lastWarEligibleJets().every(j => !j.hidden || !!source.unlockedJets?.[j.id]);
+    }
+
+    function allLastWarUpgradesMaxed(source = save) {
+      return lastWarEligibleJets().every(j => {
+        const up = source.upgrades?.[j.id] || {};
+        return upgradeKeys.every(key => (up[key] || 0) >= upgradeMaxLevel(key));
+      });
+    }
+
+    function canUnlockLastWar(source = save) {
+      return !isWorldWarChapter(source) &&
+        (source.unlockedStage || 1) >= VOID_STAGE_END &&
+        allLastWarJetsUnlocked(source) &&
+        allLastWarUpgradesMaxed(source);
+    }
+
+    function maybeUnlockLastWar() {
+      if (save.lastWarUnlocked || !canUnlockLastWar(save)) return false;
+      save.lastWarUnlocked = true;
+      save.unlockedStage = Math.max(save.unlockedStage || 1, VOID_STAGE_END + 1);
+      save.selectedMode = 'stage';
+      save.selectedStage = VOID_STAGE_END + 1;
+      flash('THE LAST WAR');
+      return true;
+    }
+
+    function visibleMainStageCap(source = save) {
+      return source.lastWarUnlocked ? MAX_STAGE : VOID_STAGE_END;
+    }
+
     function currentStageList(source = save) {
-      if (!isWorldWarChapter(source)) return stages;
+      if (!isWorldWarChapter(source)) return stages.filter(s => s.id <= visibleMainStageCap(source));
       return worldWarStages[source.wwFaction || 'allies'];
     }
 
@@ -2052,7 +2127,7 @@
     }
 
     function currentMaxStage(source = save) {
-      return isWorldWarChapter(source) ? 20 : MAX_STAGE;
+      return isWorldWarChapter(source) ? 20 : visibleMainStageCap(source);
     }
 
     function currentUnlockedStage(source = save) {
@@ -2090,10 +2165,11 @@
       save.unlockedJets[id] = true;
       save.hiddenSecretJets[id] = false;
       save.selectedJet = id;
+      const unlockedLastWar = maybeUnlockLastWar();
       storeSave();
       tab = 'jets';
-      flash('UNLOCKED');
-      setLog(text);
+      if (!unlockedLastWar) flash('UNLOCKED');
+      setLog(unlockedLastWar ? `${text} THE LAST WAR가 해금됐다. Stage 21이 열렸다.` : text);
       renderUI();
       return true;
     }
@@ -2536,7 +2612,7 @@
           save.selectedStage = nextStage;
           rewards.push(`다음 출격: 세계대전 Stage ${nextStage} 자동 선택`);
         }
-      } else if (save.unlockedStage === stage.id && stage.id < MAX_STAGE) {
+      } else if (save.unlockedStage === stage.id && stage.id < currentMaxStage(save)) {
         save.unlockedStage += 1;
         rewards.push(`Stage ${save.unlockedStage} 해금`);
         if (save.selectedMode === 'stage') {
@@ -2565,6 +2641,8 @@
         save.hiddenSecretJets.f67 = false;
         rewards.push('F-67 보이드팰컨 해금');
       }
+      const unlockedLastWar = maybeUnlockLastWar();
+      if (unlockedLastWar) rewards.push('THE LAST WAR 해금: Stage 21 개방');
       if (!isWorldWarChapter() && normalStageSecretHints[stage.id]) rewards.push(normalStageSecretHints[stage.id]);
       storeSave();
       stopBgm();
@@ -6954,15 +7032,22 @@
 
     function stagePartLabel(id) {
       if (isWorldWarChapter()) return id <= 10 ? `1차대전 파트 ${id}/10` : `2차대전 파트 ${id - 10}/10`;
-      return id <= 10 ? `전쟁 파트 ${id}/10` : `공허 파트 ${id - 10}/10`;
+      if (id <= 10) return `전쟁 파트 ${id}/10`;
+      if (id <= VOID_STAGE_END) return `공허 파트 ${id - 10}/10`;
+      return `THE LAST WAR ${id - VOID_STAGE_END}/10`;
     }
 
     function difficultyMeter(id) {
-      const level = Math.ceil(id / 2);
+      const level = clamp(Math.ceil(id / 2), 1, 10);
       return '■'.repeat(level) + '□'.repeat(10 - level);
     }
 
     function renderUI() {
+      const unlockedLastWarOnRender = maybeUnlockLastWar();
+      if (unlockedLastWarOnRender) {
+        storeSave();
+        setLog('모든 기체와 강화, 모든 스테이지 조건 달성. THE LAST WAR가 해금됐다. Stage 21이 열렸다.');
+      }
       const profile = activeProfile();
       document.getElementById('profileName').textContent = profile.name;
       document.getElementById('coins').textContent = save.coins;
@@ -7242,8 +7327,9 @@
       if (save.coins < cost || level >= maxLevel) return;
       save.coins -= cost;
       up[key] = level + 1;
+      const unlockedLastWar = maybeUnlockLastWar();
       storeSave();
-      setLog(`${currentJet().name} ${key} 강화 완료.`);
+      setLog(unlockedLastWar ? `${currentJet().name} ${key} 강화 완료. THE LAST WAR가 해금됐다. Stage 21이 열렸다.` : `${currentJet().name} ${key} 강화 완료.`);
       renderUI();
     }
 
