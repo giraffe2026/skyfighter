@@ -447,6 +447,28 @@
       gap: 8px;
     }
 
+    .chapter-heading {
+      grid-column: 1 / -1;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.035);
+      padding: 10px 12px;
+      min-height: 0;
+    }
+
+    .chapter-heading.last-war {
+      border-color: rgba(245,197,66,.42);
+      background: rgba(104,31,69,.28);
+    }
+
+    .chapter-heading .name {
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .chapter-heading .small {
+      margin-top: 3px;
+    }
+
     .jet-card, .upgrade-card, .stage-card {
       border: 1px solid var(--line);
       background: rgba(255,255,255,.048);
@@ -7042,6 +7064,44 @@
       return '■'.repeat(level) + '□'.repeat(10 - level);
     }
 
+    function stageChapterInfo(id) {
+      if (isWorldWarChapter()) {
+        return id <= 10
+          ? { key: 'ww1', name: '세계대전 챕터 1', desc: '1차대전 전선 10스테이지' }
+          : { key: 'ww2', name: '세계대전 챕터 2', desc: '2차대전 전선 10스테이지' };
+      }
+      if (id <= 10) return { key: 'main1', name: '챕터 1: 전쟁', desc: '현대전 10스테이지' };
+      if (id <= VOID_STAGE_END) return { key: 'main2', name: '챕터 2: 공허', desc: '공허 침공 10스테이지' };
+      return { key: 'lastWar', name: '히든 챕터: THE LAST WAR', desc: '최종 조건 달성 후 열리는 마지막 10스테이지', lastWar: true };
+    }
+
+    function renderStageCard(s, unlockedLimit) {
+      const locked = s.id > unlockedLimit;
+      const bossName = bossPreviewBlueprint(s).name;
+      const localStage = !isWorldWarChapter() && s.id > VOID_STAGE_END ? s.id - VOID_STAGE_END : s.id;
+      const stageName = !isWorldWarChapter() && s.id > VOID_STAGE_END ? `Last War ${localStage}` : `Stage ${s.id}`;
+      return `<button class="stage-card ${save.selectedMode === 'stage' && s.id === save.selectedStage ? 'selected' : ''}" data-stage="${s.id}" ${locked ? 'disabled' : ''}>
+        <div class="card-head"><span class="name">${stageName}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
+        <div class="small">${s.name}</div>
+        <div class="small">${stagePartLabel(s.id)}</div>
+        <div class="small">보스: ${bossName}</div>
+        <div class="small">난이도 ${difficultyMeter(s.id)}</div>
+      </button>`;
+    }
+
+    function renderStageChapterList(stageList, unlockedLimit) {
+      let lastChapter = '';
+      return stageList.map(s => {
+        const chapter = stageChapterInfo(s.id);
+        const heading = chapter.key !== lastChapter ? `<div class="chapter-heading ${chapter.lastWar ? 'last-war' : ''}">
+          <div class="card-head"><span class="name">${chapter.name}</span><span class="tag">10 STAGES</span></div>
+          <div class="small">${chapter.desc}</div>
+        </div>` : '';
+        lastChapter = chapter.key;
+        return heading + renderStageCard(s, unlockedLimit);
+      }).join('');
+    }
+
     function renderUI() {
       const unlockedLastWarOnRender = maybeUnlockLastWar();
       if (unlockedLastWarOnRender) {
@@ -7111,17 +7171,7 @@
       } else {
         const stageList = currentStageList();
         const unlockedLimit = currentUnlockedStage();
-        document.getElementById('stages').innerHTML = stageList.map(s => {
-          const locked = s.id > unlockedLimit;
-          const bossName = bossPreviewBlueprint(s).name;
-          return `<button class="stage-card ${save.selectedMode === 'stage' && s.id === save.selectedStage ? 'selected' : ''}" data-stage="${s.id}" ${locked ? 'disabled' : ''}>
-            <div class="card-head"><span class="name">Stage ${s.id}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
-            <div class="small">${s.name}</div>
-            <div class="small">${stagePartLabel(s.id)}</div>
-            <div class="small">보스: ${bossName}</div>
-            <div class="small">난이도 ${difficultyMeter(s.id)}</div>
-          </button>`;
-        }).join('') + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
+        document.getElementById('stages').innerHTML = renderStageChapterList(stageList, unlockedLimit) + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
             <div class="small">현대전과 공허 스테이지로 돌아갑니다.</div>
           </button>` : `<button class="stage-card ${save.selectedMode === 'endless' ? 'selected' : ''}" data-mode="endless">
