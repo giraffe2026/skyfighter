@@ -918,22 +918,22 @@
 
     const worldWarEnemies = {
       allies: [
-        { name: '복엽 요격기', color: '#9b7650', hp: 14, power: 1, shots: 1, speed: 1.15, score: 35, minStage: 1, form: 'wwBiplane' },
-        { name: '관측 복엽기', color: '#b08a5a', hp: 18, power: 1, shots: 1, speed: .9, score: 42, minStage: 3, form: 'wwScout' },
-        { name: '초기 폭격기', color: '#7d6b55', hp: 28, power: 1, shots: 2, speed: .72, score: 70, minStage: 6, form: 'wwOldBomber' },
-        { name: 'Bf 109 편대', color: '#7f8b7b', hp: 10, power: 1, shots: 1, speed: 1.45, score: 25, minStage: 11, form: 'wwFighter' },
-        { name: 'Ju 87 급강하기', color: '#6f775f', hp: 20, power: 1, shots: 1, speed: .95, score: 42, minStage: 12, form: 'wwDive' },
-        { name: 'Fw 190 돌격기', color: '#8a7f68', hp: 24, power: 2, shots: 2, speed: 1.3, score: 66, minStage: 14, form: 'wwHeavy' },
-        { name: 'Me 262 제트기', color: '#8f9b95', hp: 30, power: 2, shots: 2, speed: 1.9, score: 105, minStage: 17, form: 'wwJet' }
+        { name: '복엽 요격기', color: '#9b7650', hp: 17, power: 1, shots: 1, speed: 1.2, score: 38, minStage: 1, form: 'wwBiplane' },
+        { name: '관측 복엽기', color: '#b08a5a', hp: 22, power: 1, shots: 1, speed: .96, score: 48, minStage: 3, form: 'wwScout' },
+        { name: '초기 폭격기', color: '#7d6b55', hp: 36, power: 2, shots: 2, speed: .78, score: 82, minStage: 6, form: 'wwOldBomber' },
+        { name: 'Bf 109 편대', color: '#7f8b7b', hp: 18, power: 2, shots: 2, speed: 1.58, score: 36, minStage: 11, form: 'wwFighter' },
+        { name: 'Ju 87 급강하기', color: '#6f775f', hp: 29, power: 2, shots: 2, speed: 1.06, score: 56, minStage: 12, form: 'wwDive' },
+        { name: 'Fw 190 돌격기', color: '#8a7f68', hp: 36, power: 3, shots: 3, speed: 1.42, score: 82, minStage: 14, form: 'wwHeavy' },
+        { name: 'Me 262 제트기', color: '#8f9b95', hp: 46, power: 3, shots: 3, speed: 2.05, score: 126, minStage: 17, form: 'wwJet' }
       ],
       axis: [
-        { name: '복엽 정찰기', color: '#8f7358', hp: 14, power: 1, shots: 1, speed: 1.1, score: 35, minStage: 1, form: 'wwBiplane' },
-        { name: '협상국 관측기', color: '#9b845f', hp: 18, power: 1, shots: 1, speed: .92, score: 42, minStage: 3, form: 'wwScout' },
-        { name: '초기 중폭격기', color: '#746a5a', hp: 28, power: 1, shots: 2, speed: .7, score: 70, minStage: 6, form: 'wwOldBomber' },
-        { name: '스핏파이어 편대', color: '#6f8f73', hp: 10, power: 1, shots: 1, speed: 1.52, score: 25, minStage: 11, form: 'wwFighter' },
-        { name: '허리케인 요격기', color: '#75836d', hp: 18, power: 1, shots: 2, speed: 1.2, score: 42, minStage: 12, form: 'wwDive' },
-        { name: 'P-51 호위기', color: '#9aa7ad', hp: 23, power: 2, shots: 2, speed: 1.45, score: 68, minStage: 14, form: 'wwHeavy' },
-        { name: 'B-17 폭격기', color: '#8b8f86', hp: 44, power: 2, shots: 3, speed: .78, score: 120, minStage: 17, form: 'wwBomber' }
+        { name: '복엽 정찰기', color: '#8f7358', hp: 17, power: 1, shots: 1, speed: 1.16, score: 38, minStage: 1, form: 'wwBiplane' },
+        { name: '협상국 관측기', color: '#9b845f', hp: 22, power: 1, shots: 1, speed: .98, score: 48, minStage: 3, form: 'wwScout' },
+        { name: '초기 중폭격기', color: '#746a5a', hp: 36, power: 2, shots: 2, speed: .76, score: 82, minStage: 6, form: 'wwOldBomber' },
+        { name: '스핏파이어 편대', color: '#6f8f73', hp: 18, power: 2, shots: 2, speed: 1.66, score: 36, minStage: 11, form: 'wwFighter' },
+        { name: '허리케인 요격기', color: '#75836d', hp: 28, power: 2, shots: 2, speed: 1.32, score: 58, minStage: 12, form: 'wwDive' },
+        { name: 'P-51 호위기', color: '#9aa7ad', hp: 36, power: 3, shots: 3, speed: 1.6, score: 86, minStage: 14, form: 'wwHeavy' },
+        { name: 'B-17 폭격기', color: '#8b8f86', hp: 62, power: 3, shots: 4, speed: .86, score: 142, minStage: 17, form: 'wwBomber' }
       ]
     };
 
@@ -2622,7 +2622,7 @@
       const pool = currentEnemyList().filter(e => e.minStage <= st && (ww ? true : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift')));
       const type = pool[Math.floor(Math.random() * pool.length)];
       markEnemyEncounter(type.form);
-      const scale = ww ? 1 + (st - 1) * .045 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
+      const scale = ww ? 1.08 + (st - 1) * .068 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'wwOldBomber', 'wwBomber'].includes(type.form);
       enemies.push({
         ...type,
@@ -2630,10 +2630,10 @@
         y: -35,
         hp: Math.round(type.hp * scale),
         maxHp: Math.round(type.hp * scale),
-        power: Math.max(1, type.power + (st >= 16 ? 1 : 0)),
-        shots: type.shots,
-        speed: type.speed + (ww ? st * .018 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: 1060 + Math.random() * 1150 - (ww ? st * 14 : voidStage ? (st - 10) * 22 : st * 18),
+        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : st >= 16 ? 1 : 0)),
+        shots: type.shots + (ww && st >= 18 && type.form !== 'wwBiplane' ? 1 : 0),
+        speed: type.speed + (ww ? st * .026 : voidStage ? (st - 10) * .025 : st * .026),
+        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : voidStage ? (st - 10) * 22 : st * 18),
         t: 0,
         r: largeEnemy ? 13 : type.ground ? 18 : 15
       });
@@ -5676,56 +5676,69 @@
         ctx.fillStyle = boss.accent || '#facc15';
         ctx.fillRect(-6, -116, 12, 24);
       } else if (boss.kind === 'seaCarrier') {
-        ctx.fillStyle = shade(boss.color, -.08);
-        poly([[0,-104],[96,-66],[132,36],[42,94],[-42,94],[-132,36],[-96,-66]]);
+        ctx.fillStyle = shade(boss.color, -.16);
+        poly([[0,-116],[76,-92],[132,-24],[118,58],[54,108],[-54,108],[-118,58],[-132,-24],[-76,-92]]);
         ctx.fillStyle = boss.color;
-        poly([[0,-86],[74,-50],[98,34],[30,72],[-30,72],[-98,34],[-74,-50]]);
-        ctx.fillStyle = shade(boss.color, .18);
-        ctx.fillRect(-78, -58, 156, 22);
-        ctx.fillRect(-70, -14, 140, 18);
-        ctx.fillRect(-58, 31, 116, 16);
-        ctx.fillStyle = shade(boss.color, -.25);
-        ctx.fillRect(44, -72, 34, 50);
-        ctx.fillRect(54, -92, 18, 20);
+        poly([[0,-98],[58,-76],[102,-20],[88,44],[38,82],[-38,82],[-88,44],[-102,-20],[-58,-76]]);
+        ctx.fillStyle = shade(boss.color, .2);
+        ctx.fillRect(-18, -88, 36, 164);
+        ctx.fillStyle = shade(boss.color, -.24);
+        ctx.fillRect(34, -62, 42, 62);
+        ctx.fillRect(48, -86, 20, 28);
+        ctx.fillStyle = shade(boss.color, .1);
+        for (const [x, y] of [[-70,-42],[0,-28],[70,-42],[-58,18],[58,18],[-30,56],[30,56]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 14, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#111827';
+          ctx.fillRect(x - 4, y - 22, 8, 22);
+          ctx.fillStyle = shade(boss.color, .1);
+        }
+        ctx.strokeStyle = 'rgba(226,232,240,.36)';
+        ctx.lineWidth = 2;
+        for (const x of [-44, 44]) {
+          ctx.beginPath();
+          ctx.moveTo(x, -84);
+          ctx.lineTo(x * .65, 82);
+          ctx.stroke();
+        }
         ctx.fillStyle = 'rgba(15,23,42,.82)';
-        for (const y of [-46, -2, 42]) ctx.fillRect(-18, y - 5, 36, 10);
+        for (const y of [-52, -8, 36]) ctx.fillRect(-25, y - 5, 50, 10);
         ctx.fillStyle = boss.accent || '#60a5fa';
-        for (const [x, y] of [[-86, 18], [-48, 58], [0, 62], [48, 58], [86, 18]]) {
+        for (const [x, y] of [[-96, 0], [-58, 52], [0, 72], [58, 52], [96, 0]]) {
           ctx.beginPath();
           ctx.arc(x, y, 6, 0, Math.PI * 2);
           ctx.fill();
         }
-        ctx.strokeStyle = 'rgba(255,255,255,.26)';
-        ctx.beginPath();
-        ctx.moveTo(-52, -72);
-        ctx.lineTo(48, 78);
-        ctx.moveTo(-6, -88);
-        ctx.lineTo(86, 38);
-        ctx.stroke();
       } else if (boss.kind === 'skyCarrier') {
-        ctx.fillStyle = shade(boss.color, -.12);
-        poly([[0,-112],[38,-82],[52,72],[0,108],[-52,72],[-38,-82]]);
+        ctx.fillStyle = shade(boss.color, -.14);
+        poly([[0,-104],[82,-82],[128,-26],[104,66],[36,104],[-36,104],[-104,66],[-128,-26],[-82,-82]]);
         ctx.fillStyle = boss.color;
-        poly([[-40,-58],[-168,-18],[-144,30],[-44,18]]);
-        poly([[40,-58],[168,-18],[144,30],[44,18]]);
-        ctx.fillStyle = shade(boss.color, .14);
-        poly([[-24,-78],[-116,-66],[-86,-28],[-32,-34]]);
-        poly([[24,-78],[116,-66],[86,-28],[32,-34]]);
-        ctx.fillStyle = shade(boss.color, -.2);
-        ctx.fillRect(-26, -72, 52, 148);
+        poly([[0,-82],[56,-62],[84,-18],[70,54],[24,76],[-24,76],[-70,54],[-84,-18],[-56,-62]]);
+        ctx.fillStyle = shade(boss.color, .16);
+        ctx.fillRect(-70, -36, 140, 24);
+        ctx.fillRect(-58, 8, 116, 22);
+        ctx.fillStyle = shade(boss.color, -.22);
+        ctx.fillRect(-28, -74, 56, 138);
         ctx.fillStyle = 'rgba(15,23,42,.82)';
         ctx.beginPath();
-        ctx.ellipse(0, -54, 14, 24, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, -42, 18, 26, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = shade(boss.color, .25);
-        for (const x of [-124, -82, 82, 124]) {
+        for (const x of [-132, -88, 88, 132]) {
           ctx.beginPath();
-          ctx.ellipse(x, 8, 16, 22, 0, 0, Math.PI * 2);
+          ctx.ellipse(x, -8, 22, 28, 0, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
+          ctx.strokeStyle = boss.accent || '#38bdf8';
+          ctx.beginPath();
+          ctx.arc(x, -8, 31 + Math.sin(performance.now() / 70 + x) * 3, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.strokeStyle = 'rgba(255,255,255,.22)';
         }
         ctx.fillStyle = boss.accent || '#38bdf8';
-        for (const [x, y] of [[-86, 42], [-38, 56], [0, 66], [38, 56], [86, 42]]) {
+        for (const [x, y] of [[-86, 38], [-38, 54], [0, 62], [38, 54], [86, 38]]) {
           ctx.beginPath();
           ctx.arc(x, y, 5.5, 0, Math.PI * 2);
           ctx.fill();
@@ -5739,6 +5752,43 @@
         const heavy = boss.kind === 'carrier' || boss.kind === 'fortress' || boss.kind === 'arsenal';
         const swept = boss.kind === 'phantom' || boss.kind === 'emperor';
         const multi = boss.kind === 'hydra' || boss.kind === 'fortress';
+        if (heavy || swept || multi) {
+          ctx.fillStyle = shade(boss.color, -.16);
+          poly([[0,-94],[74,-70],[116,-12],[96,58],[34,92],[-34,92],[-96,58],[-116,-12],[-74,-70]]);
+          ctx.fillStyle = boss.color;
+          poly([[0,-74],[50,-54],[76,-10],[62,42],[22,66],[-22,66],[-62,42],[-76,-10],[-50,-54]]);
+          ctx.fillStyle = shade(boss.color, .16);
+          ctx.fillRect(-54, -24, 108, 22);
+          ctx.fillRect(-42, 16, 84, 20);
+          ctx.fillStyle = shade(boss.color, -.24);
+          ctx.fillRect(-20, -66, 40, 116);
+          ctx.fillStyle = shade(boss.color, .22);
+          const podXs = heavy ? [-110, -72, 72, 110] : multi ? [-84, 0, 84] : [-78, 78];
+          for (const x of podXs) {
+            ctx.beginPath();
+            ctx.ellipse(x, 0, heavy ? 20 : 16, heavy ? 26 : 22, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          }
+          ctx.fillStyle = 'rgba(15,23,42,.78)';
+          ctx.beginPath();
+          ctx.ellipse(0, -42, 13, 22, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = boss.accent || 'rgba(239,68,68,.85)';
+          const gunXs = heavy ? [-82, -42, 0, 42, 82] : [-50, 0, 50];
+          for (const x of gunXs) {
+            ctx.beginPath();
+            ctx.arc(x, 32 + Math.abs(x) * .025, 5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          if (boss.kind === 'emperor' || boss.kind === 'arsenal') {
+            ctx.strokeStyle = boss.accent || 'rgba(244,114,182,.75)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(0, -2, 76, 46, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        } else {
         poly([[0,-92],[19,-58],[28,-8],[21,58],[0,88],[-21,58],[-28,-8],[-19,-58]]);
         ctx.fillStyle = shade(boss.color, heavy ? .08 : .16);
         if (heavy) {
@@ -5781,6 +5831,7 @@
           ctx.beginPath();
           ctx.ellipse(0, -2, 68, 42, 0, 0, Math.PI * 2);
           ctx.stroke();
+        }
         }
       }
       ctx.fillStyle = boss.accent || 'rgba(239,68,68,.85)';
@@ -5867,19 +5918,24 @@
         return;
       }
       if (model.kind === 'seaCarrier') {
-        g.fillStyle = shade(model.color, -.08);
-        p([[0,-104],[96,-66],[132,36],[42,94],[-42,94],[-132,36],[-96,-66]]);
+        g.fillStyle = shade(model.color, -.16);
+        p([[0,-116],[76,-92],[132,-24],[118,58],[54,108],[-54,108],[-118,58],[-132,-24],[-76,-92]]);
         g.fillStyle = model.color;
-        p([[0,-86],[74,-50],[98,34],[30,72],[-30,72],[-98,34],[-74,-50]]);
+        p([[0,-98],[58,-76],[102,-20],[88,44],[38,82],[-38,82],[-88,44],[-102,-20],[-58,-76]]);
         g.fillStyle = shade(model.color, .18);
-        g.fillRect(-78, -58, 156, 22);
-        g.fillRect(-70, -14, 140, 18);
-        g.fillRect(-58, 31, 116, 16);
+        g.fillRect(-18, -88, 36, 164);
         g.fillStyle = shade(model.color, -.25);
-        g.fillRect(44, -72, 34, 50);
-        g.fillRect(54, -92, 18, 20);
+        g.fillRect(34, -62, 42, 62);
+        g.fillRect(48, -86, 20, 28);
+        g.fillStyle = shade(model.color, .1);
+        for (const [x, y] of [[-70,-42],[0,-28],[70,-42],[-58,18],[58,18],[-30,56],[30,56]]) {
+          g.beginPath();
+          g.arc(x, y, 14, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+        }
         g.fillStyle = model.accent || '#60a5fa';
-        for (const [x, y] of [[-86, 18], [-48, 58], [0, 62], [48, 58], [86, 18]]) {
+        for (const [x, y] of [[-96, 0], [-58, 52], [0, 72], [58, 52], [96, 0]]) {
           g.beginPath();
           g.arc(x, y, 6, 0, Math.PI * 2);
           g.fill();
@@ -5887,20 +5943,19 @@
         return;
       }
       if (model.kind === 'skyCarrier') {
-        g.fillStyle = shade(model.color, -.12);
-        p([[0,-112],[38,-82],[52,72],[0,108],[-52,72],[-38,-82]]);
+        g.fillStyle = shade(model.color, -.14);
+        p([[0,-104],[82,-82],[128,-26],[104,66],[36,104],[-36,104],[-104,66],[-128,-26],[-82,-82]]);
         g.fillStyle = model.color;
-        p([[-40,-58],[-168,-18],[-144,30],[-44,18]]);
-        p([[40,-58],[168,-18],[144,30],[44,18]]);
-        g.fillStyle = shade(model.color, .14);
-        p([[-24,-78],[-116,-66],[-86,-28],[-32,-34]]);
-        p([[24,-78],[116,-66],[86,-28],[32,-34]]);
+        p([[0,-82],[56,-62],[84,-18],[70,54],[24,76],[-24,76],[-70,54],[-84,-18],[-56,-62]]);
+        g.fillStyle = shade(model.color, .16);
+        g.fillRect(-70, -36, 140, 24);
+        g.fillRect(-58, 8, 116, 22);
         g.fillStyle = shade(model.color, -.2);
-        g.fillRect(-26, -72, 52, 148);
+        g.fillRect(-28, -74, 56, 138);
         g.fillStyle = shade(model.color, .25);
-        for (const x of [-124, -82, 82, 124]) {
+        for (const x of [-132, -88, 88, 132]) {
           g.beginPath();
-          g.ellipse(x, 8, 16, 22, 0, 0, Math.PI * 2);
+          g.ellipse(x, -8, 22, 28, 0, 0, Math.PI * 2);
           g.fill();
           g.stroke();
         }
