@@ -918,22 +918,22 @@
 
     const worldWarEnemies = {
       allies: [
-        { name: '복엽 요격기', color: '#9b7650', hp: 17, power: 1, shots: 1, speed: 1.2, score: 38, minStage: 1, form: 'wwBiplane' },
-        { name: '관측 복엽기', color: '#b08a5a', hp: 22, power: 1, shots: 1, speed: .96, score: 48, minStage: 3, form: 'wwScout' },
-        { name: '초기 폭격기', color: '#7d6b55', hp: 36, power: 2, shots: 2, speed: .78, score: 82, minStage: 6, form: 'wwOldBomber' },
-        { name: 'Bf 109 편대', color: '#7f8b7b', hp: 18, power: 2, shots: 2, speed: 1.58, score: 36, minStage: 11, form: 'wwFighter' },
-        { name: 'Ju 87 급강하기', color: '#6f775f', hp: 29, power: 2, shots: 2, speed: 1.06, score: 56, minStage: 12, form: 'wwDive' },
-        { name: 'Fw 190 돌격기', color: '#8a7f68', hp: 36, power: 3, shots: 3, speed: 1.42, score: 82, minStage: 14, form: 'wwHeavy' },
-        { name: 'Me 262 제트기', color: '#8f9b95', hp: 46, power: 3, shots: 3, speed: 2.05, score: 126, minStage: 17, form: 'wwJet' }
+        { name: '포커 정찰 복엽기', color: '#9b7650', hp: 17, power: 1, shots: 1, speed: 1.2, score: 38, minStage: 1, form: 'wwAxisBiplane' },
+        { name: '알바트로스 관측기', color: '#b08a5a', hp: 22, power: 1, shots: 1, speed: .96, score: 48, minStage: 3, form: 'wwAxisScout' },
+        { name: '고타 초기 폭격기', color: '#7d6b55', hp: 36, power: 2, shots: 2, speed: .78, score: 82, minStage: 6, form: 'wwAxisOldBomber' },
+        { name: 'Bf 109 편대', color: '#7f8b7b', hp: 18, power: 2, shots: 2, speed: 1.58, score: 36, minStage: 11, form: 'wwAxisFighter' },
+        { name: 'Ju 87 급강하기', color: '#6f775f', hp: 29, power: 2, shots: 2, speed: 1.06, score: 56, minStage: 12, form: 'wwAxisDive' },
+        { name: 'Fw 190 돌격기', color: '#8a7f68', hp: 36, power: 3, shots: 3, speed: 1.42, score: 82, minStage: 14, form: 'wwAxisHeavy' },
+        { name: 'Me 262 제트기', color: '#8f9b95', hp: 46, power: 3, shots: 3, speed: 2.05, score: 126, minStage: 17, form: 'wwAxisJet' }
       ],
       axis: [
-        { name: '복엽 정찰기', color: '#8f7358', hp: 17, power: 1, shots: 1, speed: 1.16, score: 38, minStage: 1, form: 'wwBiplane' },
-        { name: '협상국 관측기', color: '#9b845f', hp: 22, power: 1, shots: 1, speed: .98, score: 48, minStage: 3, form: 'wwScout' },
-        { name: '초기 중폭격기', color: '#746a5a', hp: 36, power: 2, shots: 2, speed: .76, score: 82, minStage: 6, form: 'wwOldBomber' },
-        { name: '스핏파이어 편대', color: '#6f8f73', hp: 18, power: 2, shots: 2, speed: 1.66, score: 36, minStage: 11, form: 'wwFighter' },
-        { name: '허리케인 요격기', color: '#75836d', hp: 28, power: 2, shots: 2, speed: 1.32, score: 58, minStage: 12, form: 'wwDive' },
-        { name: 'P-51 호위기', color: '#9aa7ad', hp: 36, power: 3, shots: 3, speed: 1.6, score: 86, minStage: 14, form: 'wwHeavy' },
-        { name: 'B-17 폭격기', color: '#8b8f86', hp: 62, power: 3, shots: 4, speed: .86, score: 142, minStage: 17, form: 'wwBomber' }
+        { name: '소프위드 정찰기', color: '#8f7358', hp: 17, power: 1, shots: 1, speed: 1.16, score: 38, minStage: 1, form: 'wwAlliedBiplane' },
+        { name: '브리스톨 관측기', color: '#9b845f', hp: 22, power: 1, shots: 1, speed: .98, score: 48, minStage: 3, form: 'wwAlliedScout' },
+        { name: '핸들리 페이지 폭격기', color: '#746a5a', hp: 36, power: 2, shots: 2, speed: .76, score: 82, minStage: 6, form: 'wwAlliedOldBomber' },
+        { name: '스핏파이어 편대', color: '#6f8f73', hp: 18, power: 2, shots: 2, speed: 1.66, score: 36, minStage: 11, form: 'wwAlliedFighter' },
+        { name: '허리케인 요격기', color: '#75836d', hp: 28, power: 2, shots: 2, speed: 1.32, score: 58, minStage: 12, form: 'wwAlliedDive' },
+        { name: 'P-51 호위기', color: '#9aa7ad', hp: 36, power: 3, shots: 3, speed: 1.6, score: 86, minStage: 14, form: 'wwAlliedHeavy' },
+        { name: 'B-17 폭격기', color: '#8b8f86', hp: 62, power: 3, shots: 4, speed: .86, score: 142, minStage: 17, form: 'wwAlliedBomber' }
       ]
     };
 
@@ -2623,7 +2623,7 @@
       const type = pool[Math.floor(Math.random() * pool.length)];
       markEnemyEncounter(type.form);
       const scale = ww ? 1.08 + (st - 1) * .068 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
-      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'wwOldBomber', 'wwBomber'].includes(type.form);
+      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
@@ -2631,7 +2631,7 @@
         hp: Math.round(type.hp * scale),
         maxHp: Math.round(type.hp * scale),
         power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : st >= 16 ? 1 : 0)),
-        shots: type.shots + (ww && st >= 18 && type.form !== 'wwBiplane' ? 1 : 0),
+        shots: type.shots + (ww && st >= 18 && !/Biplane/.test(type.form) ? 1 : 0),
         speed: type.speed + (ww ? st * .026 : voidStage ? (st - 10) * .025 : st * .026),
         fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : voidStage ? (st - 10) * 22 : st * 18),
         t: 0,
@@ -3055,6 +3055,20 @@
         riftBomber: { fill: '#c084fc', core: '#f5d0fe', shape: 'voidHeavy', size: 1.22 },
         riftInterceptor: { fill: '#38bdf8', core: '#e0f2fe', shape: 'spear', size: .92 },
         riftCutter: { fill: '#ec4899', core: '#fce7f3', shape: 'blade', size: 1.1 },
+        wwAxisBiplane: { fill: '#dc2626', core: '#7f1d1d', shape: 'dart', size: .9 },
+        wwAxisScout: { fill: '#f97316', core: '#fed7aa', shape: 'diamond', size: .95 },
+        wwAxisOldBomber: { fill: '#a16207', core: '#fef3c7', shape: 'heavy', size: 1.12 },
+        wwAxisFighter: { fill: '#64748b', core: '#111827', shape: 'bar', size: .96 },
+        wwAxisDive: { fill: '#f97316', core: '#7c2d12', shape: 'missile', size: 1.08 },
+        wwAxisHeavy: { fill: '#facc15', core: '#713f12', shape: 'spear', size: 1.05 },
+        wwAxisJet: { fill: '#38bdf8', core: '#e0f2fe', shape: 'spear', size: .9 },
+        wwAlliedBiplane: { fill: '#60a5fa', core: '#dbeafe', shape: 'dart', size: .9 },
+        wwAlliedScout: { fill: '#facc15', core: '#78350f', shape: 'orb', size: .95 },
+        wwAlliedOldBomber: { fill: '#94a3b8', core: '#e2e8f0', shape: 'heavy', size: 1.12 },
+        wwAlliedFighter: { fill: '#84cc16', core: '#ecfccb', shape: 'bar', size: .96 },
+        wwAlliedDive: { fill: '#7c8f6a', core: '#fef3c7', shape: 'diamond', size: 1 },
+        wwAlliedHeavy: { fill: '#60a5fa', core: '#1d4ed8', shape: 'spear', size: 1.05 },
+        wwAlliedBomber: { fill: '#e5e7eb', core: '#60a5fa', shape: 'boss', size: 1.18 },
         boss: { fill: '#fb7185', core: '#fef3c7', shape: 'boss', size: 1.15 }
       };
       return styles[form] || styles.needle;
@@ -3931,14 +3945,123 @@
 
     function drawWorldWarBackground(stage) {
       const ww1 = stage.id <= 10;
+      const text = stage.name;
+      const backdrop =
+        /철도/.test(text) ? 'rail' :
+        /해안|해협|지중해|대서양|상륙/.test(text) ? 'sea' :
+        /산악|협곡/.test(text) ? 'mountain' :
+        /사막/.test(text) ? 'desert' :
+        /야간|런던/.test(text) ? 'night' :
+        /수도|라인|종결|진입/.test(text) ? 'city' :
+        /동부/.test(text) ? 'snow' :
+        'front';
       const g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, ww1 ? '#4b4a3b' : '#263746');
-      g.addColorStop(.45, stage.theme);
-      g.addColorStop(1, ww1 ? '#2d251c' : '#1d2b25');
+      const palettes = {
+        rail: ['#3f352a', '#51412d', '#211b16'],
+        sea: ['#113244', '#1f5161', '#102331'],
+        mountain: ['#414638', '#596044', '#24271f'],
+        desert: ['#6b5433', '#8a6b3a', '#3f2d1b'],
+        night: ['#101827', '#1f2937', '#080d16'],
+        city: ['#252b36', '#3b3f46', '#171923'],
+        snow: ['#4c5a62', '#6b7a78', '#2f393c'],
+        front: [ww1 ? '#4b4a3b' : '#263746', stage.theme, ww1 ? '#2d251c' : '#1d2b25']
+      }[backdrop];
+      g.addColorStop(0, palettes[0]);
+      g.addColorStop(.45, palettes[1]);
+      g.addColorStop(1, palettes[2]);
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
       ctx.save();
-      if (ww1) {
+      if (backdrop === 'sea') {
+        ctx.fillStyle = 'rgba(13,68,88,.72)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = 'rgba(147,197,253,.28)';
+        ctx.lineWidth = 1.8;
+        for (let i = 0; i < 16; i++) {
+          const y = (i * 58 + bgY * .52) % (H + 100) - 50;
+          ctx.beginPath();
+          ctx.moveTo(-20, y);
+          ctx.bezierCurveTo(120, y + 18, 260, y - 18, W + 20, y + 8);
+          ctx.stroke();
+        }
+        for (let i = 0; i < 4; i++) drawShip((i * 145 + 58) % W, (i * 174 + bgY * .33) % (H + 140) - 70, .58 + i % 2 * .1);
+      } else if (backdrop === 'rail') {
+        ctx.fillStyle = 'rgba(57,44,28,.62)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = 'rgba(17,24,39,.72)';
+        ctx.lineWidth = 5;
+        for (const x of [W * .38, W * .62]) {
+          ctx.beginPath();
+          ctx.moveTo(x, -80);
+          ctx.lineTo(x + Math.sin(bgY / 180) * 10, H + 80);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(180,138,74,.55)';
+        ctx.lineWidth = 3;
+        for (let y = -80; y < H + 120; y += 58) {
+          ctx.beginPath();
+          ctx.moveTo(W * .32, y + bgY % 58);
+          ctx.lineTo(W * .68, y + bgY % 58);
+          ctx.stroke();
+        }
+        for (let i = 0; i < 5; i++) drawBunker(80 + i * 96, (i * 135 + bgY * .35) % (H + 120) - 60, .48);
+      } else if (backdrop === 'mountain') {
+        ctx.fillStyle = 'rgba(33,46,32,.68)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(15,23,42,.36)';
+        for (let y = -120; y < H + 160; y += 145) {
+          poly([[0,y+70],[105,y-30],[210,y+70]]);
+          poly([[W,y+60],[W-130,y-40],[W-245,y+60]]);
+        }
+        for (let i = 0; i < 5; i++) drawBunker(W / 2 + Math.sin(i * 2) * 130, (i * 150 + bgY * .32) % (H + 150) - 75, .55);
+      } else if (backdrop === 'desert') {
+        ctx.fillStyle = 'rgba(154,112,49,.58)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = 'rgba(250,204,21,.24)';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 11; i++) {
+          const y = (i * 70 + bgY * .48) % (H + 120) - 60;
+          ctx.beginPath();
+          ctx.moveTo(-20, y);
+          ctx.quadraticCurveTo(W * .45, y - 38, W + 20, y + 12);
+          ctx.stroke();
+        }
+      } else if (backdrop === 'night') {
+        ctx.fillStyle = 'rgba(3,7,18,.5)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = 'rgba(250,250,210,.2)';
+        ctx.lineWidth = 3;
+        for (let i = 0; i < 5; i++) {
+          const x = (i * 127 + bgY * .12) % W;
+          ctx.beginPath();
+          ctx.moveTo(x, H);
+          ctx.lineTo(x + Math.sin(i) * 90, 0);
+          ctx.stroke();
+        }
+        ctx.fillStyle = 'rgba(245,197,66,.18)';
+        for (let i = 0; i < 20; i++) ctx.fillRect((i * 67) % W, (i * 91 + bgY * .12) % H, 2, 2);
+      } else if (backdrop === 'city') {
+        for (let y = -80; y < H + 120; y += 100) {
+          for (const x of [35, 100, W - 145, W - 75]) {
+            ctx.fillStyle = 'rgba(15,23,42,.78)';
+            ctx.fillRect(x, y, 42, 70);
+            ctx.fillStyle = 'rgba(245,197,66,.18)';
+            ctx.fillRect(x + 10, y + 15, 6, 6);
+            ctx.fillRect(x + 25, y + 42, 6, 6);
+          }
+        }
+        ctx.fillStyle = 'rgba(55,65,81,.72)';
+        ctx.fillRect(W / 2 - 45, -120, 90, H + 240);
+      } else if (backdrop === 'snow') {
+        ctx.fillStyle = 'rgba(203,213,225,.18)';
+        ctx.fillRect(0, 0, W, H);
+        for (let i = 0; i < 42; i++) {
+          ctx.fillStyle = `rgba(226,232,240,${.18 + (i % 4) * .05})`;
+          ctx.beginPath();
+          ctx.arc((i * 53) % W, (i * 97 + bgY * .55) % (H + 60) - 30, 1.5 + i % 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (ww1) {
         ctx.fillStyle = 'rgba(67,50,32,.7)';
         ctx.fillRect(0, 0, W, H);
         ctx.strokeStyle = 'rgba(28,22,17,.68)';
@@ -3971,22 +4094,10 @@
           ctx.fill();
         }
       } else {
-        const sea = stage.id === 16;
-        const city = stage.id === 12 || stage.id === 17 || stage.id === 20;
-        ctx.fillStyle = sea ? 'rgba(13,68,88,.76)' : city ? 'rgba(31,41,55,.74)' : 'rgba(54,68,49,.72)';
+        const city = false;
+        ctx.fillStyle = 'rgba(54,68,49,.72)';
         ctx.fillRect(0, 0, W, H);
-        if (sea) {
-          ctx.strokeStyle = 'rgba(147,197,253,.25)';
-          ctx.lineWidth = 1.7;
-          for (let i = 0; i < 16; i++) {
-            const y = (i * 58 + bgY * .52) % (H + 100) - 50;
-            ctx.beginPath();
-            ctx.moveTo(-20, y);
-            ctx.bezierCurveTo(120, y + 18, 260, y - 18, W + 20, y + 8);
-            ctx.stroke();
-          }
-          for (let i = 0; i < 4; i++) drawShip((i * 145 + 58) % W, (i * 174 + bgY * .33) % (H + 140) - 70, .58 + i % 2 * .1);
-        } else if (city) {
+        if (city) {
           for (let y = -80; y < H + 120; y += 100) {
             for (const x of [35, 100, W - 145, W - 75]) {
               ctx.fillStyle = 'rgba(15,23,42,.78)';
@@ -5307,8 +5418,7 @@
       ctx.translate(e.x, e.y);
       const bigScale = {
         bomber: .84, riftBomber: .78, riftShield: .86, riftCutter: .84,
-        wwOldBomber: .86, wwBomber: .84
-      }[e.form] || (e.form?.startsWith?.('rift') ? .9 : 1);
+      }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
       ctx.scale(bigScale, bigScale);
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
@@ -5487,11 +5597,24 @@
         ctx.arc(0, -6, 6, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillRect(-3, 6, 6, 22);
-      } else if (e.form === 'wwBiplane' || e.form === 'wwScout') {
+      } else if (/ww.*(Biplane|Scout)/.test(e.form)) {
         poly([[0,36],[10,18],[8,-27],[0,-39],[-8,-27],[-10,18]]);
         ctx.fillStyle = shade(e.color, .14);
         ctx.fillRect(-42, -15, 84, 7);
         ctx.fillRect(-35, 7, 70, 7);
+        if (e.form.includes('Axis')) {
+          ctx.fillStyle = '#7f1d1d';
+          ctx.beginPath();
+          ctx.arc(0, -18, 4, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#1d4ed8';
+          for (const x of [-27, 27]) {
+            ctx.beginPath();
+            ctx.arc(x, -11, 4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
         ctx.strokeStyle = 'rgba(255,255,255,.28)';
         ctx.beginPath();
         ctx.moveTo(-30, -12);
@@ -5499,10 +5622,17 @@
         ctx.moveTo(30, -12);
         ctx.lineTo(22, 7);
         ctx.stroke();
-      } else if (e.form === 'wwOldBomber' || e.form === 'wwBomber') {
+      } else if (/ww.*(OldBomber|Bomber)/.test(e.form)) {
         poly([[0,48],[14,28],[14,-38],[0,-51],[-14,-38],[-14,28]]);
         ctx.fillStyle = shade(e.color, .1);
         ctx.fillRect(-62, -6, 124, 12);
+        if (e.form.includes('Allied')) {
+          ctx.fillStyle = shade(e.color, .18);
+          ctx.fillRect(-72, -2, 144, 8);
+        } else {
+          ctx.fillStyle = shade(e.color, -.1);
+          ctx.fillRect(-50, -14, 100, 9);
+        }
         ctx.fillStyle = shade(e.color, -.2);
         ctx.fillRect(-34, 30, 68, 9);
         ctx.fillStyle = '#2b2119';
@@ -5511,15 +5641,20 @@
           ctx.arc(x, 1, 4, 0, Math.PI * 2);
           ctx.fill();
         }
-      } else if (e.form === 'wwFighter' || e.form === 'wwDive' || e.form === 'wwHeavy' || e.form === 'wwJet') {
+      } else if (/ww.*(Fighter|Dive|Heavy|Jet)/.test(e.form)) {
         poly([[0,43],[10,22],[10,-34],[0,-49],[-10,-34],[-10,22]]);
         ctx.fillStyle = shade(e.color, .13);
-        poly([[-10,-6],[-47,8],[-14,18]]);
-        poly([[10,-6],[47,8],[14,18]]);
+        if (e.form.includes('Axis')) {
+          poly([[-10,-10],[-50,2],[-18,20]]);
+          poly([[10,-10],[50,2],[18,20]]);
+        } else {
+          poly([[-10,-6],[-47,8],[-14,18]]);
+          poly([[10,-6],[47,8],[14,18]]);
+        }
         ctx.fillStyle = shade(e.color, -.2);
         poly([[-10,18],[-27,43],[-6,30]]);
         poly([[10,18],[27,43],[6,30]]);
-        if (e.form === 'wwJet') {
+        if (e.form.includes('Jet')) {
           ctx.fillStyle = '#1f2937';
           for (const x of [-7, 7]) ctx.fillRect(x - 2, 27, 4, 14);
         }
