@@ -2289,6 +2289,13 @@
       } else if (secretBuffer.includes('발키리') || normalized === '발키리') {
         secretBuffer = '';
         unlockJet('xb70', '전설 코드 확인. XB-70 발키리를 획득했다.');
+      } else if (secretBuffer.includes('남둥이') || normalized === '남둥이') {
+        secretBuffer = '';
+        save.coins += 676767;
+        storeSave();
+        renderUI();
+        flash('COIN BONUS');
+        setLog('비밀 코드 확인. 코인 676767개를 획득했다.');
       } else if (secretBuffer.includes('아를라까똘라') || normalized === '아를라까똘라') {
         secretBuffer = '';
         unlockJet('admin', '디버그 코드 확인. 어드민 전투기를 획득했다.');
