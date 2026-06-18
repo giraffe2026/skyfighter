@@ -1159,6 +1159,16 @@
       { name: '공허 절단기', color: '#ec4899', hp: 42, power: 2, shots: 3, speed: 1.38, score: 230, minStage: 15, form: 'riftCutter' }
     ];
 
+    const lastWarEnemies = [
+      { name: '전쟁 기록 요격기', color: '#fb7185', hp: 58, power: 3, shots: 3, speed: 2.05, score: 260, minStage: 21, form: 'lastWarRecord' },
+      { name: '잿빛 함재 드론', color: '#f59e0b', hp: 44, power: 2, shots: 4, speed: 1.75, score: 240, minStage: 21, form: 'lastWarDrone' },
+      { name: '망령 중폭격기', color: '#c084fc', hp: 88, power: 4, shots: 4, speed: .94, score: 360, minStage: 22, form: 'lastWarBomber' },
+      { name: '붉은 궤도창', color: '#ef4444', hp: 62, power: 3, shots: 2, speed: 2.35, score: 330, minStage: 24, form: 'lastWarLance' },
+      { name: '검은 서리 장갑기', color: '#94a3b8', hp: 108, power: 4, shots: 3, speed: 1.05, score: 410, minStage: 26, form: 'lastWarFrost' },
+      { name: '무명 함대 포대', color: '#38bdf8', hp: 76, power: 4, shots: 5, speed: 1.25, score: 390, minStage: 27, form: 'lastWarTurret' },
+      { name: '최후 관문 파수기', color: '#facc15', hp: 132, power: 5, shots: 5, speed: 1.18, score: 540, minStage: 29, form: 'lastWarGate' }
+    ];
+
     const bomberFleetSlots = [
       { x: 0, y: -76, s: .45 },
       { x: -42, y: -52, s: .43 },
@@ -2165,7 +2175,7 @@
     }
 
     function currentEnemyList() {
-      if (!isWorldWarChapter()) return enemyTypes;
+      if (!isWorldWarChapter()) return difficultyStage() > VOID_STAGE_END ? lastWarEnemies : enemyTypes;
       return worldWarEnemies[save.wwFaction || 'allies'];
     }
 
@@ -2740,21 +2750,22 @@
       const st = difficultyStage();
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
-      const pool = currentEnemyList().filter(e => e.minStage <= st && (ww ? true : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift')));
+      const lastWarStage = !ww && st > VOID_STAGE_END;
+      const pool = currentEnemyList().filter(e => e.minStage <= st && (ww ? true : lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift')));
       const type = pool[Math.floor(Math.random() * pool.length)];
       markEnemyEncounter(type.form);
-      const scale = ww ? 1.08 + (st - 1) * .068 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
-      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
+      const scale = ww ? 1.08 + (st - 1) * .068 : lastWarStage ? 1.28 + (st - VOID_STAGE_END) * .07 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
+      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
         y: -35,
         hp: Math.round(type.hp * scale),
         maxHp: Math.round(type.hp * scale),
-        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : st >= 16 ? 1 : 0)),
+        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : lastWarStage ? Math.floor((st - VOID_STAGE_END) / 3) : st >= 16 ? 1 : 0)),
         shots: type.shots + (ww && st >= 18 && !/Biplane/.test(type.form) ? 1 : 0),
-        speed: type.speed + (ww ? st * .026 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : voidStage ? (st - 10) * 22 : st * 18),
+        speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .035 : voidStage ? (st - 10) * .025 : st * .026),
+        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : lastWarStage ? (st - VOID_STAGE_END) * 34 : voidStage ? (st - 10) * 22 : st * 18),
         t: 0,
         r: largeEnemy ? 13 : type.ground ? 18 : 15
       });
@@ -3176,6 +3187,13 @@
         riftBomber: { fill: '#c084fc', core: '#f5d0fe', shape: 'voidHeavy', size: 1.22 },
         riftInterceptor: { fill: '#38bdf8', core: '#e0f2fe', shape: 'spear', size: .92 },
         riftCutter: { fill: '#ec4899', core: '#fce7f3', shape: 'blade', size: 1.1 },
+        lastWarRecord: { fill: '#fb7185', core: '#fff7ed', shape: 'boss', size: 1.05 },
+        lastWarDrone: { fill: '#f59e0b', core: '#fef3c7', shape: 'diamond', size: .95 },
+        lastWarBomber: { fill: '#c084fc', core: '#fce7f3', shape: 'heavy', size: 1.28 },
+        lastWarLance: { fill: '#ef4444', core: '#fee2e2', shape: 'spear', size: 1.12 },
+        lastWarFrost: { fill: '#94a3b8', core: '#e0f2fe', shape: 'ring', size: 1.18 },
+        lastWarTurret: { fill: '#38bdf8', core: '#ecfeff', shape: 'missile', size: 1.14 },
+        lastWarGate: { fill: '#facc15', core: '#7f1d1d', shape: 'boss', size: 1.32 },
         wwAxisBiplane: { fill: '#dc2626', core: '#7f1d1d', shape: 'dart', size: .9 },
         wwAxisScout: { fill: '#f97316', core: '#fed7aa', shape: 'diamond', size: .95 },
         wwAxisOldBomber: { fill: '#a16207', core: '#fef3c7', shape: 'heavy', size: 1.12 },
@@ -4048,6 +4066,10 @@
         drawWorldWarBackground(stage);
         return;
       }
+      if (stage.id > VOID_STAGE_END) {
+        drawLastWarBackground(stage);
+        return;
+      }
       if (stage.id >= 11) {
         drawSubspaceBackground(stage);
         return;
@@ -4247,6 +4269,78 @@
             ctx.stroke();
           }
         }
+      }
+      ctx.restore();
+    }
+
+    function drawLastWarBackground(stage) {
+      const index = stage.id - VOID_STAGE_END;
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, index < 4 ? '#160915' : index < 7 ? '#08131c' : '#1f0714');
+      g.addColorStop(.38, stage.theme);
+      g.addColorStop(1, index < 4 ? '#25100f' : index < 7 ? '#111827' : '#2b090d');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(8,12,20,.42)';
+      ctx.fillRect(W * .42, -80, W * .16, H + 160);
+      ctx.strokeStyle = 'rgba(250,204,21,.35)';
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 12; i++) {
+        const y = (i * 78 + bgY * .8) % (H + 120) - 60;
+        ctx.beginPath();
+        ctx.moveTo(W / 2, y);
+        ctx.lineTo(W / 2 + Math.sin((y + bgY) / 80) * 12, y + 34);
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = .9;
+      for (let i = 0; i < 18; i++) {
+        const y = (i * 92 + bgY * (.38 + i % 4 * .08)) % (H + 180) - 90;
+        const x = (i * 83 + Math.sin((bgY + i * 57) / 170) * 70) % W;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(Math.sin(i + bgY / 240) * .35);
+        ctx.fillStyle = i % 3 === 0 ? 'rgba(127,29,29,.38)' : i % 3 === 1 ? 'rgba(30,41,59,.48)' : 'rgba(245,158,11,.22)';
+        ctx.fillRect(-28 - i % 4 * 8, -10, 56 + i % 4 * 16, 20 + i % 3 * 8);
+        ctx.fillStyle = 'rgba(0,0,0,.32)';
+        ctx.fillRect(-18, -20, 36, 8);
+        ctx.restore();
+      }
+
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 8; i++) {
+        const y = (i * 120 + bgY * .55) % (H + 180) - 90;
+        ctx.strokeStyle = i % 2 ? 'rgba(248,113,113,.24)' : 'rgba(250,204,21,.18)';
+        ctx.beginPath();
+        for (let x = -30; x <= W + 30; x += 30) {
+          const yy = y + Math.sin((x + bgY * .5 + i * 40) / 42) * 18;
+          if (x === -30) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+        }
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < 6; i++) {
+        const y = (i * 150 + bgY * .44) % (H + 220) - 110;
+        const x = W / 2 + Math.sin((bgY + i * 91) / 230) * 150;
+        ctx.strokeStyle = i % 2 ? 'rgba(239,68,68,.28)' : 'rgba(192,132,252,.2)';
+        ctx.lineWidth = 2 + i % 3;
+        ctx.beginPath();
+        ctx.moveTo(x, y - 52);
+        ctx.lineTo(x + 58, y);
+        ctx.lineTo(x, y + 52);
+        ctx.lineTo(x - 58, y);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = 'rgba(248,250,252,.08)';
+      ctx.font = '800 42px system-ui';
+      ctx.textAlign = 'center';
+      for (let i = 0; i < 4; i++) {
+        const y = (i * 220 + bgY * .25) % (H + 240) - 120;
+        ctx.fillText('LAST WAR', W / 2 + Math.sin(i) * 60, y);
       }
       ctx.restore();
     }
@@ -5539,6 +5633,7 @@
       ctx.translate(e.x, e.y);
       const bigScale = {
         bomber: .84, riftBomber: .78, riftShield: .86, riftCutter: .84,
+        lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86
       }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
       ctx.scale(bigScale, bigScale);
       ctx.fillStyle = e.color;
@@ -5718,6 +5813,69 @@
         ctx.arc(0, -6, 6, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillRect(-3, 6, 6, 22);
+      } else if (e.form?.startsWith?.('lastWar')) {
+        ctx.strokeStyle = 'rgba(250,204,21,.42)';
+        ctx.lineWidth = 2;
+        ctx.fillStyle = 'rgba(15,23,42,.32)';
+        ctx.beginPath();
+        ctx.ellipse(0, 2, e.form === 'lastWarGate' ? 74 : e.form === 'lastWarBomber' ? 68 : 48, e.form === 'lastWarLance' ? 52 : 32, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = e.color;
+        if (e.form === 'lastWarDrone') {
+          for (let i = 0; i < 4; i++) {
+            const a = Math.PI / 4 + i * Math.PI / 2 + (e.t || 0) / 520;
+            poly([[Math.sin(a) * 14, Math.cos(a) * 14], [Math.sin(a + .45) * 36, Math.cos(a + .45) * 36], [Math.sin(a) * 54, Math.cos(a) * 54], [Math.sin(a - .45) * 36, Math.cos(a - .45) * 36]]);
+          }
+          ctx.fillStyle = shade(e.color, -.25);
+          poly([[0,-24],[24,0],[0,24],[-24,0]]);
+        } else if (e.form === 'lastWarLance') {
+          poly([[0,-66],[13,-25],[48,-4],[13,10],[8,58],[0,38],[-8,58],[-13,10],[-48,-4],[-13,-25]]);
+          ctx.fillStyle = '#fee2e2';
+          ctx.fillRect(-4, -42, 8, 68);
+          ctx.strokeStyle = 'rgba(239,68,68,.65)';
+          ctx.beginPath();
+          ctx.moveTo(-54, -20);
+          ctx.lineTo(54, 28);
+          ctx.stroke();
+        } else if (e.form === 'lastWarBomber') {
+          poly([[0,-58],[26,-34],[36,-6],[76,16],[32,28],[14,58],[0,38],[-14,58],[-32,28],[-76,16],[-36,-6],[-26,-34]]);
+          ctx.fillStyle = shade(e.color, -.32);
+          ctx.fillRect(-62, 10, 124, 10);
+          ctx.fillStyle = '#fce7f3';
+          for (const x of [-42, -18, 18, 42]) {
+            ctx.beginPath();
+            ctx.arc(x, 18, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        } else if (e.form === 'lastWarFrost') {
+          poly([[0,-52],[28,-26],[38,12],[18,50],[0,34],[-18,50],[-38,12],[-28,-26]]);
+          ctx.strokeStyle = 'rgba(224,242,254,.62)';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 62, 40, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.fillStyle = '#e0f2fe';
+          for (const x of [-20, 0, 20]) ctx.fillRect(x - 3, -22, 6, 44);
+        } else if (e.form === 'lastWarTurret') {
+          ctx.fillRect(-42, -18, 84, 36);
+          ctx.fillStyle = shade(e.color, -.28);
+          ctx.fillRect(-54, 16, 108, 10);
+          ctx.fillStyle = '#ecfeff';
+          for (const x of [-28, 0, 28]) ctx.fillRect(x - 4, -44, 8, 34);
+        } else if (e.form === 'lastWarGate') {
+          poly([[0,-68],[42,-34],[66,0],[42,34],[0,68],[-42,34],[-66,0],[-42,-34]]);
+          ctx.fillStyle = 'rgba(127,29,29,.72)';
+          poly([[0,-38],[22,-16],[22,16],[0,38],[-22,16],[-22,-16]]);
+          ctx.strokeStyle = 'rgba(250,204,21,.72)';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 82, 50, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        } else {
+          poly([[0,-54],[18,-23],[52,-3],[18,12],[9,48],[0,29],[-9,48],[-18,12],[-52,-3],[-18,-23]]);
+          ctx.fillStyle = '#fff7ed';
+          ctx.beginPath();
+          ctx.arc(0, -8, 7, 0, Math.PI * 2);
+          ctx.fill();
+        }
       } else if (/ww.*(Biplane|Scout)/.test(e.form)) {
         poly([[0,36],[10,18],[8,-27],[0,-39],[-8,-27],[-10,18]]);
         ctx.fillStyle = shade(e.color, .14);
@@ -5814,11 +5972,27 @@
 
     function drawEnemyDetail(e) {
       const rift = e.form?.startsWith?.('rift');
+      const lastWar = e.form?.startsWith?.('lastWar');
       ctx.save();
       ctx.lineWidth = 1.3;
-      ctx.strokeStyle = rift ? 'rgba(216,180,254,.55)' : 'rgba(254,202,202,.42)';
-      ctx.fillStyle = rift ? 'rgba(221,214,254,.78)' : 'rgba(254,240,138,.78)';
-      if (rift) {
+      ctx.strokeStyle = lastWar ? 'rgba(250,204,21,.62)' : rift ? 'rgba(216,180,254,.55)' : 'rgba(254,202,202,.42)';
+      ctx.fillStyle = lastWar ? 'rgba(255,247,237,.86)' : rift ? 'rgba(221,214,254,.78)' : 'rgba(254,240,138,.78)';
+      if (lastWar) {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 20 + Math.sin((e.t || 0) / 180) * 3, 12, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(239,68,68,.56)';
+        ctx.beginPath();
+        ctx.moveTo(-28, -18);
+        ctx.lineTo(28, 18);
+        ctx.moveTo(28, -18);
+        ctx.lineTo(-28, 18);
+        ctx.stroke();
+        ctx.fillStyle = e.form === 'lastWarGate' ? '#facc15' : '#fee2e2';
+        ctx.beginPath();
+        ctx.arc(0, -4, e.form === 'lastWarGate' ? 8 : 5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (rift) {
         ctx.beginPath();
         ctx.arc(0, 0, 13 + Math.sin((e.t || 0) / 240) * 2, 0, Math.PI * 2);
         ctx.stroke();
