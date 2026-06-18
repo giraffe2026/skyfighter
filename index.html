@@ -2117,9 +2117,28 @@
       });
     }
 
+    function lastWarRequirementStatus(source = save) {
+      const missingJets = lastWarEligibleJets()
+        .filter(j => j.hidden && !source.unlockedJets?.[j.id])
+        .map(j => j.name);
+      const missingUpgrades = lastWarEligibleJets()
+        .map(j => {
+          const up = source.upgrades?.[j.id] || {};
+          const missing = upgradeKeys.filter(key => (up[key] || 0) < upgradeMaxLevel(key));
+          return missing.length ? `${j.name} ${missing.length}개` : '';
+        })
+        .filter(Boolean);
+      return {
+        stageDone: (source.unlockedStage || 1) >= VOID_STAGE_END,
+        jetsDone: missingJets.length === 0,
+        upgradesDone: missingUpgrades.length === 0,
+        missingJets,
+        missingUpgrades
+      };
+    }
+
     function canUnlockLastWar(source = save) {
-      return !isWorldWarChapter(source) &&
-        (source.unlockedStage || 1) >= VOID_STAGE_END &&
+      return (source.unlockedStage || 1) >= VOID_STAGE_END &&
         allLastWarJetsUnlocked(source) &&
         allLastWarUpgradesMaxed(source);
     }
@@ -2127,6 +2146,8 @@
     function maybeUnlockLastWar() {
       if (save.lastWarUnlocked || !canUnlockLastWar(save)) return false;
       save.lastWarUnlocked = true;
+      save.chapter = 'main';
+      save.wwFaction = '';
       save.unlockedStage = Math.max(save.unlockedStage || 1, VOID_STAGE_END + 1);
       save.selectedMode = 'stage';
       save.selectedStage = VOID_STAGE_END + 1;
@@ -7102,6 +7123,24 @@
       }).join('');
     }
 
+    function summarizeMissing(list, emptyText) {
+      if (!list.length) return emptyText;
+      return list.length > 4 ? `${list.slice(0, 4).join(', ')} 외 ${list.length - 4}개` : list.join(', ');
+    }
+
+    function renderLastWarRequirementCard() {
+      if (isWorldWarChapter() || save.lastWarUnlocked) return '';
+      const status = lastWarRequirementStatus();
+      const line = (done, text) => `${done ? '완료' : '미완료'} - ${text}`;
+      return `<div class="chapter-heading last-war">
+        <div class="card-head"><span class="name">히든 챕터: THE LAST WAR</span><span class="tag">LOCKED</span></div>
+        <div class="small">${line(status.stageDone, '챕터 2 공허 Stage 20까지 열기')}</div>
+        <div class="small">${line(status.jetsDone, `기체 해금: ${summarizeMissing(status.missingJets, '모두 해금됨')}`)}</div>
+        <div class="small">${line(status.upgradesDone, `기체 강화 MAX: ${summarizeMissing(status.missingUpgrades, '모두 완료됨')}`)}</div>
+        <div class="small">F-XX, 에러, 어드민은 조건에서 제외됩니다.</div>
+      </div>`;
+    }
+
     function renderUI() {
       const unlockedLastWarOnRender = maybeUnlockLastWar();
       if (unlockedLastWarOnRender) {
@@ -7171,7 +7210,7 @@
       } else {
         const stageList = currentStageList();
         const unlockedLimit = currentUnlockedStage();
-        document.getElementById('stages').innerHTML = renderStageChapterList(stageList, unlockedLimit) + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
+        document.getElementById('stages').innerHTML = renderStageChapterList(stageList, unlockedLimit) + renderLastWarRequirementCard() + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
             <div class="small">현대전과 공허 스테이지로 돌아갑니다.</div>
           </button>` : `<button class="stage-card ${save.selectedMode === 'endless' ? 'selected' : ''}" data-mode="endless">
