@@ -1266,7 +1266,7 @@
     }
 
     const skinUnlockRules = {
-      f22: { first: 'kills', kills: 60, second: 'clear', clears: 3 },
+      f22: { first: 'kills', kills: 60, second: 'clears', clears: 3 },
       f35: { first: 'noDamageClears', noDamageClears1: 1, second: 'kills', kills2: 85 },
       f111: { first: 'specials', specials1: 7, second: 'clutchClears', clutchClears: 1 },
       b117: { first: 'specials', specials1: 8, second: 'noDamageClears', noDamageClears: 2 },
@@ -1291,8 +1291,8 @@
     };
 
     function skinRule(id) {
-      const jet = jets.find(j => j.id === id);
-      return skinUnlockRules[id] || { first: 'kills', kills: jet?.hidden ? 90 : 60, second: 'clear', clears: jet?.hidden ? 4 : 3, specials: jet?.hidden ? 18 : 12 };
+      const jet = [...jets, ...worldWarJets].find(j => j.id === id);
+      return skinUnlockRules[id] || { first: 'kills', kills: jet?.hidden ? 90 : 60, second: 'clears', clears: jet?.hidden ? 4 : 3, specials: jet?.hidden ? 18 : 12 };
     }
 
     function skinRequirement(id, tier) {
