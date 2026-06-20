@@ -2286,7 +2286,11 @@
       return skin.endsWith('skin2') ? palette[1] : palette[0];
     }
 
-    function checkJetSkinUnlocks(id) {
+    function jetNameById(id) {
+      return [...jets, ...worldWarJets].find(j => j.id === id)?.name || id;
+    }
+
+    function checkJetSkinUnlocks(id, options = {}) {
       if (!save.unlockedSkins) save.unlockedSkins = {};
       const m = masteryFor(id);
       const [skin1, skin2] = skinIdsForJet(id);
@@ -2302,10 +2306,26 @@
         unlocked.push(jetSkinLabel(id, 2));
       }
       if (unlocked.length) {
+        if (!options.silent) {
+          storeSave();
+          flash('SKIN UNLOCK');
+          setLog(`${jetNameById(id)} 스킨 해금: ${unlocked.join(', ')}`);
+          renderUI();
+        }
+      }
+      return options.returnLabels ? unlocked : unlocked.length > 0;
+    }
+
+    function reconcileSkinUnlocks() {
+      const unlocked = [];
+      for (const jet of [...jets, ...worldWarJets]) {
+        const labels = checkJetSkinUnlocks(jet.id, { silent: true, returnLabels: true });
+        labels.forEach(label => unlocked.push(`${jet.name} ${label}`));
+      }
+      if (unlocked.length) {
         storeSave();
         flash('SKIN UNLOCK');
-        setLog(`${currentJet().name} 스킨 해금: ${unlocked.join(', ')}`);
-        renderUI();
+        setLog(`이미 달성한 스킨 해금: ${unlocked.slice(0, 3).join(', ')}${unlocked.length > 3 ? ` 외 ${unlocked.length - 3}개` : ''}`);
       }
       return unlocked.length > 0;
     }
@@ -7316,6 +7336,7 @@
     }
 
     function renderUI() {
+      reconcileSkinUnlocks();
       const unlockedLastWarOnRender = maybeUnlockLastWar();
       if (unlockedLastWarOnRender) {
         storeSave();
