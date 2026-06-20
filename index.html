@@ -1297,7 +1297,8 @@
 
     function skinRequirement(id, tier) {
       const rule = skinRule(id);
-      const metric = tier === 1 ? (rule.first || 'kills') : (rule.second === 'special' ? 'specials' : rule.second || 'clears');
+      const rawMetric = tier === 1 ? (rule.first || 'kills') : (rule.second || 'clears');
+      const metric = rawMetric === 'special' ? 'specials' : rawMetric === 'clear' ? 'clears' : rawMetric;
       const key = tier === 1 ? `${metric}1` : metric;
       const goal = rule[key] || rule[metric] || rule.kills2 || rule.kills || rule.clears || rule.specials || rule.endlessScore || 1;
       const text = {
