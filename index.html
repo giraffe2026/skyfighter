@@ -1204,8 +1204,28 @@
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
       bomberfleet: ['#142238', '#43d3c4'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
-      f67: ['#7c3aed', '#22d3ee'], admin: ['#111827', '#ef4444']
+      f67: ['#7c3aed', '#22d3ee'], admin: ['#111827', '#ef4444'],
+      ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
+      ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
+      ww_bf109: ['#4b5563', '#f97316'], ww_fw190: ['#7c2d12', '#facc15'], ww_fokker: ['#dc2626', '#f8fafc'],
+      ww_ki84: ['#a3a36d', '#22c55e'], ww_il2: ['#4d7c0f', '#f97316'], ww_lancaster: ['#334155', '#a3e635'],
+      ww_b17: ['#94a3b8', '#60a5fa'], ww_ju87: ['#6b7280', '#f59e0b'], ww_he111: ['#71717a', '#c084fc'], ww_me262: ['#38bdf8', '#f8fafc']
     };
+
+    const generatedSkinPalettes = [
+      ['#0f766e', '#facc15'], ['#7c3aed', '#22d3ee'], ['#be123c', '#f97316'], ['#1d4ed8', '#f8fafc'],
+      ['#166534', '#a3e635'], ['#581c87', '#f0abfc'], ['#334155', '#fb7185'], ['#92400e', '#fde68a']
+    ];
+
+    const skinShapeCycle = ['dart', 'bar', 'diamond', 'split', 'dot'];
+
+    function hashString(value) {
+      return String(value || '').split('').reduce((sum, ch) => (sum * 31 + ch.charCodeAt(0)) % 9973, 17);
+    }
+
+    function skinPaletteForJet(id) {
+      return skinPalettes[id] || generatedSkinPalettes[hashString(id) % generatedSkinPalettes.length];
+    }
 
     function skinIdsForJet(id) {
       return [`${id}-skin1`, `${id}-skin2`];
@@ -1241,7 +1261,11 @@
     }
 
     function jetSkinChange(id, tier) {
-      return skinStyles[id]?.[tier - 1]?.change || '전용 색상과 발사체가 바뀐다.';
+      if (skinStyles[id]?.[tier - 1]?.change) return skinStyles[id][tier - 1].change;
+      const jetName = [...jets, ...worldWarJets].find(j => j.id === id)?.name || '기체';
+      return tier === 2
+        ? `${jetName} 전용 고채도 도장, 다른 장식 패턴, 강화된 발사체 모양`
+        : `${jetName} 전용 도장, 고유 장식 패턴, 전용 발사체 색상`;
     }
 
     function skinCodeAliases(id, tier) {
@@ -2282,7 +2306,7 @@
       const jet = typeof jetOrId === 'string' ? jets.find(j => j.id === id) : jetOrId;
       const skin = equippedSkin(id);
       if (!skin) return jet?.color || '#94a3b8';
-      const palette = skinPalettes[id] || ['#f8fafc', '#67e8f9'];
+      const palette = skinPaletteForJet(id);
       return skin.endsWith('skin2') ? palette[1] : palette[0];
     }
 
@@ -3022,7 +3046,7 @@
     }
 
     function skinBulletStyle(id, tier) {
-      const palette = skinPalettes[id] || ['#22d3ee', '#facc15'];
+      const palette = skinPaletteForJet(id);
       const base = bulletBaseColors(id);
       const bulletColors = {
         f22: [['#dbeafe', '#60a5fa', '#ffffff'], ['#38bdf8', '#f8fafc', '#1d4ed8']],
@@ -3046,7 +3070,23 @@
         yf23: [['#94a3b8', '#f8fafc', '#1f2937'], ['#e2e8f0', '#ffffff', '#64748b']],
         xb70: [['#f8fafc', '#dbeafe', '#94a3b8'], ['#facc15', '#fff7ed', '#a16207']],
         f67: [['#22d3ee', '#f0abfc', '#581c87'], ['#d8b4fe', '#ecfeff', '#0891b2']],
-        admin: [['#111827', '#facc15', '#ef4444'], ['#ef4444', '#ffffff', '#facc15']]
+        admin: [['#111827', '#facc15', '#ef4444'], ['#ef4444', '#ffffff', '#facc15']],
+        ww_camel: [['#c084fc', '#fff7ed', '#78350f'], ['#f59e0b', '#fef3c7', '#7c2d12']],
+        ww_spitfire: [['#22c55e', '#ecfccb', '#14532d'], ['#38bdf8', '#eff6ff', '#1d4ed8']],
+        ww_hurricane: [['#64748b', '#e2e8f0', '#334155'], ['#facc15', '#fef3c7', '#713f12']],
+        ww_mustang: [['#e5e7eb', '#ffffff', '#475569'], ['#2563eb', '#dbeafe', '#1e3a8a']],
+        ww_yak3: [['#38bdf8', '#ecfeff', '#0e7490'], ['#ef4444', '#fee2e2', '#991b1b']],
+        ww_zero: [['#f8fafc', '#dcfce7', '#4d7c0f'], ['#dc2626', '#fee2e2', '#7f1d1d']],
+        ww_bf109: [['#4b5563', '#e5e7eb', '#111827'], ['#f97316', '#ffedd5', '#7c2d12']],
+        ww_fw190: [['#7c2d12', '#fed7aa', '#3f1f0d'], ['#facc15', '#fef9c3', '#92400e']],
+        ww_fokker: [['#dc2626', '#fee2e2', '#7f1d1d'], ['#f8fafc', '#fef3c7', '#991b1b']],
+        ww_ki84: [['#a3a36d', '#fef9c3', '#4d4d25'], ['#22c55e', '#dcfce7', '#166534']],
+        ww_il2: [['#4d7c0f', '#ecfccb', '#365314'], ['#f97316', '#ffedd5', '#7c2d12']],
+        ww_lancaster: [['#334155', '#cbd5e1', '#0f172a'], ['#a3e635', '#f7fee7', '#3f6212']],
+        ww_b17: [['#94a3b8', '#f8fafc', '#475569'], ['#60a5fa', '#dbeafe', '#1d4ed8']],
+        ww_ju87: [['#6b7280', '#e5e7eb', '#374151'], ['#f59e0b', '#fef3c7', '#92400e']],
+        ww_he111: [['#71717a', '#e4e4e7', '#3f3f46'], ['#c084fc', '#f5d0fe', '#581c87']],
+        ww_me262: [['#38bdf8', '#ecfeff', '#0e7490'], ['#f8fafc', '#dbeafe', '#334155']]
       };
       const shapes = {
         f22: ['dart', 'diamond'], f35: ['bar', 'split'], f111: ['split', 'bar'], b117: ['diamond', 'dot'],
@@ -3054,9 +3094,13 @@
         f14: ['split', 'diamond'], f15: ['dart', 'split'], fa18: ['bar', 'dot'], f72: ['diamond', 'bar'],
         fxx: ['dot', 'diamond'], b2: ['diamond', 'split'], geomancho: ['bar', 'dot'], error: ['split', 'bar'],
         bomberfleet: ['split', 'diamond'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
-        f67: ['dot', 'split'], admin: ['bar', 'diamond']
+        f67: ['dot', 'split'], admin: ['bar', 'diamond'],
+        ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
+        ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
+        ww_fokker: ['split', 'diamond'], ww_ki84: ['dart', 'dot'], ww_il2: ['bar', 'dot'], ww_lancaster: ['diamond', 'bar'],
+        ww_b17: ['dot', 'diamond'], ww_ju87: ['split', 'bar'], ww_he111: ['bar', 'diamond'], ww_me262: ['dart', 'split']
       };
-      const pickedShape = (shapes[id] || ['dart', 'diamond'])[tier - 1];
+      const pickedShape = (shapes[id] || [skinShapeCycle[hashString(id) % skinShapeCycle.length], skinShapeCycle[(hashString(id) + 2) % skinShapeCycle.length]])[tier - 1];
       const pickedColors = bulletColors[id]?.[tier - 1];
       const vivid = tier === 2;
       const fill = pickedColors?.[0] || shade(vivid ? palette[1] : palette[0], vivid ? -.08 : -.14);
@@ -5466,8 +5510,10 @@
       const tier2 = skin.endsWith('skin2');
       const t = performance.now();
       const pulse = .7 + Math.sin(t / 220) * .1;
-      const main = tier2 ? 'rgba(250,204,21,.88)' : 'rgba(34,211,238,.78)';
-      const alt = tier2 ? 'rgba(244,114,182,.72)' : 'rgba(125,211,252,.62)';
+      const style = skinBulletStyle(id, tier2 ? 2 : 1);
+      const main = rgbaColor(style.fill, .86);
+      const alt = rgbaColor(style.accent || style.core, .74);
+      const motif = hashString(`${id}-${skin}`) % 5;
       ctx.save();
       if (id === 'admin') {
         ctx.strokeStyle = tier2 ? 'rgba(250,204,21,.95)' : 'rgba(239,68,68,.9)';
@@ -5553,6 +5599,58 @@
         for (const x of [-18, 18]) {
           ctx.beginPath();
           ctx.arc(x, x < 0 ? -18 : -12, 2.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.strokeStyle = alt;
+      ctx.fillStyle = main;
+      ctx.lineWidth = tier2 ? 2 : 1.4;
+      if (motif === 0) {
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(side * 7, -48);
+          ctx.lineTo(side * 28, -18);
+          ctx.lineTo(side * 15, 4);
+          ctx.lineTo(side * 38, 30);
+          ctx.stroke();
+        }
+      } else if (motif === 1) {
+        for (const y of [-30, -12, 8, 28]) {
+          ctx.beginPath();
+          ctx.moveTo(-24, y);
+          ctx.lineTo(24, y + (tier2 ? 9 : 5));
+          ctx.stroke();
+        }
+      } else if (motif === 2) {
+        for (let i = 0; i < 3; i++) {
+          const a = -Math.PI / 2 + i * Math.PI * 2 / 3 + t / 900;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * 16, Math.sin(a) * 18 - 4);
+          ctx.lineTo(Math.cos(a) * 42, Math.sin(a) * 48 - 4);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(Math.cos(a) * 29, Math.sin(a) * 33 - 4, tier2 ? 3.2 : 2.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (motif === 3) {
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(side * 10, -20);
+          ctx.quadraticCurveTo(side * 48, -8, side * 58, 20);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(side * 14, 16);
+          ctx.quadraticCurveTo(side * 36, 38, side * 18, 54);
+          ctx.stroke();
+        }
+      } else {
+        for (const [x, y] of [[0, -36], [-22, -8], [22, -8], [-15, 24], [15, 24]]) {
+          ctx.beginPath();
+          ctx.moveTo(x, y - 5);
+          ctx.lineTo(x + 4, y);
+          ctx.lineTo(x, y + 5);
+          ctx.lineTo(x - 4, y);
+          ctx.closePath();
           ctx.fill();
         }
       }
@@ -6089,6 +6187,11 @@
       }
       const nums = value.match(/\d+(\.\d+)?/g)?.map(Number);
       return nums && nums.length >= 3 ? nums.slice(0, 3) : [0, 0, 0];
+    }
+
+    function rgbaColor(color, alpha) {
+      const [r, g, b] = colorChannels(color);
+      return `rgba(${r},${g},${b},${alpha})`;
     }
 
     function avoidWhiteBulletColor(color, fallback) {
