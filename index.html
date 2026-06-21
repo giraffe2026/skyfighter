@@ -908,22 +908,23 @@
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
-      { id: 'ww_camel', name: '소프위드 카멜', role: '연합국 복엽 에이스', color: '#9b7a4d', power: 7, hp: 8, shots: 2, fireRate: 112, speed: 5.95, bulletSpeed: 8.8, hitbox: 7, startBombs: 1, faction: 'allies', special: '복엽기 선회 난사' },
-      { id: 'ww_spitfire', name: '스핏파이어 Mk.V', role: '연합국 제공기', color: '#6f8f73', power: 8, hp: 9, shots: 3, fireRate: 118, speed: 6.25, bulletSpeed: 9.7, hitbox: 7, startBombs: 1, faction: 'allies', special: '가볍고 빠른 선회 사격' },
-      { id: 'ww_hurricane', name: '호커 허리케인', role: '연합국 방공 전투기', color: '#78876b', power: 9, hp: 10, shots: 4, fireRate: 132, speed: 5.9, bulletSpeed: 9.4, hitbox: 8, startBombs: 1, faction: 'allies', special: '방공 기관총 집중사격' },
-      { id: 'ww_mustang', name: 'P-51 머스탱', role: '연합국 장거리 호위', color: '#9aa7ad', power: 10, hp: 10, shots: 4, fireRate: 126, speed: 6.35, bulletSpeed: 10.1, hitbox: 7, startBombs: 2, faction: 'allies', special: '균형 잡힌 고속 기관총' },
-      { id: 'ww_yak3', name: 'Yak-3 야크', role: '연합국 저공 격투', color: '#7d8f9b', power: 9, hp: 9, shots: 3, fireRate: 106, speed: 6.55, bulletSpeed: 9.9, hitbox: 6, startBombs: 1, faction: 'allies', special: '저공 고속 돌파 사격' },
-      { id: 'ww_zero', name: 'A6M 제로센', role: '추축국 고기동기', color: '#b8c49a', power: 8, hp: 8, shots: 4, fireRate: 108, speed: 6.7, bulletSpeed: 9.6, hitbox: 6, startBombs: 1, faction: 'axis', special: '빠른 연사와 넓은 회피 기동' },
-      { id: 'ww_bf109', name: 'Bf 109 에밀', role: '추축국 요격기', color: '#7f8b7b', power: 10, hp: 9, shots: 3, fireRate: 122, speed: 6.2, bulletSpeed: 10.2, hitbox: 7, startBombs: 1, faction: 'axis', special: '강한 중앙 기관포' },
-      { id: 'ww_fw190', name: 'Fw 190 뷔르거', role: '추축국 돌격 전투기', color: '#6f756b', power: 11, hp: 11, shots: 4, fireRate: 130, speed: 6.1, bulletSpeed: 10.0, hitbox: 8, startBombs: 2, faction: 'axis', special: '중무장 돌격포화' },
-      { id: 'ww_fokker', name: '포커 Dr.I', role: '추축국 삼엽 에이스', color: '#9b3f35', power: 7, hp: 8, shots: 2, fireRate: 108, speed: 5.9, bulletSpeed: 8.7, hitbox: 7, startBombs: 1, faction: 'axis', special: '삼엽기 곡예 사격' },
-      { id: 'ww_ki84', name: 'Ki-84 하야테', role: '추축국 고속 요격', color: '#8f8b5f', power: 10, hp: 9, shots: 4, fireRate: 116, speed: 6.65, bulletSpeed: 10.1, hitbox: 7, startBombs: 1, faction: 'axis', special: '고속 요격 난사' },
-      { id: 'ww_il2', name: 'Il-2 슈투르모빅', role: '연합국 장갑 공격기', color: '#687a58', power: 12, hp: 14, shots: 3, fireRate: 155, speed: 5.35, bulletSpeed: 9.0, hitbox: 11, startBombs: 3, faction: 'allies', special: '장갑 로켓 일제사격' },
-      { id: 'ww_lancaster', name: '랭커스터 폭격기', role: '연합국 중폭격', color: '#5f6f5f', power: 14, hp: 16, shots: 2, fireRate: 240, speed: 4.7, bulletSpeed: 8.1, hitbox: 17, startBombs: 4, faction: 'allies', special: '대형 폭탄 3발 투하' },
-      { id: 'ww_b17', name: 'B-17 플라잉 포트리스', role: '연합국 요새폭격', color: '#8b8f86', power: 13, hp: 17, shots: 3, fireRate: 230, speed: 4.85, bulletSpeed: 8.4, hitbox: 16, startBombs: 4, faction: 'allies', special: '요새 폭탄 4발과 방어 사격' },
-      { id: 'ww_ju87', name: 'Ju 87 슈투카', role: '추축국 급강하폭격', color: '#6f775f', power: 12, hp: 12, shots: 2, fireRate: 190, speed: 5.15, bulletSpeed: 8.8, hitbox: 11, startBombs: 3, faction: 'axis', special: '급강하 폭격 탄도' },
-      { id: 'ww_he111', name: 'He 111 폭격기', role: '추축국 중폭격', color: '#70775f', power: 13, hp: 15, shots: 3, fireRate: 225, speed: 4.95, bulletSpeed: 8.3, hitbox: 15, startBombs: 4, faction: 'axis', special: '쌍발 중폭탄 3발 투하' },
-      { id: 'ww_me262', name: 'Me 262 슈발베', role: '추축국 제트기', color: '#8f9b95', power: 13, hp: 10, shots: 4, fireRate: 118, speed: 7.15, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, faction: 'axis', special: '빠른 제트 기관포' }
+      { id: 'ww_camel', name: '소프위드 카멜', role: '연합국 1차대전 복엽 에이스', color: '#9b7a4d', power: 7, hp: 8, shots: 2, fireRate: 112, speed: 5.95, bulletSpeed: 8.8, hitbox: 7, startBombs: 1, faction: 'allies', era: 1, special: '복엽기 선회 난사' },
+      { id: 'ww_spitfire', name: '스핏파이어 Mk.V', role: '연합국 2차대전 제공기', color: '#6f8f73', power: 8, hp: 9, shots: 3, fireRate: 118, speed: 6.25, bulletSpeed: 9.7, hitbox: 7, startBombs: 1, faction: 'allies', era: 2, special: '가볍고 빠른 선회 사격' },
+      { id: 'ww_hurricane', name: '호커 허리케인', role: '연합국 2차대전 방공 전투기', color: '#78876b', power: 9, hp: 10, shots: 4, fireRate: 132, speed: 5.9, bulletSpeed: 9.4, hitbox: 8, startBombs: 1, faction: 'allies', era: 2, special: '방공 기관총 집중사격' },
+      { id: 'ww_mustang', name: 'P-51 머스탱', role: '연합국 2차대전 장거리 호위', color: '#9aa7ad', power: 10, hp: 10, shots: 4, fireRate: 126, speed: 6.35, bulletSpeed: 10.1, hitbox: 7, startBombs: 2, faction: 'allies', era: 2, special: '균형 잡힌 고속 기관총' },
+      { id: 'ww_yak3', name: 'Yak-3 야크', role: '연합국 2차대전 저공 격투', color: '#7d8f9b', power: 9, hp: 9, shots: 3, fireRate: 106, speed: 6.55, bulletSpeed: 9.9, hitbox: 6, startBombs: 1, faction: 'allies', era: 2, special: '저공 고속 돌파 사격' },
+      { id: 'ww_zero', name: 'A6M 제로센', role: '추축국 2차대전 고기동기', color: '#b8c49a', power: 8, hp: 8, shots: 4, fireRate: 108, speed: 6.7, bulletSpeed: 9.6, hitbox: 6, startBombs: 1, faction: 'axis', era: 2, special: '빠른 연사와 넓은 회피 기동' },
+      { id: 'ww_bf109', name: 'Bf 109 에밀', role: '추축국 2차대전 요격기', color: '#7f8b7b', power: 10, hp: 9, shots: 3, fireRate: 122, speed: 6.2, bulletSpeed: 10.2, hitbox: 7, startBombs: 1, faction: 'axis', era: 2, special: '강한 중앙 기관포' },
+      { id: 'ww_fw190', name: 'Fw 190 뷔르거', role: '추축국 2차대전 돌격 전투기', color: '#6f756b', power: 11, hp: 11, shots: 4, fireRate: 130, speed: 6.1, bulletSpeed: 10.0, hitbox: 8, startBombs: 2, faction: 'axis', era: 2, special: '중무장 돌격포화' },
+      { id: 'ww_fokker', name: '포커 Dr.I', role: '추축국 1차대전 삼엽 에이스', color: '#9b3f35', power: 7, hp: 8, shots: 2, fireRate: 108, speed: 5.9, bulletSpeed: 8.7, hitbox: 7, startBombs: 1, faction: 'axis', era: 1, special: '삼엽기 곡예 사격' },
+      { id: 'ww_ki84', name: 'Ki-84 하야테', role: '추축국 2차대전 고속 요격', color: '#8f8b5f', power: 10, hp: 9, shots: 4, fireRate: 116, speed: 6.65, bulletSpeed: 10.1, hitbox: 7, startBombs: 1, faction: 'axis', era: 2, special: '고속 요격 난사' },
+      { id: 'ww_il2', name: 'Il-2 슈투르모빅', role: '연합국 2차대전 장갑 공격기', color: '#687a58', power: 12, hp: 14, shots: 3, fireRate: 155, speed: 5.35, bulletSpeed: 9.0, hitbox: 11, startBombs: 3, faction: 'allies', era: 2, special: '장갑 로켓 일제사격' },
+      { id: 'ww_lancaster', name: '랭커스터 폭격기', role: '연합국 2차대전 중폭격', color: '#5f6f5f', power: 14, hp: 16, shots: 2, fireRate: 240, speed: 4.7, bulletSpeed: 8.1, hitbox: 17, startBombs: 4, faction: 'allies', era: 2, special: '대형 폭탄 3발 투하' },
+      { id: 'ww_b17', name: 'B-17 플라잉 포트리스', role: '연합국 2차대전 요새폭격', color: '#8b8f86', power: 13, hp: 17, shots: 3, fireRate: 230, speed: 4.85, bulletSpeed: 8.4, hitbox: 16, startBombs: 4, faction: 'allies', era: 2, special: '요새 폭탄 4발과 방어 사격' },
+      { id: 'ww_b29', name: 'B-29 슈퍼포트리스', role: '연합국 2차대전 중장갑 화력', color: '#c2b28f', power: 16, hp: 17, shots: 2, fireRate: 305, speed: 5.1, bulletSpeed: 8.4, hitbox: 18, startBombs: 4, faction: 'allies', era: 2, special: '2차대전 해금 후 등장. 강화는 세계대전용으로 따로 시작' },
+      { id: 'ww_ju87', name: 'Ju 87 슈투카', role: '추축국 2차대전 급강하폭격', color: '#6f775f', power: 12, hp: 12, shots: 2, fireRate: 190, speed: 5.15, bulletSpeed: 8.8, hitbox: 11, startBombs: 3, faction: 'axis', era: 2, special: '급강하 폭격 탄도' },
+      { id: 'ww_he111', name: 'He 111 폭격기', role: '추축국 2차대전 중폭격', color: '#70775f', power: 13, hp: 15, shots: 3, fireRate: 225, speed: 4.95, bulletSpeed: 8.3, hitbox: 15, startBombs: 4, faction: 'axis', era: 2, special: '쌍발 중폭탄 3발 투하' },
+      { id: 'ww_me262', name: 'Me 262 슈발베', role: '추축국 2차대전 제트기', color: '#8f9b95', power: 13, hp: 10, shots: 4, fireRate: 118, speed: 7.15, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, faction: 'axis', era: 2, special: '빠른 제트 기관포' }
     ];
 
     const worldWarStages = {
@@ -1209,7 +1210,7 @@
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
       ww_bf109: ['#4b5563', '#f97316'], ww_fw190: ['#7c2d12', '#facc15'], ww_fokker: ['#dc2626', '#f8fafc'],
       ww_ki84: ['#a3a36d', '#22c55e'], ww_il2: ['#4d7c0f', '#f97316'], ww_lancaster: ['#334155', '#a3e635'],
-      ww_b17: ['#94a3b8', '#60a5fa'], ww_ju87: ['#6b7280', '#f59e0b'], ww_he111: ['#71717a', '#c084fc'], ww_me262: ['#38bdf8', '#f8fafc']
+        ww_b17: ['#94a3b8', '#60a5fa'], ww_b29: ['#d8c699', '#f97316'], ww_ju87: ['#6b7280', '#f59e0b'], ww_he111: ['#71717a', '#c084fc'], ww_me262: ['#38bdf8', '#f8fafc']
     };
 
     const generatedSkinPalettes = [
@@ -1762,7 +1763,7 @@
       fixed.hiddenSecretJets = { ...defaultSave.hiddenSecretJets, ...(fixed.hiddenSecretJets || {}) };
       if (!isJetAvailable(fixed.selectedJet, fixed)) fixed.selectedJet = 'f22';
       if (fixed.chapter === 'worldWar' && fixed.wwFaction && !isJetAvailable(fixed.selectedJet, fixed)) {
-        fixed.selectedJet = worldWarJets.find(j => j.faction === fixed.wwFaction)?.id || 'ww_spitfire';
+        fixed.selectedJet = availableJets(fixed)[0]?.id || (fixed.wwFaction === 'axis' ? 'ww_fokker' : 'ww_camel');
       }
       fixed.upgrades = fixed.upgrades && typeof fixed.upgrades === 'object' ? fixed.upgrades : {};
       for (const jet of [...jets, ...worldWarJets]) {
@@ -2218,8 +2219,16 @@
       return source.wwUnlockedStage?.[source.wwFaction || 'allies'] || 1;
     }
 
+    function isWorldWarTwoUnlocked(source = save) {
+      return isWorldWarChapter(source) && currentUnlockedStage(source) >= 11;
+    }
+
     function currentJetPool(source = save) {
-      return isWorldWarChapter(source) && source.wwFaction ? worldWarJets.filter(j => j.faction === source.wwFaction) : jets;
+      if (isWorldWarChapter(source) && source.wwFaction) {
+        const showWorldWarTwo = isWorldWarTwoUnlocked(source);
+        return worldWarJets.filter(j => j.faction === source.wwFaction && ((j.era || 2) === 1 || showWorldWarTwo));
+      }
+      return jets;
     }
 
     function currentJet() {
@@ -2227,7 +2236,7 @@
     }
 
     function isJetAvailable(id, source = save) {
-      if (isWorldWarChapter(source)) return !!source.wwFaction && worldWarJets.some(j => j.id === id && j.faction === source.wwFaction);
+      if (isWorldWarChapter(source)) return !!source.wwFaction && currentJetPool(source).some(j => j.id === id);
       const jet = jets.find(j => j.id === id);
       if (retiredJetIds.has(id)) return false;
       return !!jet && (!jet.hidden || source.unlockedJets?.[id]);
@@ -2943,6 +2952,7 @@
         ww_il2: { spread: 13, angle: .03, r: 4.8, blast: 12, speedScale: .92 },
         ww_lancaster: { spread: 20, angle: .026, r: 6.5, blast: 24, speedScale: .82 },
         ww_b17: { spread: 17, angle: .035, r: 5.6, blast: 16, speedScale: .86 },
+        ww_b29: { spread: 23, angle: .022, r: 7.8, speedScale: .82, blast: 28, damageScale: 1.08 },
         ww_ju87: { spread: 14, angle: .042, r: 5.2, blast: 18, speedScale: .9 },
         ww_he111: { spread: 18, angle: .032, r: 5.8, blast: 20, speedScale: .84 },
         ww_me262: { spread: 8, angle: .02, r: 4, pierce: 1, speedScale: 1.2 }
@@ -3011,6 +3021,7 @@
         ww_il2: ['#84cc16', '#3f6212'],
         ww_lancaster: ['#a3a36d', '#3f3f22'],
         ww_b17: ['#94a3b8', '#475569'],
+        ww_b29: ['#facc15', '#fef3c7'],
         ww_ju87: ['#a3a36d', '#713f12'],
         ww_he111: ['#9ca37a', '#3f3f22'],
         ww_me262: ['#38bdf8', '#334155']
@@ -3029,6 +3040,7 @@
         f111: 'rail',
         b117: 'stealthBomb',
         b29: 'atomic',
+        ww_b29: 'atomic',
         su57: 'fanShard',
         f16: 'needleStream',
         a10: 'gatling',
@@ -3105,6 +3117,7 @@
         ww_il2: [['#4d7c0f', '#ecfccb', '#365314'], ['#f97316', '#ffedd5', '#7c2d12']],
         ww_lancaster: [['#334155', '#cbd5e1', '#0f172a'], ['#a3e635', '#f7fee7', '#3f6212']],
         ww_b17: [['#94a3b8', '#f8fafc', '#475569'], ['#60a5fa', '#dbeafe', '#1d4ed8']],
+        ww_b29: [['#d6b16a', '#fff7ed', '#92400e'], ['#fb923c', '#ffedd5', '#7c2d12']],
         ww_ju87: [['#6b7280', '#e5e7eb', '#374151'], ['#f59e0b', '#fef3c7', '#92400e']],
         ww_he111: [['#71717a', '#e4e4e7', '#3f3f46'], ['#c084fc', '#f5d0fe', '#581c87']],
         ww_me262: [['#38bdf8', '#ecfeff', '#0e7490'], ['#f8fafc', '#dbeafe', '#334155']]
@@ -3119,7 +3132,7 @@
         ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
         ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
         ww_fokker: ['split', 'diamond'], ww_ki84: ['dart', 'dot'], ww_il2: ['bar', 'dot'], ww_lancaster: ['diamond', 'bar'],
-        ww_b17: ['dot', 'diamond'], ww_ju87: ['split', 'bar'], ww_he111: ['bar', 'diamond'], ww_me262: ['dart', 'split']
+        ww_b17: ['dot', 'diamond'], ww_b29: ['bar', 'diamond'], ww_ju87: ['split', 'bar'], ww_he111: ['bar', 'diamond'], ww_me262: ['dart', 'split']
       };
       const pickedShape = (shapes[id] || [skinShapeCycle[hashString(id) % skinShapeCycle.length], skinShapeCycle[(hashString(id) + 2) % skinShapeCycle.length]])[tier - 1];
       const pickedColors = bulletColors[id]?.[tier - 1];
@@ -3148,7 +3161,7 @@
         ww_mustang: ['#94a3b8', '#1d4ed8'], ww_yak3: ['#38bdf8', '#1e3a8a'], ww_zero: ['#84cc16', '#7f1d1d'],
         ww_bf109: ['#64748b', '#111827'], ww_fw190: ['#64748b', '#713f12'], ww_fokker: ['#dc2626', '#7f1d1d'],
         ww_ki84: ['#a3a36d', '#7f1d1d'], ww_il2: ['#84cc16', '#3f6212'], ww_lancaster: ['#a3a36d', '#3f3f22'],
-        ww_b17: ['#94a3b8', '#475569'], ww_ju87: ['#a3a36d', '#713f12'], ww_he111: ['#9ca37a', '#3f3f22'],
+        ww_b17: ['#94a3b8', '#475569'], ww_b29: ['#facc15', '#fef3c7'], ww_ju87: ['#a3a36d', '#713f12'], ww_he111: ['#9ca37a', '#3f3f22'],
         ww_me262: ['#38bdf8', '#334155']
       };
       return colors[id] || ['#94f7e9', '#ffffff'];
@@ -3191,6 +3204,7 @@
         ww_il2: { body: '#687a58', nose: '#84cc16', fin: '#3f6212', shape: 'chunky' },
         ww_lancaster: { body: '#5f6f5f', nose: '#facc15', fin: '#3f3f22', shape: 'heavy' },
         ww_b17: { body: '#8b8f86', nose: '#60a5fa', fin: '#475569', shape: 'heavy' },
+        ww_b29: { body: '#c2b28f', nose: '#facc15', fin: '#4b5563', shape: 'heavy' },
         ww_ju87: { body: '#6f775f', nose: '#f97316', fin: '#713f12', shape: 'long' },
         ww_he111: { body: '#70775f', nose: '#facc15', fin: '#3f3f22', shape: 'heavy' },
         ww_me262: { body: '#8f9b95', nose: '#38bdf8', fin: '#334155', shape: 'needle' }
@@ -3597,7 +3611,7 @@
       } else if (id === 'b117') {
         enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 120 || b.y < py - 240);
         bomberSpecialRun(id, '스텔스 폭격', 3, 1.22, 255, { spacing: 58, vy: -3.55, explodeAfter: 390, r: 27 });
-      } else if (id === 'b29') {
+      } else if (id === 'b29' || id === 'ww_b29') {
         playerBombs.push({
           x: px,
           y: player.y - 108,
@@ -4048,11 +4062,11 @@
       if (player.jet.id !== 'bomberfleet') {
         const id = player.jet.id;
         const base = player.stats.hitbox;
-        const wideWingIds = ['b2', 'geomancho', 'b29', 'xb70', 'b117', 'admin'];
+        const wideWingIds = ['b2', 'geomancho', 'b29', 'ww_b29', 'xb70', 'b117', 'admin'];
         const mediumWingIds = ['f22', 'f35', 'su57', 'f15', 'fa18', 'f72', 'fxx', 'yf23', 'f67', 'error'];
         const variableWingIds = ['f111', 'f14'];
         const wingSpread = wideWingIds.includes(id) ? 33 : variableWingIds.includes(id) ? 28 : mediumWingIds.includes(id) ? 24 : 19;
-        const wingY = id === 'b29' || id === 'xb70' ? 0 : id === 'b2' || id === 'geomancho' ? 5 : 8;
+        const wingY = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? 0 : id === 'b2' || id === 'geomancho' ? 5 : 8;
         const wingR = clamp(base * (wideWingIds.includes(id) ? 1.08 : .95), 7, wideWingIds.includes(id) ? 18 : 14);
         const bodyR = clamp(base * 1.45, 9, wideWingIds.includes(id) ? 24 : 18);
         const noseR = clamp(base * .82, 6, 12);
@@ -5064,7 +5078,7 @@
         ctx.restore();
         return;
       } else if (id.startsWith('ww_')) {
-        const heavyBomber = id === 'ww_lancaster' || id === 'ww_b17';
+        const heavyBomber = id === 'ww_lancaster' || id === 'ww_b17' || id === 'ww_b29';
         const twinBomber = id === 'ww_he111';
         const jetEra = id === 'ww_me262';
         const biplane = id === 'ww_camel' || id === 'ww_fokker';
@@ -5081,7 +5095,7 @@
             ctx.arc(x, 5, 4.4, 0, Math.PI * 2);
             ctx.fill();
           }
-          if (id === 'ww_b17') {
+          if (id === 'ww_b17' || id === 'ww_b29') {
             ctx.fillStyle = 'rgba(191,219,254,.65)';
             ctx.fillRect(-4, -52, 8, 12);
           }
@@ -5718,7 +5732,7 @@
       const skin = friendly ? equippedSkin(id) : '';
       const glow = skin ? (skin.endsWith('skin2') ? 'rgba(250,204,21,.95)' : 'rgba(34,211,238,.95)') : friendly ? 'rgba(67,211,196,.85)' : 'rgba(239,68,68,.85)';
       const glass = id === 'b2' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
-      const longBody = id === 'sr71' || id === 'xb70' || id === 'b29';
+      const longBody = id === 'sr71' || id === 'xb70' || id === 'b29' || id === 'ww_b29';
       const wingBody = id === 'b2' || id === 'geomancho';
       ctx.save();
 
@@ -5735,7 +5749,7 @@
         ctx.ellipse(0, -43, 4.6, 14, 0, 0, Math.PI * 2);
       } else if (wingBody) {
         ctx.ellipse(0, -10, 9, 5, 0, 0, Math.PI * 2);
-      } else if (id === 'b29' || id === 'xb70') {
+      } else if (id === 'b29' || id === 'ww_b29' || id === 'xb70') {
         ctx.ellipse(0, -45, 5, 12, 0, 0, Math.PI * 2);
       } else {
         ctx.ellipse(0, -24, 6, 13, 0, 0, Math.PI * 2);
@@ -5752,7 +5766,7 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'admin' ? [-8, 8] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'admin' ? [-8, 8] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
         ctx.ellipse(x, id === 'admin' ? 54 : id === 'sr71' ? 42 : 35, 3.2, 7, 0, 0, Math.PI * 2);
@@ -5783,7 +5797,7 @@
 
     function jetProportion(id) {
       if (id === 'bomberfleet') return { x: 1, y: 1 };
-      if (id === 'b29') return { x: 1.05, y: 1.08 };
+      if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'b2' || id === 'geomancho') return { x: 1.02, y: 1.04 };
       if (id === 'b117') return { x: .96, y: 1.08 };
@@ -7541,13 +7555,13 @@
         document.getElementById('stages').innerHTML = `
           <button class="stage-card" data-ww-faction="allies">
             <div class="card-head"><span class="name">연합국 파일럿</span><span class="tag">ALLIES</span></div>
-            <div class="small">소프위드 카멜, 스핏파이어, 허리케인, 머스탱, Yak-3, Il-2, 랭커스터, B-17로 출격합니다.</div>
-            <div class="small">연합국 편대로 전선을 돌파하는 세계대전 작전.</div>
+            <div class="small">처음에는 소프위드 카멜로 1차대전 전선을 진행합니다.</div>
+            <div class="small">Stage 11 해금 후 스핏파이어, 머스탱, B-17, B-29 등 2차대전 기체가 등장합니다.</div>
           </button>
           <button class="stage-card" data-ww-faction="axis">
             <div class="card-head"><span class="name">추축국 파일럿</span><span class="tag">AXIS</span></div>
-            <div class="small">포커 Dr.I, 제로센, Bf 109, Fw 190, Ki-84, 슈투카, He 111, Me 262로 출격합니다.</div>
-            <div class="small">추축국 편대로 전선을 돌파하는 세계대전 작전.</div>
+            <div class="small">처음에는 포커 Dr.I로 1차대전 전선을 진행합니다.</div>
+            <div class="small">Stage 11 해금 후 제로센, Bf 109, 슈투카, Me 262 등 2차대전 기체가 등장합니다.</div>
           </button>
           <button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
