@@ -909,15 +909,23 @@
 
     const worldWarJets = [
       { id: 'ww_camel', name: '소프위드 카멜', role: '연합국 1차대전 복엽 에이스', color: '#9b7a4d', power: 7, hp: 8, shots: 2, fireRate: 112, speed: 5.95, bulletSpeed: 8.8, hitbox: 7, startBombs: 1, faction: 'allies', era: 1, special: '복엽기 선회 난사' },
+      { id: 'ww_se5a', name: 'S.E.5a', role: '연합국 1차대전 고속 정찰', color: '#8f7a55', power: 8, hp: 8, shots: 2, fireRate: 116, speed: 6.18, bulletSpeed: 9.0, hitbox: 7, startBombs: 1, faction: 'allies', era: 1, special: '고속 복엽기 집중사격' },
+      { id: 'ww_spad13', name: 'SPAD XIII', role: '연합국 1차대전 돌격 에이스', color: '#b59a63', power: 9, hp: 9, shots: 2, fireRate: 124, speed: 6.05, bulletSpeed: 9.2, hitbox: 7, startBombs: 1, faction: 'allies', era: 1, special: '강습 기관총 돌파' },
+      { id: 'ww_bristol', name: '브리스톨 F.2B', role: '연합국 1차대전 복좌 전투기', color: '#7f6f50', power: 8, hp: 10, shots: 3, fireRate: 138, speed: 5.62, bulletSpeed: 8.7, hitbox: 9, startBombs: 1, faction: 'allies', era: 1, special: '전후방 복좌 사격' },
+      { id: 'ww_nieuport', name: '뉴포르 17', role: '연합국 1차대전 경량 격투', color: '#9f8d67', power: 7, hp: 7, shots: 3, fireRate: 108, speed: 6.35, bulletSpeed: 8.9, hitbox: 6, startBombs: 1, faction: 'allies', era: 1, special: '경량 선회 난사' },
       { id: 'ww_spitfire', name: '스핏파이어 Mk.V', role: '연합국 2차대전 제공기', color: '#6f8f73', power: 8, hp: 9, shots: 3, fireRate: 118, speed: 6.25, bulletSpeed: 9.7, hitbox: 7, startBombs: 1, faction: 'allies', era: 2, special: '가볍고 빠른 선회 사격' },
-      { id: 'ww_hurricane', name: '호커 허리케인', role: '연합국 2차대전 방공 전투기', color: '#78876b', power: 9, hp: 10, shots: 4, fireRate: 132, speed: 5.9, bulletSpeed: 9.4, hitbox: 8, startBombs: 1, faction: 'allies', era: 2, special: '방공 기관총 집중사격' },
+      { id: 'ww_hurricane', name: '호커 허리케인', role: '연합국 2차대전 방공 전투기', color: '#78876b', power: 9, hp: 10, shots: 4, fireRate: 132, speed: 5.9, bulletSpeed: 9.4, hitbox: 8, startBombs: 1, faction: 'allies', era: 2, reserve: true, special: '방공 기관총 집중사격' },
       { id: 'ww_mustang', name: 'P-51 머스탱', role: '연합국 2차대전 장거리 호위', color: '#9aa7ad', power: 10, hp: 10, shots: 4, fireRate: 126, speed: 6.35, bulletSpeed: 10.1, hitbox: 7, startBombs: 2, faction: 'allies', era: 2, special: '균형 잡힌 고속 기관총' },
-      { id: 'ww_yak3', name: 'Yak-3 야크', role: '연합국 2차대전 저공 격투', color: '#7d8f9b', power: 9, hp: 9, shots: 3, fireRate: 106, speed: 6.55, bulletSpeed: 9.9, hitbox: 6, startBombs: 1, faction: 'allies', era: 2, special: '저공 고속 돌파 사격' },
+      { id: 'ww_yak3', name: 'Yak-3 야크', role: '연합국 2차대전 저공 격투', color: '#7d8f9b', power: 9, hp: 9, shots: 3, fireRate: 106, speed: 6.55, bulletSpeed: 9.9, hitbox: 6, startBombs: 1, faction: 'allies', era: 2, reserve: true, special: '저공 고속 돌파 사격' },
       { id: 'ww_zero', name: 'A6M 제로센', role: '추축국 2차대전 고기동기', color: '#b8c49a', power: 8, hp: 8, shots: 4, fireRate: 108, speed: 6.7, bulletSpeed: 9.6, hitbox: 6, startBombs: 1, faction: 'axis', era: 2, special: '빠른 연사와 넓은 회피 기동' },
       { id: 'ww_bf109', name: 'Bf 109 에밀', role: '추축국 2차대전 요격기', color: '#7f8b7b', power: 10, hp: 9, shots: 3, fireRate: 122, speed: 6.2, bulletSpeed: 10.2, hitbox: 7, startBombs: 1, faction: 'axis', era: 2, special: '강한 중앙 기관포' },
       { id: 'ww_fw190', name: 'Fw 190 뷔르거', role: '추축국 2차대전 돌격 전투기', color: '#6f756b', power: 11, hp: 11, shots: 4, fireRate: 130, speed: 6.1, bulletSpeed: 10.0, hitbox: 8, startBombs: 2, faction: 'axis', era: 2, special: '중무장 돌격포화' },
       { id: 'ww_fokker', name: '포커 Dr.I', role: '추축국 1차대전 삼엽 에이스', color: '#9b3f35', power: 7, hp: 8, shots: 2, fireRate: 108, speed: 5.9, bulletSpeed: 8.7, hitbox: 7, startBombs: 1, faction: 'axis', era: 1, special: '삼엽기 곡예 사격' },
-      { id: 'ww_ki84', name: 'Ki-84 하야테', role: '추축국 2차대전 고속 요격', color: '#8f8b5f', power: 10, hp: 9, shots: 4, fireRate: 116, speed: 6.65, bulletSpeed: 10.1, hitbox: 7, startBombs: 1, faction: 'axis', era: 2, special: '고속 요격 난사' },
+      { id: 'ww_albatros', name: '알바트로스 D.III', role: '추축국 1차대전 균형 전투기', color: '#9f7458', power: 8, hp: 9, shots: 2, fireRate: 118, speed: 5.82, bulletSpeed: 8.9, hitbox: 7, startBombs: 1, faction: 'axis', era: 1, special: '알바트로스 편대 사격' },
+      { id: 'ww_fokkerdvii', name: '포커 D.VII', role: '추축국 1차대전 고성능 제공', color: '#7d6b5f', power: 9, hp: 9, shots: 2, fireRate: 122, speed: 6.0, bulletSpeed: 9.1, hitbox: 7, startBombs: 1, faction: 'axis', era: 1, special: '고성능 복엽 돌파' },
+      { id: 'ww_pfalz', name: '팔츠 D.III', role: '추축국 1차대전 장갑 복엽', color: '#8a8174', power: 8, hp: 10, shots: 2, fireRate: 134, speed: 5.58, bulletSpeed: 8.8, hitbox: 8, startBombs: 1, faction: 'axis', era: 1, special: '장갑 복엽 견제사격' },
+      { id: 'ww_gotha', name: '고타 G.IV', role: '추축국 1차대전 중폭격', color: '#6f6254', power: 10, hp: 13, shots: 2, fireRate: 205, speed: 4.9, bulletSpeed: 7.9, hitbox: 14, startBombs: 2, faction: 'axis', era: 1, special: '초기 중폭격 2발 투하' },
+      { id: 'ww_ki84', name: 'Ki-84 하야테', role: '추축국 2차대전 고속 요격', color: '#8f8b5f', power: 10, hp: 9, shots: 4, fireRate: 116, speed: 6.65, bulletSpeed: 10.1, hitbox: 7, startBombs: 1, faction: 'axis', era: 2, reserve: true, special: '고속 요격 난사' },
       { id: 'ww_il2', name: 'Il-2 슈투르모빅', role: '연합국 2차대전 장갑 공격기', color: '#687a58', power: 12, hp: 14, shots: 3, fireRate: 155, speed: 5.35, bulletSpeed: 9.0, hitbox: 11, startBombs: 3, faction: 'allies', era: 2, special: '장갑 로켓 일제사격' },
       { id: 'ww_lancaster', name: '랭커스터 폭격기', role: '연합국 2차대전 중폭격', color: '#5f6f5f', power: 14, hp: 16, shots: 2, fireRate: 240, speed: 4.7, bulletSpeed: 8.1, hitbox: 17, startBombs: 4, faction: 'allies', era: 2, special: '대형 폭탄 3발 투하' },
       { id: 'ww_b17', name: 'B-17 플라잉 포트리스', role: '연합국 2차대전 요새폭격', color: '#8b8f86', power: 13, hp: 17, shots: 3, fireRate: 230, speed: 4.85, bulletSpeed: 8.4, hitbox: 16, startBombs: 4, faction: 'allies', era: 2, special: '요새 폭탄 4발과 방어 사격' },
@@ -2226,7 +2234,7 @@
     function currentJetPool(source = save) {
       if (isWorldWarChapter(source) && source.wwFaction) {
         const showWorldWarTwo = isWorldWarTwoUnlocked(source);
-        return worldWarJets.filter(j => j.faction === source.wwFaction && ((j.era || 2) === 1 || showWorldWarTwo));
+        return worldWarJets.filter(j => !j.reserve && j.faction === source.wwFaction && ((j.era || 2) === 1 || showWorldWarTwo));
       }
       return jets;
     }
@@ -3693,10 +3701,12 @@
         specialEffects.push({ type: 'voidLance', x: px, y: py, life: 720, maxLife: 720, color: '#22d3ee', accent: '#a855f7' });
         addSpecialShockwave(px, py - 190, 135, '#22d3ee', 720);
         flash('보이드 랜스');
-      } else if (id === 'ww_camel' || id === 'ww_fokker') {
+      } else if (id === 'ww_gotha') {
+        bomberSpecialRun(id, '고타 초기 중폭격', 2, 1.0, 240, { spacing: 48, vy: -2.85, explodeAfter: 390, r: 27 });
+      } else if (worldWarJets.find(j => j.id === id)?.era === 1) {
         for (let i = 0; i < 12; i++) specialBullet(px + (i % 2 ? 8 : -8), py + i * 2, (i - 5.5) * .035, 10.4, dmg * .48, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
         player.inv = Math.max(player.inv, 700);
-        flash(id === 'ww_camel' ? '카멜 선회난사' : '포커 곡예사격');
+        flash('1차대전 에이스');
       } else if (id === 'ww_spitfire' || id === 'ww_hurricane' || id === 'ww_zero' || id === 'ww_yak3') {
         for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .055, 11.6, dmg * .62, { r: 3.6, styleId: id, shape: 'tracer' });
         player.boostTimer = Math.max(player.boostTimer, 5500);
@@ -5081,10 +5091,10 @@
         ctx.restore();
         return;
       } else if (id.startsWith('ww_')) {
-        const heavyBomber = id === 'ww_lancaster' || id === 'ww_b17' || id === 'ww_b29';
+        const heavyBomber = id === 'ww_lancaster' || id === 'ww_b17' || id === 'ww_b29' || id === 'ww_gotha';
         const twinBomber = id === 'ww_he111';
         const jetEra = id === 'ww_me262';
-        const biplane = id === 'ww_camel' || id === 'ww_fokker';
+        const biplane = worldWarJets.find(j => j.id === id)?.era === 1 && id !== 'ww_gotha';
         ctx.fillStyle = color;
         if (heavyBomber) {
           poly([[0,-58],[13,-38],[16,28],[8,52],[0,64],[-8,52],[-16,28],[-13,-38]]);
@@ -7558,13 +7568,13 @@
         document.getElementById('stages').innerHTML = `
           <button class="stage-card" data-ww-faction="allies">
             <div class="card-head"><span class="name">연합국 파일럿</span><span class="tag">ALLIES</span></div>
-            <div class="small">처음에는 소프위드 카멜로 1차대전 전선을 진행합니다.</div>
-            <div class="small">Stage 11 해금 후 스핏파이어, 머스탱, B-17, B-29 등 2차대전 기체가 등장합니다.</div>
+            <div class="small">1차대전 기체 5대로 시작합니다: 카멜, S.E.5a, SPAD XIII, 브리스톨, 뉴포르.</div>
+            <div class="small">Stage 11 해금 후 2차대전 기체 6대가 등장합니다: 스핏파이어, 머스탱, Il-2, 랭커스터, B-17, B-29.</div>
           </button>
           <button class="stage-card" data-ww-faction="axis">
             <div class="card-head"><span class="name">추축국 파일럿</span><span class="tag">AXIS</span></div>
-            <div class="small">처음에는 포커 Dr.I로 1차대전 전선을 진행합니다.</div>
-            <div class="small">Stage 11 해금 후 제로센, Bf 109, 슈투카, Me 262 등 2차대전 기체가 등장합니다.</div>
+            <div class="small">1차대전 기체 5대로 시작합니다: 포커 Dr.I, 알바트로스, 포커 D.VII, 팔츠, 고타.</div>
+            <div class="small">Stage 11 해금 후 2차대전 기체 6대가 등장합니다: 제로센, Bf 109, Fw 190, 슈투카, He 111, Me 262.</div>
           </button>
           <button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
