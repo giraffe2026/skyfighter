@@ -1362,6 +1362,7 @@
       wwFaction: '',
       wwUnlockedStage: { allies: 1, axis: 1 },
       lastWarUnlocked: false,
+      lastWarEverUnlocked: false,
       bestEndlessScore: 0,
       secretWindowHintSeen: false,
       tutorialDone: false,
@@ -1739,7 +1740,10 @@
       fixed.tutorialDone = !!fixed.tutorialDone;
       fixed.chapter = fixed.chapter === 'worldWar' ? 'worldWar' : 'main';
       fixed.wwFaction = fixed.wwFaction === 'axis' ? 'axis' : fixed.wwFaction === 'allies' ? 'allies' : '';
-      fixed.lastWarUnlocked = !!fixed.lastWarUnlocked;
+      const rawUnlockedStage = Number(data?.unlockedStage || 1);
+      const rawSelectedStage = Number(data?.selectedStage || 1);
+      fixed.lastWarEverUnlocked = !!fixed.lastWarEverUnlocked || !!fixed.lastWarUnlocked || rawUnlockedStage > VOID_STAGE_END || rawSelectedStage > VOID_STAGE_END;
+      fixed.lastWarUnlocked = !!fixed.lastWarUnlocked || fixed.lastWarEverUnlocked;
       fixed.wwUnlockedStage = fixed.wwUnlockedStage && typeof fixed.wwUnlockedStage === 'object' ? fixed.wwUnlockedStage : {};
       fixed.wwUnlockedStage.allies = clamp(Math.round(fixed.wwUnlockedStage.allies || 1), 1, 20);
       fixed.wwUnlockedStage.axis = clamp(Math.round(fixed.wwUnlockedStage.axis || 1), 1, 20);
@@ -2181,6 +2185,7 @@
     function maybeUnlockLastWar() {
       if (save.lastWarUnlocked || !canUnlockLastWar(save)) return false;
       save.lastWarUnlocked = true;
+      save.lastWarEverUnlocked = true;
       save.chapter = 'main';
       save.wwFaction = '';
       save.unlockedStage = Math.max(save.unlockedStage || 1, VOID_STAGE_END + 1);
