@@ -987,16 +987,16 @@
       { id: 18, name: '공허 함대 관문', theme: '#221b34', enemyRate: 545, reward: 1880, boss: 'Void Armada' },
       { id: 19, name: '차원 균열 외곽', theme: '#2b2138', enemyRate: 520, reward: 2070, boss: 'Rift Crown' },
       { id: 20, name: '차원 균열 중심부', theme: '#321d44', enemyRate: 500, reward: 2300, boss: 'Rift Origin' },
-      { id: 21, name: 'The Last War: 침묵한 전선', theme: '#3b2332', enemyRate: 490, reward: 2600, boss: 'Last War Vanguard' },
-      { id: 22, name: 'The Last War: 잿빛 항구', theme: '#24394a', enemyRate: 470, reward: 2850, boss: 'Ashen Dreadnought' },
-      { id: 23, name: 'The Last War: 무너진 수도', theme: '#332a3d', enemyRate: 455, reward: 3120, boss: 'Capital Revenant' },
-      { id: 24, name: 'The Last War: 유리 사막', theme: '#4a332b', enemyRate: 440, reward: 3400, boss: 'Glassland Behemoth' },
-      { id: 25, name: 'The Last War: 역행 항로', theme: '#202f45', enemyRate: 425, reward: 3700, boss: 'Chrono Sky Ark' },
-      { id: 26, name: 'The Last War: 검은 설원', theme: '#2b3442', enemyRate: 410, reward: 4020, boss: 'Black Frost Engine' },
-      { id: 27, name: 'The Last War: 무명 함대', theme: '#1d3340', enemyRate: 395, reward: 4360, boss: 'Nameless Armada' },
-      { id: 28, name: 'The Last War: 붉은 궤도', theme: '#3f1f32', enemyRate: 380, reward: 4720, boss: 'Red Orbit Crown' },
-      { id: 29, name: 'The Last War: 마지막 관문', theme: '#2b1c3f', enemyRate: 365, reward: 5100, boss: 'Final Gatekeeper' },
-      { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 350, reward: 5600, boss: 'The Last War' }
+      { id: 21, name: 'The Last War: 침묵한 전선', theme: '#3b2332', enemyRate: 545, reward: 2600, boss: 'Last War Vanguard' },
+      { id: 22, name: 'The Last War: 잿빛 항구', theme: '#24394a', enemyRate: 535, reward: 2850, boss: 'Ashen Dreadnought' },
+      { id: 23, name: 'The Last War: 무너진 수도', theme: '#332a3d', enemyRate: 525, reward: 3120, boss: 'Capital Revenant' },
+      { id: 24, name: 'The Last War: 유리 사막', theme: '#4a332b', enemyRate: 515, reward: 3400, boss: 'Glassland Behemoth' },
+      { id: 25, name: 'The Last War: 역행 항로', theme: '#202f45', enemyRate: 505, reward: 3700, boss: 'Chrono Sky Ark' },
+      { id: 26, name: 'The Last War: 검은 설원', theme: '#2b3442', enemyRate: 495, reward: 4020, boss: 'Black Frost Engine' },
+      { id: 27, name: 'The Last War: 무명 함대', theme: '#1d3340', enemyRate: 485, reward: 4360, boss: 'Nameless Armada' },
+      { id: 28, name: 'The Last War: 붉은 궤도', theme: '#3f1f32', enemyRate: 475, reward: 4720, boss: 'Red Orbit Crown' },
+      { id: 29, name: 'The Last War: 마지막 관문', theme: '#2b1c3f', enemyRate: 465, reward: 5100, boss: 'Final Gatekeeper' },
+      { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 455, reward: 5600, boss: 'The Last War' }
     ];
 
     const stageStories = {
@@ -1078,16 +1078,16 @@
       const voidStage = !isWorldWarChapter() && st >= 11;
       const terrain = bossTerrainForStage(stage);
       const lastWarBosses = {
-        21: { kind: 'arsenal', name: 'Last War Vanguard', color: '#5f3149', accent: '#fb7185', hp: 1.86, size: 1.18, pattern: '전쟁 기록 복합 탄막' },
-        22: { kind: 'seaCarrier', name: 'Ashen Dreadnought', color: '#3f5865', accent: '#facc15', hp: 1.92, size: 1.12, pattern: '잿빛 전함 함포와 갑판 포대' },
-        23: { kind: 'emperor', name: 'Capital Revenant', color: '#57415f', accent: '#c084fc', hp: 1.98, size: 1.16, pattern: '망령 지휘기 회전 탄막' },
-        24: { kind: 'megaTank', name: 'Glassland Behemoth', color: '#7a5548', accent: '#f97316', hp: 2.04, size: .98, pattern: '유리 사막 초중전차 포격' },
-        25: { kind: 'skyCarrier', name: 'Chrono Sky Ark', color: '#31486b', accent: '#38bdf8', hp: 2.1, size: 1.15, pattern: '시간차 공중 갑판 탄막' },
-        26: { kind: 'hydra', name: 'Black Frost Engine', color: '#3f4b5d', accent: '#93c5fd', hp: 2.16, size: 1.08, pattern: '빙결 엔진 삼중 교차 사격' },
-        27: { kind: 'seaCarrier', name: 'Nameless Armada', color: '#2d4e5b', accent: '#22d3ee', hp: 2.22, size: 1.2, pattern: '무명 함대 일제 함포' },
-        28: { kind: 'skyCarrier', name: 'Red Orbit Crown', color: '#5a2745', accent: '#f43f5e', hp: 2.28, size: 1.18, pattern: '붉은 궤도 왕관형 포격' },
-        29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 2.36, size: 1.24, pattern: '최종 관문 복합 무장' },
-        30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 2.5, size: 1.3, pattern: '모든 전쟁의 최후 탄막' }
+        21: { kind: 'arsenal', name: 'Last War Vanguard', color: '#5f3149', accent: '#fb7185', hp: 1.46, size: 1.14, pattern: '전쟁 기록 복합 탄막' },
+        22: { kind: 'seaCarrier', name: 'Ashen Dreadnought', color: '#3f5865', accent: '#facc15', hp: 1.5, size: 1.1, pattern: '잿빛 전함 함포와 갑판 포대' },
+        23: { kind: 'emperor', name: 'Capital Revenant', color: '#57415f', accent: '#c084fc', hp: 1.54, size: 1.12, pattern: '망령 지휘기 회전 탄막' },
+        24: { kind: 'megaTank', name: 'Glassland Behemoth', color: '#7a5548', accent: '#f97316', hp: 1.58, size: .96, pattern: '유리 사막 초중전차 포격' },
+        25: { kind: 'skyCarrier', name: 'Chrono Sky Ark', color: '#31486b', accent: '#38bdf8', hp: 1.62, size: 1.12, pattern: '시간차 공중 갑판 탄막' },
+        26: { kind: 'hydra', name: 'Black Frost Engine', color: '#3f4b5d', accent: '#93c5fd', hp: 1.66, size: 1.06, pattern: '빙결 엔진 삼중 교차 사격' },
+        27: { kind: 'seaCarrier', name: 'Nameless Armada', color: '#2d4e5b', accent: '#22d3ee', hp: 1.7, size: 1.16, pattern: '무명 함대 일제 함포' },
+        28: { kind: 'skyCarrier', name: 'Red Orbit Crown', color: '#5a2745', accent: '#f43f5e', hp: 1.76, size: 1.15, pattern: '붉은 궤도 왕관형 포격' },
+        29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 1.84, size: 1.2, pattern: '최종 관문 복합 무장' },
+        30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 1.95, size: 1.24, pattern: '모든 전쟁의 최후 탄막' }
       };
       if (!isWorldWarChapter() && lastWarBosses[st]) return lastWarBosses[st];
       const aerialLandBosses = {
@@ -1160,13 +1160,13 @@
     ];
 
     const lastWarEnemies = [
-      { name: '전쟁 기록 요격기', color: '#fb7185', hp: 58, power: 3, shots: 3, speed: 2.05, score: 260, minStage: 21, form: 'lastWarRecord' },
-      { name: '잿빛 함재 드론', color: '#f59e0b', hp: 44, power: 2, shots: 4, speed: 1.75, score: 240, minStage: 21, form: 'lastWarDrone' },
-      { name: '망령 중폭격기', color: '#c084fc', hp: 88, power: 4, shots: 4, speed: .94, score: 360, minStage: 22, form: 'lastWarBomber' },
-      { name: '붉은 궤도창', color: '#ef4444', hp: 62, power: 3, shots: 2, speed: 2.35, score: 330, minStage: 24, form: 'lastWarLance' },
-      { name: '검은 서리 장갑기', color: '#94a3b8', hp: 108, power: 4, shots: 3, speed: 1.05, score: 410, minStage: 26, form: 'lastWarFrost' },
-      { name: '무명 함대 포대', color: '#38bdf8', hp: 76, power: 4, shots: 5, speed: 1.25, score: 390, minStage: 27, form: 'lastWarTurret' },
-      { name: '최후 관문 파수기', color: '#facc15', hp: 132, power: 5, shots: 5, speed: 1.18, score: 540, minStage: 29, form: 'lastWarGate' }
+      { name: '전쟁 기록 요격기', color: '#fb7185', hp: 44, power: 2, shots: 2, speed: 1.85, score: 260, minStage: 21, form: 'lastWarRecord' },
+      { name: '잿빛 함재 드론', color: '#f59e0b', hp: 34, power: 2, shots: 3, speed: 1.55, score: 240, minStage: 21, form: 'lastWarDrone' },
+      { name: '망령 중폭격기', color: '#c084fc', hp: 68, power: 3, shots: 3, speed: .82, score: 360, minStage: 22, form: 'lastWarBomber' },
+      { name: '붉은 궤도창', color: '#ef4444', hp: 48, power: 3, shots: 2, speed: 2.05, score: 330, minStage: 24, form: 'lastWarLance' },
+      { name: '검은 서리 장갑기', color: '#94a3b8', hp: 82, power: 3, shots: 3, speed: .9, score: 410, minStage: 26, form: 'lastWarFrost' },
+      { name: '무명 함대 포대', color: '#38bdf8', hp: 58, power: 3, shots: 4, speed: 1.05, score: 390, minStage: 27, form: 'lastWarTurret' },
+      { name: '최후 관문 파수기', color: '#facc15', hp: 98, power: 4, shots: 4, speed: .98, score: 540, minStage: 29, form: 'lastWarGate' }
     ];
 
     const bomberFleetSlots = [
@@ -2799,7 +2799,7 @@
       const pool = currentEnemyList().filter(e => e.minStage <= st && (ww ? true : lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift')));
       const type = pool[Math.floor(Math.random() * pool.length)];
       markEnemyEncounter(type.form);
-      const scale = ww ? 1.08 + (st - 1) * .068 : lastWarStage ? 1.28 + (st - VOID_STAGE_END) * .07 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
+      const scale = ww ? 1.08 + (st - 1) * .068 : lastWarStage ? 1.18 + (st - VOID_STAGE_END) * .04 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
       enemies.push({
         ...type,
@@ -2807,10 +2807,10 @@
         y: -35,
         hp: Math.round(type.hp * scale),
         maxHp: Math.round(type.hp * scale),
-        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : lastWarStage ? Math.floor((st - VOID_STAGE_END) / 3) : st >= 16 ? 1 : 0)),
+        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : lastWarStage ? Math.floor((st - VOID_STAGE_END) / 5) : st >= 16 ? 1 : 0)),
         shots: type.shots + (ww && st >= 18 && !/Biplane/.test(type.form) ? 1 : 0),
-        speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .035 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : lastWarStage ? (st - VOID_STAGE_END) * 34 : voidStage ? (st - 10) * 22 : st * 18),
+        speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
+        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 22 : st * 18),
         t: 0,
         r: largeEnemy ? 13 : type.ground ? 18 : 15
       });
@@ -2822,8 +2822,9 @@
       const blueprint = terrainBossProfile(stage);
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
+      const lastWarStage = !ww && st > VOID_STAGE_END;
       const tutorial = save.selectedMode === 'tutorial';
-      const hpBase = tutorial ? 150 : ww ? 240 + st * 62 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
+      const hpBase = tutorial ? 150 : ww ? 240 + st * 62 : lastWarStage ? 1180 + (st - VOID_STAGE_END) * 58 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
       const hp = Math.round(hpBase * blueprint.hp);
       boss = {
         name: blueprint.name,
@@ -2835,8 +2836,8 @@
         targetY: 120,
         hp,
         maxHp: hp,
-        power: tutorial ? 1 : ww ? 1 + Math.ceil(st * .25) : voidStage ? 4 + Math.floor((st - 11) / 3) : 2 + Math.ceil(st * .45),
-        shots: tutorial ? 2 : ww ? 2 + Math.ceil(st * .18) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .32),
+        power: tutorial ? 1 : ww ? 1 + Math.ceil(st * .25) : lastWarStage ? 4 + Math.floor((st - VOID_STAGE_END) / 4) : voidStage ? 4 + Math.floor((st - 11) / 3) : 2 + Math.ceil(st * .45),
+        shots: tutorial ? 2 : ww ? 2 + Math.ceil(st * .18) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 5) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .32),
         fire: 0,
         inv: 3000,
         phase: 1,
@@ -3220,17 +3221,18 @@
     function shootEnemy(e) {
       const count = e.shots;
       const st = difficultyStage();
+      const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
       const style = enemyBulletStyle(e.form);
       for (let i = 0; i < count; i++) {
-        const spread = (i - (count - 1) / 2) * (late ? .18 : .22);
+        const spread = (i - (count - 1) / 2) * (lastWar ? .15 : late ? .18 : .22);
         enemyBullets.push({
           x: e.x,
           y: e.y + 18,
-          vx: Math.sin(spread) * (late ? 2.0 + (st - 10) * .045 : 2.05 + st * .035),
-          vy: late ? 2.75 + (st - 10) * .09 : 2.55 + st * .095,
+          vx: Math.sin(spread) * (lastWar ? 1.9 + (st - VOID_STAGE_END) * .035 : late ? 2.0 + (st - 10) * .045 : 2.05 + st * .035),
+          vy: lastWar ? 2.95 + (st - VOID_STAGE_END) * .06 : late ? 2.75 + (st - 10) * .09 : 2.55 + st * .095,
           dmg: e.power,
-          r: (late ? 4 + Math.min(2, e.power) : 4 + Math.min(4, e.power)) * (style.size || 1),
+          r: (lastWar ? 4.2 + Math.min(2, e.power) * .85 : late ? 4 + Math.min(2, e.power) : 4 + Math.min(4, e.power)) * (style.size || 1),
           style
         });
       }
@@ -3280,15 +3282,16 @@
 
     function bossBullet(x, y, angle, speed, size = 0, damage = 0) {
       const st = difficultyStage();
+      const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
       enemyBullets.push({
         x,
         y,
-        vx: Math.sin(angle) * (late ? speed * .86 : speed),
-        vy: Math.cos(angle) * (late ? speed * .86 : speed),
+        vx: Math.sin(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
+        vy: Math.cos(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
         dmg: boss.power + damage,
-        r: late ? 6 + Math.floor((st - 11) / 4) + size : 5 + Math.floor(st / 3) + size,
-        style: enemyBulletStyle(late ? 'riftShield' : 'boss')
+        r: lastWar ? 6 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 6 + Math.floor((st - 11) / 4) + size : 5 + Math.floor(st / 3) + size,
+        style: enemyBulletStyle(lastWar ? 'lastWarRecord' : late ? 'riftShield' : 'boss')
       });
     }
 
