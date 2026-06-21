@@ -3515,6 +3515,7 @@
         traveled: 0,
         blast: opts.blast || 0,
         homingStrength: opts.homingStrength || 0,
+        homingIndex: opts.homingIndex || 0,
         special: true,
         style: { ...bulletStyleForJet(styleId), specialShape: opts.shape || specialShapeForJet(styleId) }
       });
@@ -3594,13 +3595,13 @@
       const px = player.x;
       const py = player.y - 34;
       if (id === 'f22') {
-        for (const a of [-.2, 0, .2]) specialBullet(px, py, a, 12.8, dmg, { r: 5.4, pierce: 2, home: true, homingStrength: .16, shape: 'missile' });
+        [-.2, 0, .2].forEach((a, i) => specialBullet(px, py, a, 12.8, dmg, { r: 5.4, pierce: 2, home: true, homingStrength: .16, homingIndex: i, shape: 'missile' }));
         player.inv = Math.max(player.inv, 700);
         flash('랩터 미사일');
       } else if (id === 'f35') {
         player.boostTimer = Math.max(player.boostTimer, 6500);
         player.inv = Math.max(player.inv, 2300);
-        for (let i = 0; i < 6; i++) specialBullet(px + (i - 2.5) * 12, py + i * 2, (i - 2.5) * .08, 12.4, dmg * .78, { r: 4.2, home: true, homingStrength: .2, shape: 'lockon' });
+        for (let i = 0; i < 6; i++) specialBullet(px + (i - 2.5) * 12, py + i * 2, (i - 2.5) * .08, 12.4, dmg * .78, { r: 4.2, home: true, homingStrength: .2, homingIndex: i, shape: 'lockon' });
         enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 90 || b.y < py - 220);
         addSpecialShockwave(px, py - 70, 105, '#a78bfa', 520);
         flash('스텔스 돌입');
@@ -3643,28 +3644,28 @@
         for (let i = 0; i < 22; i++) specialBullet(px + (Math.random() - .5) * 24, py + i * 2, (Math.random() - .5) * .11, 12.4, dmg * .36, { r: 3.1, pierce: 1, shape: 'gatling' });
         flash('썬더볼트 기관포');
       } else if (id === 'f14') {
-        for (const a of [-.3, -.1, .1, .3]) specialBullet(px, py, a, 12.5, dmg, { r: 5.3, home: true, homingStrength: .14, pierce: 1, shape: 'phoenix' });
+        [-.3, -.1, .1, .3].forEach((a, i) => specialBullet(px, py, a, 12.5, dmg, { r: 5.3, home: true, homingStrength: .14, homingIndex: i, pierce: 1, shape: 'phoenix' }));
         player.wingSwept = true;
         flash('피닉스 일제사격');
       } else if (id === 'f15') {
         for (const x of [-30, 0, 30]) specialBullet(px + x, py, 0, 13.4, dmg * 1.2, { r: 5.1, pierce: 3, shape: 'eagleRail' });
         flash('이글 스트라이크');
       } else if (id === 'fa18') {
-        for (const a of [-.16, -.05, .05, .16]) specialBullet(px, py, a, 11.5, dmg * .9, { r: 4.8, home: true, homingStrength: .12, blast: 18, shape: 'navalRocket' });
+        [-.16, -.05, .05, .16].forEach((a, i) => specialBullet(px, py, a, 11.5, dmg * .9, { r: 4.8, home: true, homingStrength: .12, homingIndex: i, blast: 18, shape: 'navalRocket' }));
         player.shield = Math.min(3, player.shield + 1);
         flash('함재기 지원사격');
       } else if (id === 'f72') {
         for (const a of [-.08, .08]) specialBullet(px, py, a, 10.2, dmg * 1.5, { r: 6.2, explodeAfter: 520, blast: 68, shape: 'flareBomb' });
         flash('애프터버스트');
       } else if (id === 'fxx') {
-        for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .075, 13, dmg * .92, { r: 4.4, home: true, homingStrength: .18, shape: 'prism' });
+        for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .075, 13, dmg * .92, { r: 4.4, home: true, homingStrength: .18, homingIndex: i, shape: 'prism' });
         player.shield = Math.min(3, player.shield + 1);
         flash('F-XX 프리즘');
       } else if (id === 'b2') {
         player.inv = Math.max(player.inv, 900);
         bomberSpecialRun(id, '스피릿 침투폭격', 5, 1.02, 285, { spacing: 40, vy: -3.25, explodeAfter: 430, r: 30 });
       } else if (id === 'geomancho') {
-        for (let i = 0; i < 10; i++) specialBullet(px, py, (i - 4.5) * .09, 10.8, dmg * .82, { r: 4.6, home: i % 2 === 0, homingStrength: .1, blast: 16, shape: 'wingWave' });
+        for (let i = 0; i < 10; i++) specialBullet(px, py, (i - 4.5) * .09, 10.8, dmg * .82, { r: 4.6, home: i % 2 === 0, homingStrength: .1, homingIndex: Math.floor(i / 2), blast: 16, shape: 'wingWave' });
         flash('검암초 전익포화');
       } else if (id === 'error') {
         for (let i = 0; i < 14; i++) specialBullet(px + (Math.random() - .5) * 60, py, (Math.random() - .5) * .55, 9 + Math.random() * 5, dmg * (Math.random() * 1.2 + .5), { r: 3.5 + Math.random() * 3, home: Math.random() < .45, blast: 12 + Math.random() * 24, shape: 'glitch' });
@@ -3678,7 +3679,7 @@
         specialBullet(px, py, 0, 17.5, dmg * 2.1, { r: 4.4, pierce: 8, shape: 'sonicStreak' });
         flash('블랙버드 초음속');
       } else if (id === 'yf23') {
-        for (const a of [-.12, 0, .12]) specialBullet(px, py, a, 13.5, dmg * 1.18, { r: 4.3, pierce: 2, home: true, homingStrength: .18, shape: 'shadowDart' });
+        [-.12, 0, .12].forEach((a, i) => specialBullet(px, py, a, 13.5, dmg * 1.18, { r: 4.3, pierce: 2, home: true, homingStrength: .18, homingIndex: i, shape: 'shadowDart' }));
         enemyBullets = enemyBullets.filter(b => b.y < player.y - 170);
         flash('블랙위도우 매복');
       } else if (id === 'xb70') {
@@ -3799,11 +3800,13 @@
         if (b.home) {
           const candidates = [...enemies];
           if (boss && boss.inv <= 0) candidates.push(boss);
-          const target = candidates.reduce((best, e) => {
+          const rankedTargets = candidates.map(e => {
             const verticalPenalty = e.y > b.y + 80 ? 260 : 0;
             const score = Math.hypot(e.x - b.x, e.y - b.y) + verticalPenalty;
-            return !best || score < best.score ? { e, score } : best;
-          }, null)?.e;
+            const bossBonus = e === boss ? 80 : 0;
+            return { e, score: score + bossBonus };
+          }).sort((a, c) => a.score - c.score);
+          const target = rankedTargets.length ? rankedTargets[Math.abs(b.homingIndex || 0) % rankedTargets.length].e : null;
           if (target) {
             const speed = Math.max(1, Math.hypot(b.vx, b.vy));
             const dx = target.x - b.x;
