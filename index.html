@@ -2951,11 +2951,19 @@
         ww_hurricane: { spread: 9, angle: .03, r: 3.7, speedScale: .98 },
         ww_mustang: { spread: 9, angle: .018, r: 3.8, pierce: 1, speedScale: 1.08 },
         ww_camel: { spread: 9, angle: .055, r: 3.3, sideSpeed: 2.2 },
+        ww_se5a: { spread: 8, angle: .025, r: 3.5, speedScale: 1.1 },
+        ww_spad13: { spread: 8, angle: .012, r: 3.8, pierce: 1, speedScale: 1.08 },
+        ww_bristol: { spread: 12, angle: .045, r: 3.6, sideSpeed: 1.75 },
+        ww_nieuport: { spread: 11, angle: .065, r: 3.1, sideSpeed: 2.35 },
         ww_yak3: { spread: 8, angle: .025, r: 3.7, speedScale: 1.15 },
         ww_zero: { spread: 10, angle: .045, r: 3.4, sideSpeed: 2.25 },
         ww_bf109: { spread: 8, angle: .014, r: 4.1, pierce: 1 },
         ww_fw190: { spread: 10, angle: .024, r: 4.2, pierce: 1, speedScale: 1.02 },
         ww_fokker: { spread: 9, angle: .06, r: 3.4, sideSpeed: 2.1 },
+        ww_albatros: { spread: 8, angle: .036, r: 3.6, speedScale: 1.02 },
+        ww_fokkerdvii: { spread: 8, angle: .018, r: 3.8, pierce: 1, speedScale: 1.08 },
+        ww_pfalz: { spread: 10, angle: .028, r: 3.7, pierce: 1, speedScale: .96 },
+        ww_gotha: { spread: 20, angle: .026, r: 5.8, blast: 18, speedScale: .82 },
         ww_ki84: { spread: 9, angle: .04, r: 3.8, sideSpeed: 2.05, speedScale: 1.08 },
         ww_il2: { spread: 13, angle: .03, r: 4.8, blast: 12, speedScale: .92 },
         ww_lancaster: { spread: 20, angle: .026, r: 6.5, blast: 24, speedScale: .82 },
@@ -3017,6 +3025,10 @@
         f67: ['#22d3ee', '#d8b4fe'],
         admin: ['#f8fafc', '#facc15'],
         ww_camel: ['#d97706', '#78350f'],
+        ww_se5a: ['#f59e0b', '#422006'],
+        ww_spad13: ['#facc15', '#78350f'],
+        ww_bristol: ['#a3a36d', '#3f3f22'],
+        ww_nieuport: ['#fde68a', '#92400e'],
         ww_spitfire: ['#65a30d', '#1f2937'],
         ww_hurricane: ['#7c8f6a', '#334155'],
         ww_mustang: ['#94a3b8', '#1d4ed8'],
@@ -3025,6 +3037,10 @@
         ww_bf109: ['#64748b', '#111827'],
         ww_fw190: ['#64748b', '#713f12'],
         ww_fokker: ['#dc2626', '#7f1d1d'],
+        ww_albatros: ['#fb923c', '#7c2d12'],
+        ww_fokkerdvii: ['#d6d3d1', '#44403c'],
+        ww_pfalz: ['#a8a29e', '#292524'],
+        ww_gotha: ['#a16207', '#fef3c7'],
         ww_ki84: ['#a3a36d', '#7f1d1d'],
         ww_il2: ['#84cc16', '#3f6212'],
         ww_lancaster: ['#a3a36d', '#3f3f22'],
@@ -3165,9 +3181,11 @@
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
         f67: ['#22d3ee', '#d8b4fe'], admin: ['#f8fafc', '#facc15'],
-        ww_camel: ['#d97706', '#78350f'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
+        ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
+        ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
         ww_mustang: ['#94a3b8', '#1d4ed8'], ww_yak3: ['#38bdf8', '#1e3a8a'], ww_zero: ['#84cc16', '#7f1d1d'],
         ww_bf109: ['#64748b', '#111827'], ww_fw190: ['#64748b', '#713f12'], ww_fokker: ['#dc2626', '#7f1d1d'],
+        ww_albatros: ['#fb923c', '#7c2d12'], ww_fokkerdvii: ['#d6d3d1', '#44403c'], ww_pfalz: ['#a8a29e', '#292524'], ww_gotha: ['#a16207', '#fef3c7'],
         ww_ki84: ['#a3a36d', '#7f1d1d'], ww_il2: ['#84cc16', '#3f6212'], ww_lancaster: ['#a3a36d', '#3f3f22'],
         ww_b17: ['#94a3b8', '#475569'], ww_b29: ['#facc15', '#fef3c7'], ww_ju87: ['#a3a36d', '#713f12'], ww_he111: ['#9ca37a', '#3f3f22'],
         ww_me262: ['#38bdf8', '#334155']
@@ -3200,6 +3218,10 @@
         f67: { body: '#7c3aed', nose: '#22d3ee', fin: '#312e81', shape: 'void' },
         admin: { body: '#f8fafc', nose: '#facc15', fin: '#ef4444', shape: 'admin' },
         ww_camel: { body: '#9b7a4d', nose: '#d97706', fin: '#4a2d12', shape: 'slim' },
+        ww_se5a: { body: '#8f7a55', nose: '#f59e0b', fin: '#422006', shape: 'slim' },
+        ww_spad13: { body: '#b59a63', nose: '#facc15', fin: '#78350f', shape: 'dart' },
+        ww_bristol: { body: '#7f6f50', nose: '#facc15', fin: '#3f3f22', shape: 'chunky' },
+        ww_nieuport: { body: '#9f8d67', nose: '#fde68a', fin: '#92400e', shape: 'slim' },
         ww_spitfire: { body: '#6f8f73', nose: '#84cc16', fin: '#334155', shape: 'dart' },
         ww_hurricane: { body: '#78876b', nose: '#facc15', fin: '#334155', shape: 'dart' },
         ww_mustang: { body: '#94a3b8', nose: '#60a5fa', fin: '#475569', shape: 'dart' },
@@ -3208,6 +3230,10 @@
         ww_bf109: { body: '#7f8b7b', nose: '#334155', fin: '#1f2937', shape: 'dart' },
         ww_fw190: { body: '#6f756b', nose: '#f97316', fin: '#713f12', shape: 'chunky' },
         ww_fokker: { body: '#9b3f35', nose: '#f97316', fin: '#7f1d1d', shape: 'slim' },
+        ww_albatros: { body: '#9f7458', nose: '#fb923c', fin: '#7c2d12', shape: 'slim' },
+        ww_fokkerdvii: { body: '#7d6b5f', nose: '#d6d3d1', fin: '#44403c', shape: 'dart' },
+        ww_pfalz: { body: '#8a8174', nose: '#e7e5e4', fin: '#292524', shape: 'chunky' },
+        ww_gotha: { body: '#6f6254', nose: '#facc15', fin: '#3f2f23', shape: 'heavy' },
         ww_ki84: { body: '#8f8b5f', nose: '#f97316', fin: '#7f1d1d', shape: 'slim' },
         ww_il2: { body: '#687a58', nose: '#84cc16', fin: '#3f6212', shape: 'chunky' },
         ww_lancaster: { body: '#5f6f5f', nose: '#facc15', fin: '#3f3f22', shape: 'heavy' },
@@ -3701,19 +3727,73 @@
         specialEffects.push({ type: 'voidLance', x: px, y: py, life: 720, maxLife: 720, color: '#22d3ee', accent: '#a855f7' });
         addSpecialShockwave(px, py - 190, 135, '#22d3ee', 720);
         flash('보이드 랜스');
+      } else if (id === 'ww_camel') {
+        for (let i = 0; i < 14; i++) specialBullet(px + Math.sin(i * .8) * 18, py + i * 2, (i - 6.5) * .045, 10.6, dmg * .5, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
+        player.inv = Math.max(player.inv, 850);
+        player.boostTimer = Math.max(player.boostTimer, 2800);
+        flash('카멜 선회난사');
+      } else if (id === 'ww_se5a') {
+        for (let i = 0; i < 7; i++) specialBullet(px + (i - 3) * 7, py + i * 2, (i - 3) * .012, 12.4, dmg * .78, { r: 3.3, pierce: 1, styleId: id, shape: 'tracer' });
+        player.boostTimer = Math.max(player.boostTimer, 5200);
+        flash('S.E.5a 고속돌파');
+      } else if (id === 'ww_spad13') {
+        for (const x of [-14, -6, 6, 14]) specialBullet(px + x, py, x / 620, 12.1, dmg * 1.02, { r: 3.9, pierce: 2, styleId: id, shape: 'cannon' });
+        enemyBullets = enemyBullets.filter(b => b.y < player.y - 120);
+        flash('SPAD 돌격포화');
+      } else if (id === 'ww_bristol') {
+        for (let i = 0; i < 6; i++) specialBullet(px + (i - 2.5) * 10, py, (i - 2.5) * .038, 10.6, dmg * .68, { r: 3.4, styleId: id, shape: 'tracer' });
+        for (let i = 0; i < 5; i++) specialBullet(px + (i - 2) * 12, player.y + 22, Math.PI + (i - 2) * .04, 7.4, dmg * .55, { r: 3.2, styleId: id, shape: 'biplaneTracer' });
+        player.shield = Math.min(3, player.shield + 1);
+        flash('브리스톨 복좌사격');
+      } else if (id === 'ww_nieuport') {
+        player.inv = Math.max(player.inv, 1600);
+        player.boostTimer = Math.max(player.boostTimer, 4200);
+        for (let i = 0; i < 16; i++) specialBullet(px + Math.sin(i) * 22, py + i, (i - 7.5) * .07, 10.2, dmg * .42, { r: 2.9, styleId: id, shape: 'biplaneTracer' });
+        addSpecialShockwave(px, py - 40, 86, '#facc15', 420);
+        flash('뉴포르 경량기동');
       } else if (id === 'ww_gotha') {
         bomberSpecialRun(id, '고타 초기 중폭격', 2, 1.0, 240, { spacing: 48, vy: -2.85, explodeAfter: 390, r: 27 });
-      } else if (worldWarJets.find(j => j.id === id)?.era === 1) {
-        for (let i = 0; i < 12; i++) specialBullet(px + (i % 2 ? 8 : -8), py + i * 2, (i - 5.5) * .035, 10.4, dmg * .48, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
-        player.inv = Math.max(player.inv, 700);
-        flash('1차대전 에이스');
-      } else if (id === 'ww_spitfire' || id === 'ww_hurricane' || id === 'ww_zero' || id === 'ww_yak3') {
-        for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .055, 11.6, dmg * .62, { r: 3.6, styleId: id, shape: 'tracer' });
-        player.boostTimer = Math.max(player.boostTimer, 5500);
-        flash(id === 'ww_zero' ? '제로센 회피기동' : '선회 기관총');
-      } else if (id === 'ww_mustang' || id === 'ww_bf109' || id === 'ww_fw190' || id === 'ww_ki84' || id === 'ww_me262') {
-        for (const x of [-18, -6, 6, 18]) specialBullet(px + x, py, x / 520, id === 'ww_me262' ? 13.6 : 12.2, dmg * .95, { r: 4, pierce: 2, styleId: id, shape: id === 'ww_me262' ? 'jetCannon' : 'cannon' });
-        flash(id === 'ww_me262' ? '슈발베 제트포' : '집중 기관포');
+      } else if (id === 'ww_fokker') {
+        for (let i = 0; i < 18; i++) specialBullet(px + (i % 3 - 1) * 9, py + i, Math.sin(i * .75) * .18, 9.8, dmg * .38, { r: 2.9, styleId: id, shape: 'biplaneTracer' });
+        player.inv = Math.max(player.inv, 1200);
+        flash('포커 곡예사격');
+      } else if (id === 'ww_albatros') {
+        for (const x of [-18, 0, 18]) specialBullet(px + x, py, x / 480, 10.8, dmg * .9, { r: 3.7, pierce: 1, styleId: id, shape: 'tracer' });
+        for (const x of [-32, 32]) specialBullet(px + x, py + 8, x / 350, 9.8, dmg * .58, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
+        flash('알바트로스 편대');
+      } else if (id === 'ww_fokkerdvii') {
+        player.boostTimer = Math.max(player.boostTimer, 4500);
+        for (let i = 0; i < 8; i++) specialBullet(px + (i - 3.5) * 7, py, (i - 3.5) * .015, 12, dmg * .78, { r: 3.5, pierce: 1, styleId: id, shape: 'cannon' });
+        flash('D.VII 고성능 돌파');
+      } else if (id === 'ww_pfalz') {
+        player.shield = Math.min(3, player.shield + 1);
+        for (let i = 0; i < 10; i++) specialBullet(px, py + i * 2, (i - 4.5) * .052, 10.1, dmg * .56, { r: 3.5, pierce: 1, styleId: id, shape: 'tracer' });
+        flash('팔츠 장갑견제');
+      } else if (id === 'ww_spitfire') {
+        player.boostTimer = Math.max(player.boostTimer, 5600);
+        for (let i = 0; i < 11; i++) specialBullet(px, py, (i - 5) * .047, 12.2, dmg * .58, { r: 3.5, styleId: id, shape: 'tracer' });
+        flash('스핏파이어 선회전');
+      } else if (id === 'ww_zero') {
+        player.inv = Math.max(player.inv, 1800);
+        player.boostTimer = Math.max(player.boostTimer, 5000);
+        for (let i = 0; i < 12; i++) specialBullet(px + Math.sin(i) * 20, py + i, (i - 5.5) * .065, 11.5, dmg * .5, { r: 3.2, styleId: id, shape: 'tracer' });
+        flash('제로센 회피기동');
+      } else if (id === 'ww_mustang') {
+        for (const x of [-24, -8, 8, 24]) specialBullet(px + x, py, x / 650, 13, dmg * .9, { r: 3.8, pierce: 2, styleId: id, shape: 'cannon' });
+        player.boostTimer = Math.max(player.boostTimer, 4200);
+        flash('머스탱 호위돌파');
+      } else if (id === 'ww_bf109') {
+        specialBullet(px, py, 0, 13.4, dmg * 2.1, { r: 5, pierce: 5, styleId: id, shape: 'cannon' });
+        for (const a of [-.04, .04]) specialBullet(px, py + 6, a, 12.2, dmg * .8, { r: 3.5, pierce: 2, styleId: id, shape: 'cannon' });
+        flash('Bf 109 중앙포');
+      } else if (id === 'ww_fw190') {
+        for (let i = 0; i < 10; i++) specialBullet(px + (i - 4.5) * 9, py + i, (i - 4.5) * .025, 11.8, dmg * .7, { r: 4, pierce: 1, styleId: id, shape: 'cannon' });
+        enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 110 || b.y < py - 160);
+        flash('Fw 190 돌격포화');
+      } else if (id === 'ww_me262') {
+        for (const x of [-20, -7, 7, 20]) specialBullet(px + x, py, x / 620, 14.4, dmg, { r: 4, pierce: 2, styleId: id, shape: 'jetCannon' });
+        player.boostTimer = Math.max(player.boostTimer, 6000);
+        flash('슈발베 제트포');
       } else if (id === 'ww_il2') {
         for (const x of [-24, -12, 12, 24]) specialBullet(px + x, py, x / 360, 10.4, dmg * 1.05, { r: 4.6, blast: 22, styleId: id, shape: 'rocket' });
         player.shield = Math.min(3, player.shield + 1);
@@ -3722,9 +3802,13 @@
         launchStukaDiveBombs();
         player.inv = Math.max(player.inv, 900);
         flash('슈투카 급강하폭격');
-      } else if (id === 'ww_lancaster' || id === 'ww_b17' || id === 'ww_he111') {
-        const label = id === 'ww_b17' ? '플라잉 포트리스 폭격' : id === 'ww_he111' ? 'He 111 중폭격' : '랭커스터 대폭격';
-        bomberSpecialRun(id, label, id === 'ww_b17' ? 4 : 3, 1.05, id === 'ww_b17' ? 285 : 300, { spacing: id === 'ww_b17' ? 42 : 56, vy: -3.05, explodeAfter: 420, r: 30 });
+      } else if (id === 'ww_lancaster') {
+        bomberSpecialRun(id, '랭커스터 대폭격', 3, 1.08, 310, { spacing: 56, vy: -3.05, explodeAfter: 420, r: 31 });
+      } else if (id === 'ww_b17') {
+        bomberSpecialRun(id, '플라잉 포트리스 폭격', 4, 1.0, 285, { spacing: 42, vy: -3.0, explodeAfter: 420, r: 29 });
+        for (const x of [-34, -18, 18, 34]) specialBullet(px + x, player.y + 12, x / 420, 8.8, dmg * .45, { r: 3.1, styleId: id, shape: 'tracer' });
+      } else if (id === 'ww_he111') {
+        bomberSpecialRun(id, 'He 111 쌍발 중폭격', 3, 1.03, 292, { spacing: 50, vy: -2.95, explodeAfter: 410, r: 30 });
       } else if (id === 'admin') {
         activateAdminSpecial();
       } else {
@@ -5130,19 +5214,50 @@
           ctx.fill();
         } else if (biplane) {
           const tri = id === 'ww_fokker';
-          poly([[0,-55],[7,-35],[7,28],[0,47],[-7,28],[-7,-35]]);
+          const sesqui = id === 'ww_nieuport' || id === 'ww_albatros';
+          const slim = id === 'ww_se5a' || id === 'ww_spad13' || id === 'ww_fokkerdvii';
+          poly([[0,-58],[slim ? 6 : 8,-36],[slim ? 7 : 8,28],[0,50],[-(slim ? 7 : 8),28],[-(slim ? 6 : 8),-36]]);
           ctx.fillStyle = shade(color, .08);
-          for (const y of tri ? [-17, 1, 18] : [-13, 12]) {
-            poly([[-48,y - 5],[-8,y - 8],[8,y - 8],[48,y - 5],[42,y + 6],[-42,y + 6]]);
+          for (const y of tri ? [-19, -1, 17] : [-15, 13]) {
+            const span = sesqui && y > 0 ? 38 : slim ? 44 : 50;
+            poly([[-span,y - 5],[-8,y - 8],[8,y - 8],[span,y - 5],[span - 6,y + 6],[-span + 6,y + 6]]);
           }
-          ctx.strokeStyle = 'rgba(40,30,22,.55)';
-          ctx.lineWidth = 1.7;
+          ctx.strokeStyle = 'rgba(40,30,22,.58)';
+          ctx.lineWidth = 1.35;
           for (const x of [-24, 24]) {
             ctx.beginPath();
-            ctx.moveTo(x, -20);
-            ctx.lineTo(x * .55, 18);
+            ctx.moveTo(x, tri ? -24 : -19);
+            ctx.lineTo(x * .55, tri ? 19 : 17);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x * .55, tri ? -19 : -14);
+            ctx.lineTo(x, tri ? 24 : 19);
             ctx.stroke();
           }
+          ctx.strokeStyle = 'rgba(255,255,255,.18)';
+          ctx.lineWidth = .9;
+          for (const side of [-1, 1]) {
+            ctx.beginPath();
+            ctx.moveTo(side * 8, -32);
+            ctx.lineTo(side * (slim ? 38 : 44), -18);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(side * 7, 20);
+            ctx.lineTo(side * (sesqui ? 32 : 42), 11);
+            ctx.stroke();
+          }
+          ctx.fillStyle = '#17120d';
+          ctx.beginPath();
+          ctx.arc(0, -57, 3.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(245,222,179,.7)';
+          ctx.lineWidth = 1.7;
+          ctx.beginPath();
+          ctx.moveTo(-13, -58);
+          ctx.lineTo(13, -56);
+          ctx.moveTo(0, -70);
+          ctx.lineTo(0, -45);
+          ctx.stroke();
           ctx.fillStyle = shade(color, -.2);
           poly([[-9,25],[-26,44],[-4,36]]);
           poly([[9,25],[26,44],[4,36]]);
