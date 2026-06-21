@@ -879,17 +879,17 @@
     const MAX_UPGRADE_LEVEL = 12;
 
     const jets = [
-      { id: 'f22', name: 'F-22 랩터', role: '균형형', color: '#aab7c4', power: 11, hp: 11, shots: 3, fireRate: 125, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '안정적인 3연장 탄도' },
-      { id: 'f35', name: 'F-35 라이트닝 II', role: '정밀형', color: '#7c8b9d', power: 10, hp: 10, shots: 4, fireRate: 135, speed: 6.05, bulletSpeed: 10.3, hitbox: 7, startBombs: 2, special: '외곽 탄이 약하게 유도' },
+      { id: 'f22', name: 'F-22 랩터', role: '균형형', color: '#aab7c4', power: 11, hp: 11, shots: 3, fireRate: 125, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '특수기: 강유도 랩터 미사일 3발' },
+      { id: 'f35', name: 'F-35 라이트닝 II', role: '정밀형', color: '#7c8b9d', power: 10, hp: 10, shots: 4, fireRate: 135, speed: 6.05, bulletSpeed: 10.3, hitbox: 7, startBombs: 2, special: '특수기: 스텔스 돌입. 잠시 무적/가속 후 락온 미사일 발사' },
       { id: 'f111', name: 'F-111 아드바크', role: '관통형', color: '#8fa46b', power: 13, hp: 12, shots: 2, fireRate: 175, speed: 5.75, bulletSpeed: 9.5, hitbox: 9, startBombs: 2, special: '강한 관통탄. Shift로 가변익 고속 비행' },
       { id: 'b117', name: 'B-117 나이트호크', role: '스텔스 폭격', color: '#303946', power: 12, hp: 13, shots: 3, fireRate: 188, speed: 5.45, bulletSpeed: 9.1, hitbox: 11, startBombs: 3, special: '특수기: 스텔스 폭탄 3발 투하' },
       { id: 'b29', name: 'B-29 슈퍼포트리스', role: '중장갑 화력', color: '#c2b28f', power: 16, hp: 17, shots: 2, fireRate: 305, speed: 5.1, bulletSpeed: 8.4, hitbox: 18, startBombs: 4, special: '특수기: 짱짱쎈 폭탄. 대형 원자폭탄 투하' },
-      { id: 'su57', name: 'Su-57 펠론', role: '고기동 산탄', color: '#91d6e9', power: 11, hp: 9, shots: 4, fireRate: 125, speed: 6.55, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '넓은 각도의 공격' },
+      { id: 'su57', name: 'Su-57 펠론', role: '고기동 산탄', color: '#91d6e9', power: 11, hp: 9, shots: 4, fireRate: 125, speed: 6.55, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '특수기: 코브라 기동. 잠시 무적/가속하며 넓은 산탄을 발사' },
       { id: 'f16', name: 'F-16 파이팅 팰컨', role: '연사 민첩', color: '#67b7ff', power: 8, hp: 10, shots: 5, fireRate: 100, speed: 6.85, bulletSpeed: 10.8, hitbox: 6, startBombs: 2, special: '가장 빠른 연사' },
       { id: 'a10', name: 'A-10 썬더볼트 II', role: '중장갑 기관포', color: '#6f7d62', power: 10, hp: 15, shots: 6, fireRate: 92, speed: 5.35, bulletSpeed: 10.1, hitbox: 12, startBombs: 3, special: '느리지만 튼튼한 고속 기관포 화력기' },
-      { id: 'f14', name: 'F-14 톰캣', role: '가변익 제공', color: '#b5b6ac', power: 12, hp: 11, shots: 4, fireRate: 138, speed: 6.25, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '넓은 가변익과 안정적인 4연장 탄도. Shift로 날개 후퇴 고속 비행' },
+      { id: 'f14', name: 'F-14 톰캣', role: '가변익 제공', color: '#b5b6ac', power: 12, hp: 11, shots: 4, fireRate: 138, speed: 6.25, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
       { id: 'f15', name: 'F-15 이글', role: '정통 제공', color: '#8f9da8', power: 13, hp: 11, shots: 3, fireRate: 130, speed: 6.25, bulletSpeed: 11, hitbox: 7, startBombs: 2, special: '높은 총화력의 정통 제공기' },
-      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 균형', color: '#7f93a6', power: 11, hp: 12, shots: 4, fireRate: 142, speed: 6.0, bulletSpeed: 10.4, hitbox: 8, startBombs: 3, special: '폭탄이 넉넉한 균형형 함재기' },
+      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 균형', color: '#7f93a6', power: 11, hp: 12, shots: 4, fireRate: 142, speed: 6.0, bulletSpeed: 10.4, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '지연폭발 요격', color: '#f97316', power: 14, hp: 11, shots: 2, fireRate: 168, speed: 6.1, bulletSpeed: 9.8, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'fxx', name: 'F-XX', role: '비밀 제공기', color: '#d8f4ff', power: 16, hp: 13, shots: 5, fireRate: 112, speed: 6.65, bulletSpeed: 11.8, hitbox: 5, startBombs: 3, hidden: true, special: '기린1972 코드로 해금되는 5연장 고성능기' },
       { id: 'b2', name: 'B-2 스피릿', role: '비밀 스텔스 폭격', color: '#202634', power: 19, hp: 18, shots: 5, fireRate: 205, speed: 5.4, bulletSpeed: 9.4, hitbox: 12, startBombs: 4, hidden: true, special: 'F-16 노데미지 Stage 1 클리어 보상. 스텔스 폭탄 편대를 투하' },
@@ -2897,6 +2897,7 @@
           explodeAfter: shot.explodeAfter || 0,
           traveled: 0,
           blast: shot.blast || 0,
+          homingStrength: shot.home ? .055 : 0,
           style: bulletStyleForJet(player.jet.id)
         });
       }
@@ -3499,6 +3500,7 @@
         explodeAfter: opts.explodeAfter || 0,
         traveled: 0,
         blast: opts.blast || 0,
+        homingStrength: opts.homingStrength || 0,
         special: true,
         style: { ...bulletStyleForJet(styleId), specialShape: opts.shape || specialShapeForJet(styleId) }
       });
@@ -3578,13 +3580,16 @@
       const px = player.x;
       const py = player.y - 34;
       if (id === 'f22') {
-        for (const a of [-.2, 0, .2]) specialBullet(px, py, a, 12.8, dmg, { r: 5.4, pierce: 2, home: true, shape: 'missile' });
+        for (const a of [-.2, 0, .2]) specialBullet(px, py, a, 12.8, dmg, { r: 5.4, pierce: 2, home: true, homingStrength: .16, shape: 'missile' });
         player.inv = Math.max(player.inv, 700);
         flash('랩터 미사일');
       } else if (id === 'f35') {
-        for (let i = 0; i < 6; i++) specialBullet(px + (i - 2.5) * 12, py + i * 2, (i - 2.5) * .08, 11.8, dmg * .82, { r: 4.4, home: true, shape: 'lockon' });
+        player.boostTimer = Math.max(player.boostTimer, 6500);
+        player.inv = Math.max(player.inv, 2300);
+        for (let i = 0; i < 6; i++) specialBullet(px + (i - 2.5) * 12, py + i * 2, (i - 2.5) * .08, 12.4, dmg * .78, { r: 4.2, home: true, homingStrength: .2, shape: 'lockon' });
         enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 90 || b.y < py - 220);
-        flash('스텔스 락온');
+        addSpecialShockwave(px, py - 70, 105, '#a78bfa', 520);
+        flash('스텔스 돌입');
       } else if (id === 'f111') {
         specialBullet(px, py, 0, 14, dmg * 2.4, { r: 7, pierce: 7, shape: 'rail' });
         for (const a of [-.05, .05]) specialBullet(px, py + 8, a, 12, dmg, { r: 4.5, pierce: 3, shape: 'rail' });
@@ -3609,8 +3614,12 @@
         });
         flash('짱짱쎈 폭탄');
       } else if (id === 'su57') {
-        for (let i = 0; i < 11; i++) specialBullet(px, py, (i - 5) * .13, 11.2, dmg * .72, { r: 4.2, shape: 'fanShard' });
-        flash('펠론 산탄');
+        player.boostTimer = Math.max(player.boostTimer, 5200);
+        player.inv = Math.max(player.inv, 1700);
+        enemyBullets = enemyBullets.filter(b => Math.hypot(b.x - px, b.y - player.y) > 120);
+        for (let i = 0; i < 13; i++) specialBullet(px, py, (i - 6) * .15, 11.6, dmg * .62, { r: 4.1, shape: 'fanShard' });
+        addSpecialShockwave(px, py - 52, 120, '#91d6e9', 520);
+        flash('코브라 기동');
       } else if (id === 'f16') {
         player.boostTimer = Math.max(player.boostTimer, 9000);
         player.inv = Math.max(player.inv, 900);
@@ -3620,28 +3629,28 @@
         for (let i = 0; i < 22; i++) specialBullet(px + (Math.random() - .5) * 24, py + i * 2, (Math.random() - .5) * .11, 12.4, dmg * .36, { r: 3.1, pierce: 1, shape: 'gatling' });
         flash('썬더볼트 기관포');
       } else if (id === 'f14') {
-        for (const a of [-.3, -.1, .1, .3]) specialBullet(px, py, a, 12.5, dmg, { r: 5.3, home: true, pierce: 1, shape: 'phoenix' });
+        for (const a of [-.3, -.1, .1, .3]) specialBullet(px, py, a, 12.5, dmg, { r: 5.3, home: true, homingStrength: .14, pierce: 1, shape: 'phoenix' });
         player.wingSwept = true;
         flash('피닉스 일제사격');
       } else if (id === 'f15') {
         for (const x of [-30, 0, 30]) specialBullet(px + x, py, 0, 13.4, dmg * 1.2, { r: 5.1, pierce: 3, shape: 'eagleRail' });
         flash('이글 스트라이크');
       } else if (id === 'fa18') {
-        for (const a of [-.16, -.05, .05, .16]) specialBullet(px, py, a, 11.5, dmg * .9, { r: 4.8, home: true, blast: 18, shape: 'navalRocket' });
+        for (const a of [-.16, -.05, .05, .16]) specialBullet(px, py, a, 11.5, dmg * .9, { r: 4.8, home: true, homingStrength: .12, blast: 18, shape: 'navalRocket' });
         player.shield = Math.min(3, player.shield + 1);
         flash('함재기 지원사격');
       } else if (id === 'f72') {
         for (const a of [-.08, .08]) specialBullet(px, py, a, 10.2, dmg * 1.5, { r: 6.2, explodeAfter: 520, blast: 68, shape: 'flareBomb' });
         flash('애프터버스트');
       } else if (id === 'fxx') {
-        for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .075, 13, dmg * .92, { r: 4.4, home: true, shape: 'prism' });
+        for (let i = 0; i < 9; i++) specialBullet(px, py, (i - 4) * .075, 13, dmg * .92, { r: 4.4, home: true, homingStrength: .18, shape: 'prism' });
         player.shield = Math.min(3, player.shield + 1);
         flash('F-XX 프리즘');
       } else if (id === 'b2') {
         player.inv = Math.max(player.inv, 900);
         bomberSpecialRun(id, '스피릿 침투폭격', 5, 1.02, 285, { spacing: 40, vy: -3.25, explodeAfter: 430, r: 30 });
       } else if (id === 'geomancho') {
-        for (let i = 0; i < 10; i++) specialBullet(px, py, (i - 4.5) * .09, 10.8, dmg * .82, { r: 4.6, home: i % 2 === 0, blast: 16, shape: 'wingWave' });
+        for (let i = 0; i < 10; i++) specialBullet(px, py, (i - 4.5) * .09, 10.8, dmg * .82, { r: 4.6, home: i % 2 === 0, homingStrength: .1, blast: 16, shape: 'wingWave' });
         flash('검암초 전익포화');
       } else if (id === 'error') {
         for (let i = 0; i < 14; i++) specialBullet(px + (Math.random() - .5) * 60, py, (Math.random() - .5) * .55, 9 + Math.random() * 5, dmg * (Math.random() * 1.2 + .5), { r: 3.5 + Math.random() * 3, home: Math.random() < .45, blast: 12 + Math.random() * 24, shape: 'glitch' });
@@ -3655,7 +3664,7 @@
         specialBullet(px, py, 0, 17.5, dmg * 2.1, { r: 4.4, pierce: 8, shape: 'sonicStreak' });
         flash('블랙버드 초음속');
       } else if (id === 'yf23') {
-        for (const a of [-.12, 0, .12]) specialBullet(px, py, a, 13.5, dmg * 1.18, { r: 4.3, pierce: 2, home: true, shape: 'shadowDart' });
+        for (const a of [-.12, 0, .12]) specialBullet(px, py, a, 13.5, dmg * 1.18, { r: 4.3, pierce: 2, home: true, homingStrength: .18, shape: 'shadowDart' });
         enemyBullets = enemyBullets.filter(b => b.y < player.y - 170);
         flash('블랙위도우 매복');
       } else if (id === 'xb70') {
@@ -3774,8 +3783,25 @@
 
       bullets.forEach(b => {
         if (b.home) {
-          const target = boss || enemies.reduce((best, e) => !best || e.y > best.y ? e : best, null);
-          if (target) b.vx += Math.sign(target.x - b.x) * .08;
+          const candidates = [...enemies];
+          if (boss && boss.inv <= 0) candidates.push(boss);
+          const target = candidates.reduce((best, e) => {
+            const verticalPenalty = e.y > b.y + 80 ? 260 : 0;
+            const score = Math.hypot(e.x - b.x, e.y - b.y) + verticalPenalty;
+            return !best || score < best.score ? { e, score } : best;
+          }, null)?.e;
+          if (target) {
+            const speed = Math.max(1, Math.hypot(b.vx, b.vy));
+            const dx = target.x - b.x;
+            const dy = target.y - b.y;
+            const dist = Math.max(1, Math.hypot(dx, dy));
+            const turn = b.homingStrength || (b.special ? .12 : .055);
+            b.vx += (dx / dist * speed - b.vx) * turn;
+            b.vy += (dy / dist * speed - b.vy) * turn;
+            const nextSpeed = Math.max(1, Math.hypot(b.vx, b.vy));
+            b.vx = b.vx / nextSpeed * speed;
+            b.vy = b.vy / nextSpeed * speed;
+          }
         }
         const oldX = b.x;
         const oldY = b.y;
