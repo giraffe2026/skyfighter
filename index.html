@@ -1399,6 +1399,10 @@
     };
 
     const scoreSecretMilestones = [4000, 9000, 15000, 25000, 40000];
+    const ENDLESS_SECRET_BOSS_SCORE = 100000;
+    const ENDLESS_SECRET_BOSS_IMAGE_SRC = 'assets/endless-secret-boss.jpeg';
+    const endlessSecretBossImage = new Image();
+    endlessSecretBossImage.src = ENDLESS_SECRET_BOSS_IMAGE_SRC;
 
     const stageMusicPatterns = [
       [196, 233, 294, 349, 392, 349, 294, 233, 196, 262, 311, 392, 349, 294, 233, 220],
@@ -1450,6 +1454,7 @@
     let lastEnemy = 0;
     let nextBossTime = 65000;
     let bossWarningShown = false;
+    let endlessSecretBossDefeated = false;
     let stageTime = 0;
     let score = 0;
     let scoreSecretIndex = 0;
@@ -2637,6 +2642,22 @@
       return clamp(1 + Math.floor(stageTime / 45000), 1, currentMaxStage());
     }
 
+    function shouldSpawnEndlessSecretBoss() {
+      return save.selectedMode === 'endless' && score >= ENDLESS_SECRET_BOSS_SCORE && !endlessSecretBossDefeated;
+    }
+
+    function endlessSecretBossProfile() {
+      return {
+        name: '100000점 비밀 보스',
+        kind: 'secretImage',
+        color: '#60a5fa',
+        accent: '#111827',
+        hp: 1,
+        size: 1,
+        pattern: '이미지 본체, 나선 탄막, 양쪽 유도 포격'
+      };
+    }
+
     function resetBattleState() {
       player = null;
       bullets = [];
@@ -2651,6 +2672,7 @@
       boss = null;
       score = 0;
       scoreSecretIndex = 0;
+      endlessSecretBossDefeated = false;
       stageTime = 0;
       lastEnemy = 0;
       lastShot = 0;
@@ -2856,15 +2878,16 @@
       });
     }
 
-    function spawnBoss() {
+    function spawnBoss(forceEndlessSecret = false) {
       const st = difficultyStage();
       const stage = currentStage();
-      const blueprint = terrainBossProfile(stage);
+      const secretEndless = forceEndlessSecret || shouldSpawnEndlessSecretBoss();
+      const blueprint = secretEndless ? endlessSecretBossProfile() : terrainBossProfile(stage);
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
       const tutorial = save.selectedMode === 'tutorial';
-      const hpBase = tutorial ? 150 : ww ? 240 + st * 62 : lastWarStage ? 1180 + (st - VOID_STAGE_END) * 58 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
+      const hpBase = secretEndless ? 5200 : tutorial ? 150 : ww ? 240 + st * 62 : lastWarStage ? 1180 + (st - VOID_STAGE_END) * 58 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
       const hp = Math.round(hpBase * blueprint.hp);
       boss = {
         name: blueprint.name,
@@ -2882,12 +2905,12 @@
         inv: 3000,
         phase: 1,
         t: 0,
-        hitW: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 126 : blueprint.kind === 'megaTank' ? 140 : 76,
-        hitH: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 86 : blueprint.kind === 'megaTank' ? 76 : 54,
+        hitW: blueprint.kind === 'secretImage' ? 92 : blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 126 : blueprint.kind === 'megaTank' ? 140 : 76,
+        hitH: blueprint.kind === 'secretImage' ? 82 : blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 86 : blueprint.kind === 'megaTank' ? 76 : 54,
         color: blueprint.color
       };
       markBossEncounter(stage.id);
-      flash('BOSS');
+      flash(secretEndless ? 'SECRET BOSS' : 'BOSS');
       setLog(`${blueprint.name} 접근 중. 패턴: ${blueprint.pattern}`);
     }
 
@@ -3375,7 +3398,21 @@
     function shootBoss() {
       const st = difficultyStage();
       const count = boss.shots + boss.phase;
-      if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
+      if (boss.kind === 'secretImage') {
+        const ring = 8 + boss.phase * 4;
+        for (let i = 0; i < ring; i++) {
+          const a = boss.t / 540 + i * Math.PI * 2 / ring;
+          bossBullet(boss.x, boss.y + 10, a, 1.95 + st * .045, i % 2);
+        }
+        for (const ox of [-70, 70]) {
+          const a = aimAtPlayer(boss.x + ox, boss.y + 48, ox < 0 ? -.12 : .12);
+          bossBullet(boss.x + ox, boss.y + 48, a, 2.45 + st * .055, 1);
+          if (boss.phase >= 2) bossBullet(boss.x + ox, boss.y + 48, a + (ox < 0 ? .18 : -.18), 2.25 + st * .05, 0);
+        }
+        if (boss.phase >= 3) {
+          for (const offset of [-.24, 0, .24]) bossBullet(boss.x, boss.y + 78, aimAtPlayer(boss.x, boss.y + 78, offset), 2.85 + st * .055, 1);
+        }
+      } else if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
         const a = aimAtPlayer(boss.x, boss.y - 80);
         for (const offset of [-.08, .08]) bossBullet(boss.x, boss.y - 78, a + offset, 2.9 + st * .08, 1);
         for (const ox of [-105, -52, 52, 105]) {
@@ -3886,6 +3923,13 @@
         lastEnemy = now;
         spawnEnemy();
       }
+      if (!boss && shouldSpawnEndlessSecretBoss()) {
+        bossWarningShown = true;
+        flash('SECRET BOSS');
+        playWarningSound();
+        setLog('무한모드 100000점 비밀 보스가 나타났다.');
+        spawnBoss(true);
+      }
       if (!boss && !bossWarningShown && stageTime >= nextBossTime - 3000) {
         bossWarningShown = true;
         flash('WARNING');
@@ -4002,6 +4046,9 @@
         if (boss.kind === 'megaTank') {
           boss.x = W / 2 + Math.sin(boss.t / 1450) * 38;
           boss.targetY = 132 + Math.sin(boss.t / 900) * 8;
+        } else if (boss.kind === 'secretImage') {
+          boss.x = W / 2 + Math.sin(boss.t / 720) * (72 + boss.phase * 12) + Math.sin(boss.t / 260) * 14;
+          boss.targetY = 126 + Math.sin(boss.t / 640) * 18;
         } else if (boss.kind === 'seaCarrier') {
           boss.x = W / 2 + Math.sin(boss.t / 1280) * 62;
           boss.targetY = 124 + Math.sin(boss.t / 780) * 10;
@@ -4026,7 +4073,9 @@
         boss.phase = boss.hp < boss.maxHp * .35 ? 3 : boss.hp < boss.maxHp * .68 ? 2 : 1;
         boss.fire -= dt;
         if (boss.fire <= 0) {
-          boss.fire = st >= 11 ? Math.max(520, 1040 - (st - 11) * 26 - boss.phase * 42) : Math.max(430, 940 - st * 30 - boss.phase * 48);
+          boss.fire = boss.kind === 'secretImage'
+            ? Math.max(560, 1160 - st * 18 - boss.phase * 70)
+            : st >= 11 ? Math.max(520, 1040 - (st - 11) * 26 - boss.phase * 42) : Math.max(430, 940 - st * 30 - boss.phase * 48);
           shootBoss();
         }
       }
@@ -4128,13 +4177,15 @@
         explosions.push({ x: boss.x, y: boss.y, r: 45, life: 900 });
         playPlayerExplosion();
         if (save.selectedMode === 'endless') {
-          const bonus = 500 + difficultyStage() * 120;
-          const coinBonus = 25 + difficultyStage() * 8;
+          const secretBoss = boss.kind === 'secretImage';
+          if (secretBoss) endlessSecretBossDefeated = true;
+          const bonus = secretBoss ? 50000 : 500 + difficultyStage() * 120;
+          const coinBonus = secretBoss ? 1000 : 25 + difficultyStage() * 8;
           const hinted = addScore(bonus);
           save.coins += coinBonus;
           storeSave();
-          if (!hinted) setLog(`보스 격파. 점수 +${bonus}, 코인 +${coinBonus}.`);
-          flash('BOSS DOWN');
+          if (!hinted) setLog(secretBoss ? `100000점 비밀 보스 격파. 점수 +${bonus}, 코인 +${coinBonus}.` : `보스 격파. 점수 +${bonus}, 코인 +${coinBonus}.`);
+          flash(secretBoss ? 'SECRET DOWN' : 'BOSS DOWN');
           boss = null;
           nextBossTime = stageTime + Math.max(28000, 52000 - difficultyStage() * 1200);
           bossWarningShown = false;
@@ -6399,6 +6450,33 @@
       ctx.save();
       ctx.translate(boss.x, boss.y);
       ctx.scale(boss.size || 1, boss.size || 1);
+      if (boss.kind === 'secretImage') {
+        const bob = Math.sin(boss.t / 260) * 4;
+        ctx.translate(0, bob);
+        ctx.shadowColor = 'rgba(96,165,250,.45)';
+        ctx.shadowBlur = 20;
+        if (endlessSecretBossImage.complete && endlessSecretBossImage.naturalWidth) {
+          ctx.drawImage(endlessSecretBossImage, 250, 720, 1420, 1280, -102, -92, 204, 184);
+        } else {
+          ctx.fillStyle = '#60a5fa';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 92, 78, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#f8fafc';
+          ctx.beginPath();
+          ctx.ellipse(0, 28, 74, 38, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = boss.inv > 0 ? 'rgba(118,167,255,.9)' : 'rgba(255,255,255,.3)';
+        ctx.lineWidth = boss.inv > 0 ? 5 : 2;
+        ctx.beginPath();
+        ctx.ellipse(0, 2, 105, 88, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+        drawHealth(W / 2, 54, W - 90, boss.hp / boss.maxHp, boss.inv > 0 ? `${boss.name} INV ${Math.ceil(boss.inv / 1000)}` : boss.name);
+        return;
+      }
       ctx.fillStyle = boss.color;
       ctx.strokeStyle = 'rgba(255,255,255,.22)';
       ctx.lineWidth = 2;
