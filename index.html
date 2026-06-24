@@ -900,11 +900,12 @@
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' },
+      { id: 'namdoongi', name: '남둥이', role: '절대 비밀 초강화기', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '남둥이 코드로만 해금. 어느 곳에도 유출되지 않은 초강력 기체. 특수기: 비밀 폭주 코어' },
       { id: 'admin', name: '어드민', role: '버그 확인용', color: '#f8fafc', power: 999999, hp: 999999, shots: 10, fireRate: 90, speed: 7.2, bulletSpeed: 12, hitbox: 5, startBombs: 99, hidden: true, admin: true, special: '특수기: 관리자 권한. 모든 기체 특수기를 동시에 발동' }
     ];
 
     const retiredJetIds = new Set(['fxx', 'error']);
-    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'admin']);
+    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'namdoongi', 'admin']);
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
@@ -1213,7 +1214,7 @@
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
       bomberfleet: ['#142238', '#43d3c4'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
-      f67: ['#7c3aed', '#22d3ee'], admin: ['#111827', '#ef4444'],
+      f67: ['#7c3aed', '#22d3ee'], namdoongi: ['#38bdf8', '#facc15'], admin: ['#111827', '#ef4444'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
       ww_bf109: ['#4b5563', '#f97316'], ww_fw190: ['#7c2d12', '#facc15'], ww_fokker: ['#dc2626', '#f8fafc'],
@@ -1262,6 +1263,7 @@
       yf23: [{ name: '블랙위도우 팬텀', change: '짙은 회색 은폐 도장과 마름모 매복탄' }, { name: '블랙위도우 실버베놈', change: '은색 독니 라인과 넓은 바 탄' }],
       xb70: [{ name: '발키리 백색창공', change: '순백 초음속 도장과 긴 송곳탄' }, { name: '발키리 골드크라운', change: '금색 왕관 패널과 둥근 충격탄' }],
       f67: [{ name: '보이드팰컨 균열핵', change: '보라 균열 장갑과 둥근 공허탄' }, { name: '보이드팰컨 네온공허', change: '청록 네온 회로와 분열 공허탄' }],
+      namdoongi: [{ name: '남둥이 봉인해제', change: '푸른 비밀 장갑과 금색 코어탄' }, { name: '남둥이 절대비밀', change: '금청 코어 광휘와 초고속 유도 폭발탄' }],
       admin: [{ name: '어드민 루트 권한', change: '검정 동체, 붉은 관리자 문양, 묵직한 권한탄' }, { name: '어드민 절대명령', change: '붉은 장갑, 금색 명령문양, 왕관형 탄' }]
     };
 
@@ -1381,8 +1383,8 @@
       jetMastery: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { kills: 0, clears: 0, specials: 0, noDamageClears: 0, clutchClears: 0, endlessScore: 0 }])),
       unlockedSkins: {},
       equippedSkins: {},
-      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false, admin: false },
-      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false, admin: false },
+      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false, namdoongi: false, admin: false },
+      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false, namdoongi: false, admin: false },
       upgrades: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { power: 0, hp: 0, shots: 0, rate: 0, bomb: 0, bombCount: 0, speed: 0 }]))
     };
 
@@ -2109,6 +2111,7 @@
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
         xb70: '투사체: 거대한 초음속 폭발탄.',
         f67: '투사체: 공허 에너지가 섞인 유도 폭발탄.',
+        namdoongi: '투사체: 어느 기록에도 없는 금청 코어탄. 전탄 유도, 관통, 폭발이 동시에 붙은 초강력 비밀 탄도.',
         admin: '투사체: 테스트용 고성능 유도, 관통, 폭발 복합탄.'
       };
       const wing = isVariableWingJet(id) ? ' 조작: Shift키를 누르면 날개를 접거나 펴서 고속 모드로 바꿀 수 있습니다.' : '';
@@ -2137,6 +2140,7 @@
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
       f67: ['공허 사냥꾼', '공허 군단에게 추가 피해를 주고 고성능 폭발탄을 사용한다.', '해금이 늦고 강한 만큼 일반 스테이지 초반용으로는 과하다.'],
+      namdoongi: ['절대 비밀 초강화기', '어느 곳에도 유출되지 않은 기체. 기본 탄이 유도, 관통, 폭발을 모두 갖고 체력과 속도까지 압도적이다.', '정식 작전 기록에는 남지 않는 비밀 병기라 코드를 모르면 존재 자체를 알 수 없다.'],
       admin: ['테스트 관리자', '버그 확인용으로 거의 모든 능력치가 압도적이다.', '정식 밸런스용 기체가 아니라 재미와 테스트용이다.']
     };
 
@@ -2523,11 +2527,14 @@
         unlockJet('xb70', '전설 코드 확인. XB-70 발키리를 획득했다.');
       } else if (secretBuffer.includes('남둥이') || normalized === '남둥이') {
         secretBuffer = '';
-        save.coins += 676767;
-        storeSave();
-        renderUI();
-        flash('COIN BONUS');
-        setLog('비밀 코드 확인. 코인 676767개를 획득했다.');
+        if (!unlockJet('namdoongi', '절대 비밀 코드 확인. 어느 곳에도 유출되지 않은 초강력 기체 남둥이를 획득했다.')) {
+          save.selectedJet = 'namdoongi';
+          tab = 'jets';
+          storeSave();
+          renderUI();
+          flash('SECRET READY');
+          setLog('남둥이는 이미 해금되어 있다. 절대 비밀 초강화기를 다시 선택했다.');
+        }
       } else if (secretBuffer.includes('100%') || normalized === '100%') {
         secretBuffer = '';
         save.chapter = 'main';
@@ -2973,6 +2980,7 @@
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
         xb70: { spread: 24, angle: .03, r: 7, blast: 30, speedScale: .86, damageScale: 1.1 },
         f67: { spread: 12, angle: .07, r: 4.6, homeAll: true, blast: 18, speedScale: 1.15 },
+        namdoongi: { spread: 10, angle: .06, r: 5.6, pierce: 3, homeAll: true, blast: 26, speedScale: 1.26, damageScale: 1.18 },
         admin: { spread: 10, angle: .055, r: 5.2, pierce: 4, homeAll: true, blast: 22, speedScale: 1.18 },
         ww_spitfire: { spread: 8, angle: .022, r: 3.6, speedScale: 1.05 },
         ww_hurricane: { spread: 9, angle: .03, r: 3.7, speedScale: .98 },
@@ -3050,6 +3058,7 @@
         yf23: ['#94a3b8', '#e2e8f0'],
         xb70: ['#f8fafc', '#fef08a'],
         f67: ['#22d3ee', '#d8b4fe'],
+        namdoongi: ['#38bdf8', '#facc15'],
         admin: ['#f8fafc', '#facc15'],
         ww_camel: ['#d97706', '#78350f'],
         ww_se5a: ['#f59e0b', '#422006'],
@@ -3108,6 +3117,7 @@
         yf23: 'shadowDart',
         xb70: 'valkyrieBomb',
         f67: 'voidShard',
+        namdoongi: 'prism',
         admin: 'adminStar',
         ww_camel: 'biplaneTracer',
         ww_fokker: 'biplaneTracer',
@@ -3154,6 +3164,7 @@
         yf23: [['#94a3b8', '#f8fafc', '#1f2937'], ['#e2e8f0', '#ffffff', '#64748b']],
         xb70: [['#f8fafc', '#dbeafe', '#94a3b8'], ['#facc15', '#fff7ed', '#a16207']],
         f67: [['#22d3ee', '#f0abfc', '#581c87'], ['#d8b4fe', '#ecfeff', '#0891b2']],
+        namdoongi: [['#38bdf8', '#fef3c7', '#0f172a'], ['#facc15', '#ecfeff', '#0369a1']],
         admin: [['#111827', '#facc15', '#ef4444'], ['#ef4444', '#ffffff', '#facc15']],
         ww_camel: [['#c084fc', '#fff7ed', '#78350f'], ['#f59e0b', '#fef3c7', '#7c2d12']],
         ww_spitfire: [['#22c55e', '#ecfccb', '#14532d'], ['#38bdf8', '#eff6ff', '#1d4ed8']],
@@ -3179,7 +3190,7 @@
         f14: ['split', 'diamond'], f15: ['dart', 'split'], fa18: ['bar', 'dot'], f72: ['diamond', 'bar'],
         fxx: ['dot', 'diamond'], b2: ['diamond', 'split'], geomancho: ['bar', 'dot'], error: ['split', 'bar'],
         bomberfleet: ['split', 'diamond'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
-        f67: ['dot', 'split'], admin: ['bar', 'diamond'],
+        f67: ['dot', 'split'], namdoongi: ['diamond', 'dot'], admin: ['bar', 'diamond'],
         ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
         ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
         ww_fokker: ['split', 'diamond'], ww_ki84: ['dart', 'dot'], ww_il2: ['bar', 'dot'], ww_lancaster: ['diamond', 'bar'],
@@ -3207,7 +3218,7 @@
         f14: ['#f8fafc', '#cbd5e1'], f15: ['#60a5fa', '#bfdbfe'], fa18: ['#2dd4bf', '#ccfbf1'], f72: ['#f97316', '#fef08a'],
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
-        f67: ['#22d3ee', '#d8b4fe'], admin: ['#f8fafc', '#facc15'],
+        f67: ['#22d3ee', '#d8b4fe'], namdoongi: ['#38bdf8', '#facc15'], admin: ['#f8fafc', '#facc15'],
         ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
         ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
         ww_mustang: ['#94a3b8', '#1d4ed8'], ww_yak3: ['#38bdf8', '#1e3a8a'], ww_zero: ['#84cc16', '#7f1d1d'],
@@ -3243,6 +3254,7 @@
         yf23: { body: '#94a3b8', nose: '#e2e8f0', fin: '#334155', shape: 'stealth' },
         xb70: { body: '#f8fafc', nose: '#fef08a', fin: '#64748b', shape: 'heavy' },
         f67: { body: '#7c3aed', nose: '#22d3ee', fin: '#312e81', shape: 'void' },
+        namdoongi: { body: '#38bdf8', nose: '#facc15', fin: '#0f172a', shape: 'prism' },
         admin: { body: '#f8fafc', nose: '#facc15', fin: '#ef4444', shape: 'admin' },
         ww_camel: { body: '#9b7a4d', nose: '#d97706', fin: '#4a2d12', shape: 'slim' },
         ww_se5a: { body: '#8f7a55', nose: '#f59e0b', fin: '#422006', shape: 'slim' },
@@ -3568,7 +3580,7 @@
     function useSpecial() {
       if (!player || player.specialCooldown > 0) return;
       const id = player.jet.id;
-      player.specialCooldown = id === 'admin' ? 4500 : id === 'error' || id === 'f67' ? 9000 : 12000;
+      player.specialCooldown = id === 'admin' ? 4500 : id === 'namdoongi' ? 6500 : id === 'error' || id === 'f67' ? 9000 : 12000;
       player.specialTimer = 4500;
       awardAchievement('firstSpecial');
       recordJetMastery('specials');
@@ -3768,6 +3780,26 @@
         specialEffects.push({ type: 'voidLance', x: px, y: py, life: 720, maxLife: 720, color: '#22d3ee', accent: '#a855f7' });
         addSpecialShockwave(px, py - 190, 135, '#22d3ee', 720);
         flash('보이드 랜스');
+      } else if (id === 'namdoongi') {
+        player.inv = Math.max(player.inv, 4200);
+        player.boostTimer = Math.max(player.boostTimer, 9000);
+        player.shield = Math.max(player.shield, 3);
+        enemyBullets = [];
+        for (let i = 0; i < 15; i++) {
+          specialBullet(px + (i - 7) * 8, py + Math.abs(i - 7) * 3, (i - 7) * .055, 15.8, dmg * 1.08, {
+            r: 5.3,
+            pierce: 4,
+            home: true,
+            homingStrength: .24,
+            homingIndex: i,
+            blast: 34,
+            styleId: 'namdoongi',
+            shape: 'prism'
+          });
+        }
+        specialBlast('비밀 폭주 코어', bombDmg * 1.65, 340, 12, false);
+        addSpecialShockwave(px, py - 110, 210, '#38bdf8', 860);
+        flash('남둥이 폭주');
       } else if (id === 'ww_camel') {
         for (let i = 0; i < 14; i++) specialBullet(px + Math.sin(i * .8) * 18, py + i * 2, (i - 6.5) * .045, 10.6, dmg * .5, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
         player.inv = Math.max(player.inv, 850);
