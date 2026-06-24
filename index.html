@@ -900,7 +900,7 @@
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' },
-      { id: 'namdoongi', name: '남둥이', role: '절대 비밀 초강화기', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '남둥이 코드로만 해금. 어느 곳에도 유출되지 않은 초강력 기체. 특수기: 비밀 폭주 코어' },
+      { id: 'namdoongi', name: '남둥이', role: '비밀', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '기록 없음' },
       { id: 'admin', name: '어드민', role: '버그 확인용', color: '#f8fafc', power: 999999, hp: 999999, shots: 10, fireRate: 90, speed: 7.2, bulletSpeed: 12, hitbox: 5, startBombs: 99, hidden: true, admin: true, special: '특수기: 관리자 권한. 모든 기체 특수기를 동시에 발동' }
     ];
 
@@ -1263,7 +1263,7 @@
       yf23: [{ name: '블랙위도우 팬텀', change: '짙은 회색 은폐 도장과 마름모 매복탄' }, { name: '블랙위도우 실버베놈', change: '은색 독니 라인과 넓은 바 탄' }],
       xb70: [{ name: '발키리 백색창공', change: '순백 초음속 도장과 긴 송곳탄' }, { name: '발키리 골드크라운', change: '금색 왕관 패널과 둥근 충격탄' }],
       f67: [{ name: '보이드팰컨 균열핵', change: '보라 균열 장갑과 둥근 공허탄' }, { name: '보이드팰컨 네온공허', change: '청록 네온 회로와 분열 공허탄' }],
-      namdoongi: [{ name: '남둥이 봉인해제', change: '푸른 비밀 장갑과 금색 코어탄' }, { name: '남둥이 절대비밀', change: '금청 코어 광휘와 초고속 유도 폭발탄' }],
+      namdoongi: [{ name: '남둥이 봉인해제', change: '기록 없음' }, { name: '남둥이 절대비밀', change: '기록 없음' }],
       admin: [{ name: '어드민 루트 권한', change: '검정 동체, 붉은 관리자 문양, 묵직한 권한탄' }, { name: '어드민 절대명령', change: '붉은 장갑, 금색 명령문양, 왕관형 탄' }]
     };
 
@@ -2111,7 +2111,7 @@
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
         xb70: '투사체: 거대한 초음속 폭발탄.',
         f67: '투사체: 공허 에너지가 섞인 유도 폭발탄.',
-        namdoongi: '투사체: 어느 기록에도 없는 금청 코어탄. 전탄 유도, 관통, 폭발이 동시에 붙은 초강력 비밀 탄도.',
+        namdoongi: '투사체: 기록 없음.',
         admin: '투사체: 테스트용 고성능 유도, 관통, 폭발 복합탄.'
       };
       const wing = isVariableWingJet(id) ? ' 조작: Shift키를 누르면 날개를 접거나 펴서 고속 모드로 바꿀 수 있습니다.' : '';
@@ -2140,7 +2140,7 @@
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
       f67: ['공허 사냥꾼', '공허 군단에게 추가 피해를 주고 고성능 폭발탄을 사용한다.', '해금이 늦고 강한 만큼 일반 스테이지 초반용으로는 과하다.'],
-      namdoongi: ['절대 비밀 초강화기', '어느 곳에도 유출되지 않은 기체. 기본 탄이 유도, 관통, 폭발을 모두 갖고 체력과 속도까지 압도적이다.', '정식 작전 기록에는 남지 않는 비밀 병기라 코드를 모르면 존재 자체를 알 수 없다.'],
+      namdoongi: ['비밀', '기록 없음.', '기록 없음.'],
       admin: ['테스트 관리자', '버그 확인용으로 거의 모든 능력치가 압도적이다.', '정식 밸런스용 기체가 아니라 재미와 테스트용이다.']
     };
 
@@ -2527,13 +2527,13 @@
         unlockJet('xb70', '전설 코드 확인. XB-70 발키리를 획득했다.');
       } else if (secretBuffer.includes('남둥이') || normalized === '남둥이') {
         secretBuffer = '';
-        if (!unlockJet('namdoongi', '절대 비밀 코드 확인. 어느 곳에도 유출되지 않은 초강력 기체 남둥이를 획득했다.')) {
+        if (!unlockJet('namdoongi', '비밀 코드 확인. 남둥이를 획득했다.')) {
           save.selectedJet = 'namdoongi';
           tab = 'jets';
           storeSave();
           renderUI();
           flash('SECRET READY');
-          setLog('남둥이는 이미 해금되어 있다. 절대 비밀 초강화기를 다시 선택했다.');
+          setLog('남둥이는 이미 해금되어 있다.');
         }
       } else if (secretBuffer.includes('100%') || normalized === '100%') {
         secretBuffer = '';
@@ -3797,9 +3797,9 @@
             shape: 'prism'
           });
         }
-        specialBlast('비밀 폭주 코어', bombDmg * 1.65, 340, 12, false);
+        specialBlast('SECRET', bombDmg * 1.65, 340, 12, false);
         addSpecialShockwave(px, py - 110, 210, '#38bdf8', 860);
-        flash('남둥이 폭주');
+        flash('SECRET');
       } else if (id === 'ww_camel') {
         for (let i = 0; i < 14; i++) specialBullet(px + Math.sin(i * .8) * 18, py + i * 2, (i - 6.5) * .045, 10.6, dmg * .5, { r: 3.1, styleId: id, shape: 'biplaneTracer' });
         player.inv = Math.max(player.inv, 850);
