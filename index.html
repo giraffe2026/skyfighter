@@ -2165,15 +2165,19 @@
       });
     }
 
+    function lastWarRequirementJetLabel(j, source = save) {
+      return j.hidden && !source.unlockedJets?.[j.id] ? '비밀 기체' : j.name;
+    }
+
     function lastWarRequirementStatus(source = save) {
       const missingJets = lastWarEligibleJets()
         .filter(j => j.hidden && !source.unlockedJets?.[j.id])
-        .map(j => j.name);
+        .map(j => lastWarRequirementJetLabel(j, source));
       const missingUpgrades = lastWarEligibleJets()
         .map(j => {
           const up = source.upgrades?.[j.id] || {};
           const missing = upgradeKeys.filter(key => (up[key] || 0) < upgradeMaxLevel(key));
-          return missing.length ? `${j.name} ${missing.length}개` : '';
+          return missing.length ? `${lastWarRequirementJetLabel(j, source)} ${missing.length}개` : '';
         })
         .filter(Boolean);
       return {
