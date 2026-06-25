@@ -903,7 +903,7 @@
       { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
-      { id: 'f47', name: 'F-47', role: '비밀 권한 계승기', color: '#f8fafc', power: 999999, hp: 999999, shots: 10, fireRate: 90, speed: 7.2, bulletSpeed: 12, hitbox: 5, startBombs: 99, hidden: true, godMode: true, special: '마인크래프트 코드로 해금. 압도적인 권한 성능과 모든 특수기를 동시에 발동' },
+      { id: 'f47', name: 'F-47', role: '비밀 권한 가변익', color: '#f8fafc', power: 999999, hp: 999999, shots: 10, fireRate: 90, speed: 7.2, bulletSpeed: 12, hitbox: 5, startBombs: 99, hidden: true, godMode: true, special: '마인크래프트 코드로 해금. Shift 가변익과 압도적인 권한 성능, 모든 특수기를 동시에 발동' },
       { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '위아래위아래위위위위아래 코드로 해금. 금청 코어탄을 쓰는 고성능 차세대 비밀기' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' }
     ];
@@ -2088,7 +2088,7 @@
     }
 
     function isVariableWingJet(id) {
-      return id === 'f111' || id === 'f14' || id === 'f67' || id === 'error' || id === 'geomancho';
+      return id === 'f111' || id === 'f14' || id === 'f47' || id === 'f67' || id === 'error' || id === 'geomancho';
     }
 
     function projectileFeatureText(id) {
