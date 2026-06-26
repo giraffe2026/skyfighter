@@ -7859,18 +7859,28 @@
       const hasVisibleSecretJets = jets.some(j => !retiredJetIds.has(j.id) && j.hidden && save.unlockedJets?.[j.id]);
       document.getElementById('hideSecretJets').textContent = hasVisibleSecretJets ? '비밀 기체 숨기기' : '비밀 기체 다시 보이기';
 
-      document.getElementById('jets').innerHTML = availableJets().map(j => {
-        const s = jetStats(j);
-        const selected = j.id === save.selectedJet;
-        const compactStats = j.godMode ? `공 ∞ / 체 ∞ / 탄 ${s.shots} / 폭 ∞` : `공 ${s.power} / 체 ${s.maxHp} / 탄 ${s.shots} / 폭 ${s.startBombs}`;
-        return `<div class="jet-card ${selected ? 'selected' : ''}" data-jet="${j.id}" role="button" tabindex="0">
-          <div class="card-head"><span class="name">${j.name}</span><span class="tag">${j.role}</span></div>
-          <div class="stat-line">${compactStats}</div>
-        </div>`;
-      }).join('');
+      const jetsEl = document.getElementById('jets');
+      const stagesEl = document.getElementById('stages');
+      const upgradesEl = document.getElementById('upgrades');
+      const codexEl = document.getElementById('codex');
 
-      if (isWorldWarChapter() && !save.wwFaction) {
-        document.getElementById('stages').innerHTML = `
+      if (tab === 'jets') {
+        jetsEl.innerHTML = availableJets().map(j => {
+          const s = jetStats(j);
+          const selected = j.id === save.selectedJet;
+          const compactStats = j.godMode ? `공 ∞ / 체 ∞ / 탄 ${s.shots} / 폭 ∞` : `공 ${s.power} / 체 ${s.maxHp} / 탄 ${s.shots} / 폭 ${s.startBombs}`;
+          return `<div class="jet-card ${selected ? 'selected' : ''}" data-jet="${j.id}" role="button" tabindex="0">
+            <div class="card-head"><span class="name">${j.name}</span><span class="tag">${j.role}</span></div>
+            <div class="stat-line">${compactStats}</div>
+          </div>`;
+        }).join('');
+      } else {
+        jetsEl.innerHTML = '';
+      }
+
+      if (tab === 'stages') {
+        if (isWorldWarChapter() && !save.wwFaction) {
+          stagesEl.innerHTML = `
           <button class="stage-card" data-ww-faction="allies">
             <div class="card-head"><span class="name">연합국 파일럿</span><span class="tag">ALLIES</span></div>
             <div class="small">1차대전 기체 5대로 시작합니다: 카멜, S.E.5a, SPAD XIII, 브리스톨, 뉴포르.</div>
@@ -7885,10 +7895,10 @@
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
             <div class="small">현대전과 공허 스테이지로 돌아갑니다.</div>
           </button>`;
-      } else {
-        const stageList = currentStageList();
-        const unlockedLimit = currentUnlockedStage();
-        document.getElementById('stages').innerHTML = renderStageChapterList(stageList, unlockedLimit) + renderLastWarRequirementCard() + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
+        } else {
+          const stageList = currentStageList();
+          const unlockedLimit = currentUnlockedStage();
+          stagesEl.innerHTML = renderStageChapterList(stageList, unlockedLimit) + renderLastWarRequirementCard() + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
             <div class="small">현대전과 공허 스테이지로 돌아갑니다.</div>
           </button>` : `<button class="stage-card ${save.selectedMode === 'endless' ? 'selected' : ''}" data-mode="endless">
@@ -7901,31 +7911,42 @@
           <div class="small">완전히 다른 기체, 적, 스테이지로 진행합니다.</div>
           <div class="small">연합국 또는 추축국 파일럿을 선택합니다.</div>
         </button>`);
+        }
+      } else {
+        stagesEl.innerHTML = '';
       }
 
-      const up = save.upgrades[save.selectedJet];
-      const upgrades = [
-        ['power', '공격력', '탄 데미지 증가'],
-        ['hp', '체력', '최대 체력 증가'],
-        ['shots', '발사체', '기체별 탄 수/탄 크기 강화'],
-        ['rate', '연사력', '발사 간격 감소'],
-        ['bomb', '폭탄', '폭탄 데미지와 범위 증가'],
-        ['bombCount', '폭탄 개수', '시작 폭탄 수 증가. 최대 Lv.6'],
-        ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가']
-      ];
-      document.getElementById('upgrades').innerHTML = upgrades.map(([key, label, desc]) => {
-        const level = up[key] || 0;
-        const maxLevel = upgradeMaxLevel(key);
-        const cost = 90 + level * 80 + (key === 'shots' ? 40 : 0) + (key === 'speed' ? 20 : 0);
-        return `<div class="upgrade-card">
-          <div class="card-head"><span class="name">${label} Lv.${level}</span><span class="tag">${level >= maxLevel ? 'MAX' : cost + 'C'}</span></div>
-          <div class="small">${desc}</div>
-          <button data-up="${key}" ${save.coins < cost || level >= maxLevel ? 'disabled' : ''}>강화</button>
-        </div>`;
-      }).join('');
+      if (tab === 'shop') {
+        const up = save.upgrades[save.selectedJet];
+        const upgrades = [
+          ['power', '공격력', '탄 데미지 증가'],
+          ['hp', '체력', '최대 체력 증가'],
+          ['shots', '발사체', '기체별 탄 수/탄 크기 강화'],
+          ['rate', '연사력', '발사 간격 감소'],
+          ['bomb', '폭탄', '폭탄 데미지와 범위 증가'],
+          ['bombCount', '폭탄 개수', '시작 폭탄 수 증가. 최대 Lv.6'],
+          ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가']
+        ];
+        upgradesEl.innerHTML = upgrades.map(([key, label, desc]) => {
+          const level = up[key] || 0;
+          const maxLevel = upgradeMaxLevel(key);
+          const cost = 90 + level * 80 + (key === 'shots' ? 40 : 0) + (key === 'speed' ? 20 : 0);
+          return `<div class="upgrade-card">
+            <div class="card-head"><span class="name">${label} Lv.${level}</span><span class="tag">${level >= maxLevel ? 'MAX' : cost + 'C'}</span></div>
+            <div class="small">${desc}</div>
+            <button data-up="${key}" ${save.coins < cost || level >= maxLevel ? 'disabled' : ''}>강화</button>
+          </div>`;
+        }).join('');
+      } else {
+        upgradesEl.innerHTML = '';
+      }
 
-      document.getElementById('codex').innerHTML = renderCodex();
-      renderBossPreviews();
+      if (tab === 'codex') {
+        codexEl.innerHTML = renderCodex();
+        renderBossPreviews();
+      } else {
+        codexEl.innerHTML = '';
+      }
 
       document.querySelectorAll('[data-jet]').forEach(b => b.onclick = () => {
         save.selectedJet = b.dataset.jet;
