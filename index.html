@@ -2534,6 +2534,13 @@
       } else if (secretBuffer.includes('위아래위아래위위위위아래') || normalized === '위아래위아래위위위위아래') {
         secretBuffer = '';
         unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
+      } else if (secretBuffer.toLowerCase().includes('deadcells') || normalized.toLowerCase() === 'deadcells') {
+        secretBuffer = '';
+        save.coins += 2018;
+        storeSave();
+        renderUI();
+        flash('+2018 COINS');
+        setLog('비밀 코드 확인. 코인 2018개를 획득했다.');
       } else if (secretBuffer.includes('100%') || normalized === '100%') {
         secretBuffer = '';
         save.chapter = 'main';
