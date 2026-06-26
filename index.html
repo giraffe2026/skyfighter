@@ -1714,7 +1714,7 @@
           const fixedList = list.map((profile, index) => ({
             id: String(profile.id || createProfileId()),
             name: cleanProfileName(profile.name || `파일럿 ${index + 1}`),
-            save: normalizeSave(profile.save || freshSave())
+            save: profile.save || freshSave()
           }));
           if (fixedList.length) {
             const storedCurrent = localStorage.getItem(PROFILE_CURRENT_KEY);
