@@ -1411,7 +1411,14 @@
     const ENDLESS_SECRET_BOSS_SCORE = 100000;
     const ENDLESS_SECRET_BOSS_IMAGE_SRC = 'assets/endless-secret-boss.jpeg';
     const endlessSecretBossImage = new Image();
-    endlessSecretBossImage.src = ENDLESS_SECRET_BOSS_IMAGE_SRC;
+    let endlessSecretBossImageRequested = false;
+
+    function ensureEndlessSecretBossImage() {
+      if (endlessSecretBossImageRequested) return;
+      endlessSecretBossImageRequested = true;
+      endlessSecretBossImage.decoding = 'async';
+      endlessSecretBossImage.src = ENDLESS_SECRET_BOSS_IMAGE_SRC;
+    }
 
     const stageMusicPatterns = [
       [196, 233, 294, 349, 392, 349, 294, 233, 196, 262, 311, 392, 349, 294, 233, 220],
@@ -1709,6 +1716,7 @@
       try {
         const raw = localStorage.getItem(PROFILE_STORE_KEY);
         if (raw) {
+          if (raw.length > 1500000) throw new Error('Profile store is too large to load safely.');
           const parsed = JSON.parse(raw);
           const list = Array.isArray(parsed.list) ? parsed.list : [];
           const fixedList = list.map((profile, index) => ({
@@ -6546,6 +6554,7 @@
       ctx.translate(boss.x, boss.y);
       ctx.scale(boss.size || 1, boss.size || 1);
       if (boss.kind === 'secretImage') {
+        ensureEndlessSecretBossImage();
         const bob = Math.sin(boss.t / 260) * 4;
         ctx.translate(0, bob);
         ctx.shadowColor = 'rgba(96,165,250,.45)';
