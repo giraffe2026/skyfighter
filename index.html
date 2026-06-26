@@ -904,7 +904,7 @@
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
       { id: 'f47', name: 'F-47', role: '비밀 권한 가변익', color: '#f8fafc', power: 999999, hp: 999999, shots: 10, fireRate: 90, speed: 7.2, bulletSpeed: 12, hitbox: 5, startBombs: 99, hidden: true, godMode: true, special: '마인크래프트 코드로 해금. Shift 가변익과 압도적인 권한 성능, 모든 특수기를 동시에 발동' },
-      { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '위아래위아래위위위위아래 코드로 해금. 금청 코어탄을 쓰는 고성능 차세대 비밀기' },
+      { id: 'kf21', name: 'KF-21', role: '한국형 차세대 제공기', color: '#8f9aa6', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '위아래위아래위위위위아래 코드로 해금. 쌍발 보라매 실루엣과 금청 코어탄을 쓰는 고성능 비밀기' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' }
     ];
 
@@ -1218,7 +1218,7 @@
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
       bomberfleet: ['#142238', '#43d3c4'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
-      f47: ['#111827', '#ef4444'], kf21: ['#38bdf8', '#facc15'], f67: ['#7c3aed', '#22d3ee'],
+      f47: ['#111827', '#ef4444'], kf21: ['#8f9aa6', '#d7dde4'], f67: ['#7c3aed', '#22d3ee'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
       ww_bf109: ['#4b5563', '#f97316'], ww_fw190: ['#7c2d12', '#facc15'], ww_fokker: ['#dc2626', '#f8fafc'],
@@ -1267,7 +1267,7 @@
       yf23: [{ name: '블랙위도우 팬텀', change: '짙은 회색 은폐 도장과 마름모 매복탄' }, { name: '블랙위도우 실버베놈', change: '은색 독니 라인과 넓은 바 탄' }],
       xb70: [{ name: '발키리 백색창공', change: '순백 초음속 도장과 긴 송곳탄' }, { name: '발키리 골드크라운', change: '금색 왕관 패널과 둥근 충격탄' }],
       f47: [{ name: 'F-47 루트 권한', change: '검정 동체, 붉은 권한 문양, 묵직한 권한탄' }, { name: 'F-47 절대명령', change: '붉은 장갑, 금색 명령문양, 왕관형 탄' }],
-      kf21: [{ name: '차세대 블루코어', change: '푸른 차세대 장갑과 금색 코어탄' }, { name: '차세대 골드코어', change: '금청 코어 광휘와 초고속 유도 폭발탄' }],
+      kf21: [{ name: '보라매 저시인성', change: '회색 저시인성 도장, 짙은 흡입구와 쌍수직미익, 푸른 코어탄' }, { name: '보라매 시험비행', change: '밝은 회색 시험기 도장, 청적 ROKAF 포인트, 흰 코어탄' }],
       f67: [{ name: '보이드팰컨 균열핵', change: '보라 균열 장갑과 둥근 공허탄' }, { name: '보이드팰컨 네온공허', change: '청록 네온 회로와 분열 공허탄' }]
     };
 
@@ -5507,6 +5507,58 @@
         ctx.fill();
         ctx.fillStyle = f47Tier2 ? '#ffffff' : '#f5c542';
         for (const x of [-8, 8]) ctx.fillRect(x - 2, 31, 4, 18);
+      } else if (id === 'kf21') {
+        const kfSkin = friendly ? equippedSkin(id) : '';
+        const kfTier2 = kfSkin.endsWith('skin2');
+        const kfBase = kfSkin ? color : '#8f9aa6';
+        const kfLight = kfTier2 ? '#eef2f7' : shade(kfBase, .2);
+        const kfDark = kfTier2 ? '#56616f' : shade(kfBase, -.28);
+        const kfLine = kfTier2 ? '#2563eb' : '#334155';
+        ctx.fillStyle = kfBase;
+        poly([[0,-68],[8,-52],[13,-25],[14,12],[9,42],[0,54],[-9,42],[-14,12],[-13,-25],[-8,-52]]);
+        ctx.fillStyle = kfLight;
+        poly([[0,-64],[6,-49],[9,-18],[8,24],[0,42],[-8,24],[-9,-18],[-6,-49]]);
+        ctx.fillStyle = shade(kfBase, .08);
+        poly([[-9,-31],[-27,-17],[-16,-8],[-7,-21]]);
+        poly([[9,-31],[27,-17],[16,-8],[7,-21]]);
+        ctx.fillStyle = kfDark;
+        poly([[-11,-16],[-55,1],[-38,18],[-12,8]]);
+        poly([[11,-16],[55,1],[38,18],[12,8]]);
+        ctx.fillStyle = shade(kfBase, -.12);
+        poly([[-17,-8],[-45,4],[-34,12],[-14,5]]);
+        poly([[17,-8],[45,4],[34,12],[14,5]]);
+        ctx.fillStyle = '#111827';
+        poly([[-13,-30],[-26,-18],[-17,-11],[-9,-22]]);
+        poly([[13,-30],[26,-18],[17,-11],[9,-22]]);
+        ctx.fillStyle = kfDark;
+        poly([[-12,20],[-33,48],[-20,57],[-6,34]]);
+        poly([[12,20],[33,48],[20,57],[6,34]]);
+        ctx.fillStyle = shade(kfDark, -.08);
+        poly([[-7,29],[-18,57],[-7,48],[-2,34]]);
+        poly([[7,29],[18,57],[7,48],[2,34]]);
+        ctx.strokeStyle = rgbaColor(kfLine, .72);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(0, -56);
+        ctx.lineTo(0, 38);
+        ctx.moveTo(-10, -12);
+        ctx.lineTo(-42, 5);
+        ctx.moveTo(10, -12);
+        ctx.lineTo(42, 5);
+        ctx.stroke();
+        ctx.fillStyle = kfTier2 ? '#ef4444' : '#2563eb';
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.arc(side * 31, 8, 3.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = kfTier2 ? '#2563eb' : '#ef4444';
+          ctx.beginPath();
+          ctx.arc(side * 31, 8, 1.7, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = kfTier2 ? '#ef4444' : '#2563eb';
+        }
+        ctx.fillStyle = kfTier2 ? '#ffffff' : '#38bdf8';
+        for (const x of [-9, 9]) ctx.fillRect(x - 1.8, 36, 3.6, 13);
       } else if (id === 'f67') {
         ctx.strokeStyle = 'rgba(34,211,238,.35)';
         ctx.lineWidth = 1.5;
@@ -5966,6 +6018,8 @@
       ctx.beginPath();
       if (id === 'f47') {
         ctx.ellipse(0, -43, 4.6, 14, 0, 0, Math.PI * 2);
+      } else if (id === 'kf21') {
+        ctx.ellipse(0, -34, 5.4, 12.5, 0, 0, Math.PI * 2);
       } else if (wingBody) {
         ctx.ellipse(0, -10, 9, 5, 0, 0, Math.PI * 2);
       } else if (id === 'b29' || id === 'ww_b29' || id === 'xb70') {
@@ -5985,10 +6039,10 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' || id === 'f47' ? [-12, 12] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' || id === 'f47' ? [-12, 12] : id === 'kf21' ? [-9, 9] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
-        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'f47' ? 54 : 35, 3.2, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'f47' ? 54 : id === 'kf21' ? 42 : 35, 3.2, 7, 0, 0, Math.PI * 2);
         ctx.fill();
       }
       if (skin) {
@@ -5996,9 +6050,9 @@
         ctx.fillStyle = skin.endsWith('skin2') ? 'rgba(244,114,182,.72)' : 'rgba(125,211,252,.62)';
         for (const x of exhausts) {
           ctx.beginPath();
-          ctx.moveTo(x - 4, id === 'f47' ? 56 : 38);
-          ctx.lineTo(x, id === 'f47' ? 78 : 59);
-          ctx.lineTo(x + 4, id === 'f47' ? 56 : 38);
+          ctx.moveTo(x - 4, id === 'f47' ? 56 : id === 'kf21' ? 45 : 38);
+          ctx.lineTo(x, id === 'f47' ? 78 : id === 'kf21' ? 64 : 59);
+          ctx.lineTo(x + 4, id === 'f47' ? 56 : id === 'kf21' ? 45 : 38);
           ctx.closePath();
           ctx.fill();
         }
@@ -6024,6 +6078,7 @@
       if (id === 'f111' || id === 'f14') return { x: .96, y: 1.1 };
       if (id === 'sr71') return { x: .86, y: 1.14 };
       if (id === 'f47') return { x: 1.14, y: 1 };
+      if (id === 'kf21') return { x: .96, y: 1.06 };
       if (id === 'error' || id === 'fxx' || id === 'f67') return { x: .96, y: 1.08 };
       return { x: .92, y: 1.1 };
     }
