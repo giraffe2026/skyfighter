@@ -8287,7 +8287,7 @@
         requestAnimationFrame(loop);
         return;
       }
-      const frameMs = mode === 'play' && !paused ? 1000 / 45 : mode === 'menu' ? 1000 : 1000 / 24;
+      const frameMs = mode === 'play' && !paused ? 1000 / 60 : mode === 'menu' ? 1000 : 1000 / 24;
       if (now - lastRenderedFrame < frameMs) {
         requestAnimationFrame(loop);
         return;
