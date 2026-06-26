@@ -1446,6 +1446,7 @@
     let mode = 'menu';
     let tab = 'jets';
     let last = performance.now();
+    let lastRenderedFrame = 0;
     let keys = {};
     let bgY = 0;
     let player = null;
@@ -8256,10 +8257,26 @@
       canvas.releasePointerCapture?.(e.pointerId);
     });
     canvas.addEventListener('pointercancel', () => { touchTarget = null; });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) touchTarget = null;
+      last = performance.now();
+      lastRenderedFrame = 0;
+    });
 
     function loop(now) {
+      if (document.hidden) {
+        last = now;
+        requestAnimationFrame(loop);
+        return;
+      }
+      const frameMs = mode === 'play' && !paused ? 1000 / 45 : 1000 / 24;
+      if (now - lastRenderedFrame < frameMs) {
+        requestAnimationFrame(loop);
+        return;
+      }
       const dt = Math.min(32, now - last);
       last = now;
+      lastRenderedFrame = now;
       try {
         update(dt, now);
         draw();
