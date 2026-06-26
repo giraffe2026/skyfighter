@@ -5515,20 +5515,22 @@
         const kfSkin = friendly ? equippedSkin(id) : '';
         const kfTier2 = kfSkin.endsWith('skin2');
         const kfBase = kfSkin ? color : '#8f9aa6';
-        const kfLight = kfTier2 ? '#eef2f7' : shade(kfBase, .2);
-        const kfDark = kfTier2 ? '#56616f' : shade(kfBase, -.28);
+        const kfLight = kfTier2 ? '#eef2f7' : '#b8c0c9';
+        const kfDark = kfTier2 ? '#56616f' : '#56616f';
         const kfLine = kfTier2 ? '#2563eb' : '#334155';
+        ctx.strokeStyle = 'rgba(15,23,42,.28)';
+        ctx.lineWidth = 1;
         ctx.fillStyle = kfBase;
         poly([[0,-68],[8,-52],[13,-25],[14,12],[9,42],[0,54],[-9,42],[-14,12],[-13,-25],[-8,-52]]);
         ctx.fillStyle = kfLight;
         poly([[0,-64],[6,-49],[9,-18],[8,24],[0,42],[-8,24],[-9,-18],[-6,-49]]);
-        ctx.fillStyle = shade(kfBase, .08);
+        ctx.fillStyle = '#a8b1bb';
         poly([[-9,-31],[-27,-17],[-16,-8],[-7,-21]]);
         poly([[9,-31],[27,-17],[16,-8],[7,-21]]);
         ctx.fillStyle = kfDark;
         poly([[-11,-16],[-55,1],[-38,18],[-12,8]]);
         poly([[11,-16],[55,1],[38,18],[12,8]]);
-        ctx.fillStyle = shade(kfBase, -.12);
+        ctx.fillStyle = '#717d89';
         poly([[-17,-8],[-45,4],[-34,12],[-14,5]]);
         poly([[17,-8],[45,4],[34,12],[14,5]]);
         ctx.fillStyle = '#111827';
@@ -5537,10 +5539,10 @@
         ctx.fillStyle = kfDark;
         poly([[-12,20],[-33,48],[-20,57],[-6,34]]);
         poly([[12,20],[33,48],[20,57],[6,34]]);
-        ctx.fillStyle = shade(kfDark, -.08);
+        ctx.fillStyle = '#384351';
         poly([[-7,29],[-18,57],[-7,48],[-2,34]]);
         poly([[7,29],[18,57],[7,48],[2,34]]);
-        ctx.strokeStyle = rgbaColor(kfLine, .72);
+        ctx.strokeStyle = kfLine;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(0, -56);
@@ -8258,8 +8260,17 @@
     function loop(now) {
       const dt = Math.min(32, now - last);
       last = now;
-      update(dt, now);
-      draw();
+      try {
+        update(dt, now);
+        draw();
+      } catch (err) {
+        console.error(err);
+        message = 'ERROR';
+        messageTimer = 1600;
+        mode = 'menu';
+        setScreen(mode);
+        setLog(`렌더링 오류를 복구했다: ${err.message || err}`);
+      }
       requestAnimationFrame(loop);
     }
 
