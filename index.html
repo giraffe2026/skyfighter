@@ -2539,13 +2539,6 @@
       } else if (secretBuffer.includes('위아래위아래위위위위아래') || normalized === '위아래위아래위위위위아래') {
         secretBuffer = '';
         unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
-      } else if (secretBuffer.toLowerCase().includes('deadcells') || normalized.toLowerCase() === 'deadcells') {
-        secretBuffer = '';
-        save.coins += 2018;
-        storeSave();
-        renderUI();
-        flash('+2018 COINS');
-        setLog('비밀 코드 확인. 코인 2018개를 획득했다.');
       } else if (secretBuffer.includes('100%') || normalized === '100%') {
         secretBuffer = '';
         save.chapter = 'main';
@@ -4358,6 +4351,11 @@
     }
 
     function draw() {
+      if (mode === 'menu') {
+        drawMenuPreview();
+        updateHud();
+        return;
+      }
       const stage = currentStage();
       drawBackground(stage);
       pickups.forEach(drawPickup);
@@ -4372,7 +4370,6 @@
       playerBombs.forEach(drawPlayerBomb);
       if (fallout) drawFallout();
       if (save.selectedMode === 'tutorial' && mode === 'play') drawTutorialTip();
-      if (mode === 'menu') drawMenuPreview();
       if (mode === 'defeat') drawCenter('패배', '전투기가 파괴되었습니다');
       if (mode === 'clear') drawCenter('클리어', '보상을 확인하세요');
       if (paused && mode === 'play') drawCenter('PAUSED', '다시 시작하려면 일시정지 버튼');
@@ -8269,7 +8266,7 @@
         requestAnimationFrame(loop);
         return;
       }
-      const frameMs = mode === 'play' && !paused ? 1000 / 45 : 1000 / 24;
+      const frameMs = mode === 'play' && !paused ? 1000 / 45 : mode === 'menu' ? 1000 : 1000 / 24;
       if (now - lastRenderedFrame < frameMs) {
         requestAnimationFrame(loop);
         return;
