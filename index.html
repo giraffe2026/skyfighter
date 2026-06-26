@@ -848,6 +848,10 @@
   </main>
 
   <script>
+    if (location.protocol === 'file:') {
+      location.replace('http://localhost:5174/');
+    }
+
     if (location.hostname === '127.0.0.1') {
       location.replace(`http://localhost:${location.port || '5174'}${location.pathname}${location.search}${location.hash}`);
     }
