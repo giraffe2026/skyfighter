@@ -2535,6 +2535,13 @@
           flash('SECRET READY');
           setLog('남둥이는 이미 해금되어 있다.');
         }
+      } else if (secretBuffer.includes('코인은하') || normalized === '코인은하') {
+        secretBuffer = '';
+        save.coins += 19720000;
+        storeSave();
+        renderUI();
+        flash('COIN GALAXY');
+        setLog('비밀 코드 확인. 코인 +19720000 지급.');
       } else if (secretBuffer.includes('100%') || normalized === '100%') {
         secretBuffer = '';
         save.chapter = 'main';
