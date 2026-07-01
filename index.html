@@ -904,7 +904,7 @@
       { id: 'geomancho', name: '검암초', role: '비밀 전익기', color: '#111827', power: 15, hp: 18, shots: 6, fireRate: 112, speed: 5.95, bulletSpeed: 10.8, hitbox: 10, startBombs: 3, hidden: true, special: '검암초 코드로 해금되는 6연장 전익기' },
       { id: 'error', name: '에러', role: '비밀 변칙기', color: '#a855f7', power: 20, hp: 20, shots: 10, fireRate: 105, speed: 7.8, bulletSpeed: 13.2, hitbox: 4, startBombs: 6, hidden: true, special: '출격마다 능력치가 무작위로 바뀌는 변칙형 전투기. 수치 한계 20' },
       { id: 'bomberfleet', name: '폭격함대', role: '비밀 총집합 함대', color: '#0f172a', power: 22, hp: 24, shots: 9, fireRate: 118, speed: 5.85, bulletSpeed: 11.4, hitbox: 14, startBombs: 6, hidden: true, special: '총집합 코드로 해금. 모든 전투기가 멋진 배열로 출격하는 함대' },
-      { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#64748b', power: 24, hp: 25, shots: 9, fireRate: 110, speed: 6.15, bulletSpeed: 12.1, hitbox: 11, startBombs: 6, hidden: true, special: 'KF-21 코드로 해금. 폭격함대보다 조금 강한 단일 차세대 제공기' },
+      { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#64748b', power: 24, hp: 25, shots: 9, fireRate: 110, speed: 6.15, bulletSpeed: 12.1, hitbox: 11, startBombs: 6, hidden: true, special: 'Korean Fighter eXperimental 코드로 해금. 폭격함대보다 조금 강한 단일 차세대 제공기' },
       { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
@@ -2498,7 +2498,9 @@
     function handleSecretInput(text) {
       if (mode !== 'menu' || !text) return;
       const normalized = String(text).replace(/\s/g, '').replace('ㄱㅣ린', '기린');
-      secretBuffer = (secretBuffer + normalized).slice(-24);
+      secretBuffer = (secretBuffer + normalized).slice(-48);
+      const secretKey = normalized.toLowerCase();
+      const secretStream = secretBuffer.toLowerCase();
       if (unlockSkinByCode(normalized)) {
         secretBuffer = '';
       } else if (secretBuffer.includes('기린1972') || normalized === '기린1972') {
@@ -2516,7 +2518,7 @@
       } else if (secretBuffer.includes('총집합') || normalized === '총집합') {
         secretBuffer = '';
         unlockJet('bomberfleet', '비밀 코드 확인. 폭격함대 카드가 등장했다.');
-      } else if (secretBuffer.includes('KF-21') || secretBuffer.toLowerCase().includes('kf-21') || secretBuffer.toLowerCase().includes('kf21') || normalized === 'KF-21' || normalized.toLowerCase() === 'kf21') {
+      } else if (secretStream.includes('koreanfighterexperimental') || secretKey === 'koreanfighterexperimental') {
         secretBuffer = '';
         unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
       } else if (secretBuffer.includes('블랙버드') || normalized === '블랙버드') {
