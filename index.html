@@ -904,6 +904,7 @@
       { id: 'geomancho', name: '검암초', role: '비밀 전익기', color: '#111827', power: 15, hp: 18, shots: 6, fireRate: 112, speed: 5.95, bulletSpeed: 10.8, hitbox: 10, startBombs: 3, hidden: true, special: '검암초 코드로 해금되는 6연장 전익기' },
       { id: 'error', name: '에러', role: '비밀 변칙기', color: '#a855f7', power: 20, hp: 20, shots: 10, fireRate: 105, speed: 7.8, bulletSpeed: 13.2, hitbox: 4, startBombs: 6, hidden: true, special: '출격마다 능력치가 무작위로 바뀌는 변칙형 전투기. 수치 한계 20' },
       { id: 'bomberfleet', name: '폭격함대', role: '비밀 총집합 함대', color: '#0f172a', power: 22, hp: 24, shots: 9, fireRate: 118, speed: 5.85, bulletSpeed: 11.4, hitbox: 14, startBombs: 6, hidden: true, special: '총집합 코드로 해금. 모든 전투기가 멋진 배열로 출격하는 함대' },
+      { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#64748b', power: 24, hp: 25, shots: 9, fireRate: 110, speed: 6.15, bulletSpeed: 12.1, hitbox: 11, startBombs: 6, hidden: true, special: 'KF-21 코드로 해금. 폭격함대보다 조금 강한 단일 차세대 제공기' },
       { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
@@ -911,7 +912,7 @@
     ];
 
     const retiredJetIds = new Set(['fxx', 'error']);
-    const lastWarExcludedJetIds = new Set(['fxx', 'error']);
+    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'kf21']);
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
@@ -1219,7 +1220,7 @@
       b29: ['#d8c699', '#f97316'], su57: ['#c7f4ff', '#22d3ee'], f16: ['#8bd3ff', '#60a5fa'], a10: ['#8fa37b', '#84cc16'],
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
-      bomberfleet: ['#142238', '#43d3c4'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
+      bomberfleet: ['#142238', '#43d3c4'], kf21: ['#64748b', '#60a5fa'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
       f67: ['#7c3aed', '#22d3ee'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
@@ -1265,6 +1266,7 @@
       geomancho: [{ name: '검암초 심해익', change: '검푸른 전익 실루엣과 청록 직선탄' }, { name: '검암초 청록성운', change: '성운빛 테두리와 둥근 전익탄' }],
       error: [{ name: '에러 글리치레드', change: '깨진 보라 패널과 흔들리는 분열탄' }, { name: '에러 픽셀카오스', change: '분홍 노이즈 장갑과 굵은 오류탄' }],
       bomberfleet: [{ name: '폭격함대 편대장', change: '함대 전체 청록 식별선과 편대 산탄' }, { name: '폭격함대 총공격', change: '백색 지휘 라인과 대형 다이아몬드 탄' }],
+      kf21: [{ name: 'KF-21 블록 실버', change: '진회색 스텔스 패널과 푸른 코어탄' }, { name: 'KF-21 태극 시험기', change: '백회색 시험기 도장과 적청 포인트 탄' }],
       sr71: [{ name: '블랙버드 레드라인', change: '흑색 동체의 붉은 속도선과 레일탄' }, { name: '블랙버드 마하크라운', change: '왕관형 붉은 표식과 초고속 송곳탄' }],
       yf23: [{ name: '블랙위도우 팬텀', change: '짙은 회색 은폐 도장과 마름모 매복탄' }, { name: '블랙위도우 실버베놈', change: '은색 독니 라인과 넓은 바 탄' }],
       xb70: [{ name: '발키리 백색창공', change: '순백 초음속 도장과 긴 송곳탄' }, { name: '발키리 골드크라운', change: '금색 왕관 패널과 둥근 충격탄' }],
@@ -1386,8 +1388,8 @@
       jetMastery: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { kills: 0, clears: 0, specials: 0, noDamageClears: 0, clutchClears: 0, endlessScore: 0 }])),
       unlockedSkins: {},
       equippedSkins: {},
-      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false },
-      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false },
+      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, kf21: false, sr71: false, yf23: false, xb70: false, f67: false },
+      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, kf21: false, sr71: false, yf23: false, xb70: false, f67: false },
       upgrades: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { power: 0, hp: 0, shots: 0, rate: 0, bomb: 0, bombCount: 0, speed: 0 }]))
     };
 
@@ -2107,6 +2109,7 @@
         geomancho: '투사체: 넓은 전익 포화와 일부 유도탄.',
         error: '투사체: 방향과 위력이 흔들리는 변칙 탄도.',
         bomberfleet: '투사체: 선택창에 보이는 함대 기체들이 각자 자기 탄도를 사용.',
+        kf21: '투사체: 푸른 코어 유도탄. 폭격함대보다 조금 강한 단일기 화력과 안정적인 폭발탄을 사용.',
         sr71: '투사체: 매우 빠른 초고속 관통탄.',
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
         xb70: '투사체: 거대한 초음속 폭발탄.',
@@ -2134,6 +2137,7 @@
       geomancho: ['전익 포화기', '넓은 탄막과 높은 체력으로 전장을 밀어붙인다.', '몸집이 있고 속도가 애매해 촘촘한 탄막에 약하다.'],
       error: ['변칙 랜덤 캐릭터', '출격마다 능력치가 달라져 말도 안 되는 조합이 나올 수 있다.', '랜덤성이 커서 매번 조작감과 운영법이 달라진다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
+      kf21: ['차세대 제공기', '폭격함대보다 살짝 높은 기본 성능과 유도 폭발탄으로 보스전과 정리에 모두 강하다.', '단일 기체라 함대처럼 여러 방향을 동시에 덮지는 못한다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
@@ -2512,6 +2516,9 @@
       } else if (secretBuffer.includes('총집합') || normalized === '총집합') {
         secretBuffer = '';
         unlockJet('bomberfleet', '비밀 코드 확인. 폭격함대 카드가 등장했다.');
+      } else if (secretBuffer.includes('KF-21') || secretBuffer.toLowerCase().includes('kf-21') || secretBuffer.toLowerCase().includes('kf21') || normalized === 'KF-21' || normalized.toLowerCase() === 'kf21') {
+        secretBuffer = '';
+        unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
       } else if (secretBuffer.includes('블랙버드') || normalized === '블랙버드') {
         secretBuffer = '';
         unlockJet('sr71', '전설 코드 확인. SR-71 블랙버드를 획득했다.');
@@ -2948,6 +2955,7 @@
         b2: { spread: 18, angle: .06, r: 5.8, blast: 24, speedScale: .9 },
         geomancho: { spread: 14, angle: .075, r: 4.4, homeOuter: true },
         error: { spread: 11, angle: .05, r: 4.5, blast: 16, pierce: 1, chaotic: true },
+        kf21: { spread: 11, angle: .052, r: 5.1, pierce: 2, homeAll: true, blast: 22, speedScale: 1.13, damageScale: 1.08 },
         sr71: { spread: 7, angle: .01, r: 3.2, pierce: 2, speedScale: 1.35, sideSpeed: 1.1 },
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
         xb70: { spread: 24, angle: .03, r: 7, blast: 30, speedScale: .86, damageScale: 1.1 },
@@ -3024,6 +3032,7 @@
         geomancho: ['#14b8a6', '#99f6e4'],
         error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'],
+        kf21: ['#60a5fa', '#e0f2fe'],
         sr71: ['#ef4444', '#fecaca'],
         yf23: ['#94a3b8', '#e2e8f0'],
         xb70: ['#f8fafc', '#fef08a'],
@@ -3081,6 +3090,7 @@
         geomancho: 'wingWave',
         error: 'glitch',
         bomberfleet: 'fleetDiamond',
+        kf21: 'prism',
         sr71: 'sonicStreak',
         yf23: 'shadowDart',
         xb70: 'valkyrieBomb',
@@ -3126,6 +3136,7 @@
         geomancho: [['#14b8a6', '#ccfbf1', '#0f172a'], ['#2dd4bf', '#ecfeff', '#134e4a']],
         error: [['#f0abfc', '#ffffff', '#a21caf'], ['#fb7185', '#ffe4e6', '#be123c']],
         bomberfleet: [['#43d3c4', '#ecfeff', '#0f766e'], ['#f8fafc', '#67e8f9', '#155e75']],
+        kf21: [['#60a5fa', '#e0f2fe', '#1e3a8a'], ['#f8fafc', '#ef4444', '#2563eb']],
         sr71: [['#ef4444', '#fee2e2', '#0a0d14'], ['#f87171', '#ffffff', '#991b1b']],
         yf23: [['#94a3b8', '#f8fafc', '#1f2937'], ['#e2e8f0', '#ffffff', '#64748b']],
         xb70: [['#f8fafc', '#dbeafe', '#94a3b8'], ['#facc15', '#fff7ed', '#a16207']],
@@ -3153,7 +3164,7 @@
         b29: ['bar', 'diamond'], su57: ['split', 'dot'], f16: ['dart', 'bar'], a10: ['dot', 'split'],
         f14: ['split', 'diamond'], f15: ['dart', 'split'], fa18: ['bar', 'dot'], f72: ['diamond', 'bar'],
         fxx: ['dot', 'diamond'], b2: ['diamond', 'split'], geomancho: ['bar', 'dot'], error: ['split', 'bar'],
-        bomberfleet: ['split', 'diamond'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
+        bomberfleet: ['split', 'diamond'], kf21: ['diamond', 'dart'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
         f67: ['dot', 'split'],
         ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
         ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
@@ -3181,7 +3192,7 @@
         b29: ['#facc15', '#fef3c7'], su57: ['#22d3ee', '#cffafe'], f16: ['#38bdf8', '#dbeafe'], a10: ['#84cc16', '#ecfccb'],
         f14: ['#f8fafc', '#cbd5e1'], f15: ['#60a5fa', '#bfdbfe'], fa18: ['#2dd4bf', '#ccfbf1'], f72: ['#f97316', '#fef08a'],
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
-        bomberfleet: ['#43d3c4', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
+        bomberfleet: ['#43d3c4', '#f8fafc'], kf21: ['#60a5fa', '#e0f2fe'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
         f67: ['#22d3ee', '#d8b4fe'],
         ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
         ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
@@ -3214,6 +3225,7 @@
         geomancho: { body: '#14b8a6', nose: '#99f6e4', fin: '#042f2e', shape: 'wing' },
         error: { body: '#f0abfc', nose: '#fb7185', fin: '#581c87', shape: 'glitch' },
         bomberfleet: { body: '#43d3c4', nose: '#f8fafc', fin: '#0f172a', shape: 'fleet' },
+        kf21: { body: '#64748b', nose: '#60a5fa', fin: '#1e293b', shape: 'prism' },
         sr71: { body: '#111827', nose: '#ef4444', fin: '#020617', shape: 'needle' },
         yf23: { body: '#94a3b8', nose: '#e2e8f0', fin: '#334155', shape: 'stealth' },
         xb70: { body: '#f8fafc', nose: '#fef08a', fin: '#64748b', shape: 'heavy' },
@@ -3528,7 +3540,7 @@
     function useSpecial() {
       if (!player || player.specialCooldown > 0) return;
       const id = player.jet.id;
-      player.specialCooldown = id === 'error' || id === 'f67' ? 9000 : 12000;
+      player.specialCooldown = id === 'kf21' ? 8000 : id === 'error' || id === 'f67' ? 9000 : 12000;
       player.specialTimer = 4500;
       awardAchievement('firstSpecial');
       recordJetMastery('specials');
@@ -3696,6 +3708,25 @@
       } else if (id === 'bomberfleet') {
         shootBomberFleet(player.stats);
         specialBlast('함대 총공격', bombDmg * 1.1, 230, 8, false);
+      } else if (id === 'kf21') {
+        player.inv = Math.max(player.inv, 2300);
+        player.boostTimer = Math.max(player.boostTimer, 5200);
+        enemyBullets = enemyBullets.filter(b => b.y < player.y - 120);
+        for (let i = 0; i < 11; i++) {
+          specialBullet(px + (i - 5) * 7, py + Math.abs(i - 5) * 2, (i - 5) * .052, 13.8, dmg * .98, {
+            r: 4.9,
+            pierce: 2,
+            home: true,
+            homingStrength: .18,
+            homingIndex: i,
+            blast: 22,
+            styleId: 'kf21',
+            shape: 'prism'
+          });
+        }
+        specialBlast('KF-21 코어', bombDmg * 1.15, 245, 7, false);
+        addSpecialShockwave(px, py - 92, 150, '#60a5fa', 650);
+        flash('KF-21 코어');
       } else if (id === 'sr71') {
         player.boostTimer = Math.max(player.boostTimer, 10000);
         player.inv = Math.max(player.inv, 1400);
@@ -5411,57 +5442,51 @@
       } else if (id === 'kf21') {
         const kfSkin = friendly ? equippedSkin(id) : '';
         const kfTier2 = kfSkin.endsWith('skin2');
-        const kfBase = kfSkin ? color : '#8f9aa6';
-        const kfLight = kfTier2 ? '#eef2f7' : '#b8c0c9';
-        const kfDark = kfTier2 ? '#56616f' : '#56616f';
-        const kfLine = kfTier2 ? '#2563eb' : '#334155';
-        ctx.strokeStyle = 'rgba(15,23,42,.28)';
+        const kfBase = kfSkin ? color : '#64748b';
+        const kfLight = kfTier2 ? '#f8fafc' : '#94a3b8';
+        const kfDark = kfTier2 ? '#1e3a8a' : '#1e293b';
+        const kfAccent = kfTier2 ? '#ef4444' : '#60a5fa';
+        const kfTrim = kfTier2 ? '#2563eb' : '#e0f2fe';
+        ctx.strokeStyle = 'rgba(15,23,42,.32)';
         ctx.lineWidth = 1;
+        ctx.fillStyle = shade(kfBase, -.08);
+        poly([[0,-72],[10,-55],[15,-29],[16,7],[11,43],[0,58],[-11,43],[-16,7],[-15,-29],[-10,-55]]);
         ctx.fillStyle = kfBase;
-        poly([[0,-68],[8,-52],[13,-25],[14,12],[9,42],[0,54],[-9,42],[-14,12],[-13,-25],[-8,-52]]);
+        poly([[0,-69],[8,-53],[11,-28],[10,22],[0,51],[-10,22],[-11,-28],[-8,-53]]);
         ctx.fillStyle = kfLight;
-        poly([[0,-64],[6,-49],[9,-18],[8,24],[0,42],[-8,24],[-9,-18],[-6,-49]]);
-        ctx.fillStyle = '#a8b1bb';
-        poly([[-9,-31],[-27,-17],[-16,-8],[-7,-21]]);
-        poly([[9,-31],[27,-17],[16,-8],[7,-21]]);
+        poly([[0,-60],[5,-46],[7,-14],[5,24],[0,39],[-5,24],[-7,-14],[-5,-46]]);
         ctx.fillStyle = kfDark;
-        poly([[-11,-16],[-55,1],[-38,18],[-12,8]]);
-        poly([[11,-16],[55,1],[38,18],[12,8]]);
-        ctx.fillStyle = '#717d89';
-        poly([[-17,-8],[-45,4],[-34,12],[-14,5]]);
-        poly([[17,-8],[45,4],[34,12],[14,5]]);
+        poly([[-13,-20],[-63,-2],[-45,18],[-13,8]]);
+        poly([[13,-20],[63,-2],[45,18],[13,8]]);
+        ctx.fillStyle = shade(kfBase, .18);
+        poly([[-20,-13],[-51,2],[-36,10],[-14,3]]);
+        poly([[20,-13],[51,2],[36,10],[14,3]]);
         ctx.fillStyle = '#111827';
-        poly([[-13,-30],[-26,-18],[-17,-11],[-9,-22]]);
-        poly([[13,-30],[26,-18],[17,-11],[9,-22]]);
+        poly([[-10,-35],[-25,-22],[-16,-14],[-7,-26]]);
+        poly([[10,-35],[25,-22],[16,-14],[7,-26]]);
         ctx.fillStyle = kfDark;
-        poly([[-12,20],[-33,48],[-20,57],[-6,34]]);
-        poly([[12,20],[33,48],[20,57],[6,34]]);
-        ctx.fillStyle = '#384351';
-        poly([[-7,29],[-18,57],[-7,48],[-2,34]]);
-        poly([[7,29],[18,57],[7,48],[2,34]]);
-        ctx.strokeStyle = kfLine;
-        ctx.lineWidth = 1.2;
+        poly([[-10,23],[-38,50],[-22,60],[-6,35]]);
+        poly([[10,23],[38,50],[22,60],[6,35]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[-6,31],[-16,60],[-5,49],[-1,36]]);
+        poly([[6,31],[16,60],[5,49],[1,36]]);
+        ctx.strokeStyle = kfAccent;
+        ctx.lineWidth = 1.25;
         ctx.beginPath();
-        ctx.moveTo(0, -56);
-        ctx.lineTo(0, 38);
-        ctx.moveTo(-10, -12);
-        ctx.lineTo(-42, 5);
-        ctx.moveTo(10, -12);
-        ctx.lineTo(42, 5);
+        ctx.moveTo(0, -57); ctx.lineTo(0, 40);
+        ctx.moveTo(-12, -12); ctx.lineTo(-48, 4);
+        ctx.moveTo(12, -12); ctx.lineTo(48, 4);
+        ctx.moveTo(-8, 25); ctx.lineTo(-29, 48);
+        ctx.moveTo(8, 25); ctx.lineTo(29, 48);
         ctx.stroke();
-        ctx.fillStyle = kfTier2 ? '#ef4444' : '#2563eb';
+        ctx.fillStyle = kfAccent;
         for (const side of [-1, 1]) {
           ctx.beginPath();
-          ctx.arc(side * 31, 8, 3.2, 0, Math.PI * 2);
+          ctx.arc(side * 35, 8, 3.4, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = kfTier2 ? '#2563eb' : '#ef4444';
-          ctx.beginPath();
-          ctx.arc(side * 31, 8, 1.7, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = kfTier2 ? '#ef4444' : '#2563eb';
         }
-        ctx.fillStyle = kfTier2 ? '#ffffff' : '#38bdf8';
-        for (const x of [-9, 9]) ctx.fillRect(x - 1.8, 36, 3.6, 13);
+        ctx.fillStyle = kfTrim;
+        for (const x of [-8, 8]) ctx.fillRect(x - 1.7, 37, 3.4, 15);
       } else if (id === 'f67') {
         ctx.strokeStyle = 'rgba(34,211,238,.35)';
         ctx.lineWidth = 1.5;
@@ -5922,7 +5947,7 @@
       if (id === 'f47') {
         ctx.ellipse(0, -43, 4.6, 14, 0, 0, Math.PI * 2);
       } else if (id === 'kf21') {
-        ctx.ellipse(0, -34, 5.4, 12.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, -36, 5.2, 13, 0, 0, Math.PI * 2);
       } else if (wingBody) {
         ctx.ellipse(0, -10, 9, 5, 0, 0, Math.PI * 2);
       } else if (id === 'b29' || id === 'ww_b29' || id === 'xb70') {
@@ -5942,10 +5967,10 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'kf21' ? [-9, 9] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
-        ctx.ellipse(x, id === 'sr71' ? 42 : 35, 3.2, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'kf21' ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
         ctx.fill();
       }
       if (skin) {
@@ -5975,6 +6000,7 @@
       if (id === 'bomberfleet') return { x: 1, y: 1 };
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
+      if (id === 'kf21') return { x: .98, y: 1.07 };
       if (id === 'b2' || id === 'geomancho') return { x: 1.02, y: 1.04 };
       if (id === 'b117') return { x: .96, y: 1.08 };
       if (id === 'a10') return { x: .92, y: 1.12 };
