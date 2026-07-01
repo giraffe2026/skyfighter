@@ -907,12 +907,11 @@
       { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
       { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
       { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
-      { id: 'namdoongi', name: '남둥이', role: '비밀', color: '#38bdf8', power: 34, hp: 32, shots: 10, fireRate: 74, speed: 8.25, bulletSpeed: 14.8, hitbox: 4, startBombs: 8, hidden: true, special: '기록 없음' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' }
     ];
 
     const retiredJetIds = new Set(['fxx', 'error']);
-    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'namdoongi']);
+    const lastWarExcludedJetIds = new Set(['fxx', 'error']);
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
@@ -1221,7 +1220,7 @@
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
       bomberfleet: ['#142238', '#43d3c4'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
-      namdoongi: ['#38bdf8', '#facc15'], f67: ['#7c3aed', '#22d3ee'],
+      f67: ['#7c3aed', '#22d3ee'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
       ww_bf109: ['#4b5563', '#f97316'], ww_fw190: ['#7c2d12', '#facc15'], ww_fokker: ['#dc2626', '#f8fafc'],
@@ -1269,7 +1268,6 @@
       sr71: [{ name: '블랙버드 레드라인', change: '흑색 동체의 붉은 속도선과 레일탄' }, { name: '블랙버드 마하크라운', change: '왕관형 붉은 표식과 초고속 송곳탄' }],
       yf23: [{ name: '블랙위도우 팬텀', change: '짙은 회색 은폐 도장과 마름모 매복탄' }, { name: '블랙위도우 실버베놈', change: '은색 독니 라인과 넓은 바 탄' }],
       xb70: [{ name: '발키리 백색창공', change: '순백 초음속 도장과 긴 송곳탄' }, { name: '발키리 골드크라운', change: '금색 왕관 패널과 둥근 충격탄' }],
-      namdoongi: [{ name: '남둥이 봉인해제', change: '기록 없음' }, { name: '남둥이 절대비밀', change: '기록 없음' }],
       f67: [{ name: '보이드팰컨 균열핵', change: '보라 균열 장갑과 둥근 공허탄' }, { name: '보이드팰컨 네온공허', change: '청록 네온 회로와 분열 공허탄' }]
     };
 
@@ -1388,8 +1386,8 @@
       jetMastery: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { kills: 0, clears: 0, specials: 0, noDamageClears: 0, clutchClears: 0, endlessScore: 0 }])),
       unlockedSkins: {},
       equippedSkins: {},
-      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, namdoongi: false, f67: false },
-      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, namdoongi: false, f67: false },
+      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false },
+      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, sr71: false, yf23: false, xb70: false, f67: false },
       upgrades: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { power: 0, hp: 0, shots: 0, rate: 0, bomb: 0, bombCount: 0, speed: 0 }]))
     };
 
@@ -2112,7 +2110,6 @@
         sr71: '투사체: 매우 빠른 초고속 관통탄.',
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
         xb70: '투사체: 거대한 초음속 폭발탄.',
-        namdoongi: '투사체: 기록 없음.',
         f67: '투사체: 공허 에너지가 섞인 유도 폭발탄.'
       };
       const wing = isVariableWingJet(id) ? ' 조작: Shift키를 누르면 날개를 접거나 펴서 고속 모드로 바꿀 수 있습니다.' : '';
@@ -2140,7 +2137,6 @@
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
-      namdoongi: ['비밀', '기록 없음.', '기록 없음.'],
       f67: ['공허 사냥꾼', '공허 군단에게 추가 피해를 주고 고성능 폭발탄을 사용한다.', '해금이 늦고 강한 만큼 일반 스테이지 초반용으로는 과하다.']
     };
 
@@ -2525,16 +2521,6 @@
       } else if (secretBuffer.includes('발키리') || normalized === '발키리') {
         secretBuffer = '';
         unlockJet('xb70', '전설 코드 확인. XB-70 발키리를 획득했다.');
-      } else if (secretBuffer.includes('남둥이') || normalized === '남둥이') {
-        secretBuffer = '';
-        if (!unlockJet('namdoongi', '비밀 코드 확인. 남둥이를 획득했다.')) {
-          save.selectedJet = 'namdoongi';
-          tab = 'jets';
-          storeSave();
-          renderUI();
-          flash('SECRET READY');
-          setLog('남둥이는 이미 해금되어 있다.');
-        }
       } else if (secretBuffer.includes('코인은하') || normalized === '코인은하') {
         secretBuffer = '';
         save.coins += 19720000;
@@ -2965,7 +2951,6 @@
         sr71: { spread: 7, angle: .01, r: 3.2, pierce: 2, speedScale: 1.35, sideSpeed: 1.1 },
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
         xb70: { spread: 24, angle: .03, r: 7, blast: 30, speedScale: .86, damageScale: 1.1 },
-        namdoongi: { spread: 10, angle: .06, r: 5.6, pierce: 3, homeAll: true, blast: 26, speedScale: 1.26, damageScale: 1.18 },
         f67: { spread: 12, angle: .07, r: 4.6, homeAll: true, blast: 18, speedScale: 1.15 },
         ww_spitfire: { spread: 8, angle: .022, r: 3.6, speedScale: 1.05 },
         ww_hurricane: { spread: 9, angle: .03, r: 3.7, speedScale: .98 },
@@ -3042,7 +3027,6 @@
         sr71: ['#ef4444', '#fecaca'],
         yf23: ['#94a3b8', '#e2e8f0'],
         xb70: ['#f8fafc', '#fef08a'],
-        namdoongi: ['#38bdf8', '#facc15'],
         f67: ['#22d3ee', '#d8b4fe'],
         ww_camel: ['#d97706', '#78350f'],
         ww_se5a: ['#f59e0b', '#422006'],
@@ -3100,7 +3084,6 @@
         sr71: 'sonicStreak',
         yf23: 'shadowDart',
         xb70: 'valkyrieBomb',
-        namdoongi: 'prism',
         f67: 'voidShard',
         ww_camel: 'biplaneTracer',
         ww_fokker: 'biplaneTracer',
@@ -3146,7 +3129,6 @@
         sr71: [['#ef4444', '#fee2e2', '#0a0d14'], ['#f87171', '#ffffff', '#991b1b']],
         yf23: [['#94a3b8', '#f8fafc', '#1f2937'], ['#e2e8f0', '#ffffff', '#64748b']],
         xb70: [['#f8fafc', '#dbeafe', '#94a3b8'], ['#facc15', '#fff7ed', '#a16207']],
-        namdoongi: [['#38bdf8', '#fef3c7', '#0f172a'], ['#facc15', '#ecfeff', '#0369a1']],
         f67: [['#22d3ee', '#f0abfc', '#581c87'], ['#d8b4fe', '#ecfeff', '#0891b2']],
         ww_camel: [['#c084fc', '#fff7ed', '#78350f'], ['#f59e0b', '#fef3c7', '#7c2d12']],
         ww_spitfire: [['#22c55e', '#ecfccb', '#14532d'], ['#38bdf8', '#eff6ff', '#1d4ed8']],
@@ -3172,7 +3154,7 @@
         f14: ['split', 'diamond'], f15: ['dart', 'split'], fa18: ['bar', 'dot'], f72: ['diamond', 'bar'],
         fxx: ['dot', 'diamond'], b2: ['diamond', 'split'], geomancho: ['bar', 'dot'], error: ['split', 'bar'],
         bomberfleet: ['split', 'diamond'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
-        namdoongi: ['diamond', 'dot'], f67: ['dot', 'split'],
+        f67: ['dot', 'split'],
         ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
         ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
         ww_fokker: ['split', 'diamond'], ww_ki84: ['dart', 'dot'], ww_il2: ['bar', 'dot'], ww_lancaster: ['diamond', 'bar'],
@@ -3200,7 +3182,7 @@
         f14: ['#f8fafc', '#cbd5e1'], f15: ['#60a5fa', '#bfdbfe'], fa18: ['#2dd4bf', '#ccfbf1'], f72: ['#f97316', '#fef08a'],
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
-        namdoongi: ['#38bdf8', '#facc15'], f67: ['#22d3ee', '#d8b4fe'],
+        f67: ['#22d3ee', '#d8b4fe'],
         ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
         ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
         ww_mustang: ['#94a3b8', '#1d4ed8'], ww_yak3: ['#38bdf8', '#1e3a8a'], ww_zero: ['#84cc16', '#7f1d1d'],
@@ -3235,7 +3217,6 @@
         sr71: { body: '#111827', nose: '#ef4444', fin: '#020617', shape: 'needle' },
         yf23: { body: '#94a3b8', nose: '#e2e8f0', fin: '#334155', shape: 'stealth' },
         xb70: { body: '#f8fafc', nose: '#fef08a', fin: '#64748b', shape: 'heavy' },
-        namdoongi: { body: '#38bdf8', nose: '#facc15', fin: '#0f172a', shape: 'prism' },
         f67: { body: '#7c3aed', nose: '#22d3ee', fin: '#312e81', shape: 'void' },
         ww_camel: { body: '#9b7a4d', nose: '#d97706', fin: '#4a2d12', shape: 'slim' },
         ww_se5a: { body: '#8f7a55', nose: '#f59e0b', fin: '#422006', shape: 'slim' },
@@ -3547,7 +3528,7 @@
     function useSpecial() {
       if (!player || player.specialCooldown > 0) return;
       const id = player.jet.id;
-      player.specialCooldown = id === 'namdoongi' ? 6500 : id === 'error' || id === 'f67' ? 9000 : 12000;
+      player.specialCooldown = id === 'error' || id === 'f67' ? 9000 : 12000;
       player.specialTimer = 4500;
       awardAchievement('firstSpecial');
       recordJetMastery('specials');
@@ -3726,26 +3707,6 @@
         flash('블랙위도우 매복');
       } else if (id === 'xb70') {
         bomberSpecialRun(id, '발키리 초음속 폭격', 5, 1.2, 320, { spacing: 50, vy: -3.85, explodeAfter: 420, r: 34 });
-      } else if (id === 'namdoongi') {
-        player.inv = Math.max(player.inv, 4200);
-        player.boostTimer = Math.max(player.boostTimer, 9000);
-        player.shield = Math.max(player.shield, 3);
-        enemyBullets = [];
-        for (let i = 0; i < 15; i++) {
-          specialBullet(px + (i - 7) * 8, py + Math.abs(i - 7) * 3, (i - 7) * .055, 15.8, dmg * 1.08, {
-            r: 5.3,
-            pierce: 4,
-            home: true,
-            homingStrength: .24,
-            homingIndex: i,
-            blast: 34,
-            styleId: 'namdoongi',
-            shape: 'prism'
-          });
-        }
-        specialBlast('비밀 코어', bombDmg * 1.65, 340, 12, false);
-        addSpecialShockwave(px, py - 110, 210, '#38bdf8', 860);
-        flash('비밀 코어');
       } else if (id === 'f67') {
         const beamDmg = player.stats.power * 4.2;
         enemies.forEach(e => { if (Math.abs(e.x - px) < 115) e.hp -= playerDamageAgainst(e, beamDmg); });
@@ -5981,10 +5942,10 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'namdoongi' ? [-9, 9] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
-        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'namdoongi' ? 42 : 35, 3.2, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, id === 'sr71' ? 42 : 35, 3.2, 7, 0, 0, Math.PI * 2);
         ctx.fill();
       }
       if (skin) {
@@ -5992,9 +5953,9 @@
         ctx.fillStyle = skin.endsWith('skin2') ? 'rgba(244,114,182,.72)' : 'rgba(125,211,252,.62)';
         for (const x of exhausts) {
           ctx.beginPath();
-          ctx.moveTo(x - 4, id === 'namdoongi' ? 45 : 38);
-          ctx.lineTo(x, id === 'namdoongi' ? 64 : 59);
-          ctx.lineTo(x + 4, id === 'namdoongi' ? 45 : 38);
+          ctx.moveTo(x - 4, 38);
+          ctx.lineTo(x, 59);
+          ctx.lineTo(x + 4, 38);
           ctx.closePath();
           ctx.fill();
         }
@@ -6019,7 +5980,6 @@
       if (id === 'a10') return { x: .92, y: 1.12 };
       if (id === 'f111' || id === 'f14') return { x: .96, y: 1.1 };
       if (id === 'sr71') return { x: .86, y: 1.14 };
-      if (id === 'namdoongi') return { x: .96, y: 1.06 };
       if (id === 'error' || id === 'fxx' || id === 'f67') return { x: .96, y: 1.08 };
       return { x: .92, y: 1.1 };
     }
