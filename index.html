@@ -2260,7 +2260,7 @@
       if (isWorldWarChapter(source)) return !!source.wwFaction && currentJetPool(source).some(j => j.id === id);
       const jet = jets.find(j => j.id === id);
       if (retiredJetIds.has(id)) return false;
-      return !!jet && (!jet.hidden || source.unlockedJets?.[id]);
+      return !!jet && (!jet.hidden || (source.unlockedJets?.[id] && !source.hiddenSecretJets?.[id]));
     }
 
     function availableJets(source = save) {
@@ -2564,22 +2564,19 @@
       if (!save.unlockedJets) save.unlockedJets = { ...defaultSave.unlockedJets };
       if (!save.hiddenSecretJets) save.hiddenSecretJets = { ...defaultSave.hiddenSecretJets };
       const secretIds = jets.filter(j => !retiredJetIds.has(j.id) && j.hidden && !j.rewardOnly).map(j => j.id);
-      const visibleSecretIds = secretIds.filter(id => save.unlockedJets[id]);
+      const visibleSecretIds = secretIds.filter(id => save.unlockedJets[id] && !save.hiddenSecretJets[id]);
       if (visibleSecretIds.length > 0) {
         visibleSecretIds.forEach(id => {
-          save.unlockedJets[id] = false;
           save.hiddenSecretJets[id] = true;
         });
         if (!isJetAvailable(save.selectedJet)) save.selectedJet = 'f22';
         setLog('비밀 기체를 선택창에서 숨겼다. 버튼을 다시 누르거나 코드를 입력하면 돌아온다.');
       } else {
-        const restoreIds = secretIds.filter(id => save.hiddenSecretJets[id]);
-        const ids = restoreIds.length > 0 ? restoreIds : secretIds;
-        ids.forEach(id => {
-          save.unlockedJets[id] = true;
+        const restoreIds = secretIds.filter(id => save.unlockedJets[id] && save.hiddenSecretJets[id]);
+        restoreIds.forEach(id => {
           save.hiddenSecretJets[id] = false;
         });
-        setLog('숨겨둔 비밀 기체를 다시 선택창에 표시했다.');
+        setLog(restoreIds.length > 0 ? '숨겨둔 비밀 기체를 다시 선택창에 표시했다.' : '다시 표시할 해금된 비밀 기체가 없다. 비밀 기체는 코드를 입력해야 해금된다.');
       }
       storeSave();
       tab = 'jets';
@@ -7755,7 +7752,7 @@
       const secretWindowHint = document.getElementById('secretWindowHint');
       secretWindowHint.classList.toggle('hidden', !save.secretWindowHintSeen);
       secretWindowHint.textContent = '암호 조각은 보이지 않는 창에서만 작동한다.';
-      const hasVisibleSecretJets = jets.some(j => !retiredJetIds.has(j.id) && j.hidden && save.unlockedJets?.[j.id]);
+      const hasVisibleSecretJets = jets.some(j => !retiredJetIds.has(j.id) && j.hidden && !j.rewardOnly && save.unlockedJets?.[j.id] && !save.hiddenSecretJets?.[j.id]);
       document.getElementById('hideSecretJets').textContent = hasVisibleSecretJets ? '비밀 기체 숨기기' : '비밀 기체 다시 보이기';
 
       const jetsEl = document.getElementById('jets');
