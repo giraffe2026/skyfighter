@@ -3836,6 +3836,7 @@
     }
 
     function update(dt, now) {
+      const frameStep = dt / (1000 / 60);
       bgY += dt * (.07 + difficultyStage() * .009);
       if (messageTimer > 0) messageTimer -= dt;
       explosions.forEach(e => { e.life -= dt; e.r += dt * .05; });
@@ -3882,14 +3883,14 @@
         const ty = clamp(touchTarget.y, 48, H - 34);
         const distToTarget = Math.hypot(tx - player.x, ty - player.y);
         horizontalIntent = clamp((tx - player.x) / 80, -1, 1);
-        const step = Math.min(distToTarget, controlSpeed * 1.6);
+        const step = Math.min(distToTarget, controlSpeed * 1.6 * frameStep);
         if (distToTarget > .5) {
           player.x += (tx - player.x) / distToTarget * step;
           player.y += (ty - player.y) / distToTarget * step;
         }
       } else {
-        player.x = clamp(player.x + dx / len * controlSpeed, 24, W - 24);
-        player.y = clamp(player.y + dy / len * controlSpeed, 48, H - 34);
+        player.x = clamp(player.x + dx / len * controlSpeed * frameStep, 24, W - 24);
+        player.y = clamp(player.y + dy / len * controlSpeed * frameStep, 48, H - 34);
       }
       const targetTilt = clamp(horizontalIntent, -1, 1) * .22;
       player.tilt += (targetTilt - player.tilt) * .24;
@@ -3924,7 +3925,7 @@
             const dx = target.x - b.x;
             const dy = target.y - b.y;
             const dist = Math.max(1, Math.hypot(dx, dy));
-            const turn = b.homingStrength || (b.special ? .12 : .055);
+            const turn = Math.min(1, (b.homingStrength || (b.special ? .12 : .055)) * frameStep);
             b.vx += (dx / dist * speed - b.vx) * turn;
             b.vy += (dy / dist * speed - b.vy) * turn;
             const nextSpeed = Math.max(1, Math.hypot(b.vx, b.vy));
@@ -3934,8 +3935,8 @@
         }
         const oldX = b.x;
         const oldY = b.y;
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx * frameStep;
+        b.y += b.vy * frameStep;
         if (b.explodeAfter) {
           b.traveled = (b.traveled || 0) + Math.hypot(b.x - oldX, b.y - oldY);
           if (b.traveled >= b.explodeAfter) detonatePlayerBullet(b);
@@ -3944,15 +3945,17 @@
 
       playerBombs.forEach(b => {
         if (b.dive) {
-          b.x += b.vx || 0;
-          b.y += b.vy;
-          b.traveled += Math.hypot(b.vx || 0, b.vy || 0);
+          const oldX = b.x;
+          const oldY = b.y;
+          b.x += (b.vx || 0) * frameStep;
+          b.y += b.vy * frameStep;
+          b.traveled += Math.hypot(b.x - oldX, b.y - oldY);
           if (b.y >= Math.min(H - 92, player.y - 170) || b.traveled >= b.explodeAfter) detonateBomb(b);
           return;
         }
         const oldY = b.y;
-        b.x += b.vx || 0;
-        b.y += b.vy;
+        b.x += (b.vx || 0) * frameStep;
+        b.y += b.vy * frameStep;
         b.traveled += Math.abs(b.y - oldY);
         if (b.traveled >= b.explodeAfter || b.y < 58) detonateBomb(b);
       });
@@ -3999,8 +4002,8 @@
 
       enemies.forEach(e => {
         e.t += dt;
-        e.y += e.speed;
-        e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1);
+        e.y += e.speed * frameStep;
+        e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1) * frameStep;
         e.fire -= dt;
         if (e.fire <= 0 && e.y > 20) {
           e.fire = Math.max(520, 980 + Math.random() * 720 - difficultyStage() * 24);
@@ -4011,7 +4014,7 @@
       if (boss) {
         boss.t += dt;
         boss.inv = Math.max(0, boss.inv - dt);
-        boss.y += (boss.targetY - boss.y) * .025;
+        boss.y += (boss.targetY - boss.y) * (1 - Math.pow(.975, frameStep));
         const st = difficultyStage();
         if (boss.kind === 'megaTank') {
           boss.x = W / 2 + Math.sin(boss.t / 1450) * 38;
@@ -4046,8 +4049,8 @@
       }
 
       enemyBullets.forEach(b => {
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx * frameStep;
+        b.y += b.vy * frameStep;
       });
 
       handleHits();
@@ -4114,7 +4117,7 @@
 
       pickups.forEach(p => {
         if (!player || mode !== 'play') return;
-        p.y += p.vy;
+        p.y += p.vy * frameStep;
         if (dist(p, player) < 24) {
           p.hit = true;
           if (p.kind === 'boost') {
