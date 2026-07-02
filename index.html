@@ -902,7 +902,7 @@
       { id: 'fxx', name: 'F-XX', role: '비밀 제공기', color: '#d8f4ff', power: 16, hp: 13, shots: 5, fireRate: 112, speed: 6.65, bulletSpeed: 11.8, hitbox: 5, startBombs: 3, hidden: true, special: '기린1972 코드로 해금되는 5연장 고성능기' },
       { id: 'b2', name: 'B-2 스피릿', role: '비밀 스텔스 폭격', color: '#202634', power: 19, hp: 18, shots: 5, fireRate: 205, speed: 5.4, bulletSpeed: 9.4, hitbox: 12, startBombs: 4, hidden: true, special: 'F-16 노데미지 Stage 1 클리어 보상. 스텔스 폭탄 편대를 투하' },
       { id: 'geomancho', name: '검암초', role: '비밀 전익기', color: '#111827', power: 15, hp: 18, shots: 6, fireRate: 112, speed: 5.95, bulletSpeed: 10.8, hitbox: 10, startBombs: 3, hidden: true, special: '검암초 코드로 해금되는 6연장 전익기' },
-      { id: 'error', name: '에러', role: '비밀 변칙기', color: '#a855f7', power: 20, hp: 20, shots: 10, fireRate: 105, speed: 7.8, bulletSpeed: 13.2, hitbox: 4, startBombs: 6, hidden: true, special: '출격마다 능력치가 무작위로 바뀌는 변칙형 전투기. 수치 한계 20' },
+      { id: 'error', name: '에러', role: '비밀 글리치 폭격기', color: '#a855f7', power: 21, hp: 22, shots: 8, fireRate: 122, speed: 6.45, bulletSpeed: 11.7, hitbox: 9, startBombs: 5, hidden: true, special: '404에러 코드로 해금. B-2를 닮은 글리치 전익 폭격기' },
       { id: 'bomberfleet', name: '폭격함대', role: '비밀 총집합 함대', color: '#0f172a', power: 22, hp: 24, shots: 9, fireRate: 118, speed: 5.85, bulletSpeed: 11.4, hitbox: 14, startBombs: 6, hidden: true, special: '총집합 코드로 해금. 모든 전투기가 멋진 배열로 출격하는 함대' },
       { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#64748b', power: 24, hp: 25, shots: 9, fireRate: 110, speed: 6.15, bulletSpeed: 12.1, hitbox: 11, startBombs: 6, hidden: true, special: 'Korean Fighter eXperimental 코드로 해금. 폭격함대보다 조금 강한 단일 차세대 제공기' },
       { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
@@ -911,7 +911,7 @@
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' }
     ];
 
-    const retiredJetIds = new Set(['fxx', 'error']);
+    const retiredJetIds = new Set(['fxx']);
     const lastWarExcludedJetIds = new Set(['fxx', 'error', 'kf21']);
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
@@ -2114,7 +2114,7 @@
         fxx: '투사체: 여러 방향으로 퍼지는 고성능 유도탄.',
         b2: '투사체: 전익 폭격기식 넓은 폭발탄.',
         geomancho: '투사체: 넓은 전익 포화와 일부 유도탄.',
-        error: '투사체: 방향과 위력이 흔들리는 변칙 탄도.',
+        error: '투사체: 깨진 노이즈가 섞인 글리치 폭발탄.',
         bomberfleet: '투사체: 선택창에 보이는 함대 기체들이 각자 자기 탄도를 사용.',
         kf21: '투사체: 푸른 코어 유도탄. 폭격함대보다 조금 강한 단일기 화력과 안정적인 폭발탄을 사용.',
         sr71: '투사체: 매우 빠른 초고속 관통탄.',
@@ -2142,7 +2142,7 @@
       fxx: ['비밀 프리즘 전투기', '고성능 유도탄과 방어막으로 공격과 생존이 모두 강하다.', '해금 전에는 쓸 수 없고 강한 만큼 후반 기준으로 밸런스가 맞춰져 있다.'],
       b2: ['스텔스 전익 폭격기', '강한 폭격과 높은 체력으로 보스전과 정리에 강하다.', '무겁고 연사가 느려 작은 빠른 적을 놓치기 쉽다.'],
       geomancho: ['전익 포화기', '넓은 탄막과 높은 체력으로 전장을 밀어붙인다.', '몸집이 있고 속도가 애매해 촘촘한 탄막에 약하다.'],
-      error: ['변칙 랜덤 캐릭터', '출격마다 능력치가 달라져 말도 안 되는 조합이 나올 수 있다.', '랜덤성이 커서 매번 조작감과 운영법이 달라진다.'],
+      error: ['글리치 전익 폭격기', 'B-2를 닮은 넓은 전익기와 노이즈 폭발탄으로 적을 불안정하게 흔든다.', '폭격함대보다 약하고 화면 장악력은 부족하다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
       kf21: ['차세대 제공기', '폭격함대보다 살짝 높은 기본 성능과 유도 폭발탄으로 보스전과 정리에 모두 강하다.', '단일 기체라 함대처럼 여러 방향을 동시에 덮지는 못한다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
@@ -2519,9 +2519,9 @@
       } else if (secretBuffer.includes('검암초') || normalized === '검암초') {
         secretBuffer = '';
         unlockJet('geomancho', '비밀 코드 확인. 검암초 전투기를 획득했다.');
-      } else if (secretBuffer.includes('에러') || normalized === '에러') {
+      } else if (secretBuffer.includes('404에러') || normalized === '404에러') {
         secretBuffer = '';
-        setLog('에러 기체는 현재 퇴역 처리되어 해금할 수 없다.');
+        unlockJet('error', '비밀 코드 확인. 에러 기체를 획득했다.');
       } else if (secretBuffer.includes('총집합') || normalized === '총집합') {
         secretBuffer = '';
         unlockJet('bomberfleet', '비밀 코드 확인. 폭격함대 카드가 등장했다.');
@@ -2686,7 +2686,7 @@
     function startGame() {
       initAudio();
       const jet = currentJet();
-      const stats = jet.id === 'error' ? randomErrorStats() : jetStats(jet);
+      const stats = jetStats(jet);
       resetBattleState();
       mode = 'play';
       setScreen(mode);
@@ -2707,14 +2707,9 @@
         stats,
         jet
       };
-      if (jet.id === 'error') {
-        const r = stats.errorRoll;
-        setLog(`에러 랜덤 출격: 공격 ${r.power}, 체력 ${r.maxHp}, 탄 ${r.shots}, 연사 ${r.fireStat}, 속도 ${r.speed}, 탄속 ${r.bulletSpeed}, 폭탄 ${r.startBombs}`);
-      } else {
-        const stage = currentStage();
-        const bossName = terrainBossProfile(stage).name;
-        setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격. 보스 ${bossName}를 격파해.`);
-      }
+      const stage = currentStage();
+      const bossName = terrainBossProfile(stage).name;
+      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격. 보스 ${bossName}를 격파해.`);
       if (save.selectedMode === 'tutorial') {
         nextBossTime = 18000;
         setLog('튜토리얼 출격. 이동, 폭탄, 특수기를 연습하고 Training Drone을 격추해.');
@@ -3710,8 +3705,19 @@
         for (let i = 0; i < 10; i++) specialBullet(px, py, (i - 4.5) * .09, 10.8, dmg * .82, { r: 4.6, home: i % 2 === 0, homingStrength: .1, homingIndex: Math.floor(i / 2), blast: 16, shape: 'wingWave' });
         flash('검암초 전익포화');
       } else if (id === 'error') {
-        for (let i = 0; i < 14; i++) specialBullet(px + (Math.random() - .5) * 60, py, (Math.random() - .5) * .55, 9 + Math.random() * 5, dmg * (Math.random() * 1.2 + .5), { r: 3.5 + Math.random() * 3, home: Math.random() < .45, blast: 12 + Math.random() * 24, shape: 'glitch' });
-        flash('에러 난사');
+        enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 110 || b.y < py - 220);
+        bomberSpecialRun(id, '404 글리치 폭격', 4, .98, 265, { spacing: 46, vy: -3.35, explodeAfter: 390, r: 28 });
+        for (let i = 0; i < 8; i++) {
+          specialBullet(px + (i - 3.5) * 11, py + (i % 2) * 6, (i - 3.5) * .08, 12.2, dmg * .7, {
+            r: 4.3,
+            home: i % 2 === 0,
+            homingStrength: .12,
+            homingIndex: i,
+            blast: 18,
+            shape: 'glitch'
+          });
+        }
+        flash('404 글리치 폭격');
       } else if (id === 'bomberfleet') {
         shootBomberFleet(player.stats);
         specialBlast('함대 총공격', bombDmg * 1.1, 230, 8, false);
@@ -5540,22 +5546,32 @@
         ctx.fillStyle = 'rgba(34,211,238,.95)';
         for (const x of [-9, 9]) ctx.fillRect(x - 2, 39, 4, 18);
       } else if (id === 'error') {
-        ctx.fillStyle = color;
-        for (const side of [-1, 1]) {
-          ctx.save();
-          ctx.translate(side * 14, -4);
-          ctx.scale(side, 1);
-          ctx.rotate(wingSweep * .82);
-          ctx.fillStyle = side < 0 ? '#f97316' : '#84cc16';
-          poly([[0,0],[50,14],[8,29],[-4,11]]);
-          ctx.restore();
-        }
-        ctx.fillStyle = color;
-        poly([[0,-63],[16,-32],[28,-4],[20,17],[31,43],[7,30],[0,45],[-7,30],[-31,43],[-20,17],[-28,-4],[-16,-32]]);
+        const glitchA = friendly ? (Math.sin(performance.now() / 110) * 3) : 0;
+        ctx.fillStyle = '#21162f';
+        poly([[glitchA,-53],[26,-27],[79,1],[48,27],[18,15],[0,37],[-18,15],[-48,27],[-79,1],[-26,-27]]);
+        ctx.fillStyle = '#4c1d95';
+        poly([[0,-47],[22,-24],[60,-1],[33,15],[10,7],[0,24],[-10,7],[-33,15],[-60,-1],[-22,-24]]);
+        ctx.fillStyle = '#fb7185';
+        poly([[-54,-5],[-35,1],[-44,13],[-66,5]]);
+        poly([[18,-19],[40,-8],[31,1],[12,-8]]);
         ctx.fillStyle = '#22d3ee';
-        poly([[0,-29],[9,-4],[4,19],[0,27],[-4,19],[-9,-4]]);
-        ctx.fillStyle = '#111827';
-        ctx.fillRect(-7, 20, 14, 18);
+        poly([[49,4],[66,10],[52,19],[36,12]]);
+        poly([[-17,2],[-2,17],[-25,18],[-35,9]]);
+        ctx.strokeStyle = 'rgba(240,171,252,.78)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-76, 2); ctx.lineTo(-41, 10); ctx.lineTo(-18, 2);
+        ctx.moveTo(78, 1); ctx.lineTo(45, 9); ctx.lineTo(15, 0);
+        ctx.moveTo(-10, -26); ctx.lineTo(8, -8); ctx.lineTo(-5, 14); ctx.lineTo(14, 28);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,.75)';
+        for (let i = 0; i < 16; i++) {
+          const px = ((i * 37) % 132) - 66 + (friendly ? Math.sin(performance.now() / 90 + i) * 2 : 0);
+          const py = ((i * 23) % 62) - 24;
+          ctx.fillRect(px, py, i % 3 === 0 ? 4 : 2, 2);
+        }
+        ctx.fillStyle = '#05070b';
+        ctx.fillRect(-43, 8, 86, 5);
       } else if (id === 'sr71') {
         poly([[0,-82],[7,-51],[30,-21],[18,1],[35,25],[9,20],[4,61],[0,48],[-4,61],[-9,20],[-35,25],[-18,1],[-30,-21],[-7,-51]]);
         ctx.fillStyle = '#05070b';
@@ -5940,9 +5956,9 @@
     function drawJetFinish(id, color, friendly) {
       const skin = friendly ? equippedSkin(id) : '';
       const glow = skin ? (skin.endsWith('skin2') ? 'rgba(250,204,21,.95)' : 'rgba(34,211,238,.95)') : friendly ? 'rgba(67,211,196,.85)' : 'rgba(239,68,68,.85)';
-      const glass = id === 'b2' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
+      const glass = id === 'b2' || id === 'error' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
       const longBody = id === 'sr71' || id === 'xb70' || id === 'b29' || id === 'ww_b29';
-      const wingBody = id === 'b2' || id === 'geomancho';
+      const wingBody = id === 'b2' || id === 'error' || id === 'geomancho';
       ctx.save();
 
       ctx.strokeStyle = 'rgba(255,255,255,.22)';
@@ -5977,7 +5993,7 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'kf21' ? [-9, 9] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'error' ? [-28, -9, 9, 28] : id === 'kf21' ? [-9, 9] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
         ctx.ellipse(x, id === 'sr71' ? 42 : id === 'kf21' ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
@@ -6011,7 +6027,7 @@
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'kf21') return { x: .98, y: 1.07 };
-      if (id === 'b2' || id === 'geomancho') return { x: 1.02, y: 1.04 };
+      if (id === 'b2' || id === 'error' || id === 'geomancho') return { x: 1.02, y: 1.04 };
       if (id === 'b117') return { x: .96, y: 1.08 };
       if (id === 'a10') return { x: .92, y: 1.12 };
       if (id === 'f111' || id === 'f14') return { x: .96, y: 1.1 };
