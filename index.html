@@ -1381,6 +1381,7 @@
       lastWarEverUnlocked: false,
       bestEndlessScore: 0,
       secretWindowHintSeen: false,
+      kf21CodeVersion: 0,
       tutorialDone: false,
       achievements: {},
       encounteredEnemies: {},
@@ -1431,6 +1432,7 @@
 
     const PROFILE_STORE_KEY = 'skyfront1949-profiles';
     const PROFILE_CURRENT_KEY = 'skyfront1949-current-profile';
+    const KF21_CODE_VERSION = 1;
 
     let profiles = loadProfiles();
     let currentProfileId = profiles.currentId;
@@ -1755,6 +1757,7 @@
       fixed.coins = Number.isFinite(fixed.coins) ? fixed.coins : 0;
       fixed.bestEndlessScore = Number.isFinite(fixed.bestEndlessScore) ? Math.max(0, Math.round(fixed.bestEndlessScore)) : 0;
       fixed.secretWindowHintSeen = !!fixed.secretWindowHintSeen;
+      fixed.kf21CodeVersion = Number.isFinite(Number(fixed.kf21CodeVersion)) ? Math.max(0, Math.round(Number(fixed.kf21CodeVersion))) : 0;
       fixed.tutorialDone = !!fixed.tutorialDone;
       fixed.chapter = fixed.chapter === 'worldWar' ? 'worldWar' : 'main';
       fixed.wwFaction = fixed.wwFaction === 'axis' ? 'axis' : fixed.wwFaction === 'allies' ? 'allies' : '';
@@ -1778,6 +1781,10 @@
       fixed.selectedStage = clamp(Math.round(fixed.selectedStage || 1), 1, stageLimit);
       fixed.unlockedJets = { ...defaultSave.unlockedJets, ...(fixed.unlockedJets || {}) };
       fixed.hiddenSecretJets = { ...defaultSave.hiddenSecretJets, ...(fixed.hiddenSecretJets || {}) };
+      if (fixed.kf21CodeVersion < KF21_CODE_VERSION) {
+        fixed.unlockedJets.kf21 = false;
+        fixed.hiddenSecretJets.kf21 = false;
+      }
       if (!isJetAvailable(fixed.selectedJet, fixed)) fixed.selectedJet = 'f22';
       if (fixed.chapter === 'worldWar' && fixed.wwFaction && !isJetAvailable(fixed.selectedJet, fixed)) {
         fixed.selectedJet = availableJets(fixed)[0]?.id || (fixed.wwFaction === 'axis' ? 'ww_fokker' : 'ww_camel');
@@ -2520,6 +2527,7 @@
         unlockJet('bomberfleet', '비밀 코드 확인. 폭격함대 카드가 등장했다.');
       } else if (secretStream.includes('koreanfighterexperimental') || secretKey === 'koreanfighterexperimental') {
         secretBuffer = '';
+        save.kf21CodeVersion = KF21_CODE_VERSION;
         unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
       } else if (secretBuffer.includes('블랙버드') || normalized === '블랙버드') {
         secretBuffer = '';
@@ -4052,11 +4060,11 @@
         b.y += b.vy * frameStep;
       });
 
-      handleHits();
+      handleHits(frameStep);
       cleanup();
     }
 
-    function handleHits() {
+    function handleHits(frameStep = 1) {
       if (!player || mode !== 'play') return;
       for (const b of bullets) {
         for (const e of enemies) {
@@ -7717,6 +7725,7 @@
     }
 
     function renderUI() {
+      save = normalizeSave(save);
       reconcileSkinUnlocks();
       const unlockedLastWarOnRender = maybeUnlockLastWar();
       if (unlockedLastWarOnRender) {
