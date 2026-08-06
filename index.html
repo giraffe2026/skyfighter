@@ -399,30 +399,6 @@
       text-align: left;
     }
 
-    #tabSecret {
-      opacity: 0;
-      color: transparent;
-      border-color: transparent;
-      background: transparent;
-    }
-
-    #tabSecret.active,
-    #tabSecret:hover {
-      opacity: 0;
-      color: transparent;
-      border-color: transparent;
-      background: transparent;
-    }
-
-    #secretView {
-      opacity: .18;
-    }
-
-    #secretView:focus-within,
-    #secretView:hover {
-      opacity: .72;
-    }
-
     button {
       appearance: none;
       border: 1px solid rgba(255,255,255,.18);
@@ -779,13 +755,6 @@
           <button class="primary" id="storySkip">확인</button>
         </div>
       </div>
-      <div class="defeat-panel" id="codeHintPanel">
-        <div class="defeat-box">
-          <div class="defeat-title">암호 힌트</div>
-          <div class="defeat-copy" id="codeHintText">암호 조각을 수신했습니다.</div>
-          <button class="primary" id="codeHintOk">확인</button>
-        </div>
-      </div>
     </section>
 
     <aside class="side">
@@ -809,17 +778,6 @@
         <button id="tabStages">스테이지</button>
         <button id="tabShop">업그레이드</button>
         <button id="tabCodex">도감</button>
-        <button id="tabSecret">비밀코드</button>
-      </div>
-
-      <div id="secretView" class="hidden">
-        <div id="secretPanel" class="secret-panel">
-          <input id="secretInput" type="text" autocomplete="off" aria-label="secret code" placeholder="코드 입력">
-          <button id="secretSubmit">확인</button>
-          <button id="hideSecretJets">비밀 기체 숨기기</button>
-        </div>
-        <div class="log">비밀 코드를 입력하면 숨겨진 전투기가 해금됩니다. 숨긴 기체는 코드를 다시 입력하면 돌아옵니다.</div>
-        <div class="log hidden" id="secretWindowHint">암호 조각은 보이지 않는 창에서만 작동한다.</div>
       </div>
 
       <div id="jetsView">
@@ -884,7 +842,8 @@
     const H = canvas.height;
     const VOID_STAGE_END = 20;
     const MAX_STAGE = 30;
-    const MAX_UPGRADE_LEVEL = 12;
+    const MAX_UPGRADE_LEVEL = 5;
+    const upgradeCaps = {};
 
     const jets = [
       { id: 'f22', name: 'F-22 랩터', role: '균형형', color: '#aab7c4', power: 11, hp: 11, shots: 3, fireRate: 125, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '특수기: 강유도 랩터 미사일 3발' },
@@ -898,21 +857,11 @@
       { id: 'f14', name: 'F-14 톰캣', role: '가변익 제공', color: '#b5b6ac', power: 12, hp: 11, shots: 4, fireRate: 138, speed: 6.25, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
       { id: 'f15', name: 'F-15 이글', role: '정통 제공', color: '#8f9da8', power: 13, hp: 11, shots: 3, fireRate: 130, speed: 6.25, bulletSpeed: 11, hitbox: 7, startBombs: 2, special: '높은 총화력의 정통 제공기' },
       { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 균형', color: '#7f93a6', power: 11, hp: 12, shots: 4, fireRate: 142, speed: 6.0, bulletSpeed: 10.4, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
-      { id: 'f72', name: 'F-72 애프터버스트', role: '지연폭발 요격', color: '#f97316', power: 14, hp: 11, shots: 2, fireRate: 168, speed: 6.1, bulletSpeed: 9.8, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
-      { id: 'fxx', name: 'F-XX', role: '비밀 제공기', color: '#d8f4ff', power: 16, hp: 13, shots: 5, fireRate: 112, speed: 6.65, bulletSpeed: 11.8, hitbox: 5, startBombs: 3, hidden: true, special: '기린1972 코드로 해금되는 5연장 고성능기' },
-      { id: 'b2', name: 'B-2 스피릿', role: '비밀 스텔스 폭격', color: '#202634', power: 19, hp: 18, shots: 5, fireRate: 205, speed: 5.4, bulletSpeed: 9.4, hitbox: 12, startBombs: 4, hidden: true, special: 'F-16 노데미지 Stage 1 클리어 보상. 스텔스 폭탄 편대를 투하' },
-      { id: 'geomancho', name: '검암초', role: '비밀 전익기', color: '#111827', power: 15, hp: 18, shots: 6, fireRate: 112, speed: 5.95, bulletSpeed: 10.8, hitbox: 10, startBombs: 3, hidden: true, special: '검암초 코드로 해금되는 6연장 전익기' },
-      { id: 'error', name: '에러', role: '비밀 글리치 폭격기', color: '#a855f7', power: 21, hp: 22, shots: 8, fireRate: 122, speed: 6.45, bulletSpeed: 11.7, hitbox: 9, startBombs: 5, hidden: true, special: '404에러 코드로 해금. B-2를 닮은 글리치 전익 폭격기' },
-      { id: 'bomberfleet', name: '폭격함대', role: '비밀 총집합 함대', color: '#0f172a', power: 22, hp: 24, shots: 9, fireRate: 118, speed: 5.85, bulletSpeed: 11.4, hitbox: 14, startBombs: 6, hidden: true, special: '총집합 코드로 해금. 모든 전투기가 멋진 배열로 출격하는 함대' },
-      { id: 'kf21', name: 'KF-21', role: '비밀 차세대 제공기', color: '#64748b', power: 24, hp: 25, shots: 9, fireRate: 110, speed: 6.15, bulletSpeed: 12.1, hitbox: 11, startBombs: 6, hidden: true, special: 'Korean Fighter eXperimental 코드로 해금. 폭격함대보다 조금 강한 단일 차세대 제공기' },
-      { id: 'sr71', name: 'SR-71 블랙버드', role: '전설 초고속 정찰', color: '#151923', power: 14, hp: 8, shots: 3, fireRate: 86, speed: 8.9, bulletSpeed: 14.2, hitbox: 4, startBombs: 2, hidden: true, special: '블랙버드 코드로 해금. 매우 빠르고 피격 면적이 작은 전설기' },
-      { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '블랙위도우 코드로 해금. 날렵한 고화력 스텔스 전투기' },
-      { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '발키리 코드로 해금. 초음속 대형 폭탄 편대를 투하' },
-      { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 기술 제공기', color: '#6d28d9', power: 23, hp: 20, shots: 7, fireRate: 92, speed: 7.65, bulletSpeed: 13.4, hitbox: 5, startBombs: 5, hidden: true, rewardOnly: true, special: '14스테이지 클리어 보상. 보이드 랜스로 공허 군단에게 추가 데미지' }
+      { id: 'f72', name: 'F-72 애프터버스트', role: '지연폭발 요격', color: '#f97316', power: 14, hp: 11, shots: 2, fireRate: 168, speed: 6.1, bulletSpeed: 9.8, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' }
     ];
 
-    const retiredJetIds = new Set(['fxx']);
-    const lastWarExcludedJetIds = new Set(['fxx', 'error', 'kf21']);
+    const retiredJetIds = new Set();
+    const lastWarExcludedJetIds = new Set();
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
@@ -937,7 +886,7 @@
       { id: 'ww_il2', name: 'Il-2 슈투르모빅', role: '연합국 2차대전 장갑 공격기', color: '#687a58', power: 12, hp: 14, shots: 3, fireRate: 155, speed: 5.35, bulletSpeed: 9.0, hitbox: 11, startBombs: 3, faction: 'allies', era: 2, special: '장갑 로켓 일제사격' },
       { id: 'ww_lancaster', name: '랭커스터 폭격기', role: '연합국 2차대전 중폭격', color: '#5f6f5f', power: 14, hp: 16, shots: 2, fireRate: 240, speed: 4.7, bulletSpeed: 8.1, hitbox: 17, startBombs: 4, faction: 'allies', era: 2, special: '대형 폭탄 3발 투하' },
       { id: 'ww_b17', name: 'B-17 플라잉 포트리스', role: '연합국 2차대전 요새폭격', color: '#8b8f86', power: 13, hp: 17, shots: 3, fireRate: 230, speed: 4.85, bulletSpeed: 8.4, hitbox: 16, startBombs: 4, faction: 'allies', era: 2, special: '요새 폭탄 4발과 방어 사격' },
-      { id: 'ww_b29', name: 'B-29 슈퍼포트리스', role: '연합국 2차대전 중장갑 화력', color: '#c2b28f', power: 16, hp: 17, shots: 2, fireRate: 305, speed: 5.1, bulletSpeed: 8.4, hitbox: 18, startBombs: 4, faction: 'allies', era: 2, special: '2차대전 해금 후 등장. 강화는 세계대전용으로 따로 시작' },
+      { id: 'ww_b29', name: 'B-29 슈퍼포트리스', role: '연합국 2차대전 중장갑 화력', color: '#c2b28f', power: 16, hp: 17, shots: 2, fireRate: 305, speed: 5.1, bulletSpeed: 8.4, hitbox: 18, startBombs: 4, faction: 'allies', era: 2, special: '2차대전 해금 후 등장. 기본 성능으로 출격' },
       { id: 'ww_ju87', name: 'Ju 87 슈투카', role: '추축국 2차대전 급강하폭격', color: '#6f775f', power: 12, hp: 12, shots: 2, fireRate: 190, speed: 5.15, bulletSpeed: 8.8, hitbox: 11, startBombs: 3, faction: 'axis', era: 2, special: '급강하 폭격 탄도' },
       { id: 'ww_he111', name: 'He 111 폭격기', role: '추축국 2차대전 중폭격', color: '#70775f', power: 13, hp: 15, shots: 3, fireRate: 225, speed: 4.95, bulletSpeed: 8.3, hitbox: 15, startBombs: 4, faction: 'axis', era: 2, special: '쌍발 중폭탄 3발 투하' },
       { id: 'ww_me262', name: 'Me 262 슈발베', role: '추축국 2차대전 제트기', color: '#8f9b95', power: 13, hp: 10, shots: 4, fireRate: 118, speed: 7.15, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, faction: 'axis', era: 2, special: '빠른 제트 기관포' }
@@ -1165,6 +1114,10 @@
       { name: '쌍발 공격기', color: '#d98d54', hp: 17, power: 1, shots: 1, speed: 1.16, score: 35, minStage: 1, form: 'twin' },
       { name: '공격헬기', color: '#9dc062', hp: 21, power: 1, shots: 2, speed: .86, score: 45, minStage: 2, form: 'heli' },
       { name: '미사일 차량', color: '#b5966a', hp: 27, power: 2, shots: 1, speed: .66, score: 55, minStage: 2, ground: true, form: 'launcher' },
+      { name: '전선 탱크', color: '#7d8f67', hp: 24, power: 1, shots: 1, speed: .58, score: 50, minStage: 2, ground: true, terrain: 'land', form: 'tank' },
+      { name: '해상 초계정', color: '#5f8fa8', hp: 25, power: 1, shots: 1, speed: .62, score: 55, minStage: 3, ground: true, terrain: 'sea', form: 'gunboat' },
+      { name: '기동 항공모함', color: '#6b7280', hp: 2600, power: 2, shots: 2, speed: .26, score: 5200, minStage: 3, ground: true, terrain: 'sea', carrier: true, form: 'escortCarrier' },
+      { name: '함재 요격기', color: '#94a3b8', hp: 13, power: 1, shots: 1, speed: 2.05, score: 28, minStage: 1, carrierOnly: true, form: 'carrierFighter' },
       { name: '드론 편대', color: '#d7d7df', hp: 11, power: 1, shots: 2, speed: 1.9, score: 42, minStage: 3, form: 'drone' },
       { name: '스텔스기', color: '#515a72', hp: 24, power: 1, shots: 2, speed: 2.22, score: 70, minStage: 4, form: 'stealth' },
       { name: '중형 폭격기', color: '#986c8f', hp: 46, power: 3, shots: 3, speed: .78, score: 120, minStage: 5, form: 'bomber' },
@@ -1281,22 +1234,8 @@
       if (skinStyles[id]?.[tier - 1]?.change) return skinStyles[id][tier - 1].change;
       const jetName = [...jets, ...worldWarJets].find(j => j.id === id)?.name || '기체';
       return tier === 2
-        ? `${jetName} 전용 고채도 도장, 다른 장식 패턴, 강화된 발사체 모양`
+        ? `${jetName} 전용 고채도 도장, 다른 장식 패턴, 전용 발사체 모양`
         : `${jetName} 전용 도장, 고유 장식 패턴, 전용 발사체 색상`;
-    }
-
-    function skinCodeAliases(id, tier) {
-      const jet = jets.find(j => j.id === id);
-      const label = jetSkinLabel(id, tier);
-      const compactName = String(jet?.name || id).replace(/\s/g, '');
-      return [
-        `${id}스킨${tier}`,
-        `${id}-skin${tier}`,
-        `${compactName}스킨${tier}`,
-        `${compactName}${label}`,
-        `${label}${tier}`,
-        label
-      ].map(v => String(v).replace(/\s/g, '').toLowerCase());
     }
 
     function skinConditionText(id, tier) {
@@ -1389,22 +1328,14 @@
       jetMastery: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { kills: 0, clears: 0, specials: 0, noDamageClears: 0, clutchClears: 0, endlessScore: 0 }])),
       unlockedSkins: {},
       equippedSkins: {},
-      unlockedJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, kf21: false, sr71: false, yf23: false, xb70: false, f67: false },
-      hiddenSecretJets: { fxx: false, b2: false, geomancho: false, error: false, bomberfleet: false, kf21: false, sr71: false, yf23: false, xb70: false, f67: false },
+      unlockedJets: {},
+      hiddenSecretJets: {},
       upgrades: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { power: 0, hp: 0, shots: 0, rate: 0, bomb: 0, bombCount: 0, speed: 0 }]))
     };
 
-    const secretLeaks = [
-      '암호 조각: 마하 3의 검은 새는 "블랙버드"라고 불렸다.',
-      '암호 조각: F-22의 그림자 속 경쟁자는 "블랙위도우"다.',
-      '암호 조각: 하늘을 찢는 백색 폭격기의 이름은 "발키리"다.',
-      '암호 조각: 모든 기체가 모이는 작전명은 "총집합"이다.'
-    ];
+    const secretLeaks = [];
 
-    const normalStageSecretHints = {
-      2: '암호 조각: 검은 전익 폭격기 설계명은 "B-2"다.',
-      3: '암호 조각: 제작자의 학교 이름인 비행기가 있다고 합니다...'
-    };
+    const normalStageSecretHints = {};
 
     const scoreSecretMilestones = [4000, 9000, 15000, 25000, 40000];
 
@@ -1437,6 +1368,7 @@
     let profiles = loadProfiles();
     let currentProfileId = profiles.currentId;
     let save = loadSave();
+    storeSave();
     let accountGateOpen = true;
     let contextProfileId = null;
     let mode = 'menu';
@@ -1473,13 +1405,11 @@
     let bgmStep = 0;
     let bgmNextAt = 0;
     let bgmKey = '';
-    let secretBuffer = '';
     let secretHintIndex = 0;
-    let pendingCodeHints = [];
-    let codeHintOpen = false;
     let inputMode = 'keyboard';
     let touchTarget = null;
     let storyAction = null;
+    let resultStage = null;
 
     function setInputMode(nextMode) {
       inputMode = nextMode;
@@ -1781,10 +1711,6 @@
       fixed.selectedStage = clamp(Math.round(fixed.selectedStage || 1), 1, stageLimit);
       fixed.unlockedJets = { ...defaultSave.unlockedJets, ...(fixed.unlockedJets || {}) };
       fixed.hiddenSecretJets = { ...defaultSave.hiddenSecretJets, ...(fixed.hiddenSecretJets || {}) };
-      if (fixed.kf21CodeVersion < KF21_CODE_VERSION) {
-        fixed.unlockedJets.kf21 = false;
-        fixed.hiddenSecretJets.kf21 = false;
-      }
       if (!isJetAvailable(fixed.selectedJet, fixed)) fixed.selectedJet = 'f22';
       if (fixed.chapter === 'worldWar' && fixed.wwFaction && !isJetAvailable(fixed.selectedJet, fixed)) {
         fixed.selectedJet = availableJets(fixed)[0]?.id || (fixed.wwFaction === 'axis' ? 'ww_fokker' : 'ww_camel');
@@ -1988,9 +1914,9 @@
       document.getElementById('storyText').textContent = text;
     }
 
-    function stageStoryText(part) {
-      if (isWorldWarChapter()) return worldWarStoryText(save.wwFaction || 'allies', save.selectedStage, part);
-      const key = save.selectedMode === 'endless' ? 'endless' : save.selectedStage;
+    function stageStoryText(part, stage = currentStage(), modeName = save.selectedMode, faction = save.wwFaction || 'allies') {
+      if (stage?.worldWar || isWorldWarChapter()) return worldWarStoryText(faction, stage?.id || save.selectedStage, part, stage);
+      const key = modeName === 'endless' ? 'endless' : stage?.id;
       return stageStories[key]?.[part] || stageStories.endless[part];
     }
 
@@ -2017,7 +1943,7 @@
       { before: '새로운 종결 작전이 시작된다. 이번 목표는 승리의 선언이 아니라, 더 오래 끌 수 없는 전쟁의 지휘 체계를 끝내는 것이다.', after: '마지막 지휘망이 끊겼다. 하늘은 완전히 조용하지 않지만, 더 이상 같은 명령이 반복되지는 않는다.', fail: '종결 작전은 실패했다. 낡은 명령이 다시 송신되고, 편대는 마지막 임무를 다시 준비한다.' }
     ];
 
-    function worldWarStoryText(faction, stageId, part) {
+    function worldWarStoryText(faction, stageId, part, stage = currentStage()) {
       if (faction === 'axis') {
         const beat = axisWorldWarStoryBeats[clamp(stageId, 1, axisWorldWarStoryBeats.length) - 1];
         return beat?.[part] || beat?.before;
@@ -2025,7 +1951,7 @@
       const side = worldWarFactionLabel(faction);
       const enemy = worldWarFactionLabel(faction === 'axis' ? 'allies' : 'axis');
       const era = stageId <= 10 ? '1차대전' : '2차대전';
-      const place = currentStage().name;
+      const place = stage?.name || currentStage().name;
       const text = {
         before: `${era} ${side} 편대로 출격한다. ${place} 상공의 전선이 흔들리고 있으며, ${enemy} 항공대가 보급로와 지상 부대를 동시에 압박하고 있다. 제공권을 확보하고 아군의 진격로를 열어라.`,
         after: `${place} 작전 성공. ${side} 편대가 상공을 장악하면서 보급로가 다시 열렸고, ${enemy}의 다음 방어선도 크게 흔들리기 시작했다.`,
@@ -2035,18 +1961,18 @@
     }
 
     function jetStats(jet) {
-      const up = save.upgrades[jet.id];
-      const shots = jet.shots + Math.floor(up.shots / 2);
-      const power = jet.power + up.power;
+      const up = save.upgrades?.[jet.id] || {};
+      const shots = jet.shots + Math.floor((up.shots || 0) / 2);
+      const power = jet.power + (up.power || 0);
       return {
         power,
         shotPower: Math.max(.6, power / shots),
-        maxHp: jet.hp + up.hp * 2,
+        maxHp: jet.hp + (up.hp || 0) * 2,
         shots,
-        fireRate: Math.max(70, jet.fireRate - up.rate * 16),
-        bomb: 120 + up.bomb * 45,
+        fireRate: Math.max(70, jet.fireRate - (up.rate || 0) * 16),
+        bomb: 120 + (up.bomb || 0) * 45,
         startBombs: (jet.startBombs || 1) + (up.bombCount || 0),
-        speed: jet.speed + up.speed * .22,
+        speed: jet.speed + (up.speed || 0) * .22,
         bulletSpeed: jet.bulletSpeed,
         hitbox: jet.hitbox
       };
@@ -2083,13 +2009,17 @@
       if (!player) return null;
       const boosted = player.boostTimer > 0;
       const wingBoost = isVariableWingJet(player.jet.id) ? (player.wingSweep || 0) : 0;
+      const fieldPower = player.fieldPower || 0;
+      const shots = player.stats.shots + fieldPower;
+      const powerScale = 1 + fieldPower * .18;
       return {
         ...player.stats,
-        power: player.stats.power * (boosted ? 1.35 : 1),
-        shotPower: player.stats.shotPower * (boosted ? 1.35 : 1),
-        fireRate: player.stats.fireRate * (boosted ? .78 : 1),
+        shots,
+        power: player.stats.power * powerScale * (boosted ? 1.35 : 1),
+        shotPower: Math.max(.55, player.stats.power * powerScale / shots) * (boosted ? 1.35 : 1),
+        fireRate: player.stats.fireRate * Math.pow(.94, fieldPower) * (boosted ? .78 : 1),
         speed: player.stats.speed * (boosted ? 1.22 : 1) * (1 + wingBoost * .7),
-        bulletSpeed: player.stats.bulletSpeed * (boosted ? 1.18 : 1)
+        bulletSpeed: (player.stats.bulletSpeed + fieldPower * .25) * (boosted ? 1.18 : 1)
       };
     }
 
@@ -2127,7 +2057,7 @@
     }
 
     const jetCharacterProfiles = {
-      f22: ['올라운더 에이스', '어떤 상황에서도 안정적이고 유도 미사일 특수기로 위기 대응이 좋다.', '최고 화력이나 최고 속도는 아니라 극후반에는 업그레이드 의존도가 있다.'],
+      f22: ['올라운더 에이스', '어떤 상황에서도 안정적이고 유도 미사일 특수기로 위기 대응이 좋다.', '최고 화력이나 최고 속도는 아니라 극후반에는 조심스러운 회피가 필요하다.'],
       f35: ['락온 스페셜리스트', '유도 성능과 탄 정밀도가 좋아 움직이는 적을 잡기 편하다.', '기본 체력과 순간 화력이 애매해서 난전에서는 조심해야 한다.'],
       f111: ['관통 돌파형', '두꺼운 적과 보스에게 강한 관통탄을 꽂아 넣는다.', '연사가 느리고 방향 전환이 둔해서 탄막 회피가 어렵다.'],
       b117: ['은밀 폭격수', '폭탄과 특수 폭격으로 넓은 지역을 정리하기 좋다.', '기체가 무겁고 탄속이 느려 빠른 적에게 약하다.'],
@@ -2175,10 +2105,7 @@
     }
 
     function allLastWarUpgradesMaxed(source = save) {
-      return lastWarEligibleJets().every(j => {
-        const up = source.upgrades?.[j.id] || {};
-        return upgradeKeys.every(key => (up[key] || 0) >= upgradeMaxLevel(key));
-      });
+      return true;
     }
 
     function lastWarRequirementJetLabel(j, source = save) {
@@ -2189,13 +2116,7 @@
       const missingJets = lastWarEligibleJets()
         .filter(j => j.hidden && !source.unlockedJets?.[j.id])
         .map(j => lastWarRequirementJetLabel(j, source));
-      const missingUpgrades = lastWarEligibleJets()
-        .map(j => {
-          const up = source.upgrades?.[j.id] || {};
-          const missing = upgradeKeys.filter(key => (up[key] || 0) < upgradeMaxLevel(key));
-          return missing.length ? `${lastWarRequirementJetLabel(j, source)} ${missing.length}개` : '';
-        })
-        .filter(Boolean);
+      const missingUpgrades = [];
       return {
         stageDone: (source.unlockedStage || 1) >= VOID_STAGE_END,
         jetsDone: missingJets.length === 0,
@@ -2292,10 +2213,6 @@
       setLog(unlockedLastWar ? `${text} THE LAST WAR가 해금됐다. Stage 21이 열렸다.` : text);
       renderUI();
       return true;
-    }
-
-    function secretLeak(index = secretHintIndex++) {
-      return secretLeaks[((index % secretLeaks.length) + secretLeaks.length) % secretLeaks.length];
     }
 
     function addScore(points) {
@@ -2423,181 +2340,13 @@
     }
 
     function checkScoreSecrets() {
-      if (save.selectedMode !== 'endless') return false;
-      let hinted = false;
-      while (scoreSecretIndex < scoreSecretMilestones.length && score >= scoreSecretMilestones[scoreSecretIndex]) {
-        const need = scoreSecretMilestones[scoreSecretIndex];
-        const hint = secretLeak(scoreSecretIndex);
-        revealSecretWindowHint();
-        setLog(`${need}점 달성. ${hint}`);
-        queueCodeHint(`${need}점 달성`, hint);
-        scoreSecretIndex += 1;
-        hinted = true;
-      }
-      return hinted;
-    }
-
-    function queueCodeHint(title, text) {
-      pendingCodeHints.push({ title, text });
-      if (!codeHintOpen) showNextCodeHint();
-    }
-
-    function revealSecretWindowHint() {
-      if (save) {
-        save.secretWindowHintSeen = true;
-        storeSave();
-      }
-      const el = document.getElementById('secretWindowHint');
-      if (!el) return;
-      el.classList.remove('hidden');
-      el.textContent = '암호 조각은 보이지 않는 창에서만 작동한다.';
-    }
-
-    function showNextCodeHint() {
-      if (!pendingCodeHints.length) {
-        codeHintOpen = false;
-        document.getElementById('codeHintPanel').classList.remove('visible');
-        if (mode === 'play') paused = false;
-        return;
-      }
-      const hint = pendingCodeHints.shift();
-      codeHintOpen = true;
-      paused = true;
-      flash('암호 힌트');
-      document.getElementById('codeHintText').innerHTML = `<b>${escapeHtml(hint.title)}</b><br>${escapeHtml(hint.text)}<br><br>${escapeHtml('암호 조각은 보이지 않는 창에서만 작동한다.')}`;
-      document.getElementById('codeHintPanel').classList.add('visible');
-    }
-
-    function closeCodeHint() {
-      document.getElementById('codeHintPanel').classList.remove('visible');
-      showNextCodeHint();
-    }
-
-    function unlockSkinByCode(text) {
-      const code = String(text || '').replace(/\s/g, '').toLowerCase();
-      if (!code) return false;
-      for (const jet of jets) {
-        if (retiredJetIds.has(jet.id)) continue;
-        for (const tier of [1, 2]) {
-          if (!skinCodeAliases(jet.id, tier).includes(code)) continue;
-          const skinId = `${jet.id}-skin${tier}`;
-          if (!save.unlockedSkins) save.unlockedSkins = {};
-          if (!save.equippedSkins) save.equippedSkins = {};
-          save.unlockedSkins[skinId] = true;
-          let suffix = '';
-          if (isJetAvailable(jet.id)) {
-            save.equippedSkins[jet.id] = skinId;
-            save.selectedJet = jet.id;
-            suffix = ' 바로 장착했다.';
-          } else {
-            suffix = ' 기체를 해금하면 장착할 수 있다.';
-          }
-          storeSave();
-          renderUI();
-          flash('SKIN UNLOCK');
-          setLog(`비밀 스킨 코드 확인. ${jet.name} ${jetSkinLabel(jet.id, tier)} 지급.${suffix}`);
-          return true;
-        }
-      }
       return false;
     }
 
-    function handleSecretInput(text) {
-      if (mode !== 'menu' || !text) return;
-      const normalized = String(text).replace(/\s/g, '').replace('ㄱㅣ린', '기린');
-      secretBuffer = (secretBuffer + normalized).slice(-48);
-      const secretKey = normalized.toLowerCase();
-      const secretStream = secretBuffer.toLowerCase();
-      if (unlockSkinByCode(normalized)) {
-        secretBuffer = '';
-      } else if (secretBuffer.includes('기린1972') || normalized === '기린1972') {
-        secretBuffer = '';
-        setLog('F-XX는 현재 퇴역 처리되어 해금할 수 없다.');
-      } else if (secretBuffer.includes('B-2') || secretBuffer.includes('b2') || normalized === 'B-2' || normalized.toLowerCase() === 'b2') {
-        secretBuffer = '';
-        unlockJet('b2', '비밀 코드 확인. B-2 전투기를 획득했다.');
-      } else if (secretBuffer.includes('검암초') || normalized === '검암초') {
-        secretBuffer = '';
-        unlockJet('geomancho', '비밀 코드 확인. 검암초 전투기를 획득했다.');
-      } else if (secretBuffer.includes('404에러') || normalized === '404에러') {
-        secretBuffer = '';
-        unlockJet('error', '비밀 코드 확인. 에러 기체를 획득했다.');
-      } else if (secretBuffer.includes('총집합') || normalized === '총집합') {
-        secretBuffer = '';
-        unlockJet('bomberfleet', '비밀 코드 확인. 폭격함대 카드가 등장했다.');
-      } else if (secretStream.includes('koreanfighterexperimental') || secretKey === 'koreanfighterexperimental') {
-        secretBuffer = '';
-        save.kf21CodeVersion = KF21_CODE_VERSION;
-        unlockJet('kf21', '비밀 코드 확인. KF-21을 획득했다.');
-      } else if (secretBuffer.includes('블랙버드') || normalized === '블랙버드') {
-        secretBuffer = '';
-        unlockJet('sr71', '전설 코드 확인. SR-71 블랙버드를 획득했다.');
-      } else if (secretBuffer.includes('블랙위도우') || normalized === '블랙위도우') {
-        secretBuffer = '';
-        unlockJet('yf23', '전설 코드 확인. YF-23 블랙위도우를 획득했다.');
-      } else if (secretBuffer.includes('발키리') || normalized === '발키리') {
-        secretBuffer = '';
-        unlockJet('xb70', '전설 코드 확인. XB-70 발키리를 획득했다.');
-      } else if (secretBuffer.includes('코인은하') || normalized === '코인은하') {
-        secretBuffer = '';
-        save.coins += 19720000;
-        storeSave();
-        renderUI();
-        flash('COIN GALAXY');
-        setLog('비밀 코드 확인. 코인 +19720000 지급.');
-      } else if (secretBuffer.includes('100%') || normalized === '100%') {
-        secretBuffer = '';
-        save.chapter = 'main';
-        save.wwFaction = '';
-        save.selectedMode = 'stage';
-        save.lastWarUnlocked = true;
-        save.lastWarEverUnlocked = true;
-        save.unlockedStage = MAX_STAGE;
-        save.wwUnlockedStage = { allies: 20, axis: 20 };
-        save.selectedStage = MAX_STAGE;
-        storeSave();
-        renderUI();
-        flash('ALL STAGES');
-        setLog('비밀 코드 확인. 모든 스테이지가 해금됐다.');
-      } else {
-        setLog('비밀 암호 조각은 전투 점수를 올리면 하나씩 수신된다.');
-      }
-    }
-
-    function submitSecretCode() {
-      const input = document.getElementById('secretInput');
-      handleSecretInput(input.value);
-      input.value = '';
-    }
-
-    function hideSecretJets() {
-      if (!save.unlockedJets) save.unlockedJets = { ...defaultSave.unlockedJets };
-      if (!save.hiddenSecretJets) save.hiddenSecretJets = { ...defaultSave.hiddenSecretJets };
-      const secretIds = jets.filter(j => !retiredJetIds.has(j.id) && j.hidden && !j.rewardOnly).map(j => j.id);
-      const visibleSecretIds = secretIds.filter(id => save.unlockedJets[id] && !save.hiddenSecretJets[id]);
-      if (visibleSecretIds.length > 0) {
-        visibleSecretIds.forEach(id => {
-          save.hiddenSecretJets[id] = true;
-        });
-        if (!isJetAvailable(save.selectedJet)) save.selectedJet = 'f22';
-        setLog('비밀 기체를 선택창에서 숨겼다. 버튼을 다시 누르거나 코드를 입력하면 돌아온다.');
-      } else {
-        const restoreIds = secretIds.filter(id => save.unlockedJets[id] && save.hiddenSecretJets[id]);
-        restoreIds.forEach(id => {
-          save.hiddenSecretJets[id] = false;
-        });
-        setLog(restoreIds.length > 0 ? '숨겨둔 비밀 기체를 다시 선택창에 표시했다.' : '다시 표시할 해금된 비밀 기체가 없다. 비밀 기체는 코드를 입력해야 해금된다.');
-      }
-      storeSave();
-      tab = 'jets';
-      renderUI();
-    }
-
     function setTab(nextTab) {
+      if (nextTab === 'secret') nextTab = 'jets';
       tab = nextTab;
-      if (tab !== 'secret') document.getElementById('secretInput').value = '';
       renderUI();
-      if (tab === 'secret') document.getElementById('secretInput').focus();
     }
 
     function enterWorldWarChapter() {
@@ -2647,10 +2396,18 @@
       return list.find(s => s.id === save.selectedStage) || list[0];
     }
 
+    function visibleStage() {
+      return (mode === 'story' || mode === 'clear' || mode === 'defeat') && resultStage ? resultStage : currentStage();
+    }
+
     function difficultyStage() {
       if (save.selectedMode === 'tutorial') return 1;
       if (save.selectedMode !== 'endless') return save.selectedStage;
       return clamp(1 + Math.floor(stageTime / 45000), 1, currentMaxStage());
+    }
+
+    function fieldPowerMax(stageId = difficultyStage()) {
+      return Math.min(9, 3 + Math.floor((Math.max(1, stageId) - 1) / 3) * 2);
     }
 
     function resetBattleState() {
@@ -2675,10 +2432,7 @@
       paused = false;
       messageTimer = 0;
       tutorialTipIndex = -1;
-      pendingCodeHints = [];
-      codeHintOpen = false;
       stopBgm();
-      document.getElementById('codeHintPanel').classList.remove('visible');
       keys = {};
       touchTarget = null;
     }
@@ -2689,6 +2443,7 @@
       const stats = jetStats(jet);
       resetBattleState();
       mode = 'play';
+      resultStage = null;
       setScreen(mode);
       player = {
         x: W / 2,
@@ -2699,6 +2454,8 @@
         specialCooldown: 0,
         specialTimer: 0,
         shield: 0,
+        fieldPower: 0,
+        powerDropPity: 0,
         wingSwept: false,
         wingSweep: 0,
         tilt: 0,
@@ -2721,6 +2478,8 @@
 
     function completeStage() {
       const stage = currentStage();
+      resultStage = stage;
+      const storyAfter = stageStoryText('after', stage, save.selectedMode, save.wwFaction || 'allies');
       const reward = stage.reward + Math.floor(score / 25);
       const rewards = [`코인 +${reward}`];
       if (player?.jet?.id) {
@@ -2735,7 +2494,7 @@
         save.selectedStage = 1;
         storeSave();
         stopBgm();
-        showStory('튜토리얼 완료', '기본 비행 훈련을 완료했습니다. 이제 격납고에서 기체와 업그레이드를 확인하고 정식 작전에 출격할 수 있습니다.', () => {
+        showStory('튜토리얼 완료', '기본 비행 훈련을 완료했습니다. 이제 격납고에서 기체를 확인하고 정식 작전에 출격할 수 있습니다.', () => {
           mode = 'clear';
           setScreen(mode);
           paused = false;
@@ -2746,8 +2505,6 @@
         });
         return;
       }
-      const unlockB2 = stage.id === 1 && player && player.jet.id === 'f16' && !player.tookDamage && !save.unlockedJets?.b2;
-      const unlockF67 = stage.id === 14 && !save.unlockedJets?.f67;
       save.coins += reward;
       if (isWorldWarChapter()) {
         const faction = save.wwFaction || 'allies';
@@ -2772,30 +2529,17 @@
         save.selectedStage = Math.min(stage.id + 1, save.unlockedStage);
         rewards.push(`다음 출격: Stage ${save.selectedStage} 자동 선택`);
       }
-      if (!isWorldWarChapter() && unlockB2) {
-        if (!save.unlockedJets) save.unlockedJets = { ...defaultSave.unlockedJets };
-        save.unlockedJets.b2 = true;
-        rewards.push('B-2 전투기 해금');
-      }
       if (!isWorldWarChapter() && stage.id === 1 && player && !player.tookDamage) {
         if (awardAchievement('noDamageStage1')) rewards.push('업적: 완벽한 첫 출격');
       }
       if (!isWorldWarChapter() && stage.id === 14) {
         if (awardAchievement('stage9Clear')) rewards.push('업적: 공허 기술 회수');
       }
-      if (!isWorldWarChapter() && unlockF67) {
-        if (!save.unlockedJets) save.unlockedJets = { ...defaultSave.unlockedJets };
-        if (!save.hiddenSecretJets) save.hiddenSecretJets = { ...defaultSave.hiddenSecretJets };
-        save.unlockedJets.f67 = true;
-        save.hiddenSecretJets.f67 = false;
-        rewards.push('F-67 보이드팰컨 해금');
-      }
       const unlockedLastWar = maybeUnlockLastWar();
       if (unlockedLastWar) rewards.push('THE LAST WAR 해금: Stage 21 개방');
-      if (!isWorldWarChapter() && normalStageSecretHints[stage.id]) rewards.push(normalStageSecretHints[stage.id]);
       storeSave();
       stopBgm();
-      showStory('작전 결과', stageStoryText('after'), () => {
+      showStory('작전 결과', storyAfter, () => {
         mode = 'clear';
         setScreen(mode);
         paused = false;
@@ -2807,6 +2551,9 @@
 
     function gameOver() {
       if (mode === 'defeat' || mode === 'story') return;
+      const stage = currentStage();
+      resultStage = stage;
+      const storyFail = stageStoryText('fail', stage, save.selectedMode, save.wwFaction || 'allies');
       stopBgm();
       const endlessBonus = save.selectedMode === 'endless';
       const defeatBonus = endlessBonus ? Math.floor(score / 2) : 0;
@@ -2831,7 +2578,7 @@
       if (player) player.dead = true;
       flash('DESTROYED');
       renderUI();
-      showStory('작전 실패', stageStoryText('fail'), () => {
+      showStory('작전 실패', storyFail, () => {
         mode = 'defeat';
         setScreen(mode);
         document.getElementById('defeatCopy').innerHTML = endlessBonus
@@ -2847,24 +2594,62 @@
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
-      const pool = currentEnemyList().filter(e => e.minStage <= st && (ww ? true : lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift')));
-      const type = pool[Math.floor(Math.random() * pool.length)];
+      const terrain = bossTerrainForStage(currentStage());
+      const basePool = currentEnemyList().filter(e => {
+        if (e.minStage > st) return false;
+        if (e.carrierOnly) return false;
+        if (e.terrain && e.terrain !== terrain) return false;
+        if (ww) return true;
+        return lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift');
+      });
+      const pool = basePool.flatMap(e => {
+        if (terrain === 'land' && e.form === 'tank') return [e, e, e, e, e];
+        if (terrain === 'sea' && e.form === 'gunboat') return [e, e, e];
+        return [e];
+      });
+      const carrierType = basePool.find(e => e.form === 'escortCarrier');
+      const type = terrain === 'sea' && carrierType && Math.random() < .1 ? carrierType : pool[Math.floor(Math.random() * pool.length)];
       markEnemyEncounter(type.form);
-      const scale = ww ? 1.08 + (st - 1) * .068 : lastWarStage ? 1.18 + (st - VOID_STAGE_END) * .04 : voidStage ? 1.18 + (st - 11) * .055 : 1 + (st - 1) * .075;
+      const scale = ww ? 1 + (st - 1) * .045 : lastWarStage ? 1.08 + (st - VOID_STAGE_END) * .03 : voidStage ? 1.08 + (st - 11) * .04 : .9 + (st - 1) * .05;
+      const hpTone = ww ? .86 : lastWarStage ? .9 : voidStage ? .86 : .78;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
+      const hpValue = type.carrier ? Math.round(type.hp * (1.35 + st * .18)) : Math.max(3, Math.round(type.hp * scale * hpTone));
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
         y: -35,
-        hp: Math.round(type.hp * scale),
-        maxHp: Math.round(type.hp * scale),
-        power: Math.max(1, type.power + (ww ? Math.floor(st / 8) : lastWarStage ? Math.floor((st - VOID_STAGE_END) / 5) : st >= 16 ? 1 : 0)),
-        shots: type.shots + (ww && st >= 18 && !/Biplane/.test(type.form) ? 1 : 0),
+        hp: hpValue,
+        maxHp: hpValue,
+        power: Math.max(1, type.power),
+        shots: Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
         speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: 1060 + Math.random() * 1150 - (ww ? st * 24 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 22 : st * 18),
+        fire: 1320 + Math.random() * 1300 - (ww ? st * 12 : lastWarStage ? (st - VOID_STAGE_END) * 10 : voidStage ? (st - 10) * 12 : st * 9),
+        launch: type.carrier ? 1600 : 0,
         t: 0,
-        r: largeEnemy ? 13 : type.ground ? 18 : 15
+        r: type.carrier ? 58 : largeEnemy ? 13 : type.ground ? 18 : 15
       });
+    }
+
+    function launchCarrierFighter(carrier, side = 1) {
+      const type = enemyTypes.find(e => e.form === 'carrierFighter');
+      if (!type) return;
+      const st = difficultyStage();
+      const scale = .92 + st * .035;
+      enemies.push({
+        ...type,
+        x: clamp(carrier.x + side * 42, 40, W - 40),
+        y: carrier.y - 28,
+        hp: Math.max(3, Math.round(type.hp * scale)),
+        maxHp: Math.max(3, Math.round(type.hp * scale)),
+        power: type.power,
+        shots: type.shots,
+        speed: type.speed + st * .02,
+        fire: 820 + Math.random() * 520,
+        t: 0,
+        r: 13,
+        launched: true
+      });
+      flash('LAUNCH');
     }
 
     function spawnBoss() {
@@ -2875,7 +2660,7 @@
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
       const tutorial = save.selectedMode === 'tutorial';
-      const hpBase = tutorial ? 150 : ww ? 240 + st * 62 : lastWarStage ? 1180 + (st - VOID_STAGE_END) * 58 : voidStage ? 720 + (st - 11) * 72 : 280 + st * 92;
+      const hpBase = tutorial ? 180 : ww ? 320 + st * 78 : lastWarStage ? 1550 + (st - VOID_STAGE_END) * 92 : voidStage ? 980 + (st - 11) * 98 : 420 + st * 118;
       const hp = Math.round(hpBase * blueprint.hp);
       boss = {
         name: blueprint.name,
@@ -2887,8 +2672,8 @@
         targetY: 120,
         hp,
         maxHp: hp,
-        power: tutorial ? 1 : ww ? 1 + Math.ceil(st * .25) : lastWarStage ? 4 + Math.floor((st - VOID_STAGE_END) / 4) : voidStage ? 4 + Math.floor((st - 11) / 3) : 2 + Math.ceil(st * .45),
-        shots: tutorial ? 2 : ww ? 2 + Math.ceil(st * .18) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 5) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .32),
+        power: tutorial ? 1 : ww ? 2 + Math.ceil(st * .28) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 3) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .5),
+        shots: tutorial ? 2 : ww ? 2 + Math.ceil(st * .2) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 4) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .34),
         fire: 0,
         inv: 3000,
         phase: 1,
@@ -3302,19 +3087,19 @@
     }
 
     function shootEnemy(e) {
-      const count = e.shots;
+      const count = Math.max(1, Math.min(e.shots || 1, 2));
       const st = difficultyStage();
       const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
-      const style = enemyBulletStyle(e.form);
+      const style = enemyBulletStyle(e.form, false);
       for (let i = 0; i < count; i++) {
-        const spread = (i - (count - 1) / 2) * (lastWar ? .15 : late ? .18 : .22);
+        const spread = (i - (count - 1) / 2) * (lastWar ? .1 : late ? .11 : .12);
         enemyBullets.push({
           x: e.x,
           y: e.y + 18,
-          vx: Math.sin(spread) * (lastWar ? 1.9 + (st - VOID_STAGE_END) * .035 : late ? 2.0 + (st - 10) * .045 : 2.05 + st * .035),
-          vy: lastWar ? 2.95 + (st - VOID_STAGE_END) * .06 : late ? 2.75 + (st - 10) * .09 : 2.55 + st * .095,
-          dmg: e.power,
+          vx: Math.sin(spread) * (lastWar ? 1.25 : late ? 1.2 : 1.05),
+          vy: lastWar ? 2.55 + (st - VOID_STAGE_END) * .025 : late ? 2.38 + (st - 10) * .03 : 2.15 + st * .025,
+          dmg: Math.max(1, Math.ceil((e.power || 1) * .75)),
           r: (lastWar ? 4.2 + Math.min(2, e.power) * .85 : late ? 4 + Math.min(2, e.power) : 4 + Math.min(4, e.power)) * (style.size || 1),
           style
         });
@@ -3322,12 +3107,16 @@
       playEnemyLaser(performance.now());
     }
 
-    function enemyBulletStyle(form = 'needle') {
+    function enemyBulletStyle(form = 'needle', bossShot = false) {
       const styles = {
         needle: { fill: '#ef4444', core: '#fecaca', shape: 'dart', size: .9 },
         twin: { fill: '#fb923c', core: '#ffedd5', shape: 'bar', size: 1 },
         heli: { fill: '#a3e635', core: '#ecfccb', shape: 'orb', size: .95 },
         launcher: { fill: '#facc15', core: '#78350f', shape: 'missile', size: 1.18 },
+        tank: { fill: '#bef264', core: '#365314', shape: 'heavy', size: .95 },
+        gunboat: { fill: '#60a5fa', core: '#e0f2fe', shape: 'bar', size: .96 },
+        escortCarrier: { fill: '#facc15', core: '#78350f', shape: 'missile', size: 1.08 },
+        carrierFighter: { fill: '#93c5fd', core: '#e0f2fe', shape: 'dart', size: .88 },
         drone: { fill: '#e5e7eb', core: '#38bdf8', shape: 'diamond', size: .85 },
         stealth: { fill: '#94a3b8', core: '#f8fafc', shape: 'stealth', size: .92 },
         bomber: { fill: '#f472b6', core: '#fce7f3', shape: 'heavy', size: 1.24 },
@@ -3372,9 +3161,9 @@
         y,
         vx: Math.sin(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
         vy: Math.cos(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
-        dmg: boss.power + damage,
+        dmg: Math.max(1, boss.power + damage),
         r: lastWar ? 6 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 6 + Math.floor((st - 11) / 4) + size : 5 + Math.floor(st / 3) + size,
-        style: enemyBulletStyle(lastWar ? 'lastWarRecord' : late ? 'riftShield' : 'boss')
+        style: enemyBulletStyle(lastWar ? 'lastWarRecord' : late ? 'riftShield' : 'boss', true)
       });
     }
 
@@ -3385,75 +3174,68 @@
 
     function shootBoss() {
       const st = difficultyStage();
-      const count = boss.shots + boss.phase;
+      const step = Math.floor((boss.t || 0) / 520);
+      const weave = Math.sin((boss.t || 0) / 420);
+      const count = Math.min(4, Math.max(2, boss.phase + 1));
       if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
         const a = aimAtPlayer(boss.x, boss.y - 80);
-        for (const offset of [-.08, .08]) bossBullet(boss.x, boss.y - 78, a + offset, 2.9 + st * .08, 1);
-        for (const ox of [-105, -52, 52, 105]) {
-          bossBullet(boss.x + ox, boss.y + 14, aimAtPlayer(boss.x + ox, boss.y + 14), 2.25 + st * .06, 0);
-        }
+        bossBullet(boss.x, boss.y - 78, a + weave * .1, 2.9 + st * .06, 1);
+        const cannons = step % 2 ? [-105, 0, 52] : [-52, 0, 105];
+        for (const ox of cannons) bossBullet(boss.x + ox, boss.y + 14, aimAtPlayer(boss.x + ox, boss.y + 14), 2.2 + st * .045, 0);
       } else if (boss.kind === 'carrier' || boss.kind === 'seaCarrier') {
-        const base = Math.sin(boss.t / 480) * .38;
-        for (let i = 0; i < count + 2; i++) {
-          bossBullet(boss.x, boss.y + 58, base + (i - (count + 1) / 2) * .2, 2.38 + st * .09);
-        }
+        const base = weave * .46;
+        const fan = boss.phase >= 3 ? 5 : 3;
+        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 58, base + (i - (fan - 1) / 2) * .28, 2.32 + st * .06);
         if (boss.kind === 'seaCarrier' && boss.phase >= 2) {
-          for (const ox of [-86, 86]) bossBullet(boss.x + ox, boss.y + 22, aimAtPlayer(boss.x + ox, boss.y + 22), 2.2 + st * .07, 1);
+          for (const ox of (step % 2 ? [-86, 42] : [-42, 86])) bossBullet(boss.x + ox, boss.y + 22, aimAtPlayer(boss.x + ox, boss.y + 22), 2.18 + st * .05, 1);
         }
       } else if (boss.kind === 'skyCarrier') {
-        const ring = 6 + boss.phase * 2;
-        for (let i = 0; i < ring; i++) {
-          bossBullet(boss.x, boss.y + 18, boss.t / 620 + i * Math.PI * 2 / ring, 2.0 + st * .08, i % 2);
-        }
-        for (const ox of [-92, 92]) bossBullet(boss.x + ox, boss.y + 44, aimAtPlayer(boss.x + ox, boss.y + 44), 2.45 + st * .08);
+        const spokes = boss.phase >= 3 ? 6 : 4;
+        for (let i = 0; i < spokes; i++) bossBullet(boss.x, boss.y + 18, boss.t / 560 + i * Math.PI * 2 / spokes, 1.95 + st * .055, i % 2);
+        const ox = step % 2 ? -92 : 92;
+        bossBullet(boss.x + ox, boss.y + 44, aimAtPlayer(boss.x + ox, boss.y + 44), 2.4 + st * .055);
       } else if (boss.kind === 'hydra') {
-        const heads = [[-52, 20], [0, 34], [52, 20]];
+        const heads = step % 2 ? [[-52, 20], [52, 20]] : [[-52, 20], [0, 34], [52, 20]];
         heads.forEach(([ox, oy], index) => {
-          const a = aimAtPlayer(boss.x + ox, boss.y + oy, (index - 1) * .24 + Math.sin(boss.t / 360) * .12);
+          const a = aimAtPlayer(boss.x + ox, boss.y + oy, (index - .5) * .28 + Math.sin(boss.t / 360) * .18);
           bossBullet(boss.x + ox, boss.y + oy, a, 2.55 + st * .08);
-          if (boss.phase >= 2) bossBullet(boss.x + ox, boss.y + oy, a + (index - 1) * .18, 2.25 + st * .08);
+          if (boss.phase >= 3 && index === 0) bossBullet(boss.x + ox, boss.y + oy, a + .36, 2.18 + st * .055);
         });
       } else if (boss.kind === 'fortress') {
-        const ring = 8 + boss.phase * 3;
-        for (let i = 0; i < ring; i++) {
-          bossBullet(boss.x, boss.y + 12, boss.t / 700 + i * Math.PI * 2 / ring, 1.9 + st * .07, 1);
-        }
-        bossBullet(boss.x - 62, boss.y + 46, aimAtPlayer(boss.x - 62, boss.y + 46), 2.25 + st * .08);
-        bossBullet(boss.x + 62, boss.y + 46, aimAtPlayer(boss.x + 62, boss.y + 46), 2.25 + st * .08);
+        const ring = boss.phase >= 3 ? 7 : 5;
+        for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 12, boss.t / 680 + i * Math.PI * 2 / ring, 1.85 + st * .05, 1);
+        const ox = step % 2 ? -62 : 62;
+        bossBullet(boss.x + ox, boss.y + 46, aimAtPlayer(boss.x + ox, boss.y + 46), 2.22 + st * .055);
       } else if (boss.kind === 'phantom') {
         const a = aimAtPlayer(boss.x, boss.y + 48);
-        for (const offset of [-.16, 0, .16]) bossBullet(boss.x, boss.y + 48, a + offset, 3.3 + st * .11, 0, 1);
+        bossBullet(boss.x, boss.y + 48, a + weave * .14, 3.28 + st * .08, 0, 1);
         if (boss.phase >= 2) {
-          bossBullet(boss.x - 46, boss.y + 24, a - .34, 2.55 + st * .08);
-          bossBullet(boss.x + 46, boss.y + 24, a + .34, 2.55 + st * .08);
+          for (const side of [-1, 1]) bossBullet(boss.x + side * 46, boss.y + 24, a + side * .42, 2.5 + st * .055);
         }
       } else if (boss.kind === 'emperor') {
-        const arms = 5 + boss.phase;
+        const arms = boss.phase >= 3 ? 6 : 4;
         for (let i = 0; i < arms; i++) {
           const a = boss.t / 360 + i * Math.PI * 2 / arms;
           bossBullet(boss.x, boss.y + 22, a, 2.28 + st * .08, 0);
-          bossBullet(boss.x, boss.y + 22, -a, 2.05 + st * .07, 0);
+          if (boss.phase >= 3 && i % 2 === 0) bossBullet(boss.x, boss.y + 22, -a + .18, 2.0 + st * .05, 0);
         }
       } else if (boss.kind === 'arsenal') {
         const aim = aimAtPlayer(boss.x, boss.y + 48);
-        for (const ox of [-76, -34, 34, 76]) {
-          bossBullet(boss.x + ox, boss.y + 34, aimAtPlayer(boss.x + ox, boss.y + 34), 2.35 + st * .08, 1);
-        }
+        const turretPair = step % 2 ? [-76, 0, 34] : [-34, 0, 76];
+        for (const ox of turretPair) bossBullet(boss.x + ox, boss.y + 34, aimAtPlayer(boss.x + ox, boss.y + 34), 2.3 + st * .055, 1);
         const sweep = Math.sin(boss.t / 420) * .32;
-        for (let i = 0; i < count + 2; i++) {
-          bossBullet(boss.x, boss.y + 70, sweep + aim + (i - (count + 1) / 2) * .105, 2.05 + st * .07, i % 2);
-        }
+        const fan = boss.phase >= 3 ? 5 : 3;
+        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 70, sweep + aim + (i - (fan - 1) / 2) * .16, 2.02 + st * .05, i % 2);
         if (boss.phase >= 3) {
-          const ring = 8;
-          for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 8, boss.t / 520 + i * Math.PI * 2 / ring, 1.85 + st * .055, 1);
+          const ring = 6;
+          for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 8, boss.t / 520 + i * Math.PI * 2 / ring, 1.82 + st * .04, 1);
         }
       } else {
-        const fan = count + 3;
+        const fan = boss.phase >= 3 ? 5 : 3;
         const aim = aimAtPlayer(boss.x, boss.y + 62);
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 62, aim + (i - (fan - 1) / 2) * .14, 2.55 + st * .1, i % 2);
-        for (const ox of [-82, 82]) {
-          bossBullet(boss.x + ox, boss.y + 20, Math.sin(boss.t / 520) * .35 + ox / 240, 2.35 + st * .08, 1);
-        }
+        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 62, aim + weave * .2 + (i - (fan - 1) / 2) * .2, 2.5 + st * .07, i % 2);
+        const ox = step % 2 ? -82 : 82;
+        bossBullet(boss.x + ox, boss.y + 20, Math.sin(boss.t / 520) * .42 + ox / 240, 2.28 + st * .055, 1);
       }
       playEnemyLaser(performance.now());
     }
@@ -4017,6 +3799,13 @@
         e.t += dt;
         e.y += e.speed * frameStep;
         e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1) * frameStep;
+        if (e.carrier && e.y > 18) {
+          e.launch -= dt;
+          if (e.launch <= 0) {
+            e.launch = 2600 + Math.random() * 900;
+            launchCarrierFighter(e, Math.sin(e.t / 700) > 0 ? 1 : -1);
+          }
+        }
         e.fire -= dt;
         if (e.fire <= 0 && e.y > 20) {
           e.fire = Math.max(520, 980 + Math.random() * 720 - difficultyStage() * 24);
@@ -4056,7 +3845,7 @@
         boss.phase = boss.hp < boss.maxHp * .35 ? 3 : boss.hp < boss.maxHp * .68 ? 2 : 1;
         boss.fire -= dt;
         if (boss.fire <= 0) {
-          boss.fire = st >= 11 ? Math.max(520, 1040 - (st - 11) * 26 - boss.phase * 42) : Math.max(430, 940 - st * 30 - boss.phase * 48);
+          boss.fire = st >= 11 ? Math.max(560, 1040 - (st - 11) * 20 - boss.phase * 42) : Math.max(500, 940 - st * 24 - boss.phase * 46);
           shootBoss();
         }
       }
@@ -4145,6 +3934,11 @@
             player.shield = Math.min(3, player.shield + 1);
             addScore(60);
             flash('SHIELD');
+          } else if (p.kind === 'power') {
+            const maxPower = fieldPowerMax();
+            player.fieldPower = Math.min(maxPower, (player.fieldPower || 0) + 1);
+            addScore(100);
+            flash(`POWER ${player.fieldPower}/${maxPower}`);
           } else {
             save.coins += p.value;
             addScore(p.value * 2);
@@ -4179,10 +3973,19 @@
       const strength = clamp((e.maxHp - 10) / 70 + (difficultyStage() - 1) * .025, 0, .18);
       const coinChance = .075 + strength;
       const itemChance = .035 + strength * .55;
+      const maxPower = fieldPowerMax();
+      if (player && (player.fieldPower || 0) < maxPower) {
+        player.powerDropPity = (player.powerDropPity || 0) + 1;
+        const powerChance = clamp(.12 + strength + player.powerDropPity * .018, .12, .46);
+        if (player.powerDropPity >= 14 || Math.random() < powerChance) {
+          player.powerDropPity = 0;
+          pickups.push({ kind: 'power', x: e.x + (Math.random() - .5) * 22, y: e.y, vy: 1.35, value: 1 });
+        }
+      }
       if (Math.random() < coinChance) pickups.push({ kind: 'coin', x: e.x, y: e.y, vy: 1.8, value: 6 + difficultyStage() * 2 });
       if (Math.random() < itemChance) {
         const roll = Math.random();
-        const kind = roll < .38 ? 'heal' : roll < .68 ? 'shield' : 'boost';
+        const kind = roll < .34 ? 'heal' : roll < .58 ? 'shield' : roll < .82 ? 'boost' : 'power';
         const value = kind === 'boost' ? 12000 : kind === 'heal' ? 2 : 1;
         pickups.push({ kind, x: e.x + (Math.random() - .5) * 18, y: e.y, vy: 1.45, value });
       }
@@ -4263,7 +4066,7 @@
     }
 
     const tutorialTips = [
-      { at: 0, title: '계정과 저장', body: '이 계정의 코인, 기체, 업그레이드, 최고점수가 따로 저장됩니다.' },
+      { at: 0, title: '계정과 저장', body: '이 계정의 코인, 기체, 최고점수가 따로 저장됩니다.' },
       { at: 3500, title: '이동', body: 'WASD 또는 방향키로 전투기를 움직입니다. 적 탄막과 기체 충돌을 피하세요.' },
       { at: 7000, title: '자동 공격', body: '기체는 자동으로 발사합니다. 기체마다 탄 방향과 특징이 다릅니다.' },
       { at: 10500, title: '폭탄', body: 'Space 또는 폭탄 버튼을 누르면 화면 전체에 큰 피해를 주고 적 탄막을 지웁니다.' },
@@ -4302,8 +4105,9 @@
         updateHud();
         return;
       }
-      const stage = currentStage();
+      const stage = visibleStage();
       drawBackground(stage);
+      drawDepthOverlay(stage);
       pickups.forEach(drawPickup);
       enemies.forEach(drawEnemy);
       if (boss) drawBoss();
@@ -5077,7 +4881,7 @@
     }
 
     function upgradeMaxLevel(key) {
-      return key === 'bombCount' ? 6 : MAX_UPGRADE_LEVEL;
+      return upgradeCaps[key] || MAX_UPGRADE_LEVEL;
     }
 
     function drawUpgradeOrnaments(id) {
@@ -5597,6 +5401,22 @@
         poly([[22,4],[78,38],[20,36]]);
         ctx.fillStyle = '#1f2937';
         for (const x of [-15, -5, 5, 15]) ctx.fillRect(x - 2, 39, 4, 17);
+      } else if (id === 'f22') {
+        ctx.fillStyle = color;
+        poly([[0,-70],[10,-49],[18,-26],[57,-9],[45,10],[25,14],[13,42],[0,33],[-13,42],[-25,14],[-45,10],[-57,-9],[-18,-26],[-10,-49]]);
+        ctx.fillStyle = shade(color, -.16);
+        poly([[0,-52],[7,-24],[5,8],[0,20],[-5,8],[-7,-24]]);
+        ctx.fillStyle = shade(color, .16);
+        poly([[-12,-24],[-38,-10],[-17,-1]]);
+        poly([[12,-24],[38,-10],[17,-1]]);
+        ctx.fillStyle = shade(color, -.24);
+        poly([[-14,17],[-34,46],[-10,31]]);
+        poly([[14,17],[34,46],[10,31]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-7,-37],[-20,-27],[-13,-18],[-5,-28]]);
+        poly([[7,-37],[20,-27],[13,-18],[5,-28]]);
+        ctx.fillStyle = '#60a5fa';
+        for (const x of [-7, 7]) ctx.fillRect(x - 2, 32, 4, 14);
       } else if (id === 'f35') {
         poly([[0,-60],[8,-42],[13,-25],[43,-11],[50,6],[31,18],[17,15],[8,36],[0,43],[-8,36],[-17,15],[-31,18],[-50,6],[-43,-11],[-13,-25],[-8,-42]]);
         ctx.fillStyle = shade(color, -.22);
@@ -5607,6 +5427,16 @@
         ctx.fillStyle = shade(color, -.12);
         poly([[-11,15],[-24,36],[-6,25]]);
         poly([[11,15],[24,36],[6,25]]);
+        ctx.fillStyle = '#111827';
+        poly([[-7,-34],[-18,-25],[-12,-17],[-5,-26]]);
+        poly([[7,-34],[18,-25],[12,-17],[5,-26]]);
+        ctx.fillStyle = '#60a5fa';
+        ctx.fillRect(-3, 30, 6, 14);
+        ctx.strokeStyle = 'rgba(226,232,240,.45)';
+        ctx.beginPath();
+        ctx.moveTo(-38, -8); ctx.lineTo(-12, 2); ctx.lineTo(-20, 16);
+        ctx.moveTo(38, -8); ctx.lineTo(12, 2); ctx.lineTo(20, 16);
+        ctx.stroke();
       } else if (id === 'f111') {
         ctx.fillStyle = color;
         for (const side of [-1, 1]) {
@@ -5623,9 +5453,14 @@
         ctx.fillRect(-5, -45, 10, 80);
         ctx.fillStyle = '#29351f';
         poly([[0,-42],[6,-20],[3,-4],[0,2],[-3,-4],[-6,-20]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-8,-32],[-19,-20],[-11,-12],[-6,-24]]);
+        poly([[8,-32],[19,-20],[11,-12],[6,-24]]);
         ctx.fillStyle = shade(color, -.2);
         poly([[-12,30],[-31,56],[-8,43]]);
         poly([[12,30],[31,56],[8,43]]);
+        ctx.fillStyle = '#84cc16';
+        for (const x of [-7, 7]) ctx.fillRect(x - 2, 36, 4, 14);
         if (wingSweep > .08) {
           ctx.fillStyle = 'rgba(67,211,196,.7)';
           ctx.globalAlpha = wingSweep;
@@ -5639,6 +5474,12 @@
         ctx.fillStyle = shade(color, -.22);
         poly([[-31,6],[-49,18],[-20,28]]);
         poly([[31,6],[49,18],[20,28]]);
+        ctx.strokeStyle = 'rgba(148,163,184,.42)';
+        ctx.beginPath();
+        ctx.moveTo(0, -55); ctx.lineTo(-18, -27); ctx.lineTo(-62, 9);
+        ctx.moveTo(0, -55); ctx.lineTo(18, -27); ctx.lineTo(62, 9);
+        ctx.moveTo(-24, 40); ctx.lineTo(0, 25); ctx.lineTo(24, 40);
+        ctx.stroke();
       } else if (id === 'b29') {
         poly([[0,-74],[9,-58],[13,38],[0,66],[-13,38],[-9,-58]]);
         ctx.fillStyle = shade(color, .08);
@@ -5654,6 +5495,10 @@
         ctx.fillRect(-4, -70, 8, 13);
         ctx.fillStyle = shade(color, -.12);
         ctx.fillRect(-5, -55, 10, 99);
+        ctx.fillStyle = shade(color, .18);
+        for (const x of [-70, -46, 46, 70]) ctx.fillRect(x - 5, -13, 10, 22);
+        ctx.fillStyle = '#1f2937';
+        poly([[0,55],[16,74],[0,67],[-16,74]]);
       } else if (id === 'b2') {
         poly([[0,-52],[25,-26],[78,2],[45,26],[18,16],[0,36],[-18,16],[-45,26],[-78,2],[-25,-26]]);
         ctx.fillStyle = shade(color, .22);
@@ -5699,6 +5544,11 @@
         poly([[0,-52],[7,-25],[5,4],[0,17],[-5,4],[-7,-25]]);
         ctx.fillStyle = '#0f6f86';
         for (const x of [-8, 8]) ctx.fillRect(x - 2, 30, 4, 13);
+        ctx.strokeStyle = 'rgba(236,254,255,.45)';
+        ctx.beginPath();
+        ctx.moveTo(-54, -5); ctx.lineTo(-20, 3); ctx.lineTo(-9, 30);
+        ctx.moveTo(54, -5); ctx.lineTo(20, 3); ctx.lineTo(9, 30);
+        ctx.stroke();
       } else if (id === 'f16') {
         poly([[0,-64],[6,-42],[10,-12],[43,9],[22,22],[8,19],[0,43],[-8,19],[-22,22],[-43,9],[-10,-12],[-6,-42]]);
         ctx.fillStyle = shade(color, -.18);
@@ -5708,6 +5558,10 @@
         poly([[7,-2],[34,9],[10,16]]);
         ctx.fillStyle = shade(color, -.12);
         poly([[0,10],[9,38],[0,28],[-9,38]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[-5,-23],[5,-23],[8,-7],[0,0],[-8,-7]]);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(-2, 31, 4, 13);
       } else if (id === 'a10') {
         poly([[0,-54],[13,-34],[16,25],[8,46],[0,59],[-8,46],[-16,25],[-13,-34]]);
         ctx.fillStyle = shade(color, .08);
@@ -5722,6 +5576,13 @@
         }
         ctx.fillStyle = '#111827';
         ctx.fillRect(-3, -62, 6, 20);
+        ctx.fillStyle = shade(color, -.25);
+        poly([[-9,31],[-31,58],[-7,46]]);
+        poly([[9,31],[31,58],[7,46]]);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(-2, -66, 4, 20);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(-1, -67, 2, 24);
       } else if (id === 'f14') {
         ctx.fillStyle = shade(color, .04);
         for (const side of [-1, 1]) {
@@ -5739,6 +5600,13 @@
         ctx.fillStyle = '#3f4448';
         poly([[-18,17],[-40,49],[-8,32]]);
         poly([[18,17],[40,49],[8,32]]);
+        ctx.fillStyle = '#111827';
+        poly([[-10,28],[-25,58],[-6,43]]);
+        poly([[10,28],[25,58],[6,43]]);
+        ctx.fillStyle = '#f8fafc';
+        poly([[0,-49],[6,-27],[4,-2],[0,8],[-4,-2],[-6,-27]]);
+        ctx.fillStyle = '#38bdf8';
+        for (const x of [-7, 7]) ctx.fillRect(x - 2, 34, 4, 15);
         if (wingSweep > .08) {
           ctx.fillStyle = 'rgba(67,211,196,.72)';
           ctx.globalAlpha = wingSweep;
@@ -5754,6 +5622,11 @@
         poly([[15,14],[33,45],[8,29]]);
         ctx.fillStyle = shade(color, .16);
         poly([[0,-47],[7,-18],[4,10],[0,18],[-4,10],[-7,-18]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-11,27],[-24,57],[-7,41]]);
+        poly([[11,27],[24,57],[7,41]]);
+        ctx.fillStyle = '#60a5fa';
+        for (const x of [-7, 7]) ctx.fillRect(x - 2, 33, 4, 14);
       } else if (id === 'fa18') {
         poly([[0,-62],[9,-39],[14,-18],[45,-6],[30,13],[54,31],[15,25],[7,44],[0,34],[-7,44],[-15,25],[-54,31],[-30,13],[-45,-6],[-14,-18],[-9,-39]]);
         ctx.fillStyle = shade(color, -.18);
@@ -5761,11 +5634,16 @@
         ctx.fillStyle = '#253140';
         poly([[-14,14],[-31,44],[-7,29]]);
         poly([[14,14],[31,44],[7,29]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-10,25],[-27,54],[-6,39]]);
+        poly([[10,25],[27,54],[6,39]]);
         ctx.fillStyle = shade(color, .18);
         poly([[-11,-20],[-36,-6],[-15,4]]);
         poly([[11,-20],[36,-6],[15,4]]);
         ctx.fillStyle = shade(color, .12);
         poly([[0,-42],[7,-15],[4,11],[0,18],[-4,11],[-7,-15]]);
+        ctx.fillStyle = '#2dd4bf';
+        for (const x of [-7, 7]) ctx.fillRect(x - 2, 32, 4, 14);
       } else if (id === 'f72') {
         poly([[0,-64],[9,-42],[15,-18],[47,-1],[33,18],[16,17],[8,45],[0,35],[-8,45],[-16,17],[-33,18],[-47,-1],[-15,-18],[-9,-42]]);
         ctx.fillStyle = shade(color, -.2);
@@ -5960,6 +5838,7 @@
       const longBody = id === 'sr71' || id === 'xb70' || id === 'b29' || id === 'ww_b29';
       const wingBody = id === 'b2' || id === 'error' || id === 'geomancho';
       ctx.save();
+      ctx.shadowColor = 'transparent';
 
       ctx.strokeStyle = 'rgba(255,255,255,.22)';
       ctx.lineWidth = 1;
@@ -5967,6 +5846,26 @@
       ctx.moveTo(0, longBody ? -62 : -44);
       ctx.lineTo(0, longBody ? 38 : 28);
       ctx.stroke();
+
+      ctx.globalAlpha = friendly ? .42 : .32;
+      ctx.strokeStyle = 'rgba(255,255,255,.9)';
+      ctx.lineWidth = friendly ? 3.4 : 2.4;
+      ctx.beginPath();
+      ctx.moveTo(-7, longBody ? -55 : -38);
+      ctx.quadraticCurveTo(-17, -10, -7, longBody ? 25 : 18);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      ctx.globalAlpha = friendly ? .48 : .36;
+      ctx.fillStyle = rgbaColor(shade(color, .28), .72);
+      poly([[-4, longBody ? -56 : -40], [-13, -16], [-8, longBody ? 28 : 20], [0, longBody ? 38 : 28], [0, longBody ? -62 : -44]]);
+      ctx.fillStyle = rgbaColor(shade(color, -.28), .62);
+      poly([[4, longBody ? -56 : -40], [13, -16], [8, longBody ? 28 : 20], [0, longBody ? 38 : 28], [0, longBody ? -62 : -44]]);
+      ctx.fillStyle = rgbaColor(shade(color, .18), .55);
+      poly([[-48, wingBody ? 3 : 10], [-15, wingBody ? -10 : -2], [-5, wingBody ? 10 : 13], [-30, wingBody ? 22 : 27]]);
+      ctx.fillStyle = rgbaColor(shade(color, -.2), .5);
+      poly([[48, wingBody ? 3 : 10], [15, wingBody ? -10 : -2], [5, wingBody ? 10 : 13], [30, wingBody ? 22 : 27]]);
+      ctx.globalAlpha = 1;
 
       ctx.fillStyle = glass;
       ctx.beginPath();
@@ -6037,17 +5936,123 @@
     }
 
     function drawEnemy(e) {
+      const depth = perspectiveScale(e.y, .88, 1.12);
       ctx.save();
       ctx.translate(e.x, e.y);
       const bigScale = {
         bomber: .84, riftBomber: .78, riftShield: .86, riftCutter: .84,
         lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86
       }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
-      ctx.scale(bigScale, bigScale);
+      ctx.scale(bigScale * depth, bigScale * depth);
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
-      if (e.form === 'launcher') {
+      if (e.form === 'escortCarrier') {
+        ctx.fillStyle = shade(e.color, -.38);
+        poly([[-60, 86], [-78, 54], [-70, -64], [-42, -118], [3, -140], [58, -92], [77, 45], [60, 86]]);
+        ctx.fillStyle = shade(e.color, -.16);
+        poly([[-51, 72], [-66, 47], [-59, -56], [-35, -103], [2, -122], [49, -82], [64, 39], [50, 72]]);
+        ctx.fillStyle = e.color;
+        poly([[-42, 57], [-53, 38], [-49, -45], [-28, -88], [1, -103], [39, -70], [52, 33], [40, 58]]);
+        ctx.fillStyle = shade(e.color, .14);
+        poly([[-31, 44], [-38, 27], [-35, -35], [-21, -66], [0, -78], [27, -54], [38, 23], [30, 45]]);
+        ctx.strokeStyle = 'rgba(241,245,249,.82)';
+        ctx.lineWidth = 2.2;
+        for (const x of [-12, 8]) {
+          ctx.beginPath();
+          ctx.moveTo(x - 17, 59);
+          ctx.lineTo(x + 10, -86);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(226,232,240,.72)';
+        ctx.lineWidth = 1.7;
+        ctx.beginPath();
+        ctx.moveTo(-45, 2);
+        ctx.lineTo(43, -26);
+        ctx.moveTo(-37, 27);
+        ctx.lineTo(45, 30);
+        ctx.moveTo(-30, -56);
+        ctx.lineTo(31, -70);
+        ctx.stroke();
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-25, 54);
+        ctx.lineTo(19, -88);
+        ctx.stroke();
+        ctx.fillStyle = shade(e.color, .28);
+        poly([[12, -78], [35, -82], [45, -43], [30, -20], [11, -36]]);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(26, -112, 9, 31);
+        ctx.fillRect(20, -124, 22, 8);
+        ctx.fillRect(24, -136, 14, 7);
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(31, -124);
+        ctx.lineTo(31, -150);
+        ctx.moveTo(16, -142);
+        ctx.lineTo(46, -142);
+        ctx.moveTo(19, -132);
+        ctx.lineTo(43, -132);
+        ctx.stroke();
+        ctx.fillStyle = '#cbd5e1';
+        for (const [jx, jy, a] of [[-20, -62, -.08], [11, 36, .18], [-25, 21, .08], [5, -8, .12]]) {
+          ctx.save();
+          ctx.translate(jx, jy);
+          ctx.rotate(a);
+          poly([[0, -9], [5, 2], [12, 5], [4, 7], [0, 13], [-4, 7], [-12, 5], [-5, 2]]);
+          ctx.restore();
+        }
+      } else if (e.form === 'carrierFighter') {
+        ctx.fillStyle = e.color;
+        poly([[0,-36],[9,-16],[31,0],[11,8],[6,28],[0,18],[-6,28],[-11,8],[-31,0],[-9,-16]]);
+        ctx.fillStyle = shade(e.color, -.25);
+        poly([[0,-22],[5,-5],[0,10],[-5,-5]]);
+        ctx.fillStyle = '#60a5fa';
+        ctx.fillRect(-2, 18, 4, 10);
+      } else if (e.form === 'tank') {
+        ctx.fillStyle = shade(e.color, -.34);
+        ctx.beginPath();
+        ctx.roundRect?.(-34, 10, 68, 17, 7);
+        if (!ctx.roundRect) ctx.rect(-34, 10, 68, 17);
+        ctx.fill();
+        ctx.fillStyle = '#1f2937';
+        for (const x of [-25, -12, 1, 14, 27]) {
+          ctx.beginPath();
+          ctx.arc(x, 19, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = shade(e.color, .18);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-29, 18);
+        ctx.lineTo(29, 18);
+        ctx.stroke();
+        ctx.fillStyle = shade(e.color, -.12);
+        poly([[-28, 8], [-20, -10], [20, -10], [30, 8], [22, 16], [-23, 16]]);
+        ctx.fillStyle = e.color;
+        poly([[-17, -10], [-8, -25], [14, -25], [25, -10], [14, 1], [-12, 1]]);
+        ctx.fillStyle = shade(e.color, .18);
+        poly([[-9, -23], [8, -23], [16, -11], [-14, -11]]);
+        ctx.fillStyle = shade(e.color, -.38);
+        ctx.fillRect(-4, -57, 8, 34);
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(0, -25, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (e.form === 'gunboat') {
+        ctx.fillStyle = shade(e.color, -.2);
+        poly([[-44, 10], [-30, 28], [30, 28], [44, 10], [30, -16], [-30, -16]]);
+        ctx.fillStyle = e.color;
+        ctx.fillRect(-24, -22, 48, 22);
+        ctx.fillStyle = shade(e.color, .16);
+        ctx.fillRect(-13, -37, 26, 16);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(-4, -55, 8, 26);
+        ctx.fillStyle = '#bae6fd';
+        for (const x of [-26, 26]) ctx.fillRect(x - 5, -6, 10, 7);
+      } else if (e.form === 'launcher') {
         ctx.fillRect(-24, -13, 48, 26);
         ctx.fillStyle = shade(e.color, -.25);
         ctx.fillRect(-29, 10, 58, 8);
@@ -6483,6 +6488,72 @@
       return `rgba(${r},${g},${b},${alpha})`;
     }
 
+    function perspectiveScale(y, min = .78, max = 1.28) {
+      return min + clamp(y / H, 0, 1) * (max - min);
+    }
+
+    function drawGroundShadow(x, y, w, h, alpha = .28) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const g = ctx.createRadialGradient(x, y, 1, x, y, Math.max(w, h));
+      g.addColorStop(0, 'rgba(0,0,0,.62)');
+      g.addColorStop(.55, 'rgba(0,0,0,.24)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAltitudeTethers(x, y, w, h, alpha = .2) {
+      ctx.save();
+      ctx.strokeStyle = `rgba(0,0,0,${alpha})`;
+      ctx.lineWidth = 1.4;
+      for (const side of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(x + side * w * .28, y - h * .7);
+        ctx.lineTo(x + side * w * .52, y + h * .64);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawDepthOverlay(stage) {
+      ctx.save();
+      const t = performance.now() / 1000;
+      ctx.globalAlpha = .34;
+      ctx.strokeStyle = 'rgba(255,255,255,.13)';
+      ctx.lineWidth = 1.4;
+      for (let i = 0; i < 16; i++) {
+        const y = ((i * 70 + bgY * .72 + t * 18) % (H + 140)) - 70;
+        const p = clamp(y / H, 0, 1);
+        const left = W / 2 - 18 - p * W * .74;
+        const right = W / 2 + 18 + p * W * .74;
+        ctx.beginPath();
+        ctx.moveTo(left, y);
+        ctx.lineTo(right, y + p * 24);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = .22;
+      ctx.strokeStyle = 'rgba(67,211,196,.28)';
+      for (const side of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(W / 2 + side * 18, -20);
+        ctx.lineTo(W / 2 + side * W * .66, H + 30);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = .32;
+      const light = ctx.createLinearGradient(0, 0, W, H);
+      light.addColorStop(0, 'rgba(255,255,255,.2)');
+      light.addColorStop(.3, 'rgba(255,255,255,0)');
+      light.addColorStop(.72, 'rgba(255,255,255,.04)');
+      light.addColorStop(1, 'rgba(0,0,0,.14)');
+      ctx.fillStyle = light;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    }
+
     function avoidWhiteBulletColor(color, fallback) {
       const [r, g, b] = colorChannels(color);
       const bright = (r + g + b) / 3;
@@ -6591,6 +6662,139 @@
         ctx.beginPath();
         ctx.ellipse(0, 0, 86, 48, 0, 0, Math.PI * 2);
         ctx.stroke();
+      } else if (boss.kind === 'hydra') {
+        ctx.fillStyle = shade(boss.color, -.22);
+        poly([[0,-96],[42,-62],[54,38],[22,82],[-22,82],[-54,38],[-42,-62]]);
+        ctx.fillStyle = boss.color;
+        poly([[0,-76],[28,-46],[34,34],[12,58],[-12,58],[-34,34],[-28,-46]]);
+        ctx.strokeStyle = shade(boss.accent || boss.color, -.12);
+        ctx.lineWidth = 8;
+        for (const x of [-72, 0, 72]) {
+          ctx.beginPath();
+          ctx.moveTo(x * .26, -36);
+          ctx.quadraticCurveTo(x * .72, -74, x, -36);
+          ctx.stroke();
+        }
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255,255,255,.22)';
+        for (const [x, y, rx, ry] of [[-72,-32,24,32],[0,-54,28,36],[72,-32,24,32]]) {
+          ctx.fillStyle = shade(boss.color, .18);
+          ctx.beginPath();
+          ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = boss.accent || '#facc15';
+          ctx.fillRect(x - 5, y - ry - 16, 10, 20);
+          ctx.fillRect(x - 14, y - 5, 28, 10);
+        }
+        ctx.fillStyle = shade(boss.color, -.3);
+        for (const x of [-34, 34]) poly([[x,-6],[x * 2.6,20],[x * 1.9,54],[x,34]]);
+      } else if (boss.kind === 'fortress') {
+        ctx.fillStyle = shade(boss.color, -.26);
+        ctx.fillRect(-112, -68, 224, 116);
+        ctx.fillStyle = boss.color;
+        ctx.fillRect(-86, -90, 172, 148);
+        ctx.fillStyle = shade(boss.color, .16);
+        ctx.fillRect(-58, -112, 116, 34);
+        ctx.fillRect(-44, -28, 88, 74);
+        ctx.fillStyle = shade(boss.color, -.34);
+        for (const [x, y] of [[-104,-78],[104,-78],[-104,52],[104,52]]) {
+          ctx.fillRect(x - 18, y - 14, 36, 28);
+          ctx.fillStyle = boss.accent || '#38bdf8';
+          ctx.fillRect(x - 5, y - 34, 10, 24);
+          ctx.fillStyle = shade(boss.color, -.34);
+        }
+        ctx.strokeStyle = 'rgba(226,232,240,.34)';
+        for (const x of [-58, -28, 0, 28, 58]) {
+          ctx.beginPath();
+          ctx.moveTo(x, -88);
+          ctx.lineTo(x, 58);
+          ctx.stroke();
+        }
+        ctx.fillStyle = boss.accent || '#38bdf8';
+        for (const x of [-66, -22, 22, 66]) {
+          ctx.beginPath();
+          ctx.arc(x, 24, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (boss.kind === 'phantom') {
+        ctx.globalAlpha = .28;
+        ctx.fillStyle = boss.accent || '#93c5fd';
+        poly([[0,-102],[104,-16],[42,10],[82,66],[0,38],[-82,66],[-42,10],[-104,-16]]);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = shade(boss.color, -.1);
+        poly([[0,-118],[34,-52],[128,-14],[36,26],[18,84],[0,106],[-18,84],[-36,26],[-128,-14],[-34,-52]]);
+        ctx.fillStyle = boss.color;
+        poly([[0,-92],[20,-42],[74,-16],[22,10],[10,62],[0,78],[-10,62],[-22,10],[-74,-16],[-20,-42]]);
+        ctx.fillStyle = 'rgba(15,23,42,.8)';
+        ctx.beginPath();
+        ctx.ellipse(0, -50, 12, 24, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = boss.accent || '#93c5fd';
+        ctx.lineWidth = 2.4;
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(side * 32, -22);
+          ctx.lineTo(side * 104, 54);
+          ctx.stroke();
+        }
+      } else if (boss.kind === 'emperor') {
+        ctx.fillStyle = shade(boss.color, -.2);
+        ctx.beginPath();
+        ctx.ellipse(0, 2, 92, 78, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = boss.color;
+        ctx.beginPath();
+        ctx.ellipse(0, -2, 66, 56, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = shade(boss.color, .18);
+        for (const [x, y] of [[0,-104],[-42,-82],[42,-82],[-82,-34],[82,-34]]) {
+          poly([[x,y - 20],[x + 18,y + 14],[x,y + 28],[x - 18,y + 14]]);
+        }
+        ctx.strokeStyle = boss.accent || '#c084fc';
+        ctx.lineWidth = 3;
+        for (const r of [44, 74, 102]) {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r, r * .62, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.fillStyle = boss.accent || '#c084fc';
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(Math.cos(a) * 54, Math.sin(a) * 34, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (boss.kind === 'arsenal') {
+        ctx.fillStyle = shade(boss.color, -.28);
+        poly([[0,-108],[54,-82],[76,72],[36,106],[-36,106],[-76,72],[-54,-82]]);
+        ctx.fillStyle = shade(boss.color, -.08);
+        ctx.fillRect(-108, -46, 216, 84);
+        ctx.fillStyle = boss.color;
+        poly([[0,-86],[38,-58],[50,54],[22,82],[-22,82],[-50,54],[-38,-58]]);
+        ctx.fillStyle = shade(boss.color, .16);
+        for (const [x, y, w, h] of [[-118,-34,34,86],[-72,-58,30,116],[72,-58,30,116],[118,-34,34,86]]) {
+          ctx.fillRect(x - w / 2, y - h / 2, w, h);
+          ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+        }
+        ctx.fillStyle = 'rgba(15,23,42,.82)';
+        ctx.fillRect(-28, -40, 56, 88);
+        ctx.fillStyle = boss.accent || '#fb7185';
+        for (const [x, y] of [[-118,20],[-72,42],[-34,62],[0,70],[34,62],[72,42],[118,20]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = boss.accent || '#fb7185';
+        ctx.lineWidth = 3;
+        for (const x of [-90, -45, 45, 90]) {
+          ctx.beginPath();
+          ctx.moveTo(x, -64);
+          ctx.lineTo(x, -106);
+          ctx.stroke();
+        }
       } else {
         const heavy = boss.kind === 'carrier' || boss.kind === 'fortress' || boss.kind === 'arsenal';
         const swept = boss.kind === 'phantom' || boss.kind === 'emperor';
@@ -6690,6 +6894,20 @@
         ctx.ellipse(0, 4, 126, 90, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
+      ctx.globalAlpha = .34;
+      ctx.fillStyle = rgbaColor(shade(boss.color, .22), .68);
+      poly([[-90, -42], [-18, -64], [-7, 42], [-76, 58]]);
+      ctx.fillStyle = rgbaColor(shade(boss.color, -.18), .6);
+      poly([[90, -42], [18, -64], [7, 42], [76, 58]]);
+      ctx.globalAlpha = 1;
+      ctx.globalAlpha = .38;
+      ctx.strokeStyle = 'rgba(255,255,255,.9)';
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(-38, -52);
+      ctx.quadraticCurveTo(-70, 0, -34, 48);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
       ctx.restore();
       drawHealth(W / 2, 54, W - 90, boss.hp / boss.maxHp, boss.inv > 0 ? `${boss.name} INV ${Math.ceil(boss.inv / 1000)}` : boss.name);
     }
@@ -7409,7 +7627,16 @@
       ctx.strokeStyle = style.core;
       ctx.lineWidth = 1.4;
       const r = b.r;
-      if (style.shape === 'missile') {
+      if (style.shape === 'round') {
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.beginPath();
+        ctx.arc(-r * .25, -r * .25, r * .42, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (style.shape === 'missile') {
         ctx.beginPath();
         ctx.moveTo(0, r * 2.7);
         ctx.lineTo(r * 1.15, -r * .8);
@@ -7547,7 +7774,43 @@
     }
 
     function drawPickup(p) {
-      if (p.kind === 'boost') {
+      if (p.kind === 'power') {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.fillStyle = '#f6df58';
+        ctx.strokeStyle = '#fff4a3';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(0, -21);
+        ctx.lineTo(9, -9);
+        ctx.lineTo(7, 13);
+        ctx.lineTo(0, 22);
+        ctx.lineTo(-7, 13);
+        ctx.lineTo(-9, -9);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#f97316';
+        ctx.fillRect(-5, 0, 10, 17);
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.ellipse(0, -8, 4.4, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#111827';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('P', 0, 5);
+        ctx.fillStyle = 'rgba(255,255,255,.72)';
+        ctx.beginPath();
+        ctx.moveTo(-4, -15);
+        ctx.lineTo(-1, -19);
+        ctx.lineTo(1, -9);
+        ctx.lineTo(-3, -4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      } else if (p.kind === 'boost') {
         ctx.fillStyle = '#43d3c4';
         ctx.beginPath();
         ctx.moveTo(p.x, p.y - 12);
@@ -7662,9 +7925,10 @@
     }
 
     function updateHud() {
+      const stage = visibleStage();
       document.getElementById('hudHp').textContent = `HP ${player ? Math.max(0, Math.ceil(player.hp)) : 0}`;
-      document.getElementById('hudBomb').textContent = `BOMB ${player ? player.bombs : 0}${player && player.shield > 0 ? ' SHIELD ' + player.shield : ''}${player && player.boostTimer > 0 ? ' BOOST ' + Math.ceil(player.boostTimer / 1000) : ''}${player && player.specialCooldown > 0 ? ' SP ' + Math.ceil(player.specialCooldown / 1000) : ' SP OK'}`;
-      document.getElementById('hudStage').textContent = save.selectedMode === 'endless' ? `END ${difficultyStage()} ${Math.floor(stageTime / 1000)}s` : `STAGE ${save.selectedStage}`;
+      document.getElementById('hudBomb').textContent = `BOMB ${player ? player.bombs : 0}${player && player.fieldPower > 0 ? ' PWR ' + player.fieldPower + '/' + fieldPowerMax(stage.id) : ''}${player && player.shield > 0 ? ' SHIELD ' + player.shield : ''}${player && player.boostTimer > 0 ? ' BOOST ' + Math.ceil(player.boostTimer / 1000) : ''}${player && player.specialCooldown > 0 ? ' SP ' + Math.ceil(player.specialCooldown / 1000) : ' SP OK'}`;
+      document.getElementById('hudStage').textContent = save.selectedMode === 'endless' ? `END ${difficultyStage()} ${Math.floor(stageTime / 1000)}s` : `STAGE ${stage.id}`;
       document.getElementById('hudScore').textContent = `SCORE ${score}`;
       const specialBtn = document.getElementById('specialBtn');
       if (specialBtn) {
@@ -7736,7 +8000,6 @@
         <div class="card-head"><span class="name">히든 챕터: THE LAST WAR</span><span class="tag">LOCKED</span></div>
         <div class="small">${line(status.stageDone, '챕터 2 공허 Stage 20까지 열기')}</div>
         <div class="small">${line(status.jetsDone, `기체 해금: ${summarizeMissing(status.missingJets, '모두 해금됨')}`)}</div>
-        <div class="small">${line(status.upgradesDone, `기체 강화 MAX: ${summarizeMissing(status.missingUpgrades, '모두 완료됨')}`)}</div>
       </div>`;
     }
 
@@ -7746,7 +8009,7 @@
       const unlockedLastWarOnRender = maybeUnlockLastWar();
       if (unlockedLastWarOnRender) {
         storeSave();
-        setLog('모든 기체와 강화, 모든 스테이지 조건 달성. THE LAST WAR가 해금됐다. Stage 21이 열렸다.');
+        setLog('모든 기체와 스테이지 조건 달성. THE LAST WAR가 해금됐다. Stage 21이 열렸다.');
       }
       const profile = activeProfile();
       document.getElementById('profileName').textContent = profile.name;
@@ -7770,17 +8033,10 @@
       document.getElementById('tabStages').classList.toggle('active', tab === 'stages');
       document.getElementById('tabShop').classList.toggle('active', tab === 'shop');
       document.getElementById('tabCodex').classList.toggle('active', tab === 'codex');
-      document.getElementById('tabSecret').classList.toggle('active', tab === 'secret');
       document.getElementById('jetsView').classList.toggle('hidden', tab !== 'jets');
       document.getElementById('stagesView').classList.toggle('hidden', tab !== 'stages');
       document.getElementById('shopView').classList.toggle('hidden', tab !== 'shop');
       document.getElementById('codexView').classList.toggle('hidden', tab !== 'codex');
-      document.getElementById('secretView').classList.toggle('hidden', tab !== 'secret');
-      const secretWindowHint = document.getElementById('secretWindowHint');
-      secretWindowHint.classList.toggle('hidden', !save.secretWindowHintSeen);
-      secretWindowHint.textContent = '암호 조각은 보이지 않는 창에서만 작동한다.';
-      const hasVisibleSecretJets = jets.some(j => !retiredJetIds.has(j.id) && j.hidden && !j.rewardOnly && save.unlockedJets?.[j.id] && !save.hiddenSecretJets?.[j.id]);
-      document.getElementById('hideSecretJets').textContent = hasVisibleSecretJets ? '비밀 기체 숨기기' : '비밀 기체 다시 보이기';
 
       const jetsEl = document.getElementById('jets');
       const stagesEl = document.getElementById('stages');
@@ -7842,13 +8098,13 @@
       if (tab === 'shop') {
         const up = save.upgrades[save.selectedJet];
         const upgrades = [
-          ['power', '공격력', '탄 데미지 증가'],
-          ['hp', '체력', '최대 체력 증가'],
-          ['shots', '발사체', '기체별 탄 수/탄 크기 강화'],
-          ['rate', '연사력', '발사 간격 감소'],
-          ['bomb', '폭탄', '폭탄 데미지와 범위 증가'],
-          ['bombCount', '폭탄 개수', '시작 폭탄 수 증가. 최대 Lv.6'],
-          ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가']
+          ['power', '공격력', '탄 데미지 증가. 최대 Lv.5'],
+          ['hp', '체력', '최대 체력 증가. 최대 Lv.5'],
+          ['shots', '투사체수', '기체별 탄 수 강화. 최대 Lv.5'],
+          ['rate', '연사력', '발사 간격 감소. 최대 Lv.5'],
+          ['bomb', '폭탄', '폭탄 데미지와 범위 증가. 최대 Lv.5'],
+          ['bombCount', '폭탄 개수', '시작 폭탄 수 증가. 최대 Lv.5'],
+          ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가. 최대 Lv.5']
         ];
         upgradesEl.innerHTML = upgrades.map(([key, label, desc]) => {
           const level = up[key] || 0;
@@ -8077,7 +8333,6 @@
     document.getElementById('tabStages').onclick = () => setTab('stages');
     document.getElementById('tabShop').onclick = () => setTab('shop');
     document.getElementById('tabCodex').onclick = () => setTab('codex');
-    document.getElementById('tabSecret').onclick = () => setTab('secret');
     document.getElementById('profileSelect').onchange = e => switchLocalProfile(e.target.value);
     document.getElementById('gateProfileCreate').onclick = () => createLocalProfile('gateProfileInput');
     document.getElementById('gateEnter').onclick = enterSelectedProfile;
@@ -8088,11 +8343,6 @@
     };
     document.getElementById('gateProfileInput').onkeydown = e => {
       if (e.key === 'Enter') createLocalProfile('gateProfileInput');
-    };
-    document.getElementById('secretSubmit').onclick = submitSecretCode;
-    document.getElementById('hideSecretJets').onclick = hideSecretJets;
-    document.getElementById('secretInput').onkeydown = e => {
-      if (e.key === 'Enter') submitSecretCode();
     };
     document.getElementById('launch').onclick = () => {
       if (!save.tutorialDone) {
@@ -8115,7 +8365,6 @@
       storyAction = null;
       if (typeof action === 'function') action();
     };
-    document.getElementById('codeHintOk').onclick = closeCodeHint;
     document.getElementById('pause').onclick = () => { paused = !paused; };
     document.getElementById('battlePause').onclick = () => { paused = !paused; };
     document.getElementById('touchBomb').onclick = () => {
@@ -8129,6 +8378,7 @@
     document.getElementById('hangar').onclick = () => {
       storyAction = null;
       resetBattleState();
+      resultStage = null;
       mode = 'menu';
       setScreen(mode);
       setLog(selectedJetDescription('격납고로 돌아왔다. 기체나 업그레이드를 바꿀 수 있어.'));
@@ -8137,6 +8387,7 @@
     document.getElementById('continueBtn').onclick = () => {
       storyAction = null;
       resetBattleState();
+      resultStage = null;
       mode = 'menu';
       setScreen(mode);
       setLog(selectedJetDescription('전투기 선택창으로 돌아왔다. 기체를 고르고 다시 출격해.'));
@@ -8145,6 +8396,7 @@
     document.getElementById('clearBack').onclick = () => {
       storyAction = null;
       resetBattleState();
+      resultStage = null;
       mode = 'menu';
       setScreen(mode);
       setLog(selectedJetDescription('전투기 선택창으로 돌아왔다. 다음 출격을 준비해.'));
