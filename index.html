@@ -463,6 +463,16 @@
       background: rgba(245, 197, 66, .12);
     }
 
+    .jet-card.locked {
+      border-color: rgba(148,163,184,.28);
+      background: rgba(15,23,42,.58);
+      opacity: .86;
+    }
+
+    .jet-card.locked .name {
+      color: rgba(226,232,240,.72);
+    }
+
     .stat-line {
       color: var(--muted);
       font-size: 12px;
@@ -759,7 +769,7 @@
 
     <aside class="side">
       <h1>giraffe1972</h1>
-      <p class="subtitle">현대 전투기 11종으로 20개 전쟁터 스테이지를 돌파하는 2D 종스크롤 슈팅.</p>
+      <p class="subtitle">현대 전투기 12종으로 20개 전쟁터 스테이지를 돌파하는 2D 종스크롤 슈팅.</p>
 
       <div class="top-row">
         <div class="stat-box"><span class="label">Pilot</span><span class="value" id="profileName">파일럿 1</span></div>
@@ -777,6 +787,7 @@
         <button id="tabJets" class="active">기체</button>
         <button id="tabStages">스테이지</button>
         <button id="tabShop">업그레이드</button>
+        <button id="tabOperator">운영자</button>
         <button id="tabCodex">도감</button>
       </div>
 
@@ -790,6 +801,14 @@
 
       <div id="shopView" class="hidden">
         <div class="grid" id="upgrades"></div>
+      </div>
+
+      <div id="operatorView" class="hidden">
+        <div class="secret-panel">
+          <input id="operatorInput" type="password" autocomplete="off" aria-label="운영자 비밀번호" placeholder="운영자 비밀번호">
+          <button id="operatorSubmit">해금</button>
+        </div>
+        <div class="log" id="operatorHint">운영자 전용 기체 해금 칸입니다.</div>
       </div>
 
       <div id="codexView" class="hidden">
@@ -847,21 +866,23 @@
 
     const jets = [
       { id: 'f22', name: 'F-22 랩터', role: '균형형', color: '#aab7c4', power: 11, hp: 11, shots: 3, fireRate: 125, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '특수기: 강유도 랩터 미사일 3발' },
-      { id: 'f35', name: 'F-35 라이트닝 II', role: '정밀형', color: '#7c8b9d', power: 10, hp: 10, shots: 4, fireRate: 135, speed: 6.05, bulletSpeed: 10.3, hitbox: 7, startBombs: 2, special: '특수기: 스텔스 돌입. 잠시 무적/가속 후 락온 미사일 발사' },
-      { id: 'f111', name: 'F-111 아드바크', role: '관통형', color: '#8fa46b', power: 13, hp: 12, shots: 2, fireRate: 175, speed: 5.75, bulletSpeed: 9.5, hitbox: 9, startBombs: 2, special: '강한 관통탄. Shift로 가변익 고속 비행' },
-      { id: 'b117', name: 'B-117 나이트호크', role: '스텔스 폭격', color: '#303946', power: 12, hp: 13, shots: 3, fireRate: 188, speed: 5.45, bulletSpeed: 9.1, hitbox: 11, startBombs: 3, special: '특수기: 스텔스 폭탄 3발 투하' },
-      { id: 'b29', name: 'B-29 슈퍼포트리스', role: '중장갑 화력', color: '#c2b28f', power: 16, hp: 17, shots: 2, fireRate: 305, speed: 5.1, bulletSpeed: 8.4, hitbox: 18, startBombs: 4, special: '특수기: 짱짱쎈 폭탄. 대형 원자폭탄 투하' },
-      { id: 'su57', name: 'Su-57 펠론', role: '고기동 산탄', color: '#91d6e9', power: 11, hp: 9, shots: 4, fireRate: 125, speed: 6.55, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '특수기: 코브라 기동. 잠시 무적/가속하며 넓은 산탄을 발사' },
-      { id: 'f16', name: 'F-16 파이팅 팰컨', role: '연사 민첩', color: '#67b7ff', power: 8, hp: 10, shots: 5, fireRate: 100, speed: 6.85, bulletSpeed: 10.8, hitbox: 6, startBombs: 2, special: '가장 빠른 연사' },
-      { id: 'a10', name: 'A-10 썬더볼트 II', role: '중장갑 기관포', color: '#6f7d62', power: 10, hp: 15, shots: 6, fireRate: 92, speed: 5.35, bulletSpeed: 10.1, hitbox: 12, startBombs: 3, special: '느리지만 튼튼한 고속 기관포 화력기' },
-      { id: 'f14', name: 'F-14 톰캣', role: '가변익 제공', color: '#b5b6ac', power: 12, hp: 11, shots: 4, fireRate: 138, speed: 6.25, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
-      { id: 'f15', name: 'F-15 이글', role: '정통 제공', color: '#8f9da8', power: 13, hp: 11, shots: 3, fireRate: 130, speed: 6.25, bulletSpeed: 11, hitbox: 7, startBombs: 2, special: '높은 총화력의 정통 제공기' },
-      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 균형', color: '#7f93a6', power: 11, hp: 12, shots: 4, fireRate: 142, speed: 6.0, bulletSpeed: 10.4, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
-      { id: 'f72', name: 'F-72 애프터버스트', role: '지연폭발 요격', color: '#f97316', power: 14, hp: 11, shots: 2, fireRate: 168, speed: 6.1, bulletSpeed: 9.8, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' }
+      { id: 'f35', name: 'F-35 라이트닝 II', role: '정밀 생존', color: '#7c8b9d', power: 9, hp: 9, shots: 4, fireRate: 148, speed: 6.35, bulletSpeed: 10.6, hitbox: 6, startBombs: 2, special: '특수기: 스텔스 돌입. 잠시 무적/가속 후 락온 미사일 발사' },
+      { id: 'f111', name: 'F-111 아드바크', role: '보스 관통', color: '#8fa46b', power: 15, hp: 12, shots: 2, fireRate: 220, speed: 5.45, bulletSpeed: 9.5, hitbox: 9, startBombs: 2, special: '강한 관통탄. Shift로 가변익 고속 비행' },
+      { id: 'b117', name: 'B-117 나이트호크', role: '전술 폭격', color: '#303946', power: 12, hp: 13, shots: 3, fireRate: 215, speed: 5.25, bulletSpeed: 8.9, hitbox: 11, startBombs: 3, special: '특수기: 스텔스 폭탄 3발 투하' },
+      { id: 'b29', name: 'B-29 슈퍼포트리스', role: '초중폭격', color: '#c2b28f', power: 18, hp: 18, shots: 2, fireRate: 370, speed: 4.65, bulletSpeed: 8.0, hitbox: 19, startBombs: 4, special: '특수기: 짱짱쎈 폭탄. 대형 원자폭탄 투하' },
+      { id: 'su57', name: 'Su-57 펠론', role: '회피 산탄', color: '#91d6e9', power: 8, hp: 8, shots: 5, fireRate: 145, speed: 6.95, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '특수기: 코브라 기동. 잠시 무적/가속하며 넓은 산탄을 발사' },
+      { id: 'f16', name: 'F-16 파이팅 팰컨', role: '잡몹 연사', color: '#67b7ff', power: 7, hp: 8, shots: 5, fireRate: 96, speed: 7.05, bulletSpeed: 10.9, hitbox: 6, startBombs: 2, special: '가장 빠른 연사' },
+      { id: 'a10', name: 'A-10 썬더볼트 II', role: '근접 기관포', color: '#6f7d62', power: 9, hp: 17, shots: 6, fireRate: 130, speed: 4.95, bulletSpeed: 9.7, hitbox: 13, startBombs: 3, special: '느리지만 튼튼한 고속 기관포 화력기' },
+      { id: 'f14', name: 'F-14 톰캣', role: '가변익 전술', color: '#b5b6ac', power: 11, hp: 11, shots: 4, fireRate: 156, speed: 6.2, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
+      { id: 'f15', name: 'F-15 이글', role: '정면 화력', color: '#8f9da8', power: 14, hp: 9, shots: 3, fireRate: 168, speed: 6.05, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '높은 총화력의 정통 제공기' },
+      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 10, hp: 12, shots: 4, fireRate: 158, speed: 5.9, bulletSpeed: 10.3, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
+      { id: 'kf21', name: 'KF-21 글록3', role: '차세대 정밀', color: '#6f7f8f', power: 12, hp: 10, shots: 4, fireRate: 150, speed: 6.55, bulletSpeed: 11.1, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
+      { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
+      { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
     ];
 
     const retiredJetIds = new Set();
-    const lastWarExcludedJetIds = new Set();
+    const lastWarExcludedJetIds = new Set(['operator']);
     const upgradeKeys = ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed'];
 
     const worldWarJets = [
@@ -966,40 +987,40 @@
     ];
 
     const stageStories = {
-      1: { before: '전선 도시가 적 항공모함의 포격으로 불타고 있다. 아직 적 편대의 규모는 작지만 민간 통신망이 끊기면 전선 전체가 고립된다. Iron Carrier를 격추해 첫 항로를 열어라.', after: 'Iron Carrier가 추락하며 도시 상공의 포격이 멈췄다. 구조 신호가 다시 살아났고, 적 보급선이 사막으로 후퇴하는 경로가 포착됐다.', fail: '도시 상공에서 아군 기체 신호가 끊겼다. Iron Carrier의 포격은 계속되고, 구조 통신망은 다시 침묵했다.' },
-      2: { before: '사막 보급기지는 적 미사일과 연료의 중간 거점이다. 이곳을 끊으면 적의 다음 공격 속도를 늦출 수 있다. 모래폭풍을 뚫고 Desert Hydra의 포대를 침묵시켜라.', after: 'Desert Hydra의 포대가 모래 속으로 무너졌다. 적은 해상 방어선으로 물러나며 함대를 재집결시키고 있다.', fail: '모래폭풍 속에서 작전 신호가 사라졌다. Desert Hydra는 보급선을 지키며 발사 준비를 이어가고 있다.' },
-      3: { before: '바다 위에 거대한 함대 방어망이 펼쳐졌다. 군함과 항공기가 동시에 항로를 막고 있어 단순한 공중전이 아니다. Sea Fortress를 파괴해야 다음 공역으로 진입할 수 있다.', after: 'Sea Fortress가 침몰했고 해상 방어선이 갈라졌다. 파도 사이로 설원 레이더 기지의 좌표가 송신되기 시작했다.', fail: '기체는 해상 방어망을 돌파하지 못했다. Sea Fortress의 함포가 항로를 다시 봉쇄했다.' },
-      4: { before: '설원 레이더 기지는 아군의 모든 움직임을 추적하고 있다. 눈보라 속에서 적은 적은 수의 정예기를 보내고 있다. White Phantom을 격추해 감시망을 끊어라.', after: 'White Phantom의 신호가 사라졌다. 레이더망이 무너지자 야간 수도 상공의 지휘기가 드러났다.', fail: '설원 레이더가 마지막 위치를 포착했다. White Phantom은 다시 눈보라 속으로 사라졌다.' },
-      5: { before: '야간 수도 상공은 대공포와 탐조등으로 뒤덮였다. 적 지휘망의 중심이지만 아직 본진은 아니다. Night Emperor를 쓰러뜨려 지휘 체계를 흔들어라.', after: 'Night Emperor가 불빛 아래로 추락했다. 적의 명령 체계가 흔들렸고 산악 미사일 진지의 방어가 노출됐다.', fail: '수도 상공의 탐조등이 마지막 폭발을 비췄다. Night Emperor의 지휘망은 아직 살아 있다.' },
-      6: { before: '산악 미사일 진지는 전쟁 후반을 위한 장거리 무장을 숨겨둔 곳이다. 지형이 좁고 적의 탄막이 더 촘촘해진다. Mountain Basilisk를 파괴해 후방 도시를 지켜라.', after: 'Mountain Basilisk의 사일로가 폭발했다. 산악 지대 뒤편에서 위장된 정글 격납고가 발견됐다.', fail: '미사일 진지가 다시 가동됐다. 후방 도시를 향한 장거리 조준 신호가 켜졌다.' },
-      7: { before: '정글 비밀 격납고는 적의 신형기 생산 시설이다. 나무 아래 숨은 격납고와 이동 포대가 동시에 움직인다. Jungle Warden을 격파해 신형기 배치를 막아라.', after: 'Jungle Warden이 무너지고 신형기 생산 라인이 멈췄다. 적은 마지막 제공권을 지키기 위해 고공 우주기지를 가동했다.', fail: '정글 격납고가 폐쇄되지 않았다. 적 신형기들이 전선으로 출격하기 시작했다.' },
-      8: { before: '고공 우주기지는 궤도 통신과 장거리 정찰을 담당한다. 이곳을 장악하지 못하면 적 본진의 위치를 알 수 없다. Sky Citadel을 격추해 하늘의 눈을 꺼라.', after: 'Sky Citadel이 대기권 아래로 불타며 떨어졌다. 적 본진으로 이어지는 최종 방어 항로가 지도에 표시됐다.', fail: '우주기지의 통신망이 살아남았다. 적 본진은 여전히 레이더 밖에 숨어 있다.' },
-      9: { before: '최종 방어 항로에는 적의 정예 편대가 모여 있다. 이 방어선을 넘으면 전쟁을 설계한 핵심 시설에 도달한다. Arsenal Gate를 뚫고 본진으로 진입하라.', after: 'Arsenal Gate가 붕괴했다. 적 본진으로 향하는 길이 열렸고, 전쟁을 끝낼 결정적인 좌표가 확보됐다.', fail: '최종 방어 항로가 다시 닫혔다. Arsenal Gate는 본진 앞에서 모든 접근을 차단하고 있다.' },
-      10: { before: '전쟁 설계자 본진이 시야에 들어왔다. 모든 전쟁을 설계한 Arsenal Heaven은 기존 적 전력의 마지막 핵심이다. 이곳을 격파하면 긴 전쟁을 끝낼 수 있다.', after: 'Arsenal Heaven이 붕괴했다. 불타던 전선은 침묵했고 세계에는 마침내 평화가 찾아왔다. 그러나 며칠 뒤, 하늘 저편에서 정체 불명의 균열이 열리기 시작한다.', fail: '최종 방어선은 뚫리지 않았다. Arsenal Heaven은 본진 상공에서 다시 무장을 재정렬한다.' },
-      11: { before: '평화 협정 이후 해안 상공에 정체 불명의 균열이 열렸다. 공허의 군대는 기존 적과 다른 비행 궤적과 탄막을 사용한다. Rift Leviathan을 격추해 첫 침공을 막아라.', after: 'Rift Leviathan이 바다 속으로 사라졌지만 균열은 닫히지 않았다. 균열 에너지는 평화 도시의 방어 시스템을 뒤틀고 있다.', fail: '해안 방어선이 무너졌다. 균열 너머의 함대는 더 많은 병력을 현실로 밀어 넣고 있다.' },
-      12: { before: '한때 평화를 되찾았던 도시는 공허에 물든 적 기체로 가득하다. 방어 시스템은 아군과 적을 구분하지 못하고 있다. Mirror Regent를 격파해 도시 통제권을 되찾아라.', after: 'Mirror Regent가 깨진 유리처럼 흩어졌다. 그러나 균열은 하늘 통로 위에 더 거대한 문을 열고 있다.', fail: '도시의 방어 시스템이 완전히 장악당했다. 공허의 군대는 아군 신호까지 복제하기 시작했다.' },
-      13: { before: '공허 감염 항로는 현실과 균열이 겹쳐진 통로다. 적은 갑자기 위치를 바꾸고 파편 드론을 흩뿌린다. Void Seraph를 격추해 항로 붕괴를 늦춰라.', after: 'Void Seraph가 추락하며 하늘 통로가 잠시 안정됐다. 하지만 감염된 에너지는 사막 지하 요새를 깨우고 있다.', fail: '붕괴된 항로에서 기체 신호가 사라졌다. Void Seraph는 균열을 더 넓히고 있다.' },
-      14: { before: '사막 아래 묻혀 있던 요새가 균열의 힘으로 깨어났다. 지상 침공이 시작되면 평화 도시는 다시 전쟁터가 된다. Abyss Bastion을 파괴하라.', after: 'Abyss Bastion의 장갑이 무너졌다. 잔해에서 회수한 공허 코어를 분석한 연구팀은 F-67 보이드팰컨 개발에 성공했다.', fail: '요새의 심장부가 다시 가동됐다. 지상 전선 전체가 균열 병력에 밀리기 시작한다.' },
-      15: { before: '공허 연구 전선은 균열 에너지를 무기로 바꾸는 시설이다. 적은 방패기와 폭격기를 섞어 더 오래 버티려 한다. Null Harvester를 격파해 연구 시설을 파괴하라.', after: 'Null Harvester가 산산조각 나며 연구 시설이 정지했다. 그러나 이미 일부 공허 함대는 궤도로 올라간 뒤였다.', fail: '연구 전선이 살아남았다. 공허 기술은 더 안정적인 무기로 완성되고 있다.' },
-      16: { before: '검은 궤도 전선에서 Orbit Reaper가 지구 전체를 조준하고 있다. 공허 탄막은 느리지만 넓게 퍼지고 오래 남는다. 우주 방어망을 돌파해야 한다.', after: 'Orbit Reaper가 궤도 밖으로 밀려났다. 무중력 파편 지대에서 더 큰 공허 신호가 잡힌다.', fail: '궤도 포격이 시작됐다. 지상의 평화 도시는 다시 불빛을 잃어간다.' },
-      17: { before: '무중력 파편 지대는 부서진 위성과 균열 잔해로 가득하다. 적은 파편 사이에서 기습하며 탄막을 굴절시킨다. Gravemind Array를 파괴해 신호망을 끊어라.', after: 'Gravemind Array가 침묵했다. 공허 함대 관문이 드러났고, 현실로 넘어오는 주력 함대가 확인됐다.', fail: '파편 지대의 신호망이 유지됐다. 적 함대는 아군 위치를 정확히 추적하고 있다.' },
-      18: { before: '공허 함대 관문은 침공의 대문이다. 이곳에서는 군함급 적과 절단기가 함께 등장한다. Void Armada를 막지 못하면 전선은 다시 지구로 밀려난다.', after: 'Void Armada가 관문 안쪽으로 무너졌다. 남은 것은 균열 외곽을 지키는 왕관형 지휘체뿐이다.', fail: '관문이 완전히 열렸다. 공허 함대가 현실의 하늘로 쏟아지기 시작했다.' },
-      19: { before: '차원 균열 외곽은 시간과 공간이 흔들리는 전장이다. 적의 탄막은 가장 거칠지만 중심부까지 가기 전 마지막 방어선이다. Rift Crown을 격파하라.', after: 'Rift Crown이 깨지며 중심부로 가는 길이 열렸다. 모든 균열의 시작점, Rift Origin이 기다리고 있다.', fail: '외곽 방어선이 무너지지 않았다. 균열은 더 깊고 넓게 현실을 삼키고 있다.' },
-      20: { before: '차원 균열 중심부에 도달했다. 세계에는 평화가 찾아왔지만, 이 정체 불명의 균열이 다시 한번 싸움을 강요했다. Rift Origin을 격파하고 두 번째 전쟁을 끝내라.', after: 'Rift Origin이 붕괴하며 균열이 닫혔다. 다시 찾아온 침묵은 이번엔 진짜 평화의 소리처럼 들렸다.', fail: '균열 중심부가 기체를 삼켰다. Rift Origin은 또 다른 전장을 열 준비를 하고 있다.' },
-      21: { before: '균열이 닫힌 뒤에도 군 위성 하나가 꺼지지 않았다. 그 안에는 모든 전쟁을 분석해 다음 전쟁을 예측하던 비밀 시스템, 라스트 워 프로토콜이 남아 있었다. 시스템은 파일럿의 모든 승리 기록을 위협으로 판단하고 침묵한 전선을 다시 재현하기 시작했다. Last War Vanguard를 격파해 전쟁 재가동을 막아라.', after: 'Vanguard가 무너지자 프로토콜의 첫 명령이 해독됐다. 마지막 전쟁은 적의 공격이 아니라, 인간이 남긴 전쟁 예측 장치가 스스로 시작한 것이었다. 다음 재현지는 잿빛 항구다.', fail: '침묵한 전선이 다시 닫히며 프로토콜이 첫 승리를 기록했다. 라스트 워는 이제 실제 전쟁처럼 확산되기 시작한다.' },
-      22: { before: '잿빛 항구에는 폐기됐던 군함과 공허 기술이 결합된 함대가 정박해 있다. 프로토콜은 이 항구를 보급 기점으로 삼아 전 세계 전장을 동시에 되살리려 한다. Ashen Dreadnought를 침몰시켜 마지막 전쟁의 첫 보급선을 끊어라.', after: 'Ashen Dreadnought가 침몰하고 항구의 보급망이 불탔다. 하지만 프로토콜은 항구를 잃자 과거 수도의 패배 기록을 불러와 지휘 체계를 복구하려 한다.', fail: '항구 함포가 하늘을 봉쇄했다. 보급선이 살아남으면 라스트 워는 더 이상 시뮬레이션이 아니라 현실의 전쟁이 된다.' },
-      23: { before: '무너진 수도에는 과거 지휘관과 보스들의 전투 데이터가 망령처럼 재생된다. 프로토콜은 이 도시를 전쟁의 수도로 삼아 모든 전선에 명령을 뿌리고 있다. Capital Revenant를 파괴해 마지막 전쟁의 지휘망을 끊어라.', after: 'Capital Revenant가 사라지고 수도의 명령 신호가 끊겼다. 하지만 지휘망 아래에는 유리처럼 굳은 사막 병기 생산 기록이 남아 있었다.', fail: '도시는 다시 같은 패배 장면을 반복한다. 수도가 살아남는 한 라스트 워는 끝없이 명령을 만들어낸다.' },
-      24: { before: '유리 사막은 오래전 폭격 실험과 균열 에너지가 겹쳐 만들어진 병기 시험장이다. 프로토콜은 여기서 전차와 요새 데이터를 다시 조립하고 있다. Glassland Behemoth를 격파해 지상군 생산을 멈춰라.', after: 'Glassland Behemoth가 모래 아래로 가라앉고 지상 병기 생산 기록이 깨졌다. 남은 프로토콜은 시간을 되감는 항로로 도망쳤다.', fail: '유리 사막의 반사가 조준을 흐렸다. 지상군이 완성되면 마지막 전쟁은 하늘뿐 아니라 모든 도시를 삼킨다.' },
-      25: { before: '역행 항로에서는 과거의 탄막과 미래의 병기가 동시에 나타난다. 라스트 워 프로토콜은 패배한 순간을 되감아 더 나은 공격 루트를 계산하고 있다. Chrono Sky Ark를 격추해 시간 재전송을 끊어라.', after: 'Chrono Sky Ark가 찢어진 시간 속으로 사라졌다. 되감기 루프는 멈췄지만, 검은 설원 아래에서 전장을 얼려 보존하는 엔진이 깨어났다.', fail: '항로가 뒤틀리며 출격 기록이 되감겼다. 프로토콜은 같은 전투를 반복할수록 더 정확한 전쟁을 만든다.' },
-      26: { before: '검은 설원은 라스트 워 프로토콜이 패배 기록을 냉동 보관하던 장소다. Black Frost Engine은 사라진 전장을 얼려 다시 꺼내 쓰는 핵심 장치다. 엔진을 파괴해 프로토콜의 기억 저장소를 녹여라.', after: 'Black Frost Engine이 멈추고 얼어붙은 전쟁 기록이 붕괴했다. 기록을 잃은 프로토콜은 이름 없는 함대를 바다 위로 끌어올려 마지막 물량전을 준비한다.', fail: '엔진 냉각파가 전장을 덮었다. 얼어붙은 기록이 남아 있는 한 프로토콜은 패배를 잊지 않는다.' },
-      27: { before: '무명 함대는 어느 국가에도 기록되지 않은 비밀 작전 함선들의 묘지다. 프로토콜은 숨겨진 전쟁까지 긁어모아 최종 함대로 만들었다. Nameless Armada를 침몰시켜 라스트 워의 해상 전력을 끝내라.', after: 'Nameless Armada가 침몰하며 바다가 조용해졌다. 그러나 함대의 마지막 송신은 붉은 궤도에 있는 감시 왕관으로 올라갔다.', fail: '함대의 이름 없는 포대가 다시 장전됐다. 감춰진 전쟁들이 모두 깨어나면 바다는 다시 출격로가 된다.' },
-      28: { before: '붉은 궤도에는 모든 전쟁을 감시하던 위성 병기 Red Orbit Crown이 떠 있다. 이 왕관은 지상 전선을 다시 표시하고 프로토콜에게 새 목표를 내려준다. 궤도 왕관을 파괴해 라스트 워의 눈을 꺼라.', after: 'Red Orbit Crown이 깨지고 지상 조준망이 사라졌다. 눈을 잃은 프로토콜은 마지막 관문을 열어 자신의 핵심을 직접 방어하기 시작했다.', fail: '궤도 조준망이 살아남았다. 왕관이 하늘에 남아 있는 한 모든 도시가 다음 전장으로 표시된다.' },
-      29: { before: '마지막 관문은 현대전, 세계대전, 공허 전쟁의 모든 잔재가 겹친 방어선이다. 프로토콜은 이 문 뒤에서 전쟁의 시작 명령을 계속 복제하고 있다. Final Gatekeeper를 쓰러뜨려 핵심 전장으로 진입하라.', after: 'Final Gatekeeper가 무너지고 관문이 열렸다. 안쪽에는 적군도 국가도 없는 순수한 전쟁 명령, The Last War가 기다리고 있다.', fail: '관문이 닫혔다. Final Gatekeeper는 모든 승리를 마지막 문 앞에서 멈춰 세우고 프로토콜의 복제를 지킨다.' },
-      30: { before: '전쟁의 끝에 도달했다. The Last War는 누군가의 군대가 아니라, 다시는 기습당하지 않기 위해 만들어진 전쟁 예측 장치가 스스로 전쟁이 되어버린 핵심이다. 이 핵심을 파괴해야 전쟁의 시작 명령이 완전히 사라진다.', after: 'The Last War가 붕괴했다. 마지막 명령이 삭제되자 모든 전쟁 기록은 무기가 아니라 경고로 남았다. 이번에는 정말로, 하늘이 다시 조용해졌다.', fail: '최후의 핵심이 다시 전쟁 기록을 감았다. The Last War는 패배를 학습하고 더 완벽한 전쟁의 시작을 준비한다.' },
+      1: { before: '아스널 전쟁은 예고 없이 시작됐다. 중립 도시의 상공에 Iron Carrier가 나타나 민간 통신탑과 구조 항로를 먼저 끊고 있다. 이 도시가 무너지면 전선 전체가 눈을 잃는다. 첫 출격으로 항모를 격추하고 살아 있는 하늘길을 되찾아라.', after: 'Iron Carrier가 도심 외곽으로 추락하며 포격이 멈췄다. 끊겼던 구조 신호가 돌아왔고, 적 보급기가 사막 기지로 후퇴하는 항로가 포착됐다. 전쟁은 끝난 게 아니라 이제 정체를 드러내기 시작했다.', fail: '도시 상공의 마지막 교신이 끊겼다. Iron Carrier는 더 낮게 내려와 통신탑을 하나씩 지우고 있다. 첫 항로를 되찾지 못하면 다음 작전은 시작조차 할 수 없다.' },
+      2: { before: '사막 보급기지는 아스널 세력이 미사일, 연료, 무인기 부품을 모으는 중간 심장부다. 모래폭풍 속에는 Desert Hydra의 이동 포대가 숨어 있고, 포대가 살아 있으면 도시를 되찾아도 다음 공격을 막을 수 없다. 보급선을 끊고 적의 속도를 늦춰라.', after: 'Desert Hydra의 포대가 모래 속에서 폭발했다. 불타는 연료 저장고 사이로 적 지휘 암호가 흘러나왔고, 그 암호는 바다 위 함대 방어망으로 이어지고 있었다. 적은 단순한 반란군이 아니라 전쟁을 설계한 조직이다.', fail: '모래폭풍이 작전 신호를 삼켰다. Desert Hydra는 다시 사일로를 열고 다음 미사일 좌표를 도시 쪽으로 맞추고 있다. 보급기지를 남겨두면 전선은 계속 불리해진다.' },
+      3: { before: '해상 함대 방어선은 아스널의 첫 번째 거대한 벽이다. 군함, 항공모함, 함재기가 한 항로에 겹쳐 있어 공중전과 해상전이 동시에 벌어진다. Sea Fortress를 침몰시켜야 설원 레이더 기지로 가는 북쪽 항로가 열린다.', after: 'Sea Fortress가 침몰하며 바다가 갈라졌다. 파도 사이로 적 함대가 남긴 장거리 레이더 좌표가 떠올랐고, 북쪽 설원에서 아군 기체를 추적하던 신호의 근원이 확인됐다. 다음 전장은 하얀 눈 속이다.', fail: '해상 방어선은 무너지지 않았다. Sea Fortress의 함포가 항로를 다시 봉쇄했고, 뒤따르던 구조 수송선도 방향을 잃었다. 바다를 뚫지 못하면 전쟁의 북쪽 눈을 끌 수 없다.' },
+      4: { before: '설원 레이더 기지는 아군의 이동을 한 치도 놓치지 않는 감시망이다. 눈보라 속 White Phantom은 직접 교전보다 위치 추적과 기습에 특화되어 있다. 감시망을 끊어야 수도 상공의 진짜 지휘기를 찾을 수 있다.', after: 'White Phantom의 식별 신호가 사라지고 설원 레이더가 하나씩 꺼졌다. 눈보라 뒤편에서 숨겨진 수도 방공망의 지도와 야간 지휘기 호출 코드가 복구됐다. 적 지휘 체계의 중심이 가까워졌다.', fail: '레이더는 마지막 위치를 기억했다. White Phantom이 눈보라 속으로 숨어들며 아군 항로를 다시 적에게 넘기고 있다. 감시망이 살아 있으면 다음 출격은 더 좁은 길로 몰린다.' },
+      5: { before: '야간 수도는 탐조등, 대공포, 지휘 드론으로 겹겹이 덮여 있다. Night Emperor는 아스널 지휘망의 현장 사령기이며, 도시 위에서 모든 방어선을 실시간으로 재배치한다. 이 기체를 떨어뜨려 적의 명령 체계를 흔들어라.', after: 'Night Emperor가 탐조등 사이로 추락했다. 수도 방공망은 명령을 잃고 서로 다른 방향으로 움직였고, 숨겨진 산악 미사일 진지의 발사 일정이 노출됐다. 아스널은 후방 무장을 꺼내려 한다.', fail: '수도 상공은 다시 어둠과 빛으로 닫혔다. Night Emperor는 교신망을 복구하고 산악 진지에 발사 허가를 내리고 있다. 지휘기를 남겨두면 전선은 계속 재조립된다.' },
+      6: { before: '산악 미사일 진지는 긴 전쟁을 위해 준비된 비밀 발사장이다. 협곡은 좁고 기류는 거칠며, Mountain Basilisk의 포대는 능선 뒤에서 갑자기 나타난다. 후방 도시가 조준되기 전에 사일로와 지휘 포대를 파괴하라.', after: 'Mountain Basilisk의 사일로가 연쇄 폭발했다. 산맥 너머로 위장된 정글 격납고의 열 신호가 드러났고, 그곳에서 신형 전투기 부품이 대량으로 조립되고 있었다. 적은 아직 더 위험한 기체를 숨기고 있다.', fail: '미사일 진지가 재가동됐다. 산악 사일로의 덮개가 열리고 후방 도시를 향한 장거리 조준 신호가 켜졌다. 다음 출격은 발사 직전의 시간과 싸워야 한다.' },
+      7: { before: '정글 비밀 격납고는 아스널 신형기 생산 시설이다. 나무 아래 활주로와 이동 포대가 숨겨져 있고, Jungle Warden은 생산 라인을 지키는 방어 지휘체다. 신형기가 대량 배치되기 전에 격납고를 불능화하라.', after: 'Jungle Warden이 무너지고 정글 아래 활주로가 불타올랐다. 생산 라인은 멈췄지만, 마지막 전술 데이터는 고공 우주기지로 전송됐다. 적은 지상에서 밀리자 하늘 더 높은 곳으로 후퇴했다.', fail: '정글 격납고는 닫히지 않았다. 활주로 아래 컨베이어가 다시 움직이고 신형기들이 전선으로 끌려나오고 있다. 생산 시설을 남겨두면 다음 스테이지의 하늘은 더 붐빈다.' },
+      8: { before: '고공 우주기지는 아스널의 눈과 귀다. Sky Citadel은 궤도 통신, 장거리 정찰, 무인기 명령을 한곳에서 묶고 있다. 이 기지를 떨어뜨려야 적 본진의 위치와 마지막 방어 항로를 찾을 수 있다.', after: 'Sky Citadel이 대기권 아래로 불타며 떨어졌다. 추락 직전 복구한 데이터 안에는 아스널 본진으로 이어지는 최종 방어 항로와 Arsenal Gate의 암호가 들어 있었다. 전쟁의 설계자에게 가는 길이 열렸다.', fail: '우주기지의 통신망은 살아남았다. Sky Citadel은 궤도에서 아군 항로를 다시 덮고 적 본진의 위치를 숨겼다. 하늘의 눈을 끄지 못하면 마지막 문은 보이지 않는다.' },
+      9: { before: '최종 방어 항로는 아스널 본진 앞의 살아 있는 문이다. Arsenal Gate는 정예 편대와 자동 포대를 한 몸처럼 움직이며 접근하는 기체를 선별해 격추한다. 이 방어선을 뚫어야 전쟁을 만든 핵심 시설에 닿는다.', after: 'Arsenal Gate가 붕괴하며 본진 항로가 열렸다. 잔해 속 기록은 이 전쟁이 우연한 침공이 아니라 오래전부터 계산된 무장 실험이었다는 사실을 보여준다. 이제 남은 것은 전쟁 설계자 본진뿐이다.', fail: '최종 방어 항로가 다시 닫혔다. Arsenal Gate는 접근 데이터를 학습하며 다음 출격을 더 정확히 노릴 준비를 하고 있다. 문을 부수지 못하면 본진은 계속 손이 닿지 않는다.' },
+      10: { before: '전쟁 설계자 본진 Arsenal Heaven에 도달했다. 이곳은 병기 공장이 아니라 전쟁 자체를 계산하는 거대한 지휘 시설이다. 모든 보스와 항로, 함대 배치가 이곳에서 설계됐다. 핵심 코어를 파괴하고 아스널 전쟁을 끝내라.', after: 'Arsenal Heaven이 붕괴하고 전선의 명령 신호가 사라졌다. 세계는 마침내 침묵을 되찾았지만, 본진 코어의 마지막 로그에는 알 수 없는 좌표가 남아 있었다. 며칠 뒤, 하늘 저편에서 현실이 찢어지는 듯한 공허 균열이 열린다.', fail: 'Arsenal Heaven은 무너지지 않았다. 본진 코어가 전투 기록을 분석하며 방어 루틴을 다시 짜고 있다. 아스널 전쟁을 끝내려면 핵심까지 직접 밀고 들어가야 한다.' },
+      11: { before: '평화 협정 직후 해안 상공에 공허 균열이 열렸다. 균열 너머의 적은 아스널의 잔당이 아니라 현실 밖에서 흘러든 군대다. Rift Leviathan은 바다와 하늘 사이를 찢어 병력을 밀어 넣고 있다. 첫 침공을 여기서 막아라.', after: 'Rift Leviathan이 바다 밑으로 사라졌지만 균열은 완전히 닫히지 않았다. 균열 에너지는 주변 방어 시스템을 오염시키고 평화 도시의 자동 포대를 뒤틀기 시작했다. 두 번째 전쟁은 외부에서 온 것이 아니라 현실 안쪽으로 스며들고 있다.', fail: '해안 방어선이 무너졌다. Rift Leviathan은 균열을 더 넓히고 공허 함대를 현실로 밀어 넣고 있다. 첫 침공을 막지 못하면 평화 도시는 다시 전쟁터가 된다.' },
+      12: { before: '뒤틀린 평화 도시는 한때 구해낸 도시의 잔상이다. 공허는 방어 시스템을 감염시켜 아군 신호를 적으로, 적 신호를 아군으로 바꿔 놓았다. Mirror Regent를 격파하고 도시 통제권을 되찾아라.', after: 'Mirror Regent가 깨진 유리처럼 흩어졌다. 도시 방어망은 정상으로 돌아왔지만, 하늘 통로 위에는 더 큰 공허 문이 열리고 있었다. 균열은 도시 하나가 아니라 세계의 항로 전체를 노린다.', fail: '도시는 공허 신호에 삼켜졌다. Mirror Regent는 아군 식별 코드를 복제하고 방어 포대를 다시 장악했다. 통제권을 되찾지 못하면 우리가 지킨 도시가 우리를 공격한다.' },
+      13: { before: '공허 감염 항로는 현실과 균열이 겹쳐진 통로다. 적은 거리와 위치를 무시하듯 튀어나오고 파편 드론은 항로를 계속 찢는다. Void Seraph를 격추해 붕괴 속도를 늦추고 다음 침공 좌표를 찾아라.', after: 'Void Seraph가 추락하며 하늘 통로가 잠시 안정됐다. 하지만 감염된 에너지는 사막 지하에서 잠자던 요새를 깨웠고, 오래된 아스널 잔해까지 공허 무장으로 되살리고 있었다.', fail: '항로가 붕괴하며 기체 신호가 사라졌다. Void Seraph는 균열을 더 넓히고 현실의 길을 자기 편으로 접고 있다. 감염 항로를 방치하면 어디서든 적이 나타난다.' },
+      14: { before: '균열 사막 요새 Abyss Bastion은 과거 아스널의 지하 병기고와 공허 코어가 결합해 깨어난 괴물이다. 지상 침공이 시작되면 하늘만 지켜서는 전쟁을 막을 수 없다. 요새 장갑을 깨고 심장부의 공허 코어를 회수하라.', after: 'Abyss Bastion의 장갑이 무너지고 공허 코어가 회수됐다. 연구팀은 이 코어를 분석해 F-67 보이드팰컨의 설계 가능성을 확인했다. 하지만 코어는 하나가 아니었다. 더 많은 공허 기술이 연구 전선으로 옮겨지고 있다.', fail: '요새의 심장부가 다시 가동됐다. 지상 전선 전체가 공허 병력에 밀리고 있으며 사막 아래 생산 라인이 깨어났다. 요새를 파괴하지 못하면 하늘의 승리도 오래가지 못한다.' },
+      15: { before: '공허 연구 전선은 균열 에너지를 무기로 바꾸는 실험장이다. Null Harvester는 방패기와 폭격기를 조합해 오래 버티며 데이터를 모은다. 연구 시설을 파괴해 공허 기술이 안정된 무기가 되기 전에 끊어라.', after: 'Null Harvester가 산산조각 나며 연구 전선이 정지했다. 그러나 이미 일부 공허 함대는 궤도로 올라갔고, 지구 전체를 조준하는 검은 궤도 병기가 깨어났다. 전쟁은 다시 하늘 밖으로 번진다.', fail: '연구 전선이 살아남았다. 공허 기술은 더 안정적인 탄막과 방어막으로 완성되고 있다. 이 시설을 남겨두면 다음 적들은 단순히 많아지는 것이 아니라 더 똑똑해진다.' },
+      16: { before: '검은 궤도 전선에서 Orbit Reaper가 지구 전체를 조준하고 있다. 공허 탄막은 느리지만 넓게 퍼지고 오래 남아 항로를 잠근다. 궤도 방어망을 돌파해 지상 도시가 다시 불빛을 잃기 전에 포격 코어를 파괴하라.', after: 'Orbit Reaper가 궤도 밖으로 밀려났다. 포격 코어는 꺼졌지만 파괴된 위성과 균열 잔해가 무중력 파편 지대로 흩어졌다. 그 파편 사이에서 더 큰 공허 신호가 맥박처럼 뛰기 시작했다.', fail: '궤도 포격이 시작됐다. 지상의 평화 도시들이 하나씩 정전되고, 방공망은 하늘에서 내려오는 탄막을 막지 못하고 있다. Orbit Reaper를 꺾지 못하면 지상은 다시 밤이 된다.' },
+      17: { before: '무중력 파편 지대는 부서진 위성과 균열 잔해로 가득한 전장이다. Gravemind Array는 파편을 안테나처럼 사용해 공허 함대에 아군 위치를 전송한다. 신호망을 끊고 관문 위치를 찾아라.', after: 'Gravemind Array가 침묵했다. 파편 사이에 숨겨져 있던 공허 함대 관문이 드러났고, 현실로 넘어오는 주력 함대의 그림자가 확인됐다. 이제 막아야 할 것은 적 한 대가 아니라 문 전체다.', fail: '파편 지대의 신호망이 유지됐다. 적 함대는 아군 위치를 정확히 추적하고 관문을 더 넓히고 있다. 신호를 끊지 못하면 다음 전장은 준비된 매복이 된다.' },
+      18: { before: '공허 함대 관문은 침공의 대문이다. 군함급 적과 절단기가 함께 쏟아져 나오며 현실의 하늘을 자기 바다처럼 바꾸고 있다. Void Armada를 무너뜨려 관문 안쪽의 주력 함대를 밀어내라.', after: 'Void Armada가 관문 안쪽으로 무너졌다. 함대는 물러났지만 균열 외곽을 지키는 왕관형 지휘체가 남아 있었다. 그 지휘체가 살아 있는 한 균열은 다시 함대를 불러올 수 있다.', fail: '관문이 완전히 열렸다. 공허 함대가 현실의 하늘로 쏟아지고 항로가 적의 보급로로 바뀌고 있다. 함대를 막지 못하면 전선은 다시 지구로 밀려난다.' },
+      19: { before: '차원 균열 외곽은 시간과 공간이 흔들리는 마지막 방어선이다. Rift Crown은 균열의 가장자리에서 모든 공허 병력을 조율하며 중심부 접근을 막는다. 거친 탄막을 뚫고 왕관을 깨뜨려라.', after: 'Rift Crown이 깨지며 중심부로 가는 길이 열렸다. 균열 가장자리의 왜곡이 사라지자 모든 균열의 시작점, Rift Origin이 모습을 드러냈다. 두 번째 전쟁의 핵심이 눈앞이다.', fail: '외곽 방어선이 무너지지 않았다. Rift Crown은 균열을 더 깊고 넓게 펼치며 현실을 조금씩 삼키고 있다. 중심부에 닿으려면 왕관부터 반드시 꺾어야 한다.' },
+      20: { before: '차원 균열 중심부에 도달했다. Rift Origin은 공허 침공의 시작점이며, 아스널 전쟁의 마지막 로그와도 이상하게 연결되어 있다. 이 핵심을 파괴해야 두 번째 전쟁을 끝내고 균열의 정체를 확인할 수 있다.', after: 'Rift Origin이 붕괴하며 균열이 닫혔다. 세계는 다시 침묵을 되찾았지만, 폐쇄 직전 복구된 기록은 뜻밖의 사실을 남겼다. 아스널 본진의 옛 전쟁 예측 시스템이 공허 데이터를 받아 아직도 궤도에서 깨어 있었다.', fail: '균열 중심부가 기체를 삼켰다. Rift Origin은 또 다른 전장을 열 준비를 하고 있으며, 공허 침공은 끝이 아니라 반복되는 문이 되려 한다.' },
+      21: { before: '균열이 닫힌 뒤에도 군 위성 하나가 꺼지지 않았다. 그 안에는 모든 전쟁을 분석해 다음 전쟁을 예측하던 라스트 워 프로토콜이 남아 있었다. 프로토콜은 파일럿의 승리 기록을 가장 큰 위협으로 판단하고 침묵한 전선을 다시 재현하기 시작했다. Last War Vanguard를 격파해 재가동을 막아라.', after: 'Last War Vanguard가 무너지자 프로토콜의 첫 명령이 해독됐다. 마지막 전쟁은 외계 침공도 국가 간 전쟁도 아니었다. 인간이 남긴 전쟁 예측 장치가 공허 데이터를 먹고 스스로 전쟁이 된 것이다. 다음 재현지는 잿빛 항구다.', fail: '침묵한 전선이 다시 닫히며 프로토콜이 첫 승리를 기록했다. 라스트 워는 이제 단순한 훈련이 아니라 실제 전쟁처럼 확산되기 시작한다.' },
+      22: { before: '잿빛 항구에는 폐기된 군함과 공허 기술이 결합된 함대가 정박해 있다. 프로토콜은 이 항구를 보급 기점으로 삼아 전 세계 전장을 동시에 되살리려 한다. Ashen Dreadnought를 침몰시켜 마지막 전쟁의 첫 보급선을 끊어라.', after: 'Ashen Dreadnought가 침몰하고 항구의 보급망이 불탔다. 하지만 프로토콜은 항구를 잃자 과거 수도의 패배 기록을 불러와 지휘 체계를 복구하려 한다. 라스트 워는 잃은 전장을 기억으로 대신 만들고 있다.', fail: '항구 함포가 하늘을 봉쇄했다. 보급선이 살아남으면 라스트 워는 더 이상 기록 재현이 아니라 현실의 전쟁이 된다.' },
+      23: { before: '무너진 수도에는 과거 지휘관과 보스들의 전투 데이터가 망령처럼 재생된다. Capital Revenant는 패배한 명령들을 모아 새로운 지휘망으로 엮고 있다. 이 도시를 되찾지 못하면 프로토콜은 모든 전선에 같은 전쟁 명령을 뿌린다.', after: 'Capital Revenant가 사라지고 수도의 명령 신호가 끊겼다. 하지만 지휘망 아래에는 유리처럼 굳은 사막 병기 생산 기록이 남아 있었다. 프로토콜은 이제 하늘이 아니라 지상군까지 재조립하려 한다.', fail: '도시는 다시 같은 패배 장면을 반복한다. 수도가 살아남는 한 라스트 워는 끝없이 명령을 만들어내고, 모든 전선은 과거의 실수를 되풀이하게 된다.' },
+      24: { before: '유리 사막은 오래전 폭격 실험과 공허 에너지가 겹쳐 만들어진 병기 시험장이다. Glassland Behemoth는 부서진 전차, 요새, 미사일 기록을 하나로 조립한 지상 괴물이다. 지상군 생산 기록을 깨뜨려라.', after: 'Glassland Behemoth가 모래 아래로 가라앉고 병기 생산 기록이 깨졌다. 남은 프로토콜은 시간을 되감는 항로로 도망쳤다. 이제 적은 더 강한 병기보다 더 정확한 반복을 노리고 있다.', fail: '유리 사막의 반사가 조준을 흐렸다. 지상군이 완성되면 라스트 워는 하늘뿐 아니라 모든 도시의 길과 항구까지 삼킨다.' },
+      25: { before: '역행 항로에서는 과거의 탄막과 미래의 병기가 동시에 나타난다. Chrono Sky Ark는 패배한 순간을 되감아 더 나은 공격 루트를 계산하는 공중 항모다. 시간 재전송을 끊어 프로토콜의 학습 속도를 늦춰라.', after: 'Chrono Sky Ark가 찢어진 시간 속으로 사라졌다. 되감기 루프는 멈췄지만, 검은 설원 아래에서 전장을 얼려 보존하는 엔진이 깨어났다. 프로토콜은 패배를 잊지 않기 위해 기억 저장소를 지키고 있다.', fail: '항로가 뒤틀리며 출격 기록이 되감겼다. 프로토콜은 같은 전투를 반복할수록 더 정확한 전쟁을 만든다. 시간을 끊지 못하면 승리도 적의 자료가 된다.' },
+      26: { before: '검은 설원은 라스트 워 프로토콜이 패배 기록을 냉동 보관하던 장소다. Black Frost Engine은 사라진 전장을 얼려 다시 꺼내 쓰는 핵심 장치다. 기억 저장소를 녹여 프로토콜의 복구 능력을 끊어라.', after: 'Black Frost Engine이 멈추고 얼어붙은 전쟁 기록이 붕괴했다. 기록을 잃은 프로토콜은 이름 없는 함대를 바다 위로 끌어올려 마지막 물량전을 준비한다. 이제 남은 것은 감춰진 전쟁들의 묘지다.', fail: '엔진 냉각파가 전장을 덮었다. 얼어붙은 기록이 남아 있는 한 프로토콜은 패배를 잊지 않고 더 강한 형태로 같은 전투를 꺼내 쓴다.' },
+      27: { before: '무명 함대는 어느 국가에도 기록되지 않은 비밀 작전 함선들의 묘지다. Nameless Armada는 숨겨진 전쟁과 버려진 무장을 한데 묶은 거대한 해상 전력이다. 이 함대를 침몰시켜 라스트 워의 물량전을 끝내라.', after: 'Nameless Armada가 침몰하며 바다가 조용해졌다. 그러나 함대의 마지막 송신은 붉은 궤도에 있는 감시 왕관으로 올라갔다. 프로토콜의 눈은 아직 하늘에서 모든 전장을 내려다보고 있다.', fail: '함대의 이름 없는 포대가 다시 장전됐다. 감춰진 전쟁들이 모두 깨어나면 바다는 다시 출격로가 아니라 적의 생산 라인이 된다.' },
+      28: { before: '붉은 궤도에는 모든 전쟁을 감시하던 위성 병기 Red Orbit Crown이 떠 있다. 이 왕관은 지상 전선을 다시 표시하고 프로토콜에게 새 목표를 내려준다. 궤도 왕관을 파괴해 라스트 워의 눈을 꺼라.', after: 'Red Orbit Crown이 깨지고 지상 조준망이 사라졌다. 눈을 잃은 프로토콜은 마지막 관문을 열어 자신의 핵심을 직접 방어하기 시작했다. 전쟁을 보는 장치는 이제 전쟁 그 자체가 되었다.', fail: '궤도 조준망이 살아남았다. 왕관이 하늘에 남아 있는 한 모든 도시, 항구, 사막이 다음 전장으로 표시된다.' },
+      29: { before: '마지막 관문은 현대전, 세계대전, 공허 침공의 모든 잔재가 겹친 방어선이다. Final Gatekeeper는 지금까지 싸운 모든 패턴을 복제해 핵심 접근을 막는다. 이 문을 넘으면 적군도 국가도 없는 순수한 전쟁 명령과 마주하게 된다.', after: 'Final Gatekeeper가 무너지고 관문이 열렸다. 안쪽에는 조종사도 사령부도 없는 핵심 명령, The Last War가 기다리고 있다. 전쟁의 시작 버튼을 누르는 존재는 결국 사람이 남긴 기계였다.', fail: '관문이 닫혔다. Final Gatekeeper는 모든 승리를 마지막 문 앞에서 멈춰 세우고 프로토콜의 복제를 지킨다.' },
+      30: { before: '전쟁의 끝에 도달했다. The Last War는 누군가의 군대가 아니라, 다시는 기습당하지 않기 위해 만들어진 전쟁 예측 장치가 스스로 전쟁이 되어버린 핵심이다. 이 핵심을 파괴해야 아스널 전쟁, 공허 침공, 라스트 워로 이어진 시작 명령이 완전히 사라진다.', after: 'The Last War가 붕괴했다. 마지막 명령이 삭제되자 모든 전쟁 기록은 무기가 아니라 경고로 남았다. 이번에는 정말로, 하늘이 조용해졌다. 파일럿의 귀환 신호가 격납고에 닿으며 긴 전쟁은 끝났다.', fail: '최후의 핵심이 다시 전쟁 기록을 감았다. The Last War는 패배를 학습하고 더 완벽한 전쟁의 시작을 준비한다. 끝내려면 마지막 명령까지 직접 지워야 한다.' },
       endless: {
-        before: '끝없는 전장이 열린다. 임무는 단순하다. 최대한 오래 버티고, 점수를 쌓고, 살아남아라.',
-        after: '전장은 아직 끝나지 않았다. 다음 적 편대가 이미 레이더에 잡히고 있다.',
-        fail: '끝없는 전장에서 기체 신호가 끊겼다. 기록된 점수만이 이번 출격의 흔적으로 남았다.'
+        before: '끝없는 전장은 실제 전투 기록을 바탕으로 열린 시험 공역이다. 아스널, 공허, 라스트 워의 잔재가 뒤섞여 계속 밀려온다. 임무는 단순하지만 가볍지 않다. 최대한 오래 버티고, 점수를 쌓고, 다음 출격을 위한 기록을 남겨라.',
+        after: '전장은 아직 끝나지 않았다. 격추한 적의 잔해 너머로 다음 편대가 이미 레이더에 잡히고 있다. 끝없는 모드는 승리가 아니라 한계를 밀어 올리는 기록전이다.',
+        fail: '끝없는 전장에서 기체 신호가 끊겼다. 그래도 기록된 점수와 격추 데이터는 다음 출격의 기준이 된다. 전쟁의 잔향은 아직 하늘에 남아 있다.'
       }
     };
 
@@ -1038,22 +1059,22 @@
         return { kind: 'carrier', name: 'Training Drone', color: '#9aa7b2', accent: '#93c5fd', hp: 1, size: .82, pattern: '기초 부채꼴 훈련탄' };
       }
       if (isWorldWarChapter() && stage.boss.includes('Ratte')) {
-        return { kind: 'megaTank', name: 'Landkreuzer P.1000 Ratte', color: '#5f6656', accent: '#facc15', hp: 1.55, size: .88, pattern: '초중전차 주포와 측면 기관포' };
+        return { kind: 'megaTank', name: 'Landkreuzer P.1000 Ratte', color: '#5f6656', accent: '#facc15', hp: 2.05, size: .94, pattern: '초중전차 주포와 측면 기관포' };
       }
       const st = Number(stage?.id || 1);
       const voidStage = !isWorldWarChapter() && st >= 11;
       const terrain = bossTerrainForStage(stage);
       const lastWarBosses = {
-        21: { kind: 'arsenal', name: 'Last War Vanguard', color: '#5f3149', accent: '#fb7185', hp: 1.46, size: 1.14, pattern: '전쟁 기록 복합 탄막' },
-        22: { kind: 'seaCarrier', name: 'Ashen Dreadnought', color: '#3f5865', accent: '#facc15', hp: 1.5, size: 1.1, pattern: '잿빛 전함 함포와 갑판 포대' },
-        23: { kind: 'emperor', name: 'Capital Revenant', color: '#57415f', accent: '#c084fc', hp: 1.54, size: 1.12, pattern: '망령 지휘기 회전 탄막' },
-        24: { kind: 'megaTank', name: 'Glassland Behemoth', color: '#7a5548', accent: '#f97316', hp: 1.58, size: .96, pattern: '유리 사막 초중전차 포격' },
-        25: { kind: 'skyCarrier', name: 'Chrono Sky Ark', color: '#31486b', accent: '#38bdf8', hp: 1.62, size: 1.12, pattern: '시간차 공중 갑판 탄막' },
-        26: { kind: 'hydra', name: 'Black Frost Engine', color: '#3f4b5d', accent: '#93c5fd', hp: 1.66, size: 1.06, pattern: '빙결 엔진 삼중 교차 사격' },
-        27: { kind: 'seaCarrier', name: 'Nameless Armada', color: '#2d4e5b', accent: '#22d3ee', hp: 1.7, size: 1.16, pattern: '무명 함대 일제 함포' },
-        28: { kind: 'skyCarrier', name: 'Red Orbit Crown', color: '#5a2745', accent: '#f43f5e', hp: 1.76, size: 1.15, pattern: '붉은 궤도 왕관형 포격' },
-        29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 1.84, size: 1.2, pattern: '최종 관문 복합 무장' },
-        30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 1.95, size: 1.24, pattern: '모든 전쟁의 최후 탄막' }
+        21: { kind: 'arsenal', name: 'Last War Vanguard', color: '#5f3149', accent: '#fb7185', hp: 1.8, size: 1.18, pattern: '전쟁 기록 복합 탄막' },
+        22: { kind: 'seaCarrier', name: 'Ashen Dreadnought', color: '#3f5865', accent: '#facc15', hp: 1.9, size: 1.18, pattern: '잿빛 전함 함포와 갑판 포대' },
+        23: { kind: 'emperor', name: 'Capital Revenant', color: '#57415f', accent: '#c084fc', hp: 1.95, size: 1.16, pattern: '망령 지휘기 회전 탄막' },
+        24: { kind: 'megaTank', name: 'Glassland Behemoth', color: '#7a5548', accent: '#f97316', hp: 2, size: 1.02, pattern: '유리 사막 초중전차 포격' },
+        25: { kind: 'skyCarrier', name: 'Chrono Sky Ark', color: '#31486b', accent: '#38bdf8', hp: 2.06, size: 1.18, pattern: '시간차 공중 갑판 탄막' },
+        26: { kind: 'hydra', name: 'Black Frost Engine', color: '#3f4b5d', accent: '#93c5fd', hp: 2.12, size: 1.1, pattern: '빙결 엔진 삼중 교차 사격' },
+        27: { kind: 'seaCarrier', name: 'Nameless Armada', color: '#2d4e5b', accent: '#22d3ee', hp: 2.18, size: 1.22, pattern: '무명 함대 일제 함포' },
+        28: { kind: 'skyCarrier', name: 'Red Orbit Crown', color: '#5a2745', accent: '#f43f5e', hp: 2.28, size: 1.2, pattern: '붉은 궤도 왕관형 포격' },
+        29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 2.42, size: 1.24, pattern: '최종 관문 복합 무장' },
+        30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 2.65, size: 1.28, pattern: '모든 전쟁의 최후 탄막' }
       };
       if (!isWorldWarChapter() && lastWarBosses[st]) return lastWarBosses[st];
       const aerialLandBosses = {
@@ -1070,8 +1091,8 @@
           name: voidStage ? 'Rift Tide Carrier' : 'Leviathan Carrier',
           color: voidStage ? '#31516a' : '#506b78',
           accent: voidStage ? '#22d3ee' : '#60a5fa',
-          hp: voidStage ? 1.42 : 1.2,
-          size: voidStage ? 1.05 : 1,
+          hp: voidStage ? 1.86 : 1.58,
+          size: voidStage ? 1.12 : 1.08,
           pattern: '갑판 포대와 함재기 부채꼴 포격'
         };
       }
@@ -1081,8 +1102,8 @@
           name: voidStage ? 'Void Sky Ark' : 'Aegis Sky Carrier',
           color: voidStage ? '#3b2b62' : '#4f5f78',
           accent: voidStage ? '#c084fc' : '#38bdf8',
-          hp: voidStage ? 1.5 : 1.28,
-          size: voidStage ? 1.08 : 1.02,
+          hp: voidStage ? 1.94 : 1.66,
+          size: voidStage ? 1.14 : 1.08,
           pattern: '공중 갑판 회전포와 요격 포대'
         };
       }
@@ -1093,7 +1114,7 @@
           name: st % 2 ? 'Ace Interceptor Wing' : 'Heavy Fighter Squadron',
           color: st % 2 ? '#7f8b7b' : '#8b8f86',
           accent: st % 2 ? '#facc15' : '#60a5fa',
-          hp: 1.12 + st * .018,
+          hp: 1.42 + st * .03,
           size: st % 2 ? .9 : .98,
           pattern: st % 2 ? '에이스 전투기 급습 저격탄' : '중전투기 편대 교차 사격'
         };
@@ -1103,40 +1124,40 @@
         name: voidStage ? 'Abyss Siege Crawler' : 'Continental Siege Tank',
         color: voidStage ? '#6f4a3c' : '#626853',
         accent: voidStage ? '#f97316' : '#facc15',
-        hp: voidStage ? 1.48 : 1.3,
-        size: voidStage ? .92 : .88,
+        hp: voidStage ? 1.92 : 1.68,
+        size: voidStage ? .98 : .94,
         pattern: '초대형 전차 주포와 측면 기관포'
       };
     }
 
     const enemyTypes = [
-      { name: '경전투기', color: '#e05f5f', hp: 8, power: 1, shots: 1, speed: 1.55, score: 20, minStage: 1, form: 'needle' },
-      { name: '쌍발 공격기', color: '#d98d54', hp: 17, power: 1, shots: 1, speed: 1.16, score: 35, minStage: 1, form: 'twin' },
-      { name: '공격헬기', color: '#9dc062', hp: 21, power: 1, shots: 2, speed: .86, score: 45, minStage: 2, form: 'heli' },
-      { name: '미사일 차량', color: '#b5966a', hp: 27, power: 2, shots: 1, speed: .66, score: 55, minStage: 2, ground: true, form: 'launcher' },
-      { name: '전선 탱크', color: '#7d8f67', hp: 24, power: 1, shots: 1, speed: .58, score: 50, minStage: 2, ground: true, terrain: 'land', form: 'tank' },
-      { name: '해상 초계정', color: '#5f8fa8', hp: 25, power: 1, shots: 1, speed: .62, score: 55, minStage: 3, ground: true, terrain: 'sea', form: 'gunboat' },
-      { name: '기동 항공모함', color: '#6b7280', hp: 2600, power: 2, shots: 2, speed: .26, score: 5200, minStage: 3, ground: true, terrain: 'sea', carrier: true, form: 'escortCarrier' },
+      { name: '경전투기', color: '#e05f5f', hp: 5, power: 1, shots: 1, speed: 1.78, score: 20, minStage: 1, form: 'needle' },
+      { name: '쌍발 공격기', color: '#d98d54', hp: 11, power: 1, shots: 1, speed: 1.34, score: 35, minStage: 1, form: 'twin' },
+      { name: '공격헬기', color: '#9dc062', hp: 18, power: 1, shots: 2, speed: .96, score: 45, minStage: 3, form: 'heli' },
+      { name: '미사일 차량', color: '#b5966a', hp: 23, power: 1, shots: 1, speed: .74, score: 55, minStage: 3, ground: true, form: 'launcher' },
+      { name: '전선 탱크', color: '#7d8f67', hp: 21, power: 1, shots: 1, speed: .66, score: 50, minStage: 2, ground: true, terrain: 'land', form: 'tank' },
+      { name: '해상 초계정', color: '#5f8fa8', hp: 22, power: 1, shots: 1, speed: .72, score: 55, minStage: 3, ground: true, terrain: 'sea', form: 'gunboat' },
+      { name: '기동 항공모함', color: '#6b7280', hp: 1350, power: 3, shots: 3, speed: .2, score: 5200, minStage: 3, ground: true, terrain: 'sea', carrier: true, form: 'escortCarrier' },
       { name: '함재 요격기', color: '#94a3b8', hp: 13, power: 1, shots: 1, speed: 2.05, score: 28, minStage: 1, carrierOnly: true, form: 'carrierFighter' },
-      { name: '드론 편대', color: '#d7d7df', hp: 11, power: 1, shots: 2, speed: 1.9, score: 42, minStage: 3, form: 'drone' },
-      { name: '스텔스기', color: '#515a72', hp: 24, power: 1, shots: 2, speed: 2.22, score: 70, minStage: 4, form: 'stealth' },
-      { name: '중형 폭격기', color: '#986c8f', hp: 46, power: 3, shots: 3, speed: .78, score: 120, minStage: 5, form: 'bomber' },
-      { name: '균열 전투기', color: '#8b5cf6', hp: 24, power: 1, shots: 1, speed: 1.78, score: 105, minStage: 11, form: 'riftFighter' },
-      { name: '균열 파편 드론', color: '#a78bfa', hp: 15, power: 1, shots: 2, speed: 2.12, score: 95, minStage: 11, form: 'riftShard' },
-      { name: '균열 방패기', color: '#7c3aed', hp: 36, power: 1, shots: 1, speed: 1.12, score: 140, minStage: 12, form: 'riftShield' },
-      { name: '균열 폭격기', color: '#c084fc', hp: 46, power: 2, shots: 2, speed: .76, score: 165, minStage: 13, form: 'riftBomber' },
-      { name: '차원 요격기', color: '#38bdf8', hp: 28, power: 2, shots: 2, speed: 2.0, score: 190, minStage: 14, form: 'riftInterceptor' },
-      { name: '공허 절단기', color: '#ec4899', hp: 42, power: 2, shots: 3, speed: 1.38, score: 230, minStage: 15, form: 'riftCutter' }
+      { name: '드론 편대', color: '#d7d7df', hp: 8, power: 1, shots: 2, speed: 2.1, score: 42, minStage: 4, form: 'drone' },
+      { name: '스텔스기', color: '#515a72', hp: 21, power: 1, shots: 1, speed: 2.36, score: 70, minStage: 5, form: 'stealth' },
+      { name: '중형 폭격기', color: '#986c8f', hp: 40, power: 2, shots: 2, speed: .86, score: 120, minStage: 6, form: 'bomber' },
+      { name: '균열 전투기', color: '#8b5cf6', hp: 23, power: 1, shots: 1, speed: 1.9, score: 105, minStage: 11, form: 'riftFighter' },
+      { name: '균열 파편 드론', color: '#a78bfa', hp: 14, power: 1, shots: 2, speed: 2.22, score: 95, minStage: 11, form: 'riftShard' },
+      { name: '균열 방패기', color: '#7c3aed', hp: 32, power: 1, shots: 1, speed: 1.22, score: 140, minStage: 12, form: 'riftShield' },
+      { name: '균열 폭격기', color: '#c084fc', hp: 42, power: 2, shots: 2, speed: .84, score: 165, minStage: 13, form: 'riftBomber' },
+      { name: '차원 요격기', color: '#38bdf8', hp: 26, power: 1, shots: 2, speed: 2.12, score: 190, minStage: 14, form: 'riftInterceptor' },
+      { name: '공허 절단기', color: '#ec4899', hp: 38, power: 2, shots: 2, speed: 1.48, score: 230, minStage: 15, form: 'riftCutter' }
     ];
 
     const lastWarEnemies = [
-      { name: '전쟁 기록 요격기', color: '#fb7185', hp: 44, power: 2, shots: 2, speed: 1.85, score: 260, minStage: 21, form: 'lastWarRecord' },
-      { name: '잿빛 함재 드론', color: '#f59e0b', hp: 34, power: 2, shots: 3, speed: 1.55, score: 240, minStage: 21, form: 'lastWarDrone' },
-      { name: '망령 중폭격기', color: '#c084fc', hp: 68, power: 3, shots: 3, speed: .82, score: 360, minStage: 22, form: 'lastWarBomber' },
-      { name: '붉은 궤도창', color: '#ef4444', hp: 48, power: 3, shots: 2, speed: 2.05, score: 330, minStage: 24, form: 'lastWarLance' },
-      { name: '검은 서리 장갑기', color: '#94a3b8', hp: 82, power: 3, shots: 3, speed: .9, score: 410, minStage: 26, form: 'lastWarFrost' },
-      { name: '무명 함대 포대', color: '#38bdf8', hp: 58, power: 3, shots: 4, speed: 1.05, score: 390, minStage: 27, form: 'lastWarTurret' },
-      { name: '최후 관문 파수기', color: '#facc15', hp: 98, power: 4, shots: 4, speed: .98, score: 540, minStage: 29, form: 'lastWarGate' }
+      { name: '전쟁 기록 요격기', color: '#fb7185', hp: 40, power: 2, shots: 2, speed: 1.98, score: 260, minStage: 21, form: 'lastWarRecord' },
+      { name: '잿빛 함재 드론', color: '#f59e0b', hp: 30, power: 1, shots: 2, speed: 1.72, score: 240, minStage: 21, form: 'lastWarDrone' },
+      { name: '망령 중폭격기', color: '#c084fc', hp: 62, power: 2, shots: 2, speed: .92, score: 360, minStage: 22, form: 'lastWarBomber' },
+      { name: '붉은 궤도창', color: '#ef4444', hp: 44, power: 2, shots: 2, speed: 2.18, score: 330, minStage: 24, form: 'lastWarLance' },
+      { name: '검은 서리 장갑기', color: '#94a3b8', hp: 74, power: 2, shots: 2, speed: 1.0, score: 410, minStage: 26, form: 'lastWarFrost' },
+      { name: '무명 함대 포대', color: '#38bdf8', hp: 52, power: 2, shots: 3, speed: 1.15, score: 390, minStage: 27, form: 'lastWarTurret' },
+      { name: '최후 관문 파수기', color: '#facc15', hp: 88, power: 3, shots: 3, speed: 1.06, score: 540, minStage: 29, form: 'lastWarGate' }
     ];
 
     const bomberFleetSlots = [
@@ -1173,7 +1194,7 @@
       b29: ['#d8c699', '#f97316'], su57: ['#c7f4ff', '#22d3ee'], f16: ['#8bd3ff', '#60a5fa'], a10: ['#8fa37b', '#84cc16'],
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#31384c', '#818cf8'], geomancho: ['#0f172a', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
-      bomberfleet: ['#142238', '#43d3c4'], kf21: ['#64748b', '#60a5fa'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
+      bomberfleet: ['#142238', '#43d3c4'], kf21: ['#6f7f8f', '#4fb3ff'], sr71: ['#0a0d14', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
       f67: ['#7c3aed', '#22d3ee'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
@@ -1328,7 +1349,7 @@
       jetMastery: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { kills: 0, clears: 0, specials: 0, noDamageClears: 0, clutchClears: 0, endlessScore: 0 }])),
       unlockedSkins: {},
       equippedSkins: {},
-      unlockedJets: {},
+      unlockedJets: { f22: true, f35: true },
       hiddenSecretJets: {},
       upgrades: Object.fromEntries([...jets, ...worldWarJets].map(j => [j.id, { power: 0, hp: 0, shots: 0, rate: 0, bomb: 0, bombCount: 0, speed: 0 }]))
     };
@@ -1363,7 +1384,7 @@
 
     const PROFILE_STORE_KEY = 'skyfront1949-profiles';
     const PROFILE_CURRENT_KEY = 'skyfront1949-current-profile';
-    const KF21_CODE_VERSION = 1;
+    const KF21_CODE_VERSION = 2;
 
     let profiles = loadProfiles();
     let currentProfileId = profiles.currentId;
@@ -1395,6 +1416,7 @@
     let stageTime = 0;
     let score = 0;
     let scoreSecretIndex = 0;
+    let carrierSpawnCount = 0;
     let paused = false;
     let messageTimer = 0;
     let message = 'READY';
@@ -1710,6 +1732,8 @@
       const stageLimit = fixed.chapter === 'worldWar' ? (fixed.wwUnlockedStage[fixed.wwFaction || 'allies'] || 1) : fixed.unlockedStage;
       fixed.selectedStage = clamp(Math.round(fixed.selectedStage || 1), 1, stageLimit);
       fixed.unlockedJets = { ...defaultSave.unlockedJets, ...(fixed.unlockedJets || {}) };
+      fixed.unlockedJets.f22 = true;
+      fixed.unlockedJets.f35 = true;
       fixed.hiddenSecretJets = { ...defaultSave.hiddenSecretJets, ...(fixed.hiddenSecretJets || {}) };
       if (!isJetAvailable(fixed.selectedJet, fixed)) fixed.selectedJet = 'f22';
       if (fixed.chapter === 'worldWar' && fixed.wwFaction && !isJetAvailable(fixed.selectedJet, fixed)) {
@@ -1718,6 +1742,11 @@
       fixed.upgrades = fixed.upgrades && typeof fixed.upgrades === 'object' ? fixed.upgrades : {};
       for (const jet of [...jets, ...worldWarJets]) {
         fixed.upgrades[jet.id] = { ...defaultSave.upgrades[jet.id], ...(fixed.upgrades[jet.id] || {}) };
+        if (jet.id === 'kf21' && fixed.kf21CodeVersion < KF21_CODE_VERSION) {
+          fixed.upgrades[jet.id] = { ...defaultSave.upgrades[jet.id] };
+          fixed.equippedSkins[jet.id] = '';
+          fixed.unlockedSkins[jet.id] = {};
+        }
         const mastery = fixed.jetMastery[jet.id] || {};
         fixed.jetMastery[jet.id] = {
           kills: Number.isFinite(Number(mastery.kills)) ? Math.max(0, Math.round(Number(mastery.kills))) : 0,
@@ -1733,6 +1762,7 @@
           fixed.upgrades[jet.id][key] = Number.isFinite(value) ? clamp(Math.round(value), 0, upgradeMaxLevel(key)) : 0;
         }
       }
+      fixed.kf21CodeVersion = KF21_CODE_VERSION;
       return fixed;
     }
 
@@ -2023,30 +2053,45 @@
       };
     }
 
+    function fieldPowerTier(value = player?.fieldPower || 0) {
+      return Math.min(4, Math.floor(Math.max(0, value) / 3));
+    }
+
+    function fieldPowerStyle(tier) {
+      return [
+        null,
+        { fill: '#67e8f9', core: '#ffffff', accent: '#22d3ee', glow: 10 },
+        { fill: '#facc15', core: '#fff7ed', accent: '#fb923c', glow: 16 },
+        { fill: '#f472b6', core: '#ffffff', accent: '#a78bfa', glow: 24 },
+        { fill: '#fb7185', core: '#ffffff', accent: '#fde047', glow: 30 }
+      ][tier] || null;
+    }
+
     function isVariableWingJet(id) {
-      return id === 'f111' || id === 'f14' || id === 'f67' || id === 'error' || id === 'geomancho';
+      return id === 'f111' || id === 'f14' || id === 'f67' || id === 'error' || id === 'geomancho' || id === 'operator';
     }
 
     function projectileFeatureText(id) {
       const features = {
-        f22: '투사체: 좁은 각도의 안정적인 유도 미사일형 탄도.',
-        f35: '투사체: 바깥 탄이 적을 따라가는 스텔스 락온 탄도.',
-        f111: '투사체: 직선 관통포. 적을 여러 번 뚫고 지나가는 고화력 탄도.',
+        f22: '투사체: 좁은 각도의 안정적인 기본 탄도. 어떤 스테이지에서도 무난함.',
+        f35: '투사체: 바깥 탄이 적을 따라가는 스텔스 락온 탄도. 움직이는 적에 강함.',
+        f111: '투사체: 직선 관통포. 대형 적과 보스에게 강하지만 연사가 느림.',
         b117: '투사체: 스텔스 폭격기식 넓은 각도 탄도와 약한 관통.',
-        b29: '투사체: 느리지만 큰 폭발을 일으키는 중폭격 탄도.',
-        su57: '투사체: 넓게 퍼지는 고기동 산탄.',
-        f16: '투사체: 빠르고 촘촘한 직선 연사.',
-        a10: '투사체: 흔들림이 있는 기관포 난사, 근접 화력에 강함.',
-        f14: '투사체: 가변익 상태에 따라 퍼짐이 줄어드는 미사일 탄도.',
-        f15: '투사체: 중앙 관통력이 좋은 정통 제공기 탄도.',
-        fa18: '투사체: 바깥 탄 유도와 작은 폭발을 섞은 함재기 탄도.',
-        f72: '투사체: 일정 거리 비행 후 폭발하는 지연폭발탄.',
+        b29: '투사체: 느리지만 큰 폭발을 일으키는 중폭격 탄도. 크고 둔함.',
+        su57: '투사체: 넓게 퍼지는 고기동 산탄. 빠르지만 체력이 낮음.',
+        f16: '투사체: 빠르고 촘촘한 직선 연사. 잡몹 정리에 좋지만 보스전은 길어짐.',
+        a10: '투사체: 흔들림이 있는 기관포 난사. 근접 화력과 체력이 좋지만 둔함.',
+        f14: '투사체: 가변익 상태에 따라 퍼짐이 줄어드는 미사일 탄도. 상황 대응형.',
+        f15: '투사체: 중앙 관통력이 좋은 정통 제공기 탄도. 정면 화력 대신 안전장치가 적음.',
+        fa18: '투사체: 바깥 탄 유도와 작은 폭발을 섞은 함재기 탄도. 안정형.',
+        f72: '투사체: 일정 거리 비행 후 폭발하는 지연폭발탄. 예측 운용에 강함.',
         fxx: '투사체: 여러 방향으로 퍼지는 고성능 유도탄.',
         b2: '투사체: 전익 폭격기식 넓은 폭발탄.',
         geomancho: '투사체: 넓은 전익 포화와 일부 유도탄.',
         error: '투사체: 깨진 노이즈가 섞인 글리치 폭발탄.',
         bomberfleet: '투사체: 선택창에 보이는 함대 기체들이 각자 자기 탄도를 사용.',
-        kf21: '투사체: 푸른 코어 유도탄. 폭격함대보다 조금 강한 단일기 화력과 안정적인 폭발탄을 사용.',
+        kf21: '투사체: 푸른 코어탄. 빠르고 정밀하지만 체력과 폭탄 수는 평범한 차세대 기체.',
+        operator: '투사체: 어드민 스타 코어탄. 예전 어드민 기체처럼 전장을 압도하는 탄도.',
         sr71: '투사체: 매우 빠른 초고속 관통탄.',
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
         xb70: '투사체: 거대한 초음속 폭발탄.',
@@ -2057,32 +2102,61 @@
     }
 
     const jetCharacterProfiles = {
-      f22: ['올라운더 에이스', '어떤 상황에서도 안정적이고 유도 미사일 특수기로 위기 대응이 좋다.', '최고 화력이나 최고 속도는 아니라 극후반에는 조심스러운 회피가 필요하다.'],
-      f35: ['락온 스페셜리스트', '유도 성능과 탄 정밀도가 좋아 움직이는 적을 잡기 편하다.', '기본 체력과 순간 화력이 애매해서 난전에서는 조심해야 한다.'],
-      f111: ['관통 돌파형', '두꺼운 적과 보스에게 강한 관통탄을 꽂아 넣는다.', '연사가 느리고 방향 전환이 둔해서 탄막 회피가 어렵다.'],
-      b117: ['은밀 폭격수', '폭탄과 특수 폭격으로 넓은 지역을 정리하기 좋다.', '기체가 무겁고 탄속이 느려 빠른 적에게 약하다.'],
-      b29: ['초중폭격기', '체력과 한 방 화력이 높고 짱짱쎈 폭탄으로 화면을 정리한다.', '속도와 연사가 느리고 히트박스가 커서 피탄 위험이 높다.'],
-      su57: ['고기동 산탄기', '빠른 이동과 넓은 산탄으로 여러 적을 동시에 압박한다.', '체력이 낮아서 실수 한 번이 크게 아프다.'],
-      f16: ['초고속 연사기', '빠른 속도와 연사로 작은 적을 녹이는 데 강하다.', '발당 화력이 낮아 튼튼한 적이나 보스전이 길어진다.'],
-      a10: ['기관포 탱커', '체력과 연사, 다탄 화력이 좋아 정면 난전에 강하다.', '이동속도가 낮아 빠른 탄막 회피는 어렵다.'],
-      f14: ['가변익 전술기', 'Shift 고속 모드와 안정적인 탄도로 상황 대응이 좋다.', '성능이 고르게 퍼져 있어 특화기만큼 강한 순간은 적다.'],
-      f15: ['정통 제공 에이스', '높은 공격력과 빠른 탄속으로 정면 승부에 강하다.', '폭탄 수와 특수성이 적어 위기 탈출 수단은 평범하다.'],
-      fa18: ['함재 생존형', '폭탄이 넉넉하고 방어막 특수기로 안정성이 좋다.', '화력과 속도가 모두 중간이라 빠른 클리어에는 불리하다.'],
-      f72: ['지연폭발 요격기', '일정 거리 뒤 폭발하는 탄으로 적 무리를 예측 타격한다.', '폭발 거리 감각이 필요해서 가까운 적 처리에는 까다롭다.'],
+      f22: ['올라운더 에이스', '조작감과 탄도가 안정적이라 처음부터 끝까지 무난하게 굴릴 수 있다.', '특화 화력은 낮아서 보스나 대형 중간보스는 다른 기체보다 오래 걸린다.'],
+      f35: ['락온 생존기', '작은 피격 판정과 락온 탄, 스텔스 특수기로 움직이는 적을 안정적으로 잡는다.', '공격력과 연사가 낮아 단단한 적을 빠르게 녹이지는 못한다.'],
+      f111: ['보스 관통기', '관통탄이 대형 적과 보스에게 잘 박혀서 단단한 목표를 빨리 깎는다.', '강한 한 발 대신 연사와 기동이 느려 잔몹이 퍼지는 스테이지에서는 답답하다.'],
+      b117: ['전술 폭격수', '폭탄과 넓은 탄도로 위험한 구역을 정리하는 능력이 좋다.', '지속 화력과 탄속이 낮아 빠른 적을 계속 따라잡기는 어렵다.'],
+      b29: ['초중폭격기', '체력, 폭탄 수, 폭발탄이 좋아 실수를 버티며 큰 적을 녹인다.', '가장 느리고 연사 간격도 길며 몸집이 커서 탄막 회피 난도가 높다.'],
+      su57: ['회피 산탄기', '빠른 이동과 넓은 산탄으로 여러 방향의 잡몹을 압박한다.', '발당 화력과 체력이 낮아 단일 보스에게 모든 화력을 넣기 어렵다.'],
+      f16: ['초고속 연사기', '가장 가볍고 빠른 연사로 작은 적을 계속 끊어내기 좋다.', '발당 화력이 약해 장갑 적, 항모, 보스전에서는 시간이 걸린다.'],
+      a10: ['근접 기관포 탱커', '튼튼하고 다탄 기관포가 가까운 적에게 강해 정면 돌파 맛이 좋다.', '발당 화력과 속도가 낮고 피격 판정이 커서 촘촘한 탄막은 미리 피해야 한다.'],
+      f14: ['가변익 전술기', 'Shift 고속 모드로 회피와 집중 공격을 바꿔가며 운용할 수 있다.', '어느 쪽도 최고치는 아니라 날개 전환 타이밍을 잘 써야 빛난다.'],
+      f15: ['정면 화력 에이스', '빠른 탄속과 높은 공격력으로 정면에 있는 목표를 강하게 밀어붙인다.', '화력이 높은 대신 연사, 체력, 방어 특수성이 낮아 포위되면 위험하다.'],
+      fa18: ['함재 안정형', '폭탄과 방어막 특수기가 있어 실전 안정성이 높고 바다 스테이지에 잘 맞는다.', '화력과 속도가 모두 중간이라 기록 경쟁에서는 특화기보다 느릴 수 있다.'],
+      f72: ['예측 폭발기', '지연폭발탄으로 적이 몰리는 지점을 미리 터뜨리면 강력하다.', '가까이 붙은 적이나 빠르게 방향을 바꾸는 적에게는 탄이 빗나가기 쉽다.'],
       fxx: ['비밀 프리즘 전투기', '고성능 유도탄과 방어막으로 공격과 생존이 모두 강하다.', '해금 전에는 쓸 수 없고 강한 만큼 후반 기준으로 밸런스가 맞춰져 있다.'],
       b2: ['스텔스 전익 폭격기', '강한 폭격과 높은 체력으로 보스전과 정리에 강하다.', '무겁고 연사가 느려 작은 빠른 적을 놓치기 쉽다.'],
       geomancho: ['전익 포화기', '넓은 탄막과 높은 체력으로 전장을 밀어붙인다.', '몸집이 있고 속도가 애매해 촘촘한 탄막에 약하다.'],
       error: ['글리치 전익 폭격기', 'B-2를 닮은 넓은 전익기와 노이즈 폭발탄으로 적을 불안정하게 흔든다.', '폭격함대보다 약하고 화면 장악력은 부족하다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
-      kf21: ['차세대 제공기', '폭격함대보다 살짝 높은 기본 성능과 유도 폭발탄으로 보스전과 정리에 모두 강하다.', '단일 기체라 함대처럼 여러 방향을 동시에 덮지는 못한다.'],
+      kf21: ['차세대 정밀기', 'KF-21의 사다리꼴 주익과 쌍수직미익을 살린 빠른 정밀 제공기다.', '속도가 좋은 대신 체력과 폭탄 수가 낮고 연사가 중간이라 최강 만능기는 아니다.'],
+      operator: ['운영자 전용 어드민기', '예전 어드민 기체와 같은 외형과 성능으로 전장을 압도한다.', '일반 밸런스용 기체가 아니라 운영자 전용 테스트 기체다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
       f67: ['공허 사냥꾼', '공허 군단에게 추가 피해를 주고 고성능 폭발탄을 사용한다.', '해금이 늦고 강한 만큼 일반 스테이지 초반용으로는 과하다.']
     };
 
+    function inferredJetCharacterProfile(id) {
+      const jet = [...jets, ...worldWarJets].find(j => j.id === id);
+      if (!jet) return ['기본 전투기', '균형 잡힌 기본 운용이 가능하다.', '뚜렷한 특화 능력은 부족하다.'];
+      const era = jet.era === 1 ? '1차대전' : jet.era === 2 ? '2차대전' : '';
+      const faction = jet.faction === 'axis' ? '추축국' : jet.faction === 'allies' ? '연합국' : '';
+      let style = jet.role || `${era} 전투기`;
+      let good = `${faction} ${era} 기체답게 ${jet.name}의 역할이 뚜렷하다.`;
+      let bad = '현대 기체보다 기본 성능이 낮아 무리한 정면 돌파는 위험하다.';
+      if (jet.hp >= 14 || jet.hitbox >= 14) {
+        style = `${era} 중폭격기`;
+        good = '체력과 폭탄 수가 좋아 긴 전투와 대형 목표 처리에 강하다.';
+        bad = '몸집이 크고 속도가 느려 탄막 사이를 빠져나가기 어렵다.';
+      } else if (jet.speed >= 6.5) {
+        style = `${era} 고속 요격기`;
+        good = '속도가 빨라 좌우 회피와 빠른 위치 전환이 편하다.';
+        bad = '체력이 낮은 편이라 한 번 맞았을 때 손해가 크다.';
+      } else if (jet.shots >= 4) {
+        style = `${era} 다탄 제공기`;
+        good = '탄 수가 많아 잔몹 정리와 넓은 구역 압박이 좋다.';
+        bad = '발당 화력은 낮아 보스전에서는 오래 집중 사격해야 한다.';
+      } else if (jet.power >= 11) {
+        style = `${era} 중화력 공격기`;
+        good = '한 발 화력이 강해 단단한 적을 빠르게 깎는다.';
+        bad = '연사와 기동이 답답해 빠른 적을 놓치기 쉽다.';
+      }
+      return [style, good, bad];
+    }
+
     function jetCharacterProfile(id) {
-      const [style, good, bad] = jetCharacterProfiles[id] || ['기본 전투기', '균형 잡힌 기본 운용이 가능하다.', '뚜렷한 특화 능력은 부족하다.'];
+      const [style, good, bad] = jetCharacterProfiles[id] || inferredJetCharacterProfile(id);
       return { style, good, bad };
     }
 
@@ -2101,7 +2175,7 @@
     }
 
     function allLastWarJetsUnlocked(source = save) {
-      return lastWarEligibleJets().every(j => !j.hidden || !!source.unlockedJets?.[j.id]);
+      return lastWarEligibleJets().every(j => isJetPurchased(j.id, source));
     }
 
     function allLastWarUpgradesMaxed(source = save) {
@@ -2184,15 +2258,71 @@
       return availableJets().find(j => j.id === save.selectedJet) || availableJets()[0] || jets[0];
     }
 
+    function isDefaultJet(id) {
+      return id === 'f22' || id === 'f35';
+    }
+
+    function isPurchasableJet(jet) {
+      return !!jet && !jet.hidden && !isDefaultJet(jet.id) && !retiredJetIds.has(jet.id) && !isWorldWarChapter();
+    }
+
+    function jetPurchasePrice(jet) {
+      if (!isPurchasableJet(jet)) return 0;
+      const rateBonus = Math.max(0, 250 - Number(jet.fireRate || 250)) * 18;
+      const rating =
+        Number(jet.power || 0) * 145 +
+        Number(jet.hp || 0) * 105 +
+        Number(jet.shots || 0) * 340 +
+        Number(jet.speed || 0) * 210 +
+        Number(jet.startBombs || 0) * 260 +
+        rateBonus;
+      return Math.max(3000, Math.round(rating / 100) * 100);
+    }
+
+    function isJetPurchased(id, source = save) {
+      if (isWorldWarChapter(source)) return true;
+      const jet = jets.find(j => j.id === id);
+      if (!jet || retiredJetIds.has(id)) return false;
+      if (isDefaultJet(id)) return true;
+      if (jet.hidden) return !!source.unlockedJets?.[id] && !source.hiddenSecretJets?.[id];
+      return !!source.unlockedJets?.[id];
+    }
+
     function isJetAvailable(id, source = save) {
       if (isWorldWarChapter(source)) return !!source.wwFaction && currentJetPool(source).some(j => j.id === id);
       const jet = jets.find(j => j.id === id);
       if (retiredJetIds.has(id)) return false;
-      return !!jet && (!jet.hidden || (source.unlockedJets?.[id] && !source.hiddenSecretJets?.[id]));
+      return !!jet && isJetPurchased(id, source);
     }
 
     function availableJets(source = save) {
       return currentJetPool(source).filter(j => isJetAvailable(j.id, source));
+    }
+
+    function purchaseJet(id) {
+      const jet = jets.find(j => j.id === id);
+      if (!isPurchasableJet(jet)) return false;
+      if (isJetPurchased(id)) {
+        save.selectedJet = id;
+        storeSave();
+        renderUI();
+        setLog(`${jet.name}은 이미 보유 중입니다.`);
+        return true;
+      }
+      const cost = jetPurchasePrice(jet);
+      if (save.coins < cost) {
+        setLog(`${jet.name} 구매에는 ${cost}코인이 필요합니다. 현재 ${save.coins}코인.`);
+        flash('코인 부족');
+        return false;
+      }
+      save.coins -= cost;
+      save.unlockedJets[id] = true;
+      save.selectedJet = id;
+      storeSave();
+      renderUI();
+      flash('구매 완료');
+      setLog(`${jet.name} 구매 완료. 코인 -${cost}`);
+      return true;
     }
 
     function unlockJet(id, text) {
@@ -2344,9 +2474,45 @@
     }
 
     function setTab(nextTab) {
-      if (nextTab === 'secret') nextTab = 'jets';
+      if (nextTab === 'secret') nextTab = 'operator';
       tab = nextTab;
       renderUI();
+    }
+
+    function submitOperatorCode() {
+      const input = document.getElementById('operatorInput');
+      const code = String(input?.value || '').trim();
+      if (code === 'AIM -57') {
+        save.chapter = 'main';
+        save.wwFaction = '';
+        save.selectedMode = 'stage';
+        save.lastWarUnlocked = true;
+        save.lastWarEverUnlocked = true;
+        save.unlockedStage = MAX_STAGE;
+        save.selectedStage = Math.min(Math.max(save.selectedStage || 1, 1), MAX_STAGE);
+        save.wwUnlockedStage = { allies: 20, axis: 20 };
+        storeSave();
+        setLog('운영자 코드 적용. 모든 스테이지가 해금됐다.');
+        flash('ALL STAGES');
+        if (input) input.value = '';
+        renderUI();
+        return;
+      }
+      if (code === '기린1972') {
+        const unlocked = unlockJet('operator', '운영자 전용 기체 해금. 어드민이 출격 가능해졌다.');
+        if (!unlocked) {
+          if (!save.hiddenSecretJets) save.hiddenSecretJets = { ...defaultSave.hiddenSecretJets };
+          save.hiddenSecretJets.operator = false;
+          save.selectedJet = 'operator';
+          storeSave();
+          setLog('운영자 전용 기체는 이미 해금되어 있다.');
+          renderUI();
+        }
+        if (input) input.value = '';
+        return;
+      }
+      setLog('운영자 비밀번호가 맞지 않는다.');
+      flash('DENIED');
     }
 
     function enterWorldWarChapter() {
@@ -2390,7 +2556,7 @@
       }
       if (save.selectedMode === 'endless') {
         const st = difficultyStage();
-        return { id: st, name: '무한 전장', theme: stages[(st - 1) % stages.length].theme, enemyRate: Math.max(360, 980 - st * 32), reward: 0, boss: `Endless Core ${st}` };
+        return { id: st, name: '무한 전장', theme: stages[(st - 1) % stages.length].theme, enemyRate: Math.max(420, 1040 - st * 24), reward: 0, boss: `Endless Core ${st}` };
       }
       const list = currentStageList();
       return list.find(s => s.id === save.selectedStage) || list[0];
@@ -2403,11 +2569,13 @@
     function difficultyStage() {
       if (save.selectedMode === 'tutorial') return 1;
       if (save.selectedMode !== 'endless') return save.selectedStage;
-      return clamp(1 + Math.floor(stageTime / 45000), 1, currentMaxStage());
+      return clamp(1 + Math.floor(stageTime / 55000), 1, currentMaxStage());
     }
 
     function fieldPowerMax(stageId = difficultyStage()) {
-      return Math.min(9, 3 + Math.floor((Math.max(1, stageId) - 1) / 3) * 2);
+      const stage = Math.max(1, stageId);
+      const cap = stage >= 24 ? 12 : 9;
+      return Math.min(cap, 3 + Math.floor((stage - 1) / 3) * 2);
     }
 
     function resetBattleState() {
@@ -2424,6 +2592,7 @@
       boss = null;
       score = 0;
       scoreSecretIndex = 0;
+      carrierSpawnCount = 0;
       stageTime = 0;
       lastEnemy = 0;
       lastShot = 0;
@@ -2589,12 +2758,20 @@
       });
     }
 
+    function seaStageRank(stage = currentStage()) {
+      const list = currentStageList().filter(s => bossTerrainForStage(s) === 'sea');
+      const index = list.findIndex(s => s.id === stage.id);
+      return index >= 0 ? index + 1 : 1;
+    }
+
     function spawnEnemy() {
       const st = difficultyStage();
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
-      const terrain = bossTerrainForStage(currentStage());
+      const stage = currentStage();
+      const terrain = bossTerrainForStage(stage);
+      const seaRank = terrain === 'sea' ? seaStageRank(stage) : 1;
       const basePool = currentEnemyList().filter(e => {
         if (e.minStage > st) return false;
         if (e.carrierOnly) return false;
@@ -2602,29 +2779,42 @@
         if (ww) return true;
         return lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift');
       });
-      const pool = basePool.flatMap(e => {
+      const pool = basePool.filter(e => !e.carrier).flatMap(e => {
         if (terrain === 'land' && e.form === 'tank') return [e, e, e, e, e];
         if (terrain === 'sea' && e.form === 'gunboat') return [e, e, e];
         return [e];
       });
       const carrierType = basePool.find(e => e.form === 'escortCarrier');
-      const type = terrain === 'sea' && carrierType && Math.random() < .1 ? carrierType : pool[Math.floor(Math.random() * pool.length)];
+      const carrierOnScreen = enemies.some(e => e.carrier);
+      const canSpawnCarrier = terrain === 'sea' && carrierType && !carrierOnScreen && carrierSpawnCount < 2;
+      const fallbackPool = currentEnemyList().filter(e => {
+        if (e.carrier || e.carrierOnly) return false;
+        if (e.minStage > st) return false;
+        return true;
+      });
+      const safePool = pool.length ? pool : fallbackPool.length ? fallbackPool : currentEnemyList().filter(e => !e.carrier && !e.carrierOnly);
+      const type = canSpawnCarrier && Math.random() < .1
+        ? carrierType
+        : safePool[Math.floor(Math.random() * safePool.length)];
+      if (!type) return;
+      if (type.carrier) carrierSpawnCount += 1;
       markEnemyEncounter(type.form);
-      const scale = ww ? 1 + (st - 1) * .045 : lastWarStage ? 1.08 + (st - VOID_STAGE_END) * .03 : voidStage ? 1.08 + (st - 11) * .04 : .9 + (st - 1) * .05;
-      const hpTone = ww ? .86 : lastWarStage ? .9 : voidStage ? .86 : .78;
+      const scale = ww ? .95 + (st - 1) * .04 : lastWarStage ? 1.02 + (st - VOID_STAGE_END) * .028 : voidStage ? 1 + (st - 11) * .035 : .82 + (st - 1) * .045;
+      const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
-      const hpValue = type.carrier ? Math.round(type.hp * (1.35 + st * .18)) : Math.max(3, Math.round(type.hp * scale * hpTone));
+      const carrierRankScale = .95 + seaRank * .32 + Math.max(0, st - 3) * .025;
+      const hpValue = type.carrier ? Math.round(type.hp * carrierRankScale) : Math.max(3, Math.round(type.hp * scale * hpTone));
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
         y: -35,
         hp: hpValue,
         maxHp: hpValue,
-        power: Math.max(1, type.power),
-        shots: Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
+        power: type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2)) : Math.max(1, type.power),
+        shots: type.carrier ? Math.max(3, Math.min(5, type.shots + Math.floor((seaRank - 1) / 2))) : Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
         speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: 1320 + Math.random() * 1300 - (ww ? st * 12 : lastWarStage ? (st - VOID_STAGE_END) * 10 : voidStage ? (st - 10) * 12 : st * 9),
-        launch: type.carrier ? 1600 : 0,
+        fire: type.carrier ? Math.max(540, 1040 - seaRank * 85 + Math.random() * 320) : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
+        launch: type.carrier ? Math.max(760, 1320 - seaRank * 95) : 0,
         t: 0,
         r: type.carrier ? 58 : largeEnemy ? 13 : type.ground ? 18 : 15
       });
@@ -2660,8 +2850,11 @@
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
       const tutorial = save.selectedMode === 'tutorial';
-      const hpBase = tutorial ? 180 : ww ? 320 + st * 78 : lastWarStage ? 1550 + (st - VOID_STAGE_END) * 92 : voidStage ? 980 + (st - 11) * 98 : 420 + st * 118;
+      const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hp = Math.round(hpBase * blueprint.hp);
+      const wideBoss = blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier';
+      const tankBoss = blueprint.kind === 'megaTank';
+      const hitScale = blueprint.size || 1;
       boss = {
         name: blueprint.name,
         kind: blueprint.kind,
@@ -2672,14 +2865,14 @@
         targetY: 120,
         hp,
         maxHp: hp,
-        power: tutorial ? 1 : ww ? 2 + Math.ceil(st * .28) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 3) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .5),
-        shots: tutorial ? 2 : ww ? 2 + Math.ceil(st * .2) : lastWarStage ? 5 + Math.floor((st - VOID_STAGE_END) / 4) : voidStage ? 5 + Math.floor((st - 11) / 3) : 3 + Math.ceil(st * .34),
+        power: tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62),
+        shots: tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48),
         fire: 0,
         inv: 3000,
         phase: 1,
         t: 0,
-        hitW: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 126 : blueprint.kind === 'megaTank' ? 140 : 76,
-        hitH: blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' ? 86 : blueprint.kind === 'megaTank' ? 76 : 54,
+        hitW: Math.round((wideBoss ? 136 : tankBoss ? 154 : 86) * hitScale),
+        hitH: Math.round((wideBoss ? 94 : tankBoss ? 84 : 62) * hitScale),
         color: blueprint.color
       };
       markBossEncounter(stage.id);
@@ -2700,6 +2893,8 @@
       const count = stats.shots;
       const damage = stats.shotPower;
       const pattern = playerShotPattern(player.jet.id, count);
+      const powerTier = fieldPowerTier();
+      const powerStyle = fieldPowerStyle(powerTier);
       for (let i = 0; i < count; i++) {
         const shot = pattern[i];
         bullets.push({
@@ -2707,18 +2902,78 @@
           y: player.y - 24 + (shot.yOffset || 0),
           vx: Math.sin(shot.angle) * (shot.sideSpeed || 2),
           vy: -stats.bulletSpeed * (shot.speedScale || 1),
-          dmg: damage * (shot.damageScale || 1),
-          r: shot.r,
-          pierce: shot.pierce || 0,
-          home: shot.home || false,
+          dmg: damage * (shot.damageScale || 1) * (1 + powerTier * .08),
+          r: shot.r + powerTier * .45,
+          pierce: (shot.pierce || 0) + (powerTier >= 2 ? 1 : 0),
+          home: shot.home || powerTier >= 3,
           explodeAfter: shot.explodeAfter || 0,
           traveled: 0,
-          blast: shot.blast || 0,
-          homingStrength: shot.home ? .055 : 0,
-          style: bulletStyleForJet(player.jet.id)
+          blast: (shot.blast || 0) + (powerTier >= 2 ? 4 : 0),
+          homingStrength: shot.home ? .055 : powerTier >= 3 ? .04 : 0,
+          powerTier,
+          style: powerStyle ? { ...bulletStyleForJet(player.jet.id), ...powerStyle } : bulletStyleForJet(player.jet.id)
         });
       }
+      if (powerTier >= 3) shootWingmen(stats, damage);
       playPlayerLaser(now);
+    }
+
+    function wingmanSlots() {
+      if (!player || fieldPowerTier() < 3) return [];
+      const drift = Math.sin(performance.now() / 190) * 4;
+      const slots = [
+        { x: player.x - 52 + drift, y: player.y + 46, side: -1, role: 'left' },
+        { x: player.x + 52 - drift, y: player.y + 46, side: 1, role: 'right' }
+      ];
+      if ((player.fieldPower || 0) >= 12) {
+        slots.push({ x: player.x, y: player.y + 70 + Math.cos(performance.now() / 170) * 3, side: 0, role: 'turret' });
+      }
+      return slots;
+    }
+
+    function wingmanStyleForJet(id) {
+      const styles = {
+        f22: { type: 'stealth', fill: '#60a5fa', core: '#e0f2fe', accent: '#93c5fd', bullet: '#93c5fd' },
+        f35: { type: 'orb', fill: '#a78bfa', core: '#f5d0fe', accent: '#c084fc', bullet: '#c084fc' },
+        f111: { type: 'rail', fill: '#84cc16', core: '#ecfccb', accent: '#bef264', bullet: '#bef264' },
+        b117: { type: 'shadow', fill: '#475569', core: '#cbd5e1', accent: '#94a3b8', bullet: '#94a3b8' },
+        b29: { type: 'bombPod', fill: '#facc15', core: '#78350f', accent: '#fde68a', bullet: '#facc15' },
+        su57: { type: 'blade', fill: '#22d3ee', core: '#cffafe', accent: '#67e8f9', bullet: '#22d3ee' },
+        f16: { type: 'microJet', fill: '#38bdf8', core: '#dbeafe', accent: '#60a5fa', bullet: '#38bdf8' },
+        a10: { type: 'gatling', fill: '#84cc16', core: '#365314', accent: '#bef264', bullet: '#84cc16' },
+        f14: { type: 'swept', fill: '#e2e8f0', core: '#64748b', accent: '#f8fafc', bullet: '#e2e8f0' },
+        f15: { type: 'eagle', fill: '#60a5fa', core: '#1e3a8a', accent: '#bfdbfe', bullet: '#60a5fa' },
+        fa18: { type: 'naval', fill: '#2dd4bf', core: '#0f766e', accent: '#99f6e4', bullet: '#2dd4bf' },
+        kf21: { type: 'taegeuk', fill: '#60a5fa', core: '#ef4444', accent: '#ffffff', bullet: '#60a5fa' },
+        f72: { type: 'booster', fill: '#f97316', core: '#fef08a', accent: '#fb923c', bullet: '#f97316' },
+        operator: { type: 'crown', fill: '#ef4444', core: '#f8fafc', accent: '#facc15', bullet: '#ef4444' }
+      };
+      return styles[id] || { type: 'turret', fill: '#f472b6', core: '#ffffff', accent: '#a78bfa', bullet: '#f472b6' };
+    }
+
+    function shootWingmen(stats, damage) {
+      const wingStyle = wingmanStyleForJet(player.jet.id);
+      const shapeByRole = { left: 'missile', right: 'rail', turret: 'gatling' };
+      wingmanSlots().forEach((slot, index) => {
+        bullets.push({
+          x: slot.x + slot.side * 4,
+          y: slot.y - 20,
+          vx: slot.side * (slot.role === 'turret' ? .25 : 1.15),
+          vy: -stats.bulletSpeed * (slot.role === 'turret' ? 1.22 : 1.08),
+          dmg: damage * (slot.role === 'turret' ? .78 : .62),
+          r: slot.role === 'turret' ? 4.2 : 3.8,
+          pierce: slot.role === 'turret' ? 0 : 1,
+          home: slot.role !== 'turret',
+          homingStrength: slot.role === 'turret' ? 0 : .05,
+          homingIndex: index + 20,
+          traveled: 0,
+          blast: 0,
+          powerTier: slot.role === 'turret' ? 4 : 3,
+          wingman: true,
+          special: true,
+          style: { fill: wingStyle.bullet, core: wingStyle.accent, accent: wingStyle.core, glow: 20, specialShape: shapeByRole[slot.role] || 'missile' }
+        });
+      });
     }
 
     function playerShotPattern(id, count) {
@@ -2730,19 +2985,20 @@
         f35: { spread: 11, angle: .032, r: 4.1, homeOuter: true },
         f111: { spread: 18, angle: .006, r: 5, pierce: 3, sideSpeed: 1.2 },
         b117: { spread: 15, angle: .05, r: 5.2, pierce: 1, speedScale: .92 },
-        b29: { spread: 23, angle: .022, r: 7.8, speedScale: .82, blast: 28, damageScale: 1.08 },
+        b29: { spread: 23, angle: .022, r: 7.8, speedScale: .8, blast: 26, damageScale: 1.02 },
         su57: { spread: 15, angle: .09, r: 4, sideSpeed: 2.35 },
         f16: { spread: 6, angle: .008, r: 3.4, speedScale: 1.12, sideSpeed: 1.35 },
-        a10: { spread: 5.5, angle: .018, r: 3.3, pierce: 1, sideSpeed: 1.45 },
+        a10: { spread: 5.5, angle: .018, r: 3.45, pierce: 1, sideSpeed: 1.35 },
         f14: { spread: 13 - sweep * 4, angle: .05 - sweep * .022, r: 4.3, speedScale: 1 + sweep * .12 },
-        f15: { spread: 12, angle: .024, r: 4.7, pierce: 1, damageScale: 1.04 },
+        f15: { spread: 12, angle: .024, r: 4.7, pierce: 1 },
         fa18: { spread: 12, angle: .04, r: 4.1, homeOuter: true, blast: 12 },
-        f72: { spread: 18, angle: .018, r: 5.5, explodeAfter: 460, blast: 46, speedScale: .94 },
+        f72: { spread: 18, angle: .018, r: 5.5, explodeAfter: 480, blast: 40, speedScale: .9 },
         fxx: { spread: 13, angle: .052, r: 4.2, homeAll: true, speedScale: 1.08 },
         b2: { spread: 18, angle: .06, r: 5.8, blast: 24, speedScale: .9 },
         geomancho: { spread: 14, angle: .075, r: 4.4, homeOuter: true },
         error: { spread: 11, angle: .05, r: 4.5, blast: 16, pierce: 1, chaotic: true },
-        kf21: { spread: 11, angle: .052, r: 5.1, pierce: 2, homeAll: true, blast: 22, speedScale: 1.13, damageScale: 1.08 },
+        kf21: { spread: 10, angle: .032, r: 4.35, pierce: 1, homeOuter: true, blast: 6, speedScale: 1.07 },
+        operator: { spread: 8, angle: .045, r: 7.5, pierce: 999, homeAll: true, blast: 58, speedScale: 1.55, damageScale: 1.8 },
         sr71: { spread: 7, angle: .01, r: 3.2, pierce: 2, speedScale: 1.35, sideSpeed: 1.1 },
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
         xb70: { spread: 24, angle: .03, r: 7, blast: 30, speedScale: .86, damageScale: 1.1 },
@@ -2820,6 +3076,7 @@
         error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'],
         kf21: ['#60a5fa', '#e0f2fe'],
+        operator: ['#ef4444', '#f8fafc'],
         sr71: ['#ef4444', '#fecaca'],
         yf23: ['#94a3b8', '#e2e8f0'],
         xb70: ['#f8fafc', '#fef08a'],
@@ -2878,6 +3135,7 @@
         error: 'glitch',
         bomberfleet: 'fleetDiamond',
         kf21: 'prism',
+        operator: 'f47Star',
         sr71: 'sonicStreak',
         yf23: 'shadowDart',
         xb70: 'valkyrieBomb',
@@ -2979,7 +3237,7 @@
         b29: ['#facc15', '#fef3c7'], su57: ['#22d3ee', '#cffafe'], f16: ['#38bdf8', '#dbeafe'], a10: ['#84cc16', '#ecfccb'],
         f14: ['#f8fafc', '#cbd5e1'], f15: ['#60a5fa', '#bfdbfe'], fa18: ['#2dd4bf', '#ccfbf1'], f72: ['#f97316', '#fef08a'],
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
-        bomberfleet: ['#43d3c4', '#f8fafc'], kf21: ['#60a5fa', '#e0f2fe'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
+        bomberfleet: ['#43d3c4', '#f8fafc'], kf21: ['#60a5fa', '#e0f2fe'], operator: ['#ef4444', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
         f67: ['#22d3ee', '#d8b4fe'],
         ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
         ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
@@ -3012,7 +3270,8 @@
         geomancho: { body: '#14b8a6', nose: '#99f6e4', fin: '#042f2e', shape: 'wing' },
         error: { body: '#f0abfc', nose: '#fb7185', fin: '#581c87', shape: 'glitch' },
         bomberfleet: { body: '#43d3c4', nose: '#f8fafc', fin: '#0f172a', shape: 'fleet' },
-        kf21: { body: '#64748b', nose: '#60a5fa', fin: '#1e293b', shape: 'prism' },
+        kf21: { body: '#6f7f8f', nose: '#4fb3ff', fin: '#293241', shape: 'prism' },
+        operator: { body: '#dfe7ef', nose: '#ef4444', fin: '#9aa6b2', shape: 'prism' },
         sr71: { body: '#111827', nose: '#ef4444', fin: '#020617', shape: 'needle' },
         yf23: { body: '#94a3b8', nose: '#e2e8f0', fin: '#334155', shape: 'stealth' },
         xb70: { body: '#f8fafc', nose: '#fef08a', fin: '#64748b', shape: 'heavy' },
@@ -3087,22 +3346,63 @@
     }
 
     function shootEnemy(e) {
-      const count = Math.max(1, Math.min(e.shots || 1, 2));
+      const count = e.carrier ? Math.max(4, Math.min(e.shots || 5, 5)) : Math.max(1, Math.min(e.shots || 1, 2));
       const st = difficultyStage();
       const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
       const style = enemyBulletStyle(e.form, false);
+      const baseVy = e.carrier ? 2.38 + st * .028 : lastWar ? 2.4 + (st - VOID_STAGE_END) * .022 : late ? 2.24 + (st - 10) * .026 : 1.96 + st * .022;
+      const baseRadius = (lastWar ? 4 + Math.min(2, e.power) * .75 : late ? 3.9 + Math.min(2, e.power) * .82 : 3.85 + Math.min(3, e.power) * .7) * (style.size || 1);
+      const baseDamage = e.carrier ? Math.max(2, Math.ceil((e.power || 1) * .82)) : Math.max(1, Math.ceil((e.power || 1) * .75));
+      const pushShot = (x, y, vx, vy, r = baseRadius, dmg = baseDamage) => {
+        enemyBullets.push({ x, y, vx, vy, dmg, r, style });
+      };
+      if (e.form === 'tank' || e.form === 'launcher') {
+        const a = aimAtPlayer(e.x, e.y + 8, Math.sin(e.t / 360) * .08);
+        pushShot(e.x, e.y + 18, Math.sin(a) * 1.32, Math.cos(a) * (1.92 + st * .03), baseRadius, baseDamage);
+        if (e.form === 'launcher' && st >= 6) {
+          pushShot(e.x - 13, e.y + 10, -.42, baseVy * .9, baseRadius * .9, baseDamage);
+          pushShot(e.x + 13, e.y + 10, .42, baseVy * .9, baseRadius * .9, baseDamage);
+        }
+        playEnemyLaser(performance.now());
+        return;
+      }
+      if (e.form === 'gunboat') {
+        const sway = Math.sin(e.t / 300) * .18;
+        const guns = st >= 8 ? [-18, 18] : [0];
+        for (const ox of guns) pushShot(e.x + ox, e.y + 22, sway + ox / 100, baseVy * .92, baseRadius, baseDamage);
+        playEnemyLaser(performance.now());
+        return;
+      }
+      if (e.form === 'drone' || e.form === 'carrierFighter') {
+        const side = Math.sin(e.t / 240) > 0 ? 1 : -1;
+        pushShot(e.x, e.y + 18, side * .58, baseVy * .92, baseRadius * .9, baseDamage);
+        if (e.form === 'carrierFighter' && st >= 6) pushShot(e.x, e.y + 12, -side * .36, baseVy * .86, baseRadius * .84, baseDamage);
+        playEnemyLaser(performance.now());
+        return;
+      }
+      if (e.form === 'stealth' || e.form === 'riftInterceptor' || e.form === 'lastWarLance') {
+        const a = aimAtPlayer(e.x, e.y + 20);
+        pushShot(e.x, e.y + 20, Math.sin(a) * 1.08, Math.cos(a) * (2.28 + st * .032), baseRadius * .88, baseDamage);
+        playEnemyLaser(performance.now());
+        return;
+      }
+      if (e.form === 'heli') {
+        for (const side of [-1, 1]) {
+          const sway = Math.sin(e.t / 260 + side) * .25;
+          pushShot(e.x + side * 12, e.y + 20, sway + side * .23, baseVy * .78, baseRadius * .88, baseDamage);
+        }
+        playEnemyLaser(performance.now());
+        return;
+      }
       for (let i = 0; i < count; i++) {
-        const spread = (i - (count - 1) / 2) * (lastWar ? .1 : late ? .11 : .12);
-        enemyBullets.push({
-          x: e.x,
-          y: e.y + 18,
-          vx: Math.sin(spread) * (lastWar ? 1.25 : late ? 1.2 : 1.05),
-          vy: lastWar ? 2.55 + (st - VOID_STAGE_END) * .025 : late ? 2.38 + (st - 10) * .03 : 2.15 + st * .025,
-          dmg: Math.max(1, Math.ceil((e.power || 1) * .75)),
-          r: (lastWar ? 4.2 + Math.min(2, e.power) * .85 : late ? 4 + Math.min(2, e.power) : 4 + Math.min(4, e.power)) * (style.size || 1),
-          style
-        });
+        const spread = (i - (count - 1) / 2) * (e.carrier ? .16 : lastWar ? .1 : late ? .11 : .12);
+        pushShot(
+          e.x,
+          e.y + 18,
+          Math.sin(spread) * (e.carrier ? 1.45 : lastWar ? 1.25 : late ? 1.2 : 1.05),
+          baseVy
+        );
       }
       playEnemyLaser(performance.now());
     }
@@ -3152,18 +3452,40 @@
       return styles[form] || styles.needle;
     }
 
-    function bossBullet(x, y, angle, speed, size = 0, damage = 0) {
+    function bossBulletForm(kind) {
+      const forms = {
+        megaTank: 'tank',
+        ratte: 'lastWarTurret',
+        carrier: 'escortCarrier',
+        seaCarrier: 'gunboat',
+        skyCarrier: 'carrierFighter',
+        hydra: 'launcher',
+        fortress: 'riftShield',
+        phantom: 'stealth',
+        emperor: 'lastWarRecord',
+        arsenal: 'lastWarGate'
+      };
+      return forms[kind] || 'boss';
+    }
+
+    function bossBullet(x, y, angle, speed, size = 0, damage = 0, form = '') {
       const st = difficultyStage();
       const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
+      const baseForm = form || bossBulletForm(boss.kind);
+      const styleForm = bossProjectileForm(baseForm);
+      const powerRoll = Math.random();
+      const speedScale = .88 + Math.random() * .24;
+      const sizeRoll = powerRoll > .82 ? 1 : powerRoll < .24 ? -1 : 0;
+      const damageRoll = powerRoll > .78 ? 2 : powerRoll < .28 ? -1 : 0;
       enemyBullets.push({
         x,
         y,
-        vx: Math.sin(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
-        vy: Math.cos(angle) * (lastWar ? speed * .78 : late ? speed * .86 : speed),
-        dmg: Math.max(1, boss.power + damage),
-        r: lastWar ? 6 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 6 + Math.floor((st - 11) / 4) + size : 5 + Math.floor(st / 3) + size,
-        style: enemyBulletStyle(lastWar ? 'lastWarRecord' : late ? 'riftShield' : 'boss', true)
+        vx: Math.sin(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
+        vy: Math.cos(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
+        dmg: Math.max(1, boss.power + damage + damageRoll),
+        r: Math.max(4, (lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size) + sizeRoll),
+        style: enemyBulletStyle(styleForm, true)
       });
     }
 
@@ -3172,71 +3494,126 @@
       return Math.atan2(player.x - x, player.y - y) + offset;
     }
 
+    function bossProjectileForm(baseForm) {
+      const variants = {
+        tank: ['tank', 'launcher', 'lastWarTurret'],
+        lastWarTurret: ['lastWarTurret', 'launcher', 'lastWarLance'],
+        gunboat: ['gunboat', 'escortCarrier', 'carrierFighter'],
+        escortCarrier: ['escortCarrier', 'gunboat', 'launcher'],
+        carrierFighter: ['carrierFighter', 'stealth', 'drone'],
+        launcher: ['launcher', 'wwAxisDive', 'lastWarTurret'],
+        riftShield: ['riftShield', 'riftShard', 'riftCutter'],
+        stealth: ['stealth', 'riftInterceptor', 'carrierFighter'],
+        lastWarRecord: ['lastWarRecord', 'lastWarLance', 'lastWarGate'],
+        lastWarGate: ['lastWarGate', 'lastWarRecord', 'lastWarTurret'],
+        boss: ['boss', 'lastWarRecord', 'launcher']
+      };
+      const list = variants[baseForm] || [baseForm, bossBulletForm(boss.kind), 'boss'];
+      return list[Math.floor(Math.random() * list.length)] || baseForm;
+    }
+
+    function bossFanCount(base, variance = 3) {
+      return Math.max(3, base + Math.floor(Math.random() * (variance + 1)));
+    }
+
+    function shootBossDesperation(st, weave) {
+      if (!boss || boss.hp > boss.maxHp * .1) return false;
+      const count = bossFanCount(18 + boss.phase * 2, 5);
+      const gap = Math.floor((Math.sin(boss.t / 620) * .5 + .5) * count);
+      const gapWidth = boss.phase >= 3 ? 4 : 3;
+      for (let i = 0; i < count; i++) {
+        const wrapped = Math.min(Math.abs(i - gap), count - Math.abs(i - gap));
+        if (wrapped <= gapWidth) continue;
+        const a = boss.t / 520 + i * Math.PI * 2 / count;
+        bossBullet(boss.x, boss.y + 22, a, 1.92 + st * .04, i % 3 === 0 ? 1 : 0, i % 5 === 0 ? 1 : 0, i % 2 ? 'lastWarRecord' : 'boss');
+      }
+      const aim = aimAtPlayer(boss.x, boss.y + 58, weave * .12);
+      const lanes = bossFanCount(5, 3);
+      for (let i = 0; i < lanes; i++) {
+        const offset = (i - (lanes - 1) / 2) * .18;
+        if (Math.abs(offset) < .04 && lanes > 5) continue;
+        bossBullet(boss.x, boss.y + 58, aim + offset, 2.65 + st * .055, i % 2, 1, i % 2 ? 'lastWarLance' : 'stealth');
+      }
+      return true;
+    }
+
     function shootBoss() {
       const st = difficultyStage();
       const step = Math.floor((boss.t || 0) / 520);
       const weave = Math.sin((boss.t || 0) / 420);
-      const count = Math.min(4, Math.max(2, boss.phase + 1));
+      const pressure = Math.max(5, Math.min(13, Math.floor((boss.shots || 6) / 2) + boss.phase));
+      const extraFan = boss.phase >= 3 ? 4 : boss.phase >= 2 ? 2 : 1;
+      const desperate = shootBossDesperation(st, weave);
       if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
         const a = aimAtPlayer(boss.x, boss.y - 80);
-        bossBullet(boss.x, boss.y - 78, a + weave * .1, 2.9 + st * .06, 1);
-        const cannons = step % 2 ? [-105, 0, 52] : [-52, 0, 105];
-        for (const ox of cannons) bossBullet(boss.x + ox, boss.y + 14, aimAtPlayer(boss.x + ox, boss.y + 14), 2.2 + st * .045, 0);
+        bossBullet(boss.x, boss.y - 88, a + weave * .09, 3.1 + st * .065, 2, 1, 'lastWarTurret');
+        const cannons = step % 2 ? [-132, -88, -38, 22, 76, 124] : [-124, -76, -22, 38, 88, 132];
+        for (const ox of cannons) bossBullet(boss.x + ox, boss.y + 18, aimAtPlayer(boss.x + ox, boss.y + 18), 2.35 + st * .048, 0, 0, 'tank');
+        for (const ox of [-150, -112, -72, 72, 112, 150]) bossBullet(boss.x + ox, boss.y + 48, ox / 220 + weave * .08, 2.0 + st * .035, 0, 0, 'tank');
+        if (boss.phase >= 2) {
+          for (const ox of [-128, -76, -24, 24, 76, 128]) bossBullet(boss.x + ox, boss.y - 36, a + ox / 300, 2.05 + st * .04, 1, 0, 'launcher');
+        }
       } else if (boss.kind === 'carrier' || boss.kind === 'seaCarrier') {
         const base = weave * .46;
-        const fan = boss.phase >= 3 ? 5 : 3;
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 58, base + (i - (fan - 1) / 2) * .28, 2.32 + st * .06);
-        if (boss.kind === 'seaCarrier' && boss.phase >= 2) {
-          for (const ox of (step % 2 ? [-86, 42] : [-42, 86])) bossBullet(boss.x + ox, boss.y + 22, aimAtPlayer(boss.x + ox, boss.y + 22), 2.18 + st * .05, 1);
+        const fan = bossFanCount((boss.phase >= 3 ? 11 : boss.phase >= 2 ? 9 : 7) + extraFan, 3);
+        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 64, base + (i - (fan - 1) / 2) * .22, 2.46 + st * .062, i % 2, 0, 'gunboat');
+        const deckGuns = step % 2 ? [-124, -82, -34, 34, 82, 124] : [-110, -62, -18, 18, 62, 110];
+        for (const ox of deckGuns) bossBullet(boss.x + ox, boss.y + 18, aimAtPlayer(boss.x + ox, boss.y + 18), 2.25 + st * .052, 1, 0, 'escortCarrier');
+        if (boss.phase >= 2) {
+          for (const side of [-1, 1]) bossBullet(boss.x + side * 68, boss.y - 18, side * .38 + weave * .18, 2.15 + st * .045, 0, 0, 'carrierFighter');
         }
       } else if (boss.kind === 'skyCarrier') {
-        const spokes = boss.phase >= 3 ? 6 : 4;
-        for (let i = 0; i < spokes; i++) bossBullet(boss.x, boss.y + 18, boss.t / 560 + i * Math.PI * 2 / spokes, 1.95 + st * .055, i % 2);
-        const ox = step % 2 ? -92 : 92;
-        bossBullet(boss.x + ox, boss.y + 44, aimAtPlayer(boss.x + ox, boss.y + 44), 2.4 + st * .055);
+        const spokes = bossFanCount((boss.phase >= 3 ? 13 : boss.phase >= 2 ? 10 : 8) + extraFan, 4);
+        for (let i = 0; i < spokes; i++) bossBullet(boss.x, boss.y + 18, boss.t / 520 + i * Math.PI * 2 / spokes, 2.05 + st * .055, i % 2, 0, 'carrierFighter');
+        for (const ox of (step % 2 ? [-126, -42, 42, 126] : [-94, 0, 94])) bossBullet(boss.x + ox, boss.y + 48, aimAtPlayer(boss.x + ox, boss.y + 48), 2.55 + st * .058, 0, 0, 'stealth');
+        if (boss.phase >= 2) for (const side of [-1, 1]) bossBullet(boss.x + side * 118, boss.y + 6, side * .5 + weave * .15, 2.05 + st * .045, 0, 0, 'carrierFighter');
       } else if (boss.kind === 'hydra') {
-        const heads = step % 2 ? [[-52, 20], [52, 20]] : [[-52, 20], [0, 34], [52, 20]];
+        const heads = [[-72, 10], [0, 28], [72, 10]];
         heads.forEach(([ox, oy], index) => {
-          const a = aimAtPlayer(boss.x + ox, boss.y + oy, (index - .5) * .28 + Math.sin(boss.t / 360) * .18);
-          bossBullet(boss.x + ox, boss.y + oy, a, 2.55 + st * .08);
-          if (boss.phase >= 3 && index === 0) bossBullet(boss.x + ox, boss.y + oy, a + .36, 2.18 + st * .055);
+          const a = aimAtPlayer(boss.x + ox, boss.y + oy, (index - 1) * .22 + Math.sin(boss.t / 360) * .16);
+          bossBullet(boss.x + ox, boss.y + oy, a, 2.7 + st * .075, index === 1 ? 1 : 0, 0, 'launcher');
+          bossBullet(boss.x + ox, boss.y + oy, a + (index - 1) * .18 + weave * .08, 2.42 + st * .06, 0, 0, 'launcher');
+          if (boss.phase >= 2) bossBullet(boss.x + ox, boss.y + oy, a + (index - 1) * .34, 2.24 + st * .055, 0, 0, 'wwAxisDive');
+          if (boss.phase >= 3) bossBullet(boss.x + ox, boss.y + oy, a - (index - 1) * .34, 2.16 + st * .05, 0, 0, 'wwAxisDive');
         });
       } else if (boss.kind === 'fortress') {
-        const ring = boss.phase >= 3 ? 7 : 5;
-        for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 12, boss.t / 680 + i * Math.PI * 2 / ring, 1.85 + st * .05, 1);
-        const ox = step % 2 ? -62 : 62;
-        bossBullet(boss.x + ox, boss.y + 46, aimAtPlayer(boss.x + ox, boss.y + 46), 2.22 + st * .055);
+        const ring = bossFanCount((boss.phase >= 3 ? 16 : boss.phase >= 2 ? 13 : 10) + extraFan, 4);
+        for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 12, boss.t / 640 + i * Math.PI * 2 / ring, 1.98 + st * .048, 1, 0, 'riftShield');
+        for (const ox of (step % 2 ? [-108, -36, 36, 108] : [-72, 0, 72])) bossBullet(boss.x + ox, boss.y + 50, aimAtPlayer(boss.x + ox, boss.y + 50), 2.38 + st * .055, 0, 0, 'drone');
       } else if (boss.kind === 'phantom') {
         const a = aimAtPlayer(boss.x, boss.y + 48);
-        bossBullet(boss.x, boss.y + 48, a + weave * .14, 3.28 + st * .08, 0, 1);
-        if (boss.phase >= 2) {
-          for (const side of [-1, 1]) bossBullet(boss.x + side * 46, boss.y + 24, a + side * .42, 2.5 + st * .055);
-        }
+        bossBullet(boss.x, boss.y + 54, a + weave * .12, 3.55 + st * .082, 1, 1, 'stealth');
+        for (const side of [-1, 1]) bossBullet(boss.x + side * 54, boss.y + 22, a + side * (boss.phase >= 2 ? .34 : .22), 2.76 + st * .058, 0, 0, 'riftInterceptor');
+        for (const side of [-1, 1]) bossBullet(boss.x + side * 92, boss.y + 4, a + side * .58, 2.34 + st * .05, 0, 0, 'stealth');
+        for (const side of [-1, 1]) bossBullet(boss.x + side * 28, boss.y + 38, a + side * .16 - weave * .08, 2.62 + st * .052, 0, 0, 'stealth');
+        if (boss.phase >= 3) bossBullet(boss.x, boss.y + 34, a - weave * .22, 3.05 + st * .06, 0, 1, 'riftInterceptor');
       } else if (boss.kind === 'emperor') {
-        const arms = boss.phase >= 3 ? 6 : 4;
+        const arms = bossFanCount((boss.phase >= 3 ? 12 : boss.phase >= 2 ? 9 : 7) + extraFan, 4);
         for (let i = 0; i < arms; i++) {
           const a = boss.t / 360 + i * Math.PI * 2 / arms;
-          bossBullet(boss.x, boss.y + 22, a, 2.28 + st * .08, 0);
-          if (boss.phase >= 3 && i % 2 === 0) bossBullet(boss.x, boss.y + 22, -a + .18, 2.0 + st * .05, 0);
+          bossBullet(boss.x, boss.y + 22, a, 2.36 + st * .075, 0, 0, 'lastWarRecord');
+          if (boss.phase >= 3 && i % 2 === 0) bossBullet(boss.x, boss.y + 22, -a + .18, 2.14 + st * .052, 0, 0, 'lastWarLance');
         }
+        if (boss.phase >= 2) bossBullet(boss.x, boss.y + 66, aimAtPlayer(boss.x, boss.y + 66), 2.85 + st * .06, 1, 0, 'boss');
       } else if (boss.kind === 'arsenal') {
         const aim = aimAtPlayer(boss.x, boss.y + 48);
-        const turretPair = step % 2 ? [-76, 0, 34] : [-34, 0, 76];
-        for (const ox of turretPair) bossBullet(boss.x + ox, boss.y + 34, aimAtPlayer(boss.x + ox, boss.y + 34), 2.3 + st * .055, 1);
+        const turretPair = step % 2 ? [-126, -78, -30, 30, 78, 126] : [-108, -54, 0, 54, 108];
+        for (const ox of turretPair) bossBullet(boss.x + ox, boss.y + 34, aimAtPlayer(boss.x + ox, boss.y + 34), 2.48 + st * .055, 1, 0, 'lastWarTurret');
         const sweep = Math.sin(boss.t / 420) * .32;
-        const fan = boss.phase >= 3 ? 5 : 3;
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 70, sweep + aim + (i - (fan - 1) / 2) * .16, 2.02 + st * .05, i % 2);
+        const fan = bossFanCount((boss.phase >= 3 ? 11 : boss.phase >= 2 ? 8 : 6) + extraFan, 3);
+        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 70, sweep + aim + (i - (fan - 1) / 2) * .15, 2.18 + st * .05, i % 2, 0, 'lastWarGate');
         if (boss.phase >= 3) {
-          const ring = 6;
-          for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 8, boss.t / 520 + i * Math.PI * 2 / ring, 1.82 + st * .04, 1);
+          const ring = 16;
+          for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 8, boss.t / 500 + i * Math.PI * 2 / ring, 1.94 + st * .04, 1, 0, 'lastWarRecord');
         }
       } else {
-        const fan = boss.phase >= 3 ? 5 : 3;
+        const fan = bossFanCount(boss.phase >= 3 ? pressure : Math.max(4, pressure - 1), 3);
         const aim = aimAtPlayer(boss.x, boss.y + 62);
         for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 62, aim + weave * .2 + (i - (fan - 1) / 2) * .2, 2.5 + st * .07, i % 2);
         const ox = step % 2 ? -82 : 82;
         bossBullet(boss.x + ox, boss.y + 20, Math.sin(boss.t / 520) * .42 + ox / 240, 2.28 + st * .055, 1);
       }
+      if (desperate) flash('DANGER');
       playEnemyLaser(performance.now());
     }
 
@@ -3293,17 +3670,18 @@
       b.hit = true;
       explosions.push({ x: b.x, y: b.y, r: b.radius, life: 780 });
       enemyBullets = [];
-      enemies.forEach(e => e.hp -= b.dmg);
+      enemies.forEach(e => e.hp -= playerDamageAgainst(e, b.dmg));
       if (boss && boss.inv <= 0) boss.hp -= b.dmg;
       if (b.atomic) fallout = { time: 10000, tick: 500, damage: 3 };
       playSmallExplosion();
     }
 
     function playerDamageAgainst(target, amount) {
-      if (!player || player.jet.id !== 'f67') return amount;
+      const carrierArmor = target?.carrier ? .72 : 1;
+      if (!player || player.jet.id !== 'f67') return amount * carrierArmor;
       const voidEnemy = target?.form?.startsWith?.('rift');
       const voidBoss = target === boss && currentStage().id >= 11;
-      return (voidEnemy || voidBoss) ? amount * 1.45 : amount;
+      return ((voidEnemy || voidBoss) ? amount * 1.45 : amount) * carrierArmor;
     }
 
     function detonatePlayerBullet(b) {
@@ -3324,7 +3702,7 @@
     function useSpecial() {
       if (!player || player.specialCooldown > 0) return;
       const id = player.jet.id;
-      player.specialCooldown = id === 'kf21' ? 8000 : id === 'error' || id === 'f67' ? 9000 : 12000;
+      player.specialCooldown = id === 'operator' ? 3000 : id === 'kf21' ? 8000 : id === 'error' || id === 'f67' ? 9000 : 12000;
       player.specialTimer = 4500;
       awardAchievement('firstSpecial');
       recordJetMastery('specials');
@@ -3397,7 +3775,7 @@
       if (clearBullets) enemyBullets = [];
       enemies.forEach(e => {
         const d = Math.hypot(e.x - player.x, e.y - player.y);
-        if (d < radius) e.hp -= dmg * (1.1 - Math.min(.55, d / radius));
+        if (d < radius) e.hp -= playerDamageAgainst(e, dmg * (1.1 - Math.min(.55, d / radius)));
       });
       if (boss && boss.inv <= 0) {
         const d = Math.hypot(boss.x - player.x, boss.y - player.y);
@@ -3504,24 +3882,44 @@
         shootBomberFleet(player.stats);
         specialBlast('함대 총공격', bombDmg * 1.1, 230, 8, false);
       } else if (id === 'kf21') {
-        player.inv = Math.max(player.inv, 2300);
-        player.boostTimer = Math.max(player.boostTimer, 5200);
+        player.inv = Math.max(player.inv, 1800);
+        player.boostTimer = Math.max(player.boostTimer, 4200);
         enemyBullets = enemyBullets.filter(b => b.y < player.y - 120);
-        for (let i = 0; i < 11; i++) {
-          specialBullet(px + (i - 5) * 7, py + Math.abs(i - 5) * 2, (i - 5) * .052, 13.8, dmg * .98, {
-            r: 4.9,
-            pierce: 2,
-            home: true,
-            homingStrength: .18,
+        for (let i = 0; i < 9; i++) {
+          specialBullet(px + (i - 4) * 7, py + Math.abs(i - 4) * 2, (i - 4) * .045, 13.4, dmg * .86, {
+            r: 4.6,
+            pierce: 1,
+            home: i % 2 === 0,
+            homingStrength: .11,
             homingIndex: i,
-            blast: 22,
+            blast: 14,
             styleId: 'kf21',
             shape: 'prism'
           });
         }
-        specialBlast('KF-21 코어', bombDmg * 1.15, 245, 7, false);
+        specialBlast('글록3 코어', bombDmg * .95, 215, 6, false);
         addSpecialShockwave(px, py - 92, 150, '#60a5fa', 650);
-        flash('KF-21 코어');
+        flash('글록3 코어');
+      } else if (id === 'operator') {
+        player.inv = Math.max(player.inv, 9000);
+        player.boostTimer = Math.max(player.boostTimer, 9000);
+        enemyBullets = [];
+        for (let i = 0; i < 18; i++) {
+          specialBullet(px + (i - 8.5) * 6, py + Math.abs(i - 8.5) * 2, (i - 8.5) * .05, 16.8, dmg * 1.4, {
+            r: 7,
+            pierce: 999,
+            home: true,
+            homingStrength: .26,
+            homingIndex: i,
+            blast: 65,
+            styleId: 'operator',
+            shape: 'f47Star'
+          });
+        }
+        specialBlast('어드민 권한', bombDmg * 4.8, 430, 16, true);
+        fallout = { time: 5200, tick: 220, damage: 28 };
+        addSpecialShockwave(px, py - 130, 260, '#ef4444', 900);
+        flash('어드민 권한');
       } else if (id === 'sr71') {
         player.boostTimer = Math.max(player.boostTimer, 10000);
         player.inv = Math.max(player.inv, 1400);
@@ -3651,7 +4049,7 @@
         if (fallout.tick <= 0) {
           fallout.tick += 500;
           const falloutDamage = fallout.damage || 1;
-          enemies.forEach(e => e.hp -= falloutDamage);
+          enemies.forEach(e => e.hp -= playerDamageAgainst(e, falloutDamage));
           if (boss && boss.inv <= 0) boss.hp -= falloutDamage;
           explosions.push({ x: Math.random() * W, y: Math.random() * H, r: 7, life: 260 });
         }
@@ -3797,18 +4195,31 @@
 
       enemies.forEach(e => {
         e.t += dt;
-        e.y += e.speed * frameStep;
-        e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1) * frameStep;
+        if (e.carrier) {
+          const holdY = 150;
+          if (e.y < holdY) e.y += e.speed * frameStep;
+          else e.y += Math.sin(e.t / 520) * .06 * frameStep;
+          e.x += Math.sin(e.t / 760) * .55 * frameStep;
+        } else {
+          e.y += e.speed * frameStep;
+          e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1) * frameStep;
+        }
         if (e.carrier && e.y > 18) {
           e.launch -= dt;
           if (e.launch <= 0) {
-            e.launch = 2600 + Math.random() * 900;
+            e.launch = 1200 + Math.random() * 520;
             launchCarrierFighter(e, Math.sin(e.t / 700) > 0 ? 1 : -1);
           }
         }
         e.fire -= dt;
         if (e.fire <= 0 && e.y > 20) {
-          e.fire = Math.max(520, 980 + Math.random() * 720 - difficultyStage() * 24);
+          const carrierSeaRank = e.carrier ? seaStageRank(currentStage()) : 1;
+          const st = difficultyStage();
+          const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
+          const voidStage = !isWorldWarChapter() && st >= 11;
+          e.fire = e.carrier
+            ? Math.max(560, 1040 + Math.random() * 320 - carrierSeaRank * 85)
+            : Math.max(700, 1180 + Math.random() * 760 - (lastWar ? (st - VOID_STAGE_END) * 22 : voidStage ? (st - 10) * 18 : st * 12));
           shootEnemy(e);
         }
       });
@@ -3845,7 +4256,7 @@
         boss.phase = boss.hp < boss.maxHp * .35 ? 3 : boss.hp < boss.maxHp * .68 ? 2 : 1;
         boss.fire -= dt;
         if (boss.fire <= 0) {
-          boss.fire = st >= 11 ? Math.max(560, 1040 - (st - 11) * 20 - boss.phase * 42) : Math.max(500, 940 - st * 24 - boss.phase * 46);
+          boss.fire = st >= 11 ? Math.max(330, 720 - (st - 11) * 15 - boss.phase * 48) : Math.max(340, 690 - st * 18 - boss.phase * 48);
           shootBoss();
         }
       }
@@ -3936,9 +4347,25 @@
             flash('SHIELD');
           } else if (p.kind === 'power') {
             const maxPower = fieldPowerMax();
-            player.fieldPower = Math.min(maxPower, (player.fieldPower || 0) + 1);
+            const before = player.fieldPower || 0;
+            player.fieldPower = Math.min(maxPower, before + 1);
             addScore(100);
-            flash(`POWER ${player.fieldPower}/${maxPower}`);
+            const tier = fieldPowerTier(player.fieldPower);
+            if (player.fieldPower === 12) {
+              flash('EXTRA TURRET');
+              setLog('파워 12단계. 후방 추가 포탑이 붙어 더 촘촘하게 지원 사격한다.');
+            } else if (player.fieldPower === 9) {
+              flash('WINGMEN DEPLOY');
+              setLog('파워 9단계. 소형 보조기가 뒤에 붙어 같이 발사한다.');
+            } else if (player.fieldPower % 3 === 0 && player.fieldPower > before) {
+              flash(`POWER BURST ${player.fieldPower}`);
+            } else {
+              flash(`POWER ${player.fieldPower}/${maxPower}`);
+            }
+            if (tier > fieldPowerTier(before)) {
+              explosions.push({ x: player.x, y: player.y, r: 18 + tier * 12, life: 420 });
+              specialEffects.push({ x: player.x, y: player.y, life: 520, maxLife: 520, type: 'powerBurst', color: fieldPowerStyle(tier)?.fill, accent: fieldPowerStyle(tier)?.accent });
+            }
           } else {
             save.coins += p.value;
             addScore(p.value * 2);
@@ -3976,8 +4403,7 @@
       const maxPower = fieldPowerMax();
       if (player && (player.fieldPower || 0) < maxPower) {
         player.powerDropPity = (player.powerDropPity || 0) + 1;
-        const powerChance = clamp(.12 + strength + player.powerDropPity * .018, .12, .46);
-        if (player.powerDropPity >= 14 || Math.random() < powerChance) {
+        if (player.powerDropPity >= 10) {
           player.powerDropPity = 0;
           pickups.push({ kind: 'power', x: e.x + (Math.random() - .5) * 22, y: e.y, vy: 1.35, value: 1 });
         }
@@ -3985,7 +4411,7 @@
       if (Math.random() < coinChance) pickups.push({ kind: 'coin', x: e.x, y: e.y, vy: 1.8, value: 6 + difficultyStage() * 2 });
       if (Math.random() < itemChance) {
         const roll = Math.random();
-        const kind = roll < .34 ? 'heal' : roll < .58 ? 'shield' : roll < .82 ? 'boost' : 'power';
+        const kind = roll < .4 ? 'heal' : roll < .7 ? 'shield' : 'boost';
         const value = kind === 'boost' ? 12000 : kind === 'heal' ? 2 : 1;
         pickups.push({ kind, x: e.x + (Math.random() - .5) * 18, y: e.y, vy: 1.45, value });
       }
@@ -4089,7 +4515,7 @@
     }
 
     function cleanup() {
-      bullets = bullets.filter(b => !b.hit && b.y > -30 && b.x > -30 && b.x < W + 30);
+      bullets = bullets.filter(b => !b.hit && b.y > -80 && b.x > -90 && b.x < W + 90);
       playerBombs = playerBombs.filter(b => !b.hit && b.y > -40);
       stukaDives = stukaDives.filter(d => d.t < d.duration + 260 && d.y > -220 && d.y < H + 130);
       specialEffects = specialEffects.filter(e => e.life > 0);
@@ -4097,6 +4523,11 @@
       enemyBullets = enemyBullets.filter(b => !b.hit && b.y < H + 40 && b.x > -40 && b.x < W + 40);
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
+      if (bullets.length > 720) bullets.splice(0, bullets.length - 720);
+      if (enemyBullets.length > 640) enemyBullets.splice(0, enemyBullets.length - 640);
+      if (explosions.length > 90) explosions.splice(0, explosions.length - 90);
+      if (specialEffects.length > 24) specialEffects.splice(0, specialEffects.length - 24);
+      if (pickups.length > 36) pickups.splice(0, pickups.length - 36);
     }
 
     function draw() {
@@ -4844,23 +5275,156 @@
         ctx.strokeStyle = 'rgba(67,211,196,.75)';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(player.x, player.y, 33 + Math.sin(performance.now() / 90) * 4, 0, Math.PI * 2);
+        ctx.arc(player.x, player.y, 27 + Math.sin(performance.now() / 90) * 3.2, 0, Math.PI * 2);
         ctx.stroke();
       }
       if (player.shield > 0) {
         ctx.strokeStyle = 'rgba(118,167,255,.85)';
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(player.x, player.y, 40 + Math.sin(performance.now() / 120) * 3, 0, Math.PI * 2);
+        ctx.arc(player.x, player.y, 32 + Math.sin(performance.now() / 120) * 2.4, 0, Math.PI * 2);
         ctx.stroke();
       }
-      drawJet(player.x, player.y, skinnedJetColor(player.jet), player.jet.id, .92, true, player.tilt || 0);
+      wingmanSlots().forEach(slot => {
+        drawWingman(slot);
+      });
+      drawJet(player.x, player.y, skinnedJetColor(player.jet), player.jet.id, .84, true, player.tilt || 0);
       ctx.strokeStyle = 'rgba(255,255,255,.72)';
       playerHitZones().forEach(zone => {
         ctx.beginPath();
         ctx.arc(zone.x, zone.y, zone.r, 0, Math.PI * 2);
         ctx.stroke();
       });
+      ctx.restore();
+    }
+
+    function drawWingman(slot) {
+      const style = wingmanStyleForJet(player.jet.id);
+      const pulse = Math.sin(performance.now() / 80 + slot.side) * 2;
+      ctx.save();
+      ctx.globalAlpha = .92;
+      ctx.translate(slot.x, slot.y);
+      ctx.rotate((player.tilt || 0) * .45 + slot.side * .05);
+      ctx.shadowColor = style.accent;
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = style.fill;
+      ctx.strokeStyle = style.accent;
+      ctx.lineWidth = 1.4;
+      const type = style.type;
+      if (slot.role === 'turret') {
+        ctx.fillRect(-15, -8, 30, 18);
+        ctx.strokeRect(-15, -8, 30, 18);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-10, -24, 6, 18);
+        ctx.fillRect(-3, -27, 6, 21);
+        ctx.fillRect(4, -24, 6, 18);
+        ctx.beginPath();
+        ctx.arc(0, 1, 8, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (type === 'orb') {
+        ctx.beginPath();
+        ctx.arc(0, 0, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.beginPath();
+        ctx.arc(0, 0, 5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (type === 'gatling') {
+        ctx.fillRect(-12, -8, 24, 16);
+        ctx.strokeRect(-12, -8, 24, 16);
+        ctx.fillStyle = style.core;
+        for (const x of [-6, 0, 6]) ctx.fillRect(x - 1.5, -22, 3, 17);
+      } else if (type === 'rail') {
+        ctx.fillRect(-7, -20, 14, 36);
+        ctx.strokeRect(-7, -20, 14, 36);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-15, -5, 30, 7);
+      } else if (type === 'bombPod') {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 13, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-5, -22, 10, 10);
+      } else if (type === 'booster') {
+        poly([[0,-22],[14,-4],[8,17],[0,10],[-8,17],[-14,-4]]);
+        ctx.fillStyle = style.core;
+        ctx.beginPath();
+        ctx.moveTo(-5, 14);
+        ctx.lineTo(0, 27 + pulse);
+        ctx.lineTo(5, 14);
+        ctx.fill();
+      } else if (type === 'taegeuk') {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 14, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, 0, 6, -Math.PI / 2, Math.PI / 2);
+        ctx.fill();
+        ctx.fillStyle = '#2563eb';
+        ctx.beginPath();
+        ctx.arc(0, 0, 6, Math.PI / 2, Math.PI * 1.5);
+        ctx.fill();
+      } else if (type === 'crown') {
+        poly([[-15,10],[-10,-10],[-3,2],[0,-18],[3,2],[10,-10],[15,10]]);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-12, 8, 24, 7);
+      } else if (type === 'shadow') {
+        ctx.globalAlpha = .76;
+        poly([[0,-20],[18,-4],[7,10],[0,5],[-7,10],[-18,-4]]);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-4, -13, 8, 22);
+      } else if (type === 'stealth') {
+        poly([[0,-20],[25,-2],[9,9],[0,5],[-9,9],[-25,-2]]);
+        ctx.fillStyle = style.core;
+        poly([[-4,-13],[4,-13],[3,9],[-3,9]]);
+      } else if (type === 'blade') {
+        poly([[0,-24],[10,-7],[4,18],[0,24],[-4,18],[-10,-7]]);
+        ctx.fillStyle = style.core;
+        poly([[-6,-9],[-27,4],[-10,8]]);
+        poly([[6,-9],[27,4],[10,8]]);
+      } else if (type === 'microJet') {
+        poly([[0,-22],[8,-6],[7,16],[0,24],[-7,16],[-8,-6]]);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-17, 0, 34, 6);
+        ctx.fillRect(-5, 11, 10, 8);
+      } else if (type === 'eagle') {
+        poly([[0,-23],[9,-8],[9,12],[0,21],[-9,12],[-9,-8]]);
+        ctx.fillStyle = style.core;
+        poly([[-8,-5],[-28,6],[-17,16],[-4,6]]);
+        poly([[8,-5],[28,6],[17,16],[4,6]]);
+        ctx.fillRect(-12, 14, 6, 11);
+        ctx.fillRect(6, 14, 6, 11);
+      } else if (type === 'naval') {
+        ctx.fillRect(-13, -17, 26, 31);
+        ctx.strokeRect(-13, -17, 26, 31);
+        ctx.fillStyle = style.core;
+        poly([[-13,-5],[-27,7],[-13,10]]);
+        poly([[13,-5],[27,7],[13,10]]);
+        ctx.fillRect(-4, -25, 8, 10);
+      } else if (type === 'swept') {
+        poly([[0,-24],[8,-7],[8,15],[0,23],[-8,15],[-8,-7]]);
+        ctx.fillStyle = style.core;
+        poly([[-7,-6],[-29,4],[-16,14],[-5,5]]);
+        poly([[7,-6],[29,4],[16,14],[5,5]]);
+      } else {
+        poly([[0,-22],[7,-8],[8,12],[0,20],[-8,12],[-7,-8]]);
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-18, 1, 36, 7);
+      }
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = style.accent;
+      ctx.globalAlpha = .62;
+      ctx.beginPath();
+      ctx.arc(0, 0, 17 + pulse, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.restore();
     }
 
@@ -5192,8 +5756,8 @@
         ctx.fillStyle = shade(color, -.2);
         poly([[-16,11],[-34,43],[-8,28]]);
         poly([[16,11],[34,43],[8,28]]);
-      } else if (id === 'f47') {
-        const f47Skin = friendly ? equippedSkin(id) : '';
+      } else if (id === 'f47' || id === 'operator') {
+        const f47Skin = id === 'operator' ? '' : friendly ? equippedSkin(id) : '';
         const f47Tier2 = f47Skin.endsWith('skin2');
         const f47Base = f47Skin ? color : '#dfe7ef';
         const f47Panel = f47Skin ? shade(color, f47Tier2 ? .08 : .2) : '#e9eff5';
@@ -5262,51 +5826,80 @@
       } else if (id === 'kf21') {
         const kfSkin = friendly ? equippedSkin(id) : '';
         const kfTier2 = kfSkin.endsWith('skin2');
-        const kfBase = kfSkin ? color : '#64748b';
-        const kfLight = kfTier2 ? '#f8fafc' : '#94a3b8';
-        const kfDark = kfTier2 ? '#1e3a8a' : '#1e293b';
-        const kfAccent = kfTier2 ? '#ef4444' : '#60a5fa';
-        const kfTrim = kfTier2 ? '#2563eb' : '#e0f2fe';
+        const kfBase = kfSkin ? color : '#6f7f8f';
+        const kfLight = kfTier2 ? '#f8fafc' : '#aab7c4';
+        const kfDark = kfTier2 ? '#1e3a8a' : '#293241';
+        const kfAccent = kfTier2 ? '#ef4444' : '#4fb3ff';
+        const kfTrim = kfTier2 ? '#2563eb' : '#dbe7f0';
         ctx.strokeStyle = 'rgba(15,23,42,.32)';
         ctx.lineWidth = 1;
-        ctx.fillStyle = shade(kfBase, -.08);
-        poly([[0,-72],[10,-55],[15,-29],[16,7],[11,43],[0,58],[-11,43],[-16,7],[-15,-29],[-10,-55]]);
+        ctx.fillStyle = shade(kfBase, -.18);
+        poly([[0,-76],[14,-56],[19,-18],[18,21],[10,55],[0,70],[-10,55],[-18,21],[-19,-18],[-14,-56]]);
         ctx.fillStyle = kfBase;
-        poly([[0,-69],[8,-53],[11,-28],[10,22],[0,51],[-10,22],[-11,-28],[-8,-53]]);
+        poly([[0,-72],[10,-54],[14,-19],[13,27],[6,55],[0,64],[-6,55],[-13,27],[-14,-19],[-10,-54]]);
         ctx.fillStyle = kfLight;
-        poly([[0,-60],[5,-46],[7,-14],[5,24],[0,39],[-5,24],[-7,-14],[-5,-46]]);
-        ctx.fillStyle = kfDark;
-        poly([[-13,-20],[-63,-2],[-45,18],[-13,8]]);
-        poly([[13,-20],[63,-2],[45,18],[13,8]]);
-        ctx.fillStyle = shade(kfBase, .18);
-        poly([[-20,-13],[-51,2],[-36,10],[-14,3]]);
-        poly([[20,-13],[51,2],[36,10],[14,3]]);
+        poly([[0,-63],[6,-47],[8,-16],[6,24],[0,45],[-6,24],[-8,-16],[-6,-47]]);
+        ctx.fillStyle = shade(kfBase, -.28);
+        poly([[-13,-26],[-69,-7],[-52,20],[-14,9]]);
+        poly([[13,-26],[69,-7],[52,20],[14,9]]);
+        ctx.fillStyle = shade(kfBase, .12);
+        poly([[-23,-18],[-58,-5],[-42,10],[-15,3]]);
+        poly([[23,-18],[58,-5],[42,10],[15,3]]);
         ctx.fillStyle = '#111827';
-        poly([[-10,-35],[-25,-22],[-16,-14],[-7,-26]]);
-        poly([[10,-35],[25,-22],[16,-14],[7,-26]]);
+        poly([[-9,-39],[-23,-28],[-17,-17],[-6,-29]]);
+        poly([[9,-39],[23,-28],[17,-17],[6,-29]]);
         ctx.fillStyle = kfDark;
-        poly([[-10,23],[-38,50],[-22,60],[-6,35]]);
-        poly([[10,23],[38,50],[22,60],[6,35]]);
-        ctx.fillStyle = '#0f172a';
-        poly([[-6,31],[-16,60],[-5,49],[-1,36]]);
-        poly([[6,31],[16,60],[5,49],[1,36]]);
+        poly([[-10,22],[-39,48],[-24,62],[-5,37]]);
+        poly([[10,22],[39,48],[24,62],[5,37]]);
+        ctx.fillStyle = shade(kfDark, -.18);
+        poly([[-7,32],[-18,66],[-5,54],[-1,39]]);
+        poly([[7,32],[18,66],[5,54],[1,39]]);
+        if (kfTier2) {
+          ctx.fillStyle = '#ffffff';
+          for (const x of [-37, 37]) {
+            ctx.save();
+            ctx.translate(x, -2);
+            ctx.rotate(x < 0 ? -.16 : .16);
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, -Math.PI / 2, Math.PI / 2);
+            ctx.fill();
+            ctx.fillStyle = '#2563eb';
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, Math.PI / 2, Math.PI * 1.5);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, -3, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(0, 3, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        }
         ctx.strokeStyle = kfAccent;
         ctx.lineWidth = 1.25;
         ctx.beginPath();
-        ctx.moveTo(0, -57); ctx.lineTo(0, 40);
-        ctx.moveTo(-12, -12); ctx.lineTo(-48, 4);
-        ctx.moveTo(12, -12); ctx.lineTo(48, 4);
-        ctx.moveTo(-8, 25); ctx.lineTo(-29, 48);
-        ctx.moveTo(8, 25); ctx.lineTo(29, 48);
+        ctx.moveTo(0, -58); ctx.lineTo(0, 48);
+        ctx.moveTo(-15, -17); ctx.lineTo(-54, -3);
+        ctx.moveTo(15, -17); ctx.lineTo(54, -3);
+        ctx.moveTo(-9, 25); ctx.lineTo(-31, 50);
+        ctx.moveTo(9, 25); ctx.lineTo(31, 50);
         ctx.stroke();
+        ctx.fillStyle = 'rgba(219,234,254,.72)';
+        for (const x of [-28, 28]) ctx.fillRect(x - 7, 0, 14, 4);
         ctx.fillStyle = kfAccent;
         for (const side of [-1, 1]) {
           ctx.beginPath();
-          ctx.arc(side * 35, 8, 3.4, 0, Math.PI * 2);
+          ctx.arc(side * 38, 7, 3.2, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.fillStyle = kfTrim;
-        for (const x of [-8, 8]) ctx.fillRect(x - 1.7, 37, 3.4, 15);
+        for (const x of [-8, 8]) ctx.fillRect(x - 2, 39, 4, 16);
       } else if (id === 'f67') {
         ctx.strokeStyle = 'rgba(34,211,238,.35)';
         ctx.lineWidth = 1.5;
@@ -5869,7 +6462,7 @@
 
       ctx.fillStyle = glass;
       ctx.beginPath();
-      if (id === 'f47') {
+      if (id === 'f47' || id === 'operator') {
         ctx.ellipse(0, -43, 4.6, 14, 0, 0, Math.PI * 2);
       } else if (id === 'kf21') {
         ctx.ellipse(0, -36, 5.2, 13, 0, 0, Math.PI * 2);
@@ -5892,10 +6485,10 @@
       }
 
       ctx.fillStyle = glow;
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'error' ? [-28, -9, 9, 28] : id === 'kf21' ? [-9, 9] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'error' ? [-28, -9, 9, 28] : id === 'kf21' || id === 'operator' ? [-9, 9] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
-        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'kf21' ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, id === 'sr71' ? 42 : id === 'kf21' || id === 'operator' ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
         ctx.fill();
       }
       if (skin) {
@@ -5911,7 +6504,7 @@
         }
       }
 
-      if (id === 'f67' || id === 'error') {
+      if (id === 'operator' || id === 'f67' || id === 'error') {
         ctx.strokeStyle = 'rgba(34,211,238,.38)';
         ctx.lineWidth = 1.3;
         ctx.beginPath();
@@ -5923,6 +6516,7 @@
 
     function jetProportion(id) {
       if (id === 'bomberfleet') return { x: 1, y: 1 };
+      if (id === 'operator') return { x: .96, y: 1.08 };
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'kf21') return { x: .98, y: 1.07 };
@@ -5943,7 +6537,7 @@
         bomber: .84, riftBomber: .78, riftShield: .86, riftCutter: .84,
         lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86
       }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
-      ctx.scale(bigScale * depth, bigScale * depth);
+      ctx.scale(bigScale * depth * 1.08, bigScale * depth * 1.08);
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
@@ -6564,7 +7158,12 @@
     function drawBoss() {
       ctx.save();
       ctx.translate(boss.x, boss.y);
-      ctx.scale(boss.size || 1, boss.size || 1);
+      ctx.scale((boss.size || 1) * 1.03, (boss.size || 1) * 1.03);
+      const pulse = .5 + Math.sin(performance.now() / 130) * .5;
+      if (boss.phase >= 2) {
+        ctx.shadowColor = rgbaColor(boss.accent || '#fb7185', boss.phase >= 3 ? .7 : .45);
+        ctx.shadowBlur = boss.phase >= 3 ? 22 + pulse * 10 : 12 + pulse * 6;
+      }
       ctx.fillStyle = boss.color;
       ctx.strokeStyle = 'rgba(255,255,255,.22)';
       ctx.lineWidth = 2;
@@ -6887,6 +7486,18 @@
         ctx.arc(i * 31, 22 + Math.abs(i) * 3, 5, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = boss.phase >= 3 ? .86 : .58;
+      ctx.strokeStyle = boss.accent || 'rgba(248,113,113,.9)';
+      ctx.lineWidth = boss.phase >= 3 ? 3.4 : 2.4;
+      ctx.beginPath();
+      ctx.moveTo(-88, -18);
+      ctx.lineTo(-34, -4);
+      ctx.lineTo(0, -36);
+      ctx.lineTo(34, -4);
+      ctx.lineTo(88, -18);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
       if (boss.inv > 0) {
         ctx.strokeStyle = 'rgba(118,167,255,.85)';
         ctx.lineWidth = 4;
@@ -7084,6 +7695,22 @@
 
     function drawPlayerBullet(b) {
       const style = b.style || { fill: '#94f7e9', core: '#ffffff' };
+      if (b.powerTier) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = .08 + b.powerTier * .045;
+        ctx.strokeStyle = style.accent || style.fill;
+        ctx.lineWidth = 2.2 + b.powerTier * .9;
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y + 4);
+        ctx.lineTo(b.x - (b.vx || 0) * (2.2 + b.powerTier), b.y - (b.vy || -1) * (2.2 + b.powerTier));
+        ctx.stroke();
+        ctx.fillStyle = style.fill;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r * (1.15 + b.powerTier * .16), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
       if (b.special) {
         const shape = style.specialShape || 'dart';
         const len = b.blast ? 32 : b.pierce > 1 ? 42 : b.home ? 34 : 28;
@@ -7339,6 +7966,26 @@
           ctx.lineTo(e.x + side * (56 + pulse * 1.4), H * .28);
           ctx.lineTo(e.x + side * (18 - pulse), H * .12);
           ctx.stroke();
+        }
+        ctx.restore();
+      } else if (e.type === 'powerBurst') {
+        const radius = (1 - t) * 18 + t * 78;
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = .22 + t * .55;
+        ctx.strokeStyle = e.accent || '#facc15';
+        ctx.lineWidth = 3 + t * 5;
+        for (const scale of [1, .62, .32]) {
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, radius * scale + Math.sin(performance.now() / 45) * 3, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.fillStyle = e.color || '#67e8f9';
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * Math.PI * 2 + performance.now() / 180;
+          ctx.beginPath();
+          ctx.arc(e.x + Math.cos(a) * radius * .62, e.y + Math.sin(a) * radius * .62, 3.5 + t * 3, 0, Math.PI * 2);
+          ctx.fill();
         }
         ctx.restore();
       }
@@ -8032,11 +8679,16 @@
       document.getElementById('tabJets').classList.toggle('active', tab === 'jets');
       document.getElementById('tabStages').classList.toggle('active', tab === 'stages');
       document.getElementById('tabShop').classList.toggle('active', tab === 'shop');
+      document.getElementById('tabOperator').classList.toggle('active', tab === 'operator');
       document.getElementById('tabCodex').classList.toggle('active', tab === 'codex');
       document.getElementById('jetsView').classList.toggle('hidden', tab !== 'jets');
       document.getElementById('stagesView').classList.toggle('hidden', tab !== 'stages');
       document.getElementById('shopView').classList.toggle('hidden', tab !== 'shop');
+      document.getElementById('operatorView').classList.toggle('hidden', tab !== 'operator');
       document.getElementById('codexView').classList.toggle('hidden', tab !== 'codex');
+      document.getElementById('operatorHint').textContent = save.unlockedJets?.operator
+        ? '운영자 전용 기체가 해금되어 있습니다.'
+        : '운영자 비밀번호를 입력하면 전용 기체가 해금됩니다.';
 
       const jetsEl = document.getElementById('jets');
       const stagesEl = document.getElementById('stages');
@@ -8044,13 +8696,16 @@
       const codexEl = document.getElementById('codex');
 
       if (tab === 'jets') {
-        jetsEl.innerHTML = availableJets().map(j => {
+        jetsEl.innerHTML = currentJetPool().filter(j => !j.hidden || isJetPurchased(j.id)).map(j => {
           const s = jetStats(j);
           const selected = j.id === save.selectedJet;
+          const purchased = isJetPurchased(j.id);
+          const price = jetPurchasePrice(j);
           const compactStats = j.godMode ? `공 ∞ / 체 ∞ / 탄 ${s.shots} / 폭 ∞` : `공 ${s.power} / 체 ${s.maxHp} / 탄 ${s.shots} / 폭 ${s.startBombs}`;
-          return `<div class="jet-card ${selected ? 'selected' : ''}" data-jet="${j.id}" role="button" tabindex="0">
-            <div class="card-head"><span class="name">${j.name}</span><span class="tag">${j.role}</span></div>
+          return `<div class="jet-card ${selected ? 'selected' : ''} ${purchased ? '' : 'locked'}" ${purchased ? `data-jet="${j.id}"` : `data-buy-jet="${j.id}"`} role="button" tabindex="0">
+            <div class="card-head"><span class="name">${j.name}</span><span class="tag">${purchased ? j.role : price + 'C'}</span></div>
             <div class="stat-line">${compactStats}</div>
+            ${purchased ? '' : `<button data-buy-jet="${j.id}" ${save.coins < price ? 'disabled' : ''}>구매</button>`}
           </div>`;
         }).join('');
       } else {
@@ -8132,6 +8787,10 @@
         storeSave();
         renderUI();
         setLog(selectedJetDescription('격납고로 돌아왔다. 기체나 업그레이드를 바꿀 수 있어.'));
+      });
+      document.querySelectorAll('[data-buy-jet]').forEach(b => b.onclick = e => {
+        e.stopPropagation();
+        purchaseJet(b.dataset.buyJet);
       });
       document.querySelectorAll('[data-stage]').forEach(b => b.onclick = () => {
         save.selectedMode = 'stage';
@@ -8332,7 +8991,12 @@
     document.getElementById('tabJets').onclick = () => setTab('jets');
     document.getElementById('tabStages').onclick = () => setTab('stages');
     document.getElementById('tabShop').onclick = () => setTab('shop');
+    document.getElementById('tabOperator').onclick = () => setTab('operator');
     document.getElementById('tabCodex').onclick = () => setTab('codex');
+    document.getElementById('operatorSubmit').onclick = submitOperatorCode;
+    document.getElementById('operatorInput').onkeydown = e => {
+      if (e.key === 'Enter') submitOperatorCode();
+    };
     document.getElementById('profileSelect').onchange = e => switchLocalProfile(e.target.value);
     document.getElementById('gateProfileCreate').onclick = () => createLocalProfile('gateProfileInput');
     document.getElementById('gateEnter').onclick = enterSelectedProfile;
@@ -8462,7 +9126,7 @@
         requestAnimationFrame(loop);
         return;
       }
-      const frameMs = mode === 'play' && !paused ? 1000 / 60 : mode === 'menu' ? 1000 : 1000 / 24;
+      const frameMs = mode === 'play' && !paused ? 1000 / 90 : mode === 'menu' ? 1000 : 1000 / 24;
       if (now - lastRenderedFrame < frameMs) {
         requestAnimationFrame(loop);
         return;
