@@ -2062,10 +2062,32 @@
       return Math.floor(Math.max(0, value) / 3);
     }
 
-    function fieldPowerStyle(tier) {
+    function hslToHex(h, s, l) {
+      s /= 100;
+      l /= 100;
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+      const toHex = value => Math.round(value * 255).toString(16).padStart(2, '0');
+      return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
+    }
+
+    function fieldPowerPalette(id, tier) {
+      const baseHue = (hashString(id || 'player') * 29) % 360;
+      const tierHue = (baseHue + tier * 58 + Math.floor(tier / 3) * 19) % 360;
+      return {
+        fill: hslToHex(tierHue, 58, 48),
+        core: hslToHex((tierHue + 18) % 360, 48, 66),
+        accent: hslToHex((tierHue + 332) % 360, 62, 36)
+      };
+    }
+
+    function fieldPowerStyle(tier, id = '') {
       if (tier <= 0) return null;
       const shapes = ['dart', 'split', 'diamond', 'bar', 'prism', 'rail'];
+      const palette = fieldPowerPalette(id, tier);
       return {
+        ...palette,
         glow: Math.min(13, 6 + tier),
         powerShape: shapes[Math.min(shapes.length - 1, tier - 1)],
         powerTier: tier
@@ -2913,7 +2935,7 @@
       const damage = stats.shotPower;
       const pattern = playerShotPattern(player.jet.id, count);
       const powerTier = fieldPowerTier();
-      const powerStyle = fieldPowerStyle(powerTier);
+      const powerStyle = fieldPowerStyle(powerTier, player.jet.id);
       const baseBulletStyle = bulletStyleForJet(player.jet.id);
       for (let i = 0; i < count; i++) {
         const shot = pattern[i];
@@ -8125,6 +8147,9 @@
 
     function drawPlayerBullet(b) {
       const style = b.style || { fill: '#94f7e9', core: '#ffffff' };
+      const fill = shade(style.fill || '#94f7e9', -.16);
+      const core = shade(style.core || style.fill || '#ffffff', -.1);
+      const accent = shade(style.accent || style.fill || '#94f7e9', -.22);
       if (b.powerTier) {
         const visualTier = Math.min(5, b.powerTier);
         const vx = b.vx || 0;
@@ -8135,9 +8160,9 @@
         const tailLen = b.r * (1.4 + visualTier * .22);
         ctx.save();
         ctx.globalCompositeOperation = 'source-over';
-        ctx.globalAlpha = .08 + visualTier * .018;
-        ctx.strokeStyle = style.accent || style.fill;
-        ctx.lineWidth = .9 + visualTier * .18;
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = .65 + visualTier * .12;
         ctx.beginPath();
         ctx.moveTo(b.x + tailX * b.r * .7, b.y + tailY * b.r * .7);
         ctx.lineTo(b.x + tailX * tailLen, b.y + tailY * tailLen);
@@ -8149,8 +8174,8 @@
           const len = b.r * (1.25 + visualTier * .16);
           ctx.translate(b.x, b.y);
           ctx.rotate(ang);
-          ctx.fillStyle = style.fill;
-          ctx.strokeStyle = style.core || style.fill;
+          ctx.fillStyle = fill;
+          ctx.strokeStyle = core;
           ctx.lineWidth = 1;
           ctx.beginPath();
           if (shape === 'bar' || shape === 'rail') {
@@ -8177,7 +8202,7 @@
           ctx.fill();
           ctx.stroke();
           if (visualTier >= 4) {
-            ctx.strokeStyle = style.accent || style.core || style.fill;
+            ctx.strokeStyle = accent;
             ctx.lineWidth = .7;
             ctx.beginPath();
             ctx.moveTo(-b.r * 1.15, len * .1);
@@ -8195,10 +8220,10 @@
         ctx.save();
         ctx.translate(b.x, b.y);
         ctx.rotate(ang);
-        ctx.shadowColor = style.core || style.fill;
-        ctx.shadowBlur = shape === 'sonicStreak' || shape === 'prism' || shape === 'glitch' || shape === 'f47Star' ? 14 : 8;
-        ctx.fillStyle = style.fill;
-        ctx.strokeStyle = style.core;
+        ctx.shadowColor = core;
+        ctx.shadowBlur = shape === 'sonicStreak' || shape === 'prism' || shape === 'glitch' || shape === 'f47Star' ? 7 : 4;
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = core;
         ctx.lineWidth = 2;
         ctx.beginPath();
         if (shape === 'missile' || shape === 'phoenix' || shape === 'navalRocket' || shape === 'rocket') {
@@ -8263,7 +8288,7 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
         if (shape === 'missile' || shape === 'phoenix' || shape === 'navalRocket' || shape === 'rocket') {
-          ctx.fillStyle = '#fb923c';
+          ctx.fillStyle = shade(style.fill || '#fb923c', -.12);
           ctx.beginPath();
           ctx.moveTo(-b.r, len * .72);
           ctx.lineTo(0, len * 1.45 + Math.sin(performance.now() / 30) * 5);
@@ -8271,14 +8296,14 @@
           ctx.closePath();
           ctx.fill();
         }
-        ctx.strokeStyle = style.core;
+        ctx.strokeStyle = core;
         ctx.lineWidth = shape === 'rail' || shape === 'eagleRail' || shape === 'sonicStreak' ? 3 : 2;
         ctx.beginPath();
         ctx.moveTo(0, -len * .9);
         ctx.lineTo(0, len * .6);
         ctx.stroke();
         if (shape === 'sonicStreak') {
-          ctx.strokeStyle = 'rgba(248,250,252,.55)';
+          ctx.strokeStyle = core;
           ctx.lineWidth = 2;
           for (const side of [-1, 1]) {
             ctx.beginPath();
@@ -8288,7 +8313,7 @@
           }
         }
         if (shape === 'lockon') {
-          ctx.strokeStyle = style.fill;
+          ctx.strokeStyle = fill;
           ctx.lineWidth = 1.6;
           for (const size of [3.0, 4.8]) {
             ctx.beginPath();
@@ -8297,25 +8322,25 @@
           }
         }
         if (b.home) {
-          ctx.strokeStyle = style.fill;
+          ctx.strokeStyle = fill;
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.arc(0, 0, b.r * 3.2 + Math.sin(performance.now() / 55) * 2, 0, Math.PI * 2);
           ctx.stroke();
         }
         if (b.pierce > 1) {
-          ctx.fillStyle = style.core;
+          ctx.fillStyle = core;
           ctx.fillRect(-b.r * 2.4, -4, b.r * 4.8, 8);
         }
         if (b.blast) {
-          ctx.strokeStyle = style.core;
+          ctx.strokeStyle = core;
           ctx.lineWidth = 3;
           ctx.beginPath();
           ctx.arc(0, 0, 13 + Math.sin(performance.now() / 45) * 3, 0, Math.PI * 2);
           ctx.stroke();
         }
         if (shape === 'prism' || shape === 'wingWave' || shape === 'voidShard' || shape === 'glitch') {
-          ctx.strokeStyle = style.accent || style.fill;
+          ctx.strokeStyle = accent;
           ctx.lineWidth = 1.4;
           for (const side of [-1, 1]) {
             ctx.beginPath();
@@ -8325,7 +8350,7 @@
           }
         }
         if (style.skin) {
-          ctx.strokeStyle = style.accent || style.core;
+          ctx.strokeStyle = accent || core;
           ctx.lineWidth = 1.2;
           if (style.skinShape === 'dot') {
             ctx.beginPath();
@@ -8348,22 +8373,22 @@
         const skinShape = style.powerShape || style.skinShape;
         ctx.save();
         ctx.translate(b.x, b.y);
-        ctx.fillStyle = style.fill;
-        ctx.strokeStyle = style.core;
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = core;
         ctx.lineWidth = style.skin === 2 ? 1.4 : 1.1;
         if (skinShape === 'dot') {
           ctx.beginPath();
           ctx.arc(0, 0, b.r * 1.08, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
-          ctx.fillStyle = style.core;
+          ctx.fillStyle = core;
           ctx.beginPath();
           ctx.arc(0, 0, b.r * .45, 0, Math.PI * 2);
           ctx.fill();
         } else if (skinShape === 'bar' || skinShape === 'rail') {
           ctx.fillRect(-b.r * .75, -b.r * 1.55, b.r * 1.5, b.r * 3.1);
           ctx.strokeRect(-b.r * .75, -b.r * 1.55, b.r * 1.5, b.r * 3.1);
-          ctx.fillStyle = style.core;
+          ctx.fillStyle = core;
           ctx.fillRect(-b.r * .25, -b.r * 1.35, b.r * .5, b.r * 2.7);
         } else if (skinShape === 'diamond' || skinShape === 'prism') {
           ctx.beginPath();
@@ -8383,14 +8408,14 @@
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
-          ctx.strokeStyle = style.core;
+          ctx.strokeStyle = core;
           ctx.beginPath();
           ctx.moveTo(0, -b.r * 2.1);
           ctx.lineTo(0, b.r * 2.0);
           ctx.stroke();
         }
         if (b.blast) {
-          ctx.strokeStyle = style.accent || (style.skin === 2 ? 'rgba(250,204,21,.9)' : 'rgba(34,211,238,.82)');
+          ctx.strokeStyle = accent;
           ctx.beginPath();
           ctx.arc(0, 0, 11, 0, Math.PI * 2);
           ctx.stroke();
@@ -8398,14 +8423,14 @@
         ctx.restore();
         return;
       }
-      ctx.fillStyle = style.fill;
+      ctx.fillStyle = fill;
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = style.core;
+      ctx.fillStyle = core;
       ctx.fillRect(b.x - 1, b.y, 2, b.blast ? 8 : 12);
       if (b.blast) {
-        ctx.strokeStyle = style.core;
+        ctx.strokeStyle = core;
         ctx.beginPath();
         ctx.arc(b.x, b.y, 10 + Math.sin(performance.now() / 70) * 2, 0, Math.PI * 2);
         ctx.stroke();
