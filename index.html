@@ -865,20 +865,20 @@
     const upgradeCaps = {};
 
     const jets = [
-      { id: 'f22', name: 'F-22 랩터', role: '균형형', color: '#aab7c4', power: 11, hp: 11, shots: 3, fireRate: 125, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '특수기: 강유도 랩터 미사일 3발' },
-      { id: 'f35', name: 'F-35 라이트닝 II', role: '정밀 생존', color: '#7c8b9d', power: 9, hp: 9, shots: 4, fireRate: 148, speed: 6.35, bulletSpeed: 10.6, hitbox: 6, startBombs: 2, special: '특수기: 스텔스 돌입. 잠시 무적/가속 후 락온 미사일 발사' },
-      { id: 'f111', name: 'F-111 아드바크', role: '보스 관통', color: '#8fa46b', power: 15, hp: 12, shots: 2, fireRate: 220, speed: 5.45, bulletSpeed: 9.5, hitbox: 9, startBombs: 2, special: '강한 관통탄. Shift로 가변익 고속 비행' },
-      { id: 'b117', name: 'B-117 나이트호크', role: '전술 폭격', color: '#303946', power: 12, hp: 13, shots: 3, fireRate: 215, speed: 5.25, bulletSpeed: 8.9, hitbox: 11, startBombs: 3, special: '특수기: 스텔스 폭탄 3발 투하' },
+      { id: 'f22', name: 'F-22 랩터', role: '입문 균형형', color: '#aab7c4', power: 10, hp: 11, shots: 3, fireRate: 128, speed: 6.2, bulletSpeed: 10.8, hitbox: 7, startBombs: 2, special: '특수기: 강유도 랩터 미사일 3발' },
+      { id: 'f35', name: 'F-35 라이트닝 II', role: '락온 생존', color: '#7c8b9d', power: 8, hp: 9, shots: 4, fireRate: 154, speed: 6.45, bulletSpeed: 10.6, hitbox: 6, startBombs: 2, special: '특수기: 스텔스 돌입. 잠시 무적/가속 후 락온 미사일 발사' },
+      { id: 'f111', name: 'F-111 아드바크', role: '대형 관통', color: '#8fa46b', power: 16, hp: 12, shots: 2, fireRate: 238, speed: 5.35, bulletSpeed: 9.5, hitbox: 9, startBombs: 2, special: '강한 관통탄. Shift로 가변익 고속 비행' },
+      { id: 'b117', name: 'B-117 나이트호크', role: '스텔스 폭격', color: '#303946', power: 11, hp: 12, shots: 3, fireRate: 225, speed: 5.35, bulletSpeed: 8.9, hitbox: 10, startBombs: 3, special: '특수기: 스텔스 폭탄 3발 투하' },
       { id: 'b29', name: 'B-29 슈퍼포트리스', role: '초중폭격', color: '#c2b28f', power: 18, hp: 18, shots: 2, fireRate: 370, speed: 4.65, bulletSpeed: 8.0, hitbox: 19, startBombs: 4, special: '특수기: 짱짱쎈 폭탄. 대형 원자폭탄 투하' },
       { id: 'su57', name: 'Su-57 펠론', role: '회피 산탄', color: '#91d6e9', power: 8, hp: 8, shots: 5, fireRate: 145, speed: 6.95, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '특수기: 코브라 기동. 잠시 무적/가속하며 넓은 산탄을 발사' },
-      { id: 'su30', name: 'Su-30 플랭커-C', role: '중량 카나드', color: '#6f91a8', power: 10, hp: 11, shots: 3, fireRate: 195, speed: 5.75, bulletSpeed: 9.7, hitbox: 9, startBombs: 2, special: '특수기: 카나드 기동. 잠시 회피하며 쌍발 미사일을 발사' },
-      { id: 'su47', name: 'Su-47 베르쿠트', role: '전진익 돌파', color: '#2f3746', power: 11, hp: 9, shots: 4, fireRate: 178, speed: 6.35, bulletSpeed: 10.1, hitbox: 7, startBombs: 2, special: '특수기: 전진익 급기동. 빠른 관통 사격으로 돌파' },
-      { id: 'f16', name: 'F-16 파이팅 팰컨', role: '잡몹 연사', color: '#67b7ff', power: 7, hp: 8, shots: 5, fireRate: 96, speed: 7.05, bulletSpeed: 10.9, hitbox: 6, startBombs: 2, special: '가장 빠른 연사' },
-      { id: 'a10', name: 'A-10 썬더볼트 II', role: '근접 기관포', color: '#6f7d62', power: 9, hp: 17, shots: 6, fireRate: 130, speed: 4.95, bulletSpeed: 9.7, hitbox: 13, startBombs: 3, special: '느리지만 튼튼한 고속 기관포 화력기' },
+      { id: 'su30', name: 'Su-30 플랭커-C', role: '중량 카나드', color: '#6f91a8', power: 10, hp: 12, shots: 3, fireRate: 202, speed: 5.65, bulletSpeed: 9.6, hitbox: 9, startBombs: 2, special: '특수기: 카나드 기동. 잠시 회피하며 쌍발 미사일을 발사' },
+      { id: 'su47', name: 'Su-47 베르쿠트', role: '전진익 회피', color: '#2f3746', power: 10, hp: 8, shots: 4, fireRate: 182, speed: 6.65, bulletSpeed: 10.2, hitbox: 6, startBombs: 2, special: '특수기: 전진익 급기동. 빠른 관통 사격으로 돌파' },
+      { id: 'f16', name: 'F-16 파이팅 팰컨', role: '초연사 경량', color: '#67b7ff', power: 6, hp: 8, shots: 4, fireRate: 88, speed: 7.15, bulletSpeed: 11.0, hitbox: 6, startBombs: 2, special: '가장 빠른 연사' },
+      { id: 'a10', name: 'A-10 썬더볼트 II', role: '장갑 기관포', color: '#6f7d62', power: 9, hp: 18, shots: 6, fireRate: 142, speed: 4.7, bulletSpeed: 9.4, hitbox: 13, startBombs: 3, special: '느리지만 튼튼한 고속 기관포 화력기' },
       { id: 'f14', name: 'F-14 톰캣', role: '가변익 전술', color: '#b5b6ac', power: 11, hp: 11, shots: 4, fireRate: 156, speed: 6.2, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
-      { id: 'f15', name: 'F-15 이글', role: '정면 화력', color: '#8f9da8', power: 14, hp: 9, shots: 3, fireRate: 168, speed: 6.05, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '높은 총화력의 정통 제공기' },
-      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 10, hp: 12, shots: 4, fireRate: 158, speed: 5.9, bulletSpeed: 10.3, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
-      { id: 'kf21', name: 'KF-21 글록3', role: '차세대 정밀', color: '#6f7f8f', power: 12, hp: 10, shots: 4, fireRate: 150, speed: 6.55, bulletSpeed: 11.1, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
+      { id: 'f15', name: 'F-15 이글', role: '정면 강타', color: '#8f9da8', power: 16, hp: 9, shots: 2, fireRate: 190, speed: 6.0, bulletSpeed: 11.7, hitbox: 7, startBombs: 2, special: '높은 단발 화력의 정통 제공기' },
+      { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 9, hp: 12, shots: 4, fireRate: 166, speed: 5.9, bulletSpeed: 10.2, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
+      { id: 'kf21', name: 'KF-21 글록3', role: '정밀 코어', color: '#6f7f8f', power: 12, hp: 10, shots: 3, fireRate: 142, speed: 6.55, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
     ];
@@ -1081,10 +1081,13 @@
       if (!isWorldWarChapter() && lastWarBosses[st]) return lastWarBosses[st];
       const aerialLandBosses = {
         2: { kind: 'phantom', name: 'Mirage Interceptor', color: '#8fa4b8', accent: '#93c5fd', hp: 1.16, size: .9, pattern: '고속 요격기 순간 저격탄' },
+        4: { kind: 'warRobot', name: 'Goliath Walker', color: '#676f5b', accent: '#facc15', hp: 1.36, size: 1.02, pattern: '이족 보행 로봇 어깨포와 흉부 레이저' },
         5: { kind: 'hydra', name: 'Tri-Wing Ace', color: '#b08a58', accent: '#facc15', hp: 1.22, size: .98, pattern: '삼각 편대 교차 사격' },
-        8: { kind: 'arsenal', name: 'Storm Gunship', color: '#687a90', accent: '#60a5fa', hp: 1.34, size: 1.06, pattern: '건십 복합 무장 일제사격' },
+        7: { kind: 'landCruiser', name: 'Atlas Land Cruiser', color: '#68614f', accent: '#fb923c', hp: 1.5, size: 1.08, pattern: '지상 순양요새 갑판포 일제사격' },
+        8: { kind: 'heliCarrier', name: 'Storm Helicarrier', color: '#687a90', accent: '#60a5fa', hp: 1.38, size: 1.06, pattern: '회전 로터와 건십 복합 무장' },
         12: { kind: 'phantom', name: 'Rift Wraith Fighter', color: '#70618f', accent: '#c084fc', hp: 1.34, size: .98, pattern: '공허 요격기 복제 저격탄' },
-        15: { kind: 'arsenal', name: 'Abyss Gunship', color: '#64436f', accent: '#f0abfc', hp: 1.48, size: 1.1, pattern: '공허 건십 복합 탄막' },
+        14: { kind: 'warRobot', name: 'Abyss Walker', color: '#4c315f', accent: '#f0abfc', hp: 1.6, size: 1.08, pattern: '공허 보행병기 팔 포대 교차사격' },
+        15: { kind: 'heliCarrier', name: 'Abyss Gunship', color: '#64436f', accent: '#f0abfc', hp: 1.5, size: 1.1, pattern: '공허 건십 복합 탄막' },
         17: { kind: 'hydra', name: 'Void Talon Squadron', color: '#2f3a66', accent: '#38bdf8', hp: 1.48, size: 1.04, pattern: '무중력 삼기 편대 압박' }
       };
       if (terrain === 'sea') {
@@ -1100,13 +1103,13 @@
       }
       if (terrain === 'sky') {
         return {
-          kind: 'skyCarrier',
-          name: voidStage ? 'Void Sky Ark' : 'Aegis Sky Carrier',
+          kind: voidStage ? 'skyDreadnought' : 'heliCarrier',
+          name: voidStage ? 'Void Sky Dreadnought' : 'Aegis Helicarrier',
           color: voidStage ? '#3b2b62' : '#4f5f78',
           accent: voidStage ? '#c084fc' : '#38bdf8',
           hp: voidStage ? 1.94 : 1.66,
           size: voidStage ? 1.14 : 1.08,
-          pattern: '공중 갑판 회전포와 요격 포대'
+          pattern: voidStage ? '공중 전함 중포와 측면 포대' : '헬리캐리어 로터와 요격 포대'
         };
       }
       if (!isWorldWarChapter() && aerialLandBosses[st]) return aerialLandBosses[st];
@@ -1122,13 +1125,13 @@
         };
       }
       return {
-        kind: 'megaTank',
-        name: voidStage ? 'Abyss Siege Crawler' : 'Continental Siege Tank',
+        kind: st % 4 === 0 ? 'warRobot' : st % 3 === 0 ? 'landCruiser' : 'megaTank',
+        name: voidStage ? (st % 4 === 0 ? 'Abyss War Walker' : st % 3 === 0 ? 'Rift Land Fortress' : 'Abyss Siege Crawler') : (st % 4 === 0 ? 'Titan War Walker' : st % 3 === 0 ? 'Continental Land Cruiser' : 'Continental Siege Tank'),
         color: voidStage ? '#6f4a3c' : '#626853',
         accent: voidStage ? '#f97316' : '#facc15',
         hp: voidStage ? 1.92 : 1.68,
-        size: voidStage ? .98 : .94,
-        pattern: '초대형 전차 주포와 측면 기관포'
+        size: voidStage ? 1.02 : .98,
+        pattern: st % 4 === 0 ? '전쟁로봇 어깨포와 팔 포대' : st % 3 === 0 ? '지상 순양요새 갑판포' : '초대형 전차 주포와 측면 기관포'
       };
     }
 
@@ -2056,17 +2059,17 @@
     }
 
     function fieldPowerTier(value = player?.fieldPower || 0) {
-      return Math.min(4, Math.floor(Math.max(0, value) / 3));
+      return Math.floor(Math.max(0, value) / 3);
     }
 
     function fieldPowerStyle(tier) {
-      return [
-        null,
-        { fill: '#67e8f9', core: '#ffffff', accent: '#22d3ee', glow: 10 },
-        { fill: '#facc15', core: '#fff7ed', accent: '#fb923c', glow: 16 },
-        { fill: '#f472b6', core: '#ffffff', accent: '#a78bfa', glow: 24 },
-        { fill: '#fb7185', core: '#ffffff', accent: '#fde047', glow: 30 }
-      ][tier] || null;
+      if (tier <= 0) return null;
+      const shapes = ['dart', 'split', 'diamond', 'bar', 'prism', 'rail'];
+      return {
+        glow: Math.min(13, 6 + tier),
+        powerShape: shapes[Math.min(shapes.length - 1, tier - 1)],
+        powerTier: tier
+      };
     }
 
     function isVariableWingJet(id) {
@@ -2081,6 +2084,8 @@
         b117: '투사체: 스텔스 폭격기식 넓은 각도 탄도와 약한 관통.',
         b29: '투사체: 느리지만 큰 폭발을 일으키는 중폭격 탄도. 크고 둔함.',
         su57: '투사체: 넓게 퍼지는 고기동 산탄. 빠르지만 체력이 낮음.',
+        su30: '투사체: 무겁고 안정적인 카나드 탄도. 체력은 좋지만 순간 화력은 평범함.',
+        su47: '투사체: 전진익답게 빠르게 벌어지는 회피형 탄도. 빠르지만 약하고 가벼움.',
         f16: '투사체: 빠르고 촘촘한 직선 연사. 잡몹 정리에 좋지만 보스전은 길어짐.',
         a10: '투사체: 흔들림이 있는 기관포 난사. 근접 화력과 체력이 좋지만 둔함.',
         f14: '투사체: 가변익 상태에 따라 퍼짐이 줄어드는 미사일 탄도. 상황 대응형.',
@@ -2104,18 +2109,18 @@
     }
 
     const jetCharacterProfiles = {
-      f22: ['올라운더 에이스', '조작감과 탄도가 안정적이라 처음부터 끝까지 무난하게 굴릴 수 있다.', '특화 화력은 낮아서 보스나 대형 중간보스는 다른 기체보다 오래 걸린다.'],
+      f22: ['입문 올라운더', '조작감과 탄도가 안정적이라 처음부터 끝까지 무난하게 굴릴 수 있다.', '특화 화력은 낮아서 보스나 대형 중간보스는 다른 기체보다 오래 걸린다.'],
       f35: ['락온 생존기', '작은 피격 판정과 락온 탄, 스텔스 특수기로 움직이는 적을 안정적으로 잡는다.', '공격력과 연사가 낮아 단단한 적을 빠르게 녹이지는 못한다.'],
-      f111: ['보스 관통기', '관통탄이 대형 적과 보스에게 잘 박혀서 단단한 목표를 빨리 깎는다.', '강한 한 발 대신 연사와 기동이 느려 잔몹이 퍼지는 스테이지에서는 답답하다.'],
-      b117: ['전술 폭격수', '폭탄과 넓은 탄도로 위험한 구역을 정리하는 능력이 좋다.', '지속 화력과 탄속이 낮아 빠른 적을 계속 따라잡기는 어렵다.'],
+      f111: ['대형 관통기', '관통탄이 대형 적과 보스에게 잘 박혀서 단단한 목표를 빨리 깎는다.', '강한 한 발 대신 연사와 기동이 느려 잔몹이 퍼지는 스테이지에서는 답답하다.'],
+      b117: ['스텔스 폭격수', '폭탄과 넓은 탄도로 위험한 구역을 정리하는 능력이 좋고 피격 판정도 폭격기치고 작다.', '지속 화력과 탄속이 낮아 빠른 적을 계속 따라잡기는 어렵다.'],
       b29: ['초중폭격기', '체력, 폭탄 수, 폭발탄이 좋아 실수를 버티며 큰 적을 녹인다.', '가장 느리고 연사 간격도 길며 몸집이 커서 탄막 회피 난도가 높다.'],
       su57: ['회피 산탄기', '빠른 이동과 넓은 산탄으로 여러 방향의 잡몹을 압박한다.', '발당 화력과 체력이 낮아 단일 보스에게 모든 화력을 넣기 어렵다.'],
-      su30: ['카나드 중전투기', '카나드와 쌍발 엔진을 살린 안정적인 체력, 적당한 화력, 넓은 탄도가 장점이다.', '몸집이 약간 크고 순간 화력은 최상위 기체보다 낮다.'],
-      su47: ['전진익 실험기', '전진익 특유의 공격적인 실루엣처럼 빠르고 탄도 조절이 좋아 돌파력이 있다.', '화력과 체력은 낮아 보스전에서는 계속 움직이며 빈틈을 봐야 한다.'],
+      su30: ['카나드 중전투기', '카나드와 쌍발 엔진을 살린 체력과 안정감이 좋아 실수 복구가 쉽다.', '몸집이 약간 크고 연사가 느려 기록 경쟁용 순간 화력은 부족하다.'],
+      su47: ['전진익 실험기', '전진익 특유의 날카로운 실루엣처럼 빠르고 회피하면서 벌리는 탄도가 좋다.', '화력과 체력은 낮아 보스전에서는 계속 움직이며 빈틈을 봐야 한다.'],
       f16: ['초고속 연사기', '가장 가볍고 빠른 연사로 작은 적을 계속 끊어내기 좋다.', '발당 화력이 약해 장갑 적, 항모, 보스전에서는 시간이 걸린다.'],
       a10: ['근접 기관포 탱커', '튼튼하고 다탄 기관포가 가까운 적에게 강해 정면 돌파 맛이 좋다.', '발당 화력과 속도가 낮고 피격 판정이 커서 촘촘한 탄막은 미리 피해야 한다.'],
       f14: ['가변익 전술기', 'Shift 고속 모드로 회피와 집중 공격을 바꿔가며 운용할 수 있다.', '어느 쪽도 최고치는 아니라 날개 전환 타이밍을 잘 써야 빛난다.'],
-      f15: ['정면 화력 에이스', '빠른 탄속과 높은 공격력으로 정면에 있는 목표를 강하게 밀어붙인다.', '화력이 높은 대신 연사, 체력, 방어 특수성이 낮아 포위되면 위험하다.'],
+      f15: ['정면 강타 에이스', '빠른 탄속과 높은 단발 공격력으로 정면의 목표를 강하게 찌른다.', '탄 수와 연사가 적어 좌우에서 몰려오는 잡몹 처리에는 손이 바쁘다.'],
       fa18: ['함재 안정형', '폭탄과 방어막 특수기가 있어 실전 안정성이 높고 바다 스테이지에 잘 맞는다.', '화력과 속도가 모두 중간이라 기록 경쟁에서는 특화기보다 느릴 수 있다.'],
       f72: ['예측 폭발기', '지연폭발탄으로 적이 몰리는 지점을 미리 터뜨리면 강력하다.', '가까이 붙은 적이나 빠르게 방향을 바꾸는 적에게는 탄이 빗나가기 쉽다.'],
       fxx: ['비밀 프리즘 전투기', '고성능 유도탄과 방어막으로 공격과 생존이 모두 강하다.', '해금 전에는 쓸 수 없고 강한 만큼 후반 기준으로 밸런스가 맞춰져 있다.'],
@@ -2123,7 +2128,7 @@
       geomancho: ['전익 포화기', '넓은 탄막과 높은 체력으로 전장을 밀어붙인다.', '몸집이 있고 속도가 애매해 촘촘한 탄막에 약하다.'],
       error: ['글리치 전익 폭격기', 'B-2를 닮은 넓은 전익기와 노이즈 폭발탄으로 적을 불안정하게 흔든다.', '폭격함대보다 약하고 화면 장악력은 부족하다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
-      kf21: ['차세대 정밀기', 'KF-21의 사다리꼴 주익과 쌍수직미익을 살린 빠른 정밀 제공기다.', '속도가 좋은 대신 체력과 폭탄 수가 낮고 연사가 중간이라 최강 만능기는 아니다.'],
+      kf21: ['정밀 코어기', 'KF-21의 사다리꼴 주익과 쌍수직미익을 살린 빠른 정밀 제공기다.', '탄 수가 적어 대충 뿌리기보다 정면 조준을 잘해야 강하다.'],
       operator: ['운영자 전용 어드민기', '예전 어드민 기체와 같은 외형과 성능으로 전장을 압도한다.', '일반 밸런스용 기체가 아니라 운영자 전용 테스트 기체다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
@@ -2582,6 +2587,9 @@
     }
 
     function fieldPowerMax(stageId = difficultyStage()) {
+      if (save.selectedMode === 'endless') {
+        return 6 + Math.max(0, player?.endlessBossKills || 0) * 3;
+      }
       const stage = Math.max(1, stageId);
       const cap = stage >= 24 ? 12 : 9;
       return Math.min(cap, 3 + Math.floor((stage - 1) / 3) * 2);
@@ -2633,6 +2641,7 @@
         specialTimer: 0,
         shield: 0,
         fieldPower: 0,
+        endlessBossKills: 0,
         powerDropPity: 0,
         wingSwept: false,
         wingSweep: 0,
@@ -2860,9 +2869,10 @@
       const lastWarStage = !ww && st > VOID_STAGE_END;
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
-      const hp = Math.round(hpBase * blueprint.hp);
-      const wideBoss = blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier';
-      const tankBoss = blueprint.kind === 'megaTank';
+      const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
+      const hp = Math.round(hpBase * blueprint.hp * hpNerf);
+      const wideBoss = blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' || blueprint.kind === 'heliCarrier' || blueprint.kind === 'skyDreadnought' || blueprint.kind === 'landCruiser';
+      const tankBoss = blueprint.kind === 'megaTank' || blueprint.kind === 'warRobot';
       const hitScale = blueprint.size || 1;
       boss = {
         name: blueprint.name,
@@ -2904,6 +2914,7 @@
       const pattern = playerShotPattern(player.jet.id, count);
       const powerTier = fieldPowerTier();
       const powerStyle = fieldPowerStyle(powerTier);
+      const baseBulletStyle = bulletStyleForJet(player.jet.id);
       for (let i = 0; i < count; i++) {
         const shot = pattern[i];
         bullets.push({
@@ -2912,7 +2923,7 @@
           vx: Math.sin(shot.angle) * (shot.sideSpeed || 2),
           vy: -stats.bulletSpeed * (shot.speedScale || 1),
           dmg: damage * (shot.damageScale || 1) * (1 + powerTier * .08),
-          r: shot.r + powerTier * .45,
+          r: shot.r + Math.min(1.35, powerTier * .26),
           pierce: (shot.pierce || 0) + (powerTier >= 2 ? 1 : 0),
           home: shot.home || powerTier >= 3,
           explodeAfter: shot.explodeAfter || 0,
@@ -2920,7 +2931,7 @@
           blast: (shot.blast || 0) + (powerTier >= 2 ? 4 : 0),
           homingStrength: shot.home ? .055 : powerTier >= 3 ? .04 : 0,
           powerTier,
-          style: powerStyle ? { ...bulletStyleForJet(player.jet.id), ...powerStyle } : bulletStyleForJet(player.jet.id)
+          style: powerStyle ? { ...baseBulletStyle, ...powerStyle } : baseBulletStyle
         });
       }
       if (powerTier >= 3) shootWingmen(stats, damage);
@@ -2936,6 +2947,15 @@
       ];
       if ((player.fieldPower || 0) >= 12) {
         slots.push({ x: player.x, y: player.y + 70 + Math.cos(performance.now() / 170) * 3, side: 0, role: 'turret' });
+      }
+      if ((player.fieldPower || 0) >= 15) {
+        slots.push(
+          { x: player.x - 30 - drift * .35, y: player.y + 76, side: -1, role: 'rearLeft' },
+          { x: player.x + 30 + drift * .35, y: player.y + 76, side: 1, role: 'rearRight' }
+        );
+      }
+      if ((player.fieldPower || 0) >= 18) {
+        slots.push({ x: player.x, y: player.y + 28 + Math.sin(performance.now() / 150) * 3, side: 0, role: 'coreTurret' });
       }
       return slots;
     }
@@ -2964,22 +2984,25 @@
 
     function shootWingmen(stats, damage) {
       const wingStyle = wingmanStyleForJet(player.jet.id);
-      const shapeByRole = { left: 'missile', right: 'rail', turret: 'gatling' };
+      const shapeByRole = { left: 'missile', right: 'rail', turret: 'gatling', rearLeft: 'dart', rearRight: 'bar', coreTurret: 'prism' };
       wingmanSlots().forEach((slot, index) => {
+        const turret = slot.role === 'turret';
+        const rear = slot.role === 'rearLeft' || slot.role === 'rearRight';
+        const core = slot.role === 'coreTurret';
         bullets.push({
           x: slot.x + slot.side * 4,
           y: slot.y - 20,
-          vx: slot.side * (slot.role === 'turret' ? .25 : 1.15),
-          vy: -stats.bulletSpeed * (slot.role === 'turret' ? 1.22 : 1.08),
-          dmg: damage * (slot.role === 'turret' ? .78 : .62),
-          r: slot.role === 'turret' ? 4.2 : 3.8,
-          pierce: slot.role === 'turret' ? 0 : 1,
-          home: slot.role !== 'turret',
-          homingStrength: slot.role === 'turret' ? 0 : .05,
+          vx: slot.side * (turret ? .25 : rear ? .65 : core ? 0 : 1.15),
+          vy: -stats.bulletSpeed * (turret ? 1.18 : rear ? 1.02 : core ? 1.28 : 1.08),
+          dmg: damage * (turret ? .62 : rear ? .38 : core ? .48 : .52),
+          r: turret ? 3.5 : rear ? 3.15 : core ? 3.25 : 3.35,
+          pierce: core ? 1 : turret ? 0 : 1,
+          home: !turret && !core,
+          homingStrength: turret || core ? 0 : .04,
           homingIndex: index + 20,
           traveled: 0,
           blast: 0,
-          powerTier: slot.role === 'turret' ? 4 : 3,
+          powerTier: core ? 6 : rear ? 5 : turret ? 4 : 3,
           wingman: true,
           special: true,
           style: { fill: wingStyle.bullet, core: wingStyle.accent, accent: wingStyle.core, glow: 20, specialShape: shapeByRole[slot.role] || 'missile' }
@@ -2993,24 +3016,24 @@
       const cycle = player?.shotCycle || 0;
       const base = {
         f22: { spread: 10, angle: .026, r: 4, note: 'tight' },
-        f35: { spread: 11, angle: .032, r: 4.1, homeOuter: true },
-        f111: { spread: 18, angle: .006, r: 5, pierce: 3, sideSpeed: 1.2 },
-        b117: { spread: 15, angle: .05, r: 5.2, pierce: 1, speedScale: .92 },
+        f35: { spread: 12, angle: .038, r: 3.85, homeOuter: true, damageScale: .9 },
+        f111: { spread: 19, angle: .004, r: 5.35, pierce: 4, sideSpeed: .95, damageScale: 1.08 },
+        b117: { spread: 17, angle: .06, r: 4.9, pierce: 1, speedScale: .88, blast: 8 },
         b29: { spread: 23, angle: .022, r: 7.8, speedScale: .8, blast: 26, damageScale: 1.02 },
         su57: { spread: 15, angle: .09, r: 4, sideSpeed: 2.35 },
-        su30: { spread: 16, angle: .034, r: 4.1, homeOuter: true, speedScale: .98, damageScale: .9 },
-        su47: { spread: 15, angle: .052, r: 3.95, speedScale: 1.05, sideSpeed: 1.65, damageScale: .88 },
-        f16: { spread: 6, angle: .008, r: 3.4, speedScale: 1.12, sideSpeed: 1.35 },
-        a10: { spread: 5.5, angle: .018, r: 3.45, pierce: 1, sideSpeed: 1.35 },
+        su30: { spread: 17, angle: .032, r: 4.25, homeOuter: true, speedScale: .96, damageScale: .88 },
+        su47: { spread: 18, angle: .066, r: 3.8, speedScale: 1.08, sideSpeed: 2.35, damageScale: .82 },
+        f16: { spread: 5.5, angle: .006, r: 3.15, speedScale: 1.16, sideSpeed: 1.15, damageScale: .78 },
+        a10: { spread: 6, angle: .022, r: 3.55, pierce: 1, sideSpeed: 1.7, damageScale: .86 },
         f14: { spread: 13 - sweep * 4, angle: .05 - sweep * .022, r: 4.3, speedScale: 1 + sweep * .12 },
-        f15: { spread: 12, angle: .024, r: 4.7, pierce: 1 },
-        fa18: { spread: 12, angle: .04, r: 4.1, homeOuter: true, blast: 12 },
+        f15: { spread: 10, angle: .008, r: 5.2, pierce: 2, speedScale: 1.08, damageScale: 1.12 },
+        fa18: { spread: 13, angle: .044, r: 4, homeOuter: true, blast: 10, damageScale: .9 },
         f72: { spread: 18, angle: .018, r: 5.5, explodeAfter: 480, blast: 40, speedScale: .9 },
         fxx: { spread: 13, angle: .052, r: 4.2, homeAll: true, speedScale: 1.08 },
         b2: { spread: 18, angle: .06, r: 5.8, blast: 24, speedScale: .9 },
         geomancho: { spread: 14, angle: .075, r: 4.4, homeOuter: true },
         error: { spread: 11, angle: .05, r: 4.5, blast: 16, pierce: 1, chaotic: true },
-        kf21: { spread: 10, angle: .032, r: 4.35, pierce: 1, homeOuter: true, blast: 6, speedScale: 1.07 },
+        kf21: { spread: 9, angle: .018, r: 4.4, pierce: 1, homeOuter: true, blast: 5, speedScale: 1.1, damageScale: 1.02 },
         operator: { spread: 8, angle: .045, r: 7.5, pierce: 999, homeAll: true, blast: 58, speedScale: 1.55, damageScale: 1.8 },
         sr71: { spread: 7, angle: .01, r: 3.2, pierce: 2, speedScale: 1.35, sideSpeed: 1.1 },
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
@@ -3236,13 +3259,13 @@
       const pickedShape = (shapes[id] || [skinShapeCycle[hashString(id) % skinShapeCycle.length], skinShapeCycle[(hashString(id) + 2) % skinShapeCycle.length]])[tier - 1];
       const pickedColors = bulletColors[id]?.[tier - 1];
       const vivid = tier === 2;
-      const fill = pickedColors?.[0] || shade(vivid ? palette[1] : palette[0], vivid ? -.08 : -.14);
-      const core = pickedColors?.[1] || (vivid ? shade(base[1] || '#ffffff', -.08) : shade(base[0] || '#e5eef7', .2));
-      const accent = pickedColors?.[2] || shade(vivid ? (base[0] || palette[1]) : (palette[1] || base[1]), vivid ? -.06 : -.18);
+      const fill = shade(base[0] || pickedColors?.[0] || palette[0], vivid ? .08 : -.04);
+      const core = shade(base[1] || pickedColors?.[1] || base[0] || '#e5eef7', vivid ? .04 : .16);
+      const accent = shade(base[0] || pickedColors?.[2] || palette[1], vivid ? -.22 : -.14);
       return {
-        fill: avoidWhiteBulletColor(fill, vivid ? '#f59e0b' : '#38bdf8'),
-        core: avoidWhiteBulletColor(core, vivid ? '#7c2d12' : '#1e3a8a'),
-        accent: avoidWhiteBulletColor(accent, vivid ? '#be123c' : '#0f766e'),
+        fill: avoidWhiteBulletColor(fill, base[0] || '#38bdf8'),
+        core: avoidWhiteBulletColor(core, base[1] || '#1e3a8a'),
+        accent: avoidWhiteBulletColor(accent, base[0] || '#0f766e'),
         skin: tier,
         skinShape: pickedShape
       };
@@ -3320,8 +3343,8 @@
         ww_me262: { body: '#8f9b95', nose: '#38bdf8', fin: '#334155', shape: 'needle' }
       }[id] || { body: '#ef4444', nose: '#facc15', fin: '#1f2937', shape: 'slim' };
       const skin = equippedSkin(id);
-      if (skin?.endsWith('skin2')) return { ...base, body: '#facc15', nose: '#f0abfc', fin: '#f472b6', skin: 2 };
-      if (skin) return { ...base, body: '#22d3ee', nose: '#ffffff', fin: '#0e7490', skin: 1 };
+      if (skin?.endsWith('skin2')) return { ...base, body: shade(base.body, .14), nose: shade(base.nose, .1), fin: shade(base.fin, -.12), skin: 2 };
+      if (skin) return { ...base, body: shade(base.body, .08), nose: shade(base.nose, .06), fin: shade(base.fin, -.08), skin: 1 };
       return { ...base, skin: 0 };
     }
 
@@ -3490,18 +3513,15 @@
       const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
       const late = st >= 11;
       const baseForm = form || bossBulletForm(boss.kind);
-      const styleForm = bossProjectileForm(baseForm);
-      const powerRoll = Math.random();
-      const speedScale = .88 + Math.random() * .24;
-      const sizeRoll = powerRoll > .82 ? 1 : powerRoll < .24 ? -1 : 0;
-      const damageRoll = powerRoll > .78 ? 2 : powerRoll < .28 ? -1 : 0;
+      const styleForm = baseForm;
+      const speedScale = 1;
       enemyBullets.push({
         x,
         y,
         vx: Math.sin(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
         vy: Math.cos(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
-        dmg: Math.max(1, boss.power + damage + damageRoll),
-        r: Math.max(4, (lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size) + sizeRoll),
+        dmg: Math.max(1, boss.power + damage),
+        r: Math.max(4, lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size),
         style: enemyBulletStyle(styleForm, true)
       });
     }
@@ -3530,107 +3550,109 @@
     }
 
     function bossFanCount(base, variance = 3) {
-      return Math.max(3, base + Math.floor(Math.random() * (variance + 1)));
+      return Math.max(3, base + Math.floor(Math.min(variance, boss.phase || 1)));
     }
 
     function shootBossDesperation(st, weave) {
       if (!boss || boss.hp > boss.maxHp * .1) return false;
-      const count = bossFanCount(18 + boss.phase * 2, 5);
+      const count = bossFanCount(12 + boss.phase * 2, 3);
       const gap = Math.floor((Math.sin(boss.t / 620) * .5 + .5) * count);
       const gapWidth = boss.phase >= 3 ? 4 : 3;
       for (let i = 0; i < count; i++) {
         const wrapped = Math.min(Math.abs(i - gap), count - Math.abs(i - gap));
         if (wrapped <= gapWidth) continue;
         const a = boss.t / 520 + i * Math.PI * 2 / count;
-        bossBullet(boss.x, boss.y + 22, a, 1.92 + st * .04, i % 3 === 0 ? 1 : 0, i % 5 === 0 ? 1 : 0, i % 2 ? 'lastWarRecord' : 'boss');
-      }
-      const aim = aimAtPlayer(boss.x, boss.y + 58, weave * .12);
-      const lanes = bossFanCount(5, 3);
-      for (let i = 0; i < lanes; i++) {
-        const offset = (i - (lanes - 1) / 2) * .18;
-        if (Math.abs(offset) < .04 && lanes > 5) continue;
-        bossBullet(boss.x, boss.y + 58, aim + offset, 2.65 + st * .055, i % 2, 1, i % 2 ? 'lastWarLance' : 'stealth');
+        bossBullet(boss.x, boss.y + 22, a, 1.85 + st * .035, 0, 0, 'lastWarRecord');
       }
       return true;
     }
 
     function shootBoss() {
       const st = difficultyStage();
-      const step = Math.floor((boss.t || 0) / 520);
+      const step = boss.patternStep || 0;
+      boss.patternStep = step + 1;
       const weave = Math.sin((boss.t || 0) / 420);
-      const pressure = Math.max(5, Math.min(13, Math.floor((boss.shots || 6) / 2) + boss.phase));
-      const extraFan = boss.phase >= 3 ? 4 : boss.phase >= 2 ? 2 : 1;
-      const desperate = shootBossDesperation(st, weave);
+      const pressure = Math.max(4, Math.min(10, Math.floor((boss.shots || 6) / 3) + boss.phase));
+      const volley = step % 4;
+      const fan = (x, y, count, center, spread, speed, form, size = 0, damage = 0) => {
+        for (let i = 0; i < count; i++) {
+          const offset = count === 1 ? 0 : (i - (count - 1) / 2) * spread;
+          bossBullet(x, y, center + offset, speed, size, damage, form);
+        }
+      };
+      const ring = (x, y, count, spin, speed, form, size = 0, damage = 0, gap = -1, gapWidth = 0) => {
+        for (let i = 0; i < count; i++) {
+          const wrapped = gap < 0 ? 99 : Math.min(Math.abs(i - gap), count - Math.abs(i - gap));
+          if (wrapped <= gapWidth) continue;
+          bossBullet(x, y, spin + i * Math.PI * 2 / count, speed, size, damage, form);
+        }
+      };
+      const lane = (points, form, speed, size = 0, damage = 0) => {
+        points.forEach(([ox, oy, off = 0]) => bossBullet(boss.x + ox, boss.y + oy, aimAtPlayer(boss.x + ox, boss.y + oy, off), speed, size, damage, form));
+      };
+      if (shootBossDesperation(st, weave)) {
+        flash('DANGER');
+        playEnemyLaser(performance.now());
+        return;
+      }
       if (boss.kind === 'ratte' || boss.kind === 'megaTank') {
-        const a = aimAtPlayer(boss.x, boss.y - 80);
-        bossBullet(boss.x, boss.y - 88, a + weave * .09, 3.1 + st * .065, 2, 1, 'lastWarTurret');
-        const cannons = step % 2 ? [-132, -88, -38, 22, 76, 124] : [-124, -76, -22, 38, 88, 132];
-        for (const ox of cannons) bossBullet(boss.x + ox, boss.y + 18, aimAtPlayer(boss.x + ox, boss.y + 18), 2.35 + st * .048, 0, 0, 'tank');
-        for (const ox of [-150, -112, -72, 72, 112, 150]) bossBullet(boss.x + ox, boss.y + 48, ox / 220 + weave * .08, 2.0 + st * .035, 0, 0, 'tank');
-        if (boss.phase >= 2) {
-          for (const ox of [-128, -76, -24, 24, 76, 128]) bossBullet(boss.x + ox, boss.y - 36, a + ox / 300, 2.05 + st * .04, 1, 0, 'launcher');
-        }
+        if (volley === 0) bossBullet(boss.x, boss.y - 88, aimAtPlayer(boss.x, boss.y - 80) + weave * .08, 3.0 + st * .04, 2, 1, 'lastWarTurret');
+        else if (volley === 1) lane([[-118, 28, -.14], [-58, 34, -.06], [58, 34, .06], [118, 28, .14]], 'tank', 2.15 + st * .032);
+        else if (volley === 2) fan(boss.x, boss.y + 62, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 62), .18, 2.25 + st * .035, 'launcher', 0, 0);
+        else ring(boss.x, boss.y + 12, 9 + boss.phase * 2, boss.t / 700, 1.85 + st * .032, 'tank', 0, 0, Math.floor((boss.t / 900) % (9 + boss.phase * 2)), 1);
       } else if (boss.kind === 'carrier' || boss.kind === 'seaCarrier') {
-        const base = weave * .46;
-        const fan = bossFanCount((boss.phase >= 3 ? 11 : boss.phase >= 2 ? 9 : 7) + extraFan, 3);
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 64, base + (i - (fan - 1) / 2) * .22, 2.46 + st * .062, i % 2, 0, 'gunboat');
-        const deckGuns = step % 2 ? [-124, -82, -34, 34, 82, 124] : [-110, -62, -18, 18, 62, 110];
-        for (const ox of deckGuns) bossBullet(boss.x + ox, boss.y + 18, aimAtPlayer(boss.x + ox, boss.y + 18), 2.25 + st * .052, 1, 0, 'escortCarrier');
-        if (boss.phase >= 2) {
-          for (const side of [-1, 1]) bossBullet(boss.x + side * 68, boss.y - 18, side * .38 + weave * .18, 2.15 + st * .045, 0, 0, 'carrierFighter');
-        }
-      } else if (boss.kind === 'skyCarrier') {
-        const spokes = bossFanCount((boss.phase >= 3 ? 13 : boss.phase >= 2 ? 10 : 8) + extraFan, 4);
-        for (let i = 0; i < spokes; i++) bossBullet(boss.x, boss.y + 18, boss.t / 520 + i * Math.PI * 2 / spokes, 2.05 + st * .055, i % 2, 0, 'carrierFighter');
-        for (const ox of (step % 2 ? [-126, -42, 42, 126] : [-94, 0, 94])) bossBullet(boss.x + ox, boss.y + 48, aimAtPlayer(boss.x + ox, boss.y + 48), 2.55 + st * .058, 0, 0, 'stealth');
-        if (boss.phase >= 2) for (const side of [-1, 1]) bossBullet(boss.x + side * 118, boss.y + 6, side * .5 + weave * .15, 2.05 + st * .045, 0, 0, 'carrierFighter');
+        if (volley === 0) fan(boss.x, boss.y + 72, 6 + boss.phase, weave * .3, .23, 2.12 + st * .035, 'gunboat');
+        else if (volley === 1) lane([[-86, 50, -.18], [-34, 68, -.06], [34, 68, .06], [86, 50, .18]], 'escortCarrier', 2.35 + st * .035, 0, 0);
+        else if (volley === 2) ring(boss.x, boss.y + 24, 8 + boss.phase * 2, boss.t / 680, 1.78 + st * .03, 'carrierFighter', 0, 0, Math.floor((boss.t / 720) % (8 + boss.phase * 2)), 1);
+        else fan(boss.x, boss.y + 92, 4 + boss.phase, aimAtPlayer(boss.x, boss.y + 92), .15, 2.65 + st * .032, 'launcher', 1, 0);
+      } else if (boss.kind === 'skyCarrier' || boss.kind === 'heliCarrier' || boss.kind === 'skyDreadnought') {
+        if (volley === 0) ring(boss.x, boss.y + 18, 7 + boss.phase * 2, boss.t / 640, 1.78 + st * .032, 'carrierFighter');
+        else if (volley === 1) lane([[-92, 44, -.12], [0, 54, 0], [92, 44, .12]], 'stealth', 2.42 + st * .036);
+        else if (volley === 2) fan(boss.x, boss.y + 62, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 62), .2, 2.28 + st * .035, 'riftInterceptor');
+        else lane([[-124, 0, .18], [-62, 34, .06], [62, 34, -.06], [124, 0, -.18]], 'lastWarLance', 2.08 + st * .032, 1, 0);
       } else if (boss.kind === 'hydra') {
         const heads = [[-72, 10], [0, 28], [72, 10]];
-        heads.forEach(([ox, oy], index) => {
-          const a = aimAtPlayer(boss.x + ox, boss.y + oy, (index - 1) * .22 + Math.sin(boss.t / 360) * .16);
-          bossBullet(boss.x + ox, boss.y + oy, a, 2.7 + st * .075, index === 1 ? 1 : 0, 0, 'launcher');
-          bossBullet(boss.x + ox, boss.y + oy, a + (index - 1) * .18 + weave * .08, 2.42 + st * .06, 0, 0, 'launcher');
-          if (boss.phase >= 2) bossBullet(boss.x + ox, boss.y + oy, a + (index - 1) * .34, 2.24 + st * .055, 0, 0, 'wwAxisDive');
-          if (boss.phase >= 3) bossBullet(boss.x + ox, boss.y + oy, a - (index - 1) * .34, 2.16 + st * .05, 0, 0, 'wwAxisDive');
-        });
+        if (volley === 0) heads.forEach(([ox, oy], index) => bossBullet(boss.x + ox, boss.y + oy, aimAtPlayer(boss.x + ox, boss.y + oy, (index - 1) * .22 + Math.sin(boss.t / 360) * .16), 2.35 + st * .04, index === 1 ? 1 : 0, 0, 'launcher'));
+        else if (volley === 1) heads.forEach(([ox, oy], index) => fan(boss.x + ox, boss.y + oy, 3, aimAtPlayer(boss.x + ox, boss.y + oy), .14 + index * .02, 2.05 + st * .035, index === 1 ? 'riftShard' : 'tank'));
+        else if (volley === 2) ring(boss.x, boss.y + 30, 9 + boss.phase * 2, -boss.t / 780, 1.72 + st * .032, 'lastWarTurret', 0, 0, Math.floor((boss.t / 850) % (9 + boss.phase * 2)), 1);
+        else lane([[-96, 26, -.22], [-32, 48, -.08], [32, 48, .08], [96, 26, .22]], 'wwAxisDive', 2.28 + st * .036);
       } else if (boss.kind === 'fortress') {
-        const ring = bossFanCount((boss.phase >= 3 ? 16 : boss.phase >= 2 ? 13 : 10) + extraFan, 4);
-        for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 12, boss.t / 640 + i * Math.PI * 2 / ring, 1.98 + st * .048, 1, 0, 'riftShield');
-        for (const ox of (step % 2 ? [-108, -36, 36, 108] : [-72, 0, 72])) bossBullet(boss.x + ox, boss.y + 50, aimAtPlayer(boss.x + ox, boss.y + 50), 2.38 + st * .055, 0, 0, 'drone');
+        if (volley === 0) ring(boss.x, boss.y + 12, 8 + boss.phase * 2, boss.t / 640, 1.9 + st * .042, 'riftShield', 1);
+        else if (volley === 1) fan(boss.x, boss.y + 64, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 64), .18, 2.22 + st * .036, 'gunboat');
+        else if (volley === 2) lane([[-88, 24, -.14], [-28, 58, 0], [28, 58, 0], [88, 24, .14]], 'riftCutter', 2.05 + st * .034);
+        else ring(boss.x, boss.y + 24, 10 + boss.phase, -boss.t / 760, 1.72 + st * .03, 'launcher', 0, 0, Math.floor((boss.t / 840) % (10 + boss.phase)), 1);
       } else if (boss.kind === 'phantom') {
         const a = aimAtPlayer(boss.x, boss.y + 48);
-        bossBullet(boss.x, boss.y + 54, a + weave * .12, 3.55 + st * .082, 1, 1, 'stealth');
-        for (const side of [-1, 1]) bossBullet(boss.x + side * 54, boss.y + 22, a + side * (boss.phase >= 2 ? .34 : .22), 2.76 + st * .058, 0, 0, 'riftInterceptor');
-        for (const side of [-1, 1]) bossBullet(boss.x + side * 92, boss.y + 4, a + side * .58, 2.34 + st * .05, 0, 0, 'stealth');
-        for (const side of [-1, 1]) bossBullet(boss.x + side * 28, boss.y + 38, a + side * .16 - weave * .08, 2.62 + st * .052, 0, 0, 'stealth');
-        if (boss.phase >= 3) bossBullet(boss.x, boss.y + 34, a - weave * .22, 3.05 + st * .06, 0, 1, 'riftInterceptor');
+        if (volley === 0) bossBullet(boss.x, boss.y + 54, a + weave * .12, 3.18 + st * .05, 1, 1, 'stealth');
+        else if (volley === 1) for (const side of [-1, 1]) fan(boss.x + side * 62, boss.y + 22, 3, a + side * .3, .1, 2.35 + st * .035, 'riftInterceptor');
+        else if (volley === 2) ring(boss.x, boss.y + 18, 7 + boss.phase * 2, boss.t / 520, 1.9 + st * .032, 'drone', 0, 0, Math.floor((boss.t / 760) % (7 + boss.phase * 2)), 1);
+        else lane([[-78, 34, -.2], [0, 64, 0], [78, 34, .2]], 'lastWarLance', 2.55 + st * .038);
       } else if (boss.kind === 'emperor') {
-        const arms = bossFanCount((boss.phase >= 3 ? 12 : boss.phase >= 2 ? 9 : 7) + extraFan, 4);
-        for (let i = 0; i < arms; i++) {
-          const a = boss.t / 360 + i * Math.PI * 2 / arms;
-          bossBullet(boss.x, boss.y + 22, a, 2.36 + st * .075, 0, 0, 'lastWarRecord');
-          if (boss.phase >= 3 && i % 2 === 0) bossBullet(boss.x, boss.y + 22, -a + .18, 2.14 + st * .052, 0, 0, 'lastWarLance');
-        }
-        if (boss.phase >= 2) bossBullet(boss.x, boss.y + 66, aimAtPlayer(boss.x, boss.y + 66), 2.85 + st * .06, 1, 0, 'boss');
+        if (volley === 0) ring(boss.x, boss.y + 22, 7 + boss.phase * 2, boss.t / 360, 2.24 + st * .06, 'lastWarRecord');
+        else if (volley === 1) fan(boss.x, boss.y + 70, 6 + boss.phase, aimAtPlayer(boss.x, boss.y + 70), .16, 2.34 + st * .05, 'lastWarGate');
+        else if (volley === 2) ring(boss.x, boss.y + 18, 10 + boss.phase * 2, -boss.t / 620, 1.82 + st * .035, 'riftShard', 0, 0, Math.floor((boss.t / 760) % (10 + boss.phase * 2)), 1);
+        else lane([[-96, 42, -.18], [-32, 62, -.05], [32, 62, .05], [96, 42, .18]], 'lastWarTurret', 2.48 + st * .045);
       } else if (boss.kind === 'arsenal') {
-        const aim = aimAtPlayer(boss.x, boss.y + 48);
-        const turretPair = step % 2 ? [-126, -78, -30, 30, 78, 126] : [-108, -54, 0, 54, 108];
-        for (const ox of turretPair) bossBullet(boss.x + ox, boss.y + 34, aimAtPlayer(boss.x + ox, boss.y + 34), 2.48 + st * .055, 1, 0, 'lastWarTurret');
-        const sweep = Math.sin(boss.t / 420) * .32;
-        const fan = bossFanCount((boss.phase >= 3 ? 11 : boss.phase >= 2 ? 8 : 6) + extraFan, 3);
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 70, sweep + aim + (i - (fan - 1) / 2) * .15, 2.18 + st * .05, i % 2, 0, 'lastWarGate');
-        if (boss.phase >= 3) {
-          const ring = 16;
-          for (let i = 0; i < ring; i++) bossBullet(boss.x, boss.y + 8, boss.t / 500 + i * Math.PI * 2 / ring, 1.94 + st * .04, 1, 0, 'lastWarRecord');
-        }
+        if (volley === 0) lane([[-104, 34, -.14], [-52, 46, -.06], [0, 52, 0], [52, 46, .06], [104, 34, .14]], 'lastWarTurret', 2.28 + st * .036, 1);
+        else if (volley === 1) fan(boss.x, boss.y + 70, 6 + boss.phase * 2, aimAtPlayer(boss.x, boss.y + 70) + weave * .12, .16, 2.02 + st * .034, 'lastWarGate');
+        else if (volley === 2) ring(boss.x, boss.y + 14, 10 + boss.phase * 2, boss.t / 620, 1.74 + st * .03, 'lastWarRecord', 0, 0, Math.floor((boss.t / 820) % (10 + boss.phase * 2)), 1);
+        else lane([[-120, 6, .18], [-60, 62, .06], [60, 62, -.06], [120, 6, -.18]], 'launcher', 2.42 + st * .036);
+      } else if (boss.kind === 'warRobot') {
+        if (volley === 0) lane([[-78, 28, -.1], [78, 28, .1]], 'lastWarTurret', 2.32 + st * .038);
+        else if (volley === 1) fan(boss.x, boss.y + 54, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 54), .17, 2.12 + st * .034, 'launcher');
+        else if (volley === 2) ring(boss.x, boss.y + 16, 8 + boss.phase * 2, boss.t / 680, 1.72 + st * .03, 'tank', 0, 0, Math.floor((boss.t / 720) % (8 + boss.phase * 2)), 1);
+        else lane([[-106, 0, -.18], [-42, 58, -.04], [42, 58, .04], [106, 0, .18]], 'riftCutter', 2.18 + st * .034);
+      } else if (boss.kind === 'landCruiser') {
+        if (volley === 0) lane([[-104, 26, -.14], [-52, 32, -.06], [0, 38, 0], [52, 32, .06], [104, 26, .14]], 'tank', 2.05 + st * .033);
+        else if (volley === 1) fan(boss.x, boss.y + 64, 6 + boss.phase, aimAtPlayer(boss.x, boss.y + 64), .16, 2.16 + st * .034, 'lastWarTurret');
+        else if (volley === 2) ring(boss.x, boss.y + 24, 9 + boss.phase, -boss.t / 680, 1.72 + st * .03, 'launcher', 0, 0, Math.floor((boss.t / 760) % (9 + boss.phase)), 1);
+        else lane([[-130, 4, .2], [-70, 58, .08], [70, 58, -.08], [130, 4, -.2]], 'gunboat', 2.28 + st * .034);
       } else {
-        const fan = bossFanCount(boss.phase >= 3 ? pressure : Math.max(4, pressure - 1), 3);
-        const aim = aimAtPlayer(boss.x, boss.y + 62);
-        for (let i = 0; i < fan; i++) bossBullet(boss.x, boss.y + 62, aim + weave * .2 + (i - (fan - 1) / 2) * .2, 2.5 + st * .07, i % 2);
-        const ox = step % 2 ? -82 : 82;
-        bossBullet(boss.x + ox, boss.y + 20, Math.sin(boss.t / 520) * .42 + ox / 240, 2.28 + st * .055, 1);
+        if (volley === 0) fan(boss.x, boss.y + 62, bossFanCount(boss.phase >= 3 ? pressure : Math.max(4, pressure - 1), 1), aimAtPlayer(boss.x, boss.y + 62) + weave * .12, .2, 2.42 + st * .055, 'boss');
+        else if (volley === 1) lane([[-72, 28, -.14], [0, 58, 0], [72, 28, .14]], 'launcher', 2.35 + st * .042);
+        else if (volley === 2) ring(boss.x, boss.y + 18, 8 + boss.phase * 2, boss.t / 650, 1.8 + st * .032, 'lastWarRecord', 0, 0, Math.floor((boss.t / 740) % (8 + boss.phase * 2)), 1);
+        else fan(boss.x, boss.y + 72, 5 + boss.phase, weave * .28, .22, 2.1 + st * .035, 'riftShard');
       }
-      if (desperate) flash('DANGER');
       playEnemyLaser(performance.now());
     }
 
@@ -4303,7 +4325,7 @@
         boss.phase = boss.hp < boss.maxHp * .35 ? 3 : boss.hp < boss.maxHp * .68 ? 2 : 1;
         boss.fire -= dt;
         if (boss.fire <= 0) {
-          boss.fire = st >= 11 ? Math.max(330, 720 - (st - 11) * 15 - boss.phase * 48) : Math.max(340, 690 - st * 18 - boss.phase * 48);
+          boss.fire = Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120);
           shootBoss();
         }
       }
@@ -4398,7 +4420,13 @@
             player.fieldPower = Math.min(maxPower, before + 1);
             addScore(100);
             const tier = fieldPowerTier(player.fieldPower);
-            if (player.fieldPower === 12) {
+            if (player.fieldPower === 18) {
+              flash('CORE TURRET');
+              setLog('파워 18단계. 중앙 고속 포탑이 추가되어 정면 보조 사격이 강화된다.');
+            } else if (player.fieldPower === 15) {
+              flash('REAR PODS');
+              setLog('파워 15단계. 후방 보조 포드 2개가 추가되어 사격 밀도가 오른다.');
+            } else if (player.fieldPower === 12) {
               flash('EXTRA TURRET');
               setLog('파워 12단계. 후방 추가 포탑이 붙어 더 촘촘하게 지원 사격한다.');
             } else if (player.fieldPower === 9) {
@@ -4426,13 +4454,27 @@
         explosions.push({ x: boss.x, y: boss.y, r: 45, life: 900 });
         playPlayerExplosion();
         if (save.selectedMode === 'endless') {
+          player.endlessBossKills = (player.endlessBossKills || 0) + 1;
           const bonus = 500 + difficultyStage() * 120;
           const coinBonus = 25 + difficultyStage() * 8;
+          const newPowerMax = fieldPowerMax();
+          if ((player.fieldPower || 0) < newPowerMax) {
+            player.powerDropPity = 0;
+            for (let i = 0; i < 3; i++) {
+              pickups.push({
+                kind: 'power',
+                x: boss.x + (i - 1) * 36,
+                y: Math.min(H - 180, boss.y + 38 + Math.abs(i - 1) * 12),
+                vy: 1.25,
+                value: 1
+              });
+            }
+          }
           const hinted = addScore(bonus);
           save.coins += coinBonus;
           storeSave();
-          if (!hinted) setLog(`보스 격파. 점수 +${bonus}, 코인 +${coinBonus}.`);
-          flash('BOSS DOWN');
+          if (!hinted) setLog(`보스 격파. 점수 +${bonus}, 코인 +${coinBonus}. 무한모드 최대 파워가 ${newPowerMax}까지 확장됐다.`);
+          flash(`POWER MAX ${newPowerMax}`);
           boss = null;
           nextBossTime = stageTime + Math.max(28000, 52000 - difficultyStage() * 1200);
           bossWarningShown = false;
@@ -6367,10 +6409,13 @@
       const tier2 = skin.endsWith('skin2');
       const t = performance.now();
       const pulse = .7 + Math.sin(t / 220) * .1;
+      const trim = rgbaColor(shade(color, tier2 ? .32 : .22), tier2 ? .84 : .68);
+      const trimDark = rgbaColor(shade(color, -.34), tier2 ? .76 : .58);
+      const trimLight = rgbaColor(shade(color, .46), tier2 ? .82 : .62);
       if (id === 'f47') {
         ctx.save();
-        ctx.strokeStyle = tier2 ? 'rgba(250,204,21,.95)' : 'rgba(239,68,68,.9)';
-        ctx.fillStyle = tier2 ? 'rgba(250,204,21,.55)' : 'rgba(239,68,68,.45)';
+        ctx.strokeStyle = trimLight;
+        ctx.fillStyle = trim;
         ctx.lineWidth = tier2 ? 2.4 : 2;
         ctx.beginPath();
         ctx.moveTo(0, -68);
@@ -6395,21 +6440,22 @@
           ctx.fill();
           ctx.stroke();
         }
-        ctx.fillStyle = tier2 ? 'rgba(255,255,255,.82)' : 'rgba(250,204,21,.78)';
+        ctx.fillStyle = trimDark;
         poly([[0,-28],[5,-12],[18,-12],[8,-3],[12,12],[0,4],[-12,12],[-8,-3],[-18,-12],[-5,-12]]);
         ctx.restore();
         return;
       }
       const style = skinBulletStyle(id, tier2 ? 2 : 1);
-      const main = rgbaColor(style.fill, .86);
-      const alt = rgbaColor(style.accent || style.core, .74);
+      const main = trim;
+      const alt = trimLight;
+      const panel = trimDark;
       const motif = hashString(`${id}-${skin}`) % 5;
       ctx.save();
       ctx.strokeStyle = main;
       ctx.fillStyle = main;
       ctx.lineWidth = tier2 ? 2.2 : 1.6;
       ctx.beginPath();
-      ctx.ellipse(0, 0, tier2 ? 50 + pulse * 4 : 42 + pulse * 3, tier2 ? 58 + pulse * 5 : 49 + pulse * 4, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 1, tier2 ? 44 + pulse * 2 : 38 + pulse * 1.5, tier2 ? 52 + pulse * 3 : 44 + pulse * 2, 0, 0, Math.PI * 2);
       ctx.stroke();
       ctx.strokeStyle = alt;
       ctx.beginPath();
@@ -6424,7 +6470,7 @@
         ctx.lineTo(side * 31, 24);
         ctx.lineTo(side * 13, 14);
         ctx.stroke();
-        ctx.fillStyle = alt;
+        ctx.fillStyle = panel;
         ctx.beginPath();
         ctx.moveTo(side * 19, -18);
         ctx.lineTo(side * 35, -2);
@@ -6433,7 +6479,7 @@
         ctx.fill();
       }
       if (tier2) {
-        ctx.strokeStyle = 'rgba(244,114,182,.76)';
+        ctx.strokeStyle = trimDark;
         ctx.lineWidth = 1.8;
         ctx.beginPath();
         ctx.ellipse(0, -3, 39 + pulse * 5, 52 + pulse * 6, 0, 0, Math.PI * 2);
@@ -6445,7 +6491,7 @@
           ctx.lineTo(side * 31, 43);
           ctx.stroke();
         }
-        ctx.fillStyle = 'rgba(255,255,255,.75)';
+        ctx.fillStyle = trimLight;
         for (let i = 0; i < 3; i++) {
           const a = t / 520 + i * Math.PI * 2 / 3;
           ctx.beginPath();
@@ -6453,7 +6499,7 @@
           ctx.fill();
         }
       } else {
-        ctx.fillStyle = 'rgba(255,255,255,.75)';
+        ctx.fillStyle = trimLight;
         for (const x of [-18, 18]) {
           ctx.beginPath();
           ctx.arc(x, x < 0 ? -18 : -12, 2.8, 0, Math.PI * 2);
@@ -6461,7 +6507,7 @@
         }
       }
       ctx.strokeStyle = alt;
-      ctx.fillStyle = main;
+      ctx.fillStyle = panel;
       ctx.lineWidth = tier2 ? 2 : 1.4;
       if (motif === 0) {
         for (const side of [-1, 1]) {
@@ -6512,7 +6558,7 @@
           ctx.fill();
         }
       }
-      ctx.fillStyle = tier2 ? 'rgba(250,204,21,.9)' : 'rgba(34,211,238,.85)';
+      ctx.fillStyle = trimLight;
       for (const x of [-10, 10]) {
         ctx.beginPath();
         ctx.moveTo(x - 5, 36);
@@ -6526,7 +6572,7 @@
 
     function drawJetFinish(id, color, friendly) {
       const skin = friendly ? equippedSkin(id) : '';
-      const glow = skin ? (skin.endsWith('skin2') ? 'rgba(250,204,21,.95)' : 'rgba(34,211,238,.95)') : friendly ? 'rgba(67,211,196,.85)' : 'rgba(239,68,68,.85)';
+      const glow = skin ? rgbaColor(shade(color, skin.endsWith('skin2') ? .42 : .3), .9) : friendly ? 'rgba(67,211,196,.85)' : 'rgba(239,68,68,.85)';
       const glass = id === 'b2' || id === 'error' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
       const longBody = id === 'sr71' || id === 'xb70' || id === 'b29' || id === 'ww_b29' || id === 'su30' || id === 'su47';
       const wingBody = id === 'b2' || id === 'error' || id === 'geomancho';
@@ -6596,7 +6642,7 @@
       }
       if (skin) {
         ctx.globalCompositeOperation = 'lighter';
-        ctx.fillStyle = skin.endsWith('skin2') ? 'rgba(244,114,182,.72)' : 'rgba(125,211,252,.62)';
+        ctx.fillStyle = rgbaColor(shade(color, skin.endsWith('skin2') ? .34 : .24), skin.endsWith('skin2') ? .68 : .56);
         for (const x of exhausts) {
           ctx.beginPath();
           ctx.moveTo(x - 4, 38);
@@ -6647,56 +6693,57 @@
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
       if (e.form === 'escortCarrier') {
-        ctx.fillStyle = shade(e.color, -.38);
-        poly([[-60, 86], [-78, 54], [-70, -64], [-42, -118], [3, -140], [58, -92], [77, 45], [60, 86]]);
-        ctx.fillStyle = shade(e.color, -.16);
-        poly([[-51, 72], [-66, 47], [-59, -56], [-35, -103], [2, -122], [49, -82], [64, 39], [50, 72]]);
+        ctx.fillStyle = shade(e.color, -.42);
+        poly([[-50, 78], [44, 78], [70, 52], [76, -50], [42, -112], [0, -136], [-42, -112], [-72, -48], [-66, 55]]);
+        ctx.fillStyle = shade(e.color, -.18);
+        poly([[-41, 66], [36, 66], [57, 44], [62, -42], [33, -96], [0, -115], [-34, -97], [-57, -42], [-53, 45]]);
         ctx.fillStyle = e.color;
-        poly([[-42, 57], [-53, 38], [-49, -45], [-28, -88], [1, -103], [39, -70], [52, 33], [40, 58]]);
-        ctx.fillStyle = shade(e.color, .14);
-        poly([[-31, 44], [-38, 27], [-35, -35], [-21, -66], [0, -78], [27, -54], [38, 23], [30, 45]]);
-        ctx.strokeStyle = 'rgba(241,245,249,.82)';
-        ctx.lineWidth = 2.2;
-        for (const x of [-12, 8]) {
-          ctx.beginPath();
-          ctx.moveTo(x - 17, 59);
-          ctx.lineTo(x + 10, -86);
-          ctx.stroke();
-        }
-        ctx.strokeStyle = 'rgba(226,232,240,.72)';
-        ctx.lineWidth = 1.7;
+        poly([[-32, 55], [28, 55], [43, 36], [46, -34], [26, -78], [0, -94], [-26, -78], [-44, -34], [-41, 38]]);
+        ctx.fillStyle = shade(e.color, .16);
+        ctx.fillRect(-19, -81, 34, 125);
+        ctx.strokeStyle = 'rgba(241,245,249,.84)';
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-45, 2);
-        ctx.lineTo(43, -26);
-        ctx.moveTo(-37, 27);
-        ctx.lineTo(45, 30);
-        ctx.moveTo(-30, -56);
-        ctx.lineTo(31, -70);
+        ctx.moveTo(-2, -76);
+        ctx.lineTo(-2, 48);
+        ctx.moveTo(12, -69);
+        ctx.lineTo(12, 40);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(226,232,240,.8)';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(-38, 46);
+        ctx.lineTo(37, -58);
+        ctx.moveTo(-30, 57);
+        ctx.lineTo(45, -48);
         ctx.stroke();
         ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 1.4;
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.moveTo(-25, 54);
-        ctx.lineTo(19, -88);
+        ctx.moveTo(2, -73);
+        ctx.lineTo(2, 44);
         ctx.stroke();
-        ctx.fillStyle = shade(e.color, .28);
-        poly([[12, -78], [35, -82], [45, -43], [30, -20], [11, -36]]);
+        ctx.fillStyle = shade(e.color, -.28);
+        ctx.fillRect(-47, -11, 23, 33);
+        ctx.fillRect(19, 23, 27, 21);
+        ctx.fillStyle = shade(e.color, .25);
+        poly([[25, -58], [48, -63], [58, -30], [47, -8], [27, -17]]);
         ctx.fillStyle = '#1e293b';
-        ctx.fillRect(26, -112, 9, 31);
-        ctx.fillRect(20, -124, 22, 8);
-        ctx.fillRect(24, -136, 14, 7);
+        ctx.fillRect(39, -92, 12, 34);
+        ctx.fillRect(32, -104, 25, 10);
+        ctx.fillRect(37, -117, 16, 8);
         ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.moveTo(31, -124);
-        ctx.lineTo(31, -150);
-        ctx.moveTo(16, -142);
-        ctx.lineTo(46, -142);
-        ctx.moveTo(19, -132);
-        ctx.lineTo(43, -132);
+        ctx.moveTo(45, -104);
+        ctx.lineTo(45, -137);
+        ctx.moveTo(28, -129);
+        ctx.lineTo(62, -129);
+        ctx.moveTo(31, -117);
+        ctx.lineTo(59, -117);
         ctx.stroke();
         ctx.fillStyle = '#cbd5e1';
-        for (const [jx, jy, a] of [[-20, -62, -.08], [11, 36, .18], [-25, 21, .08], [5, -8, .12]]) {
+        for (const [jx, jy, a] of [[-14, -56, -.02], [20, 37, .18], [-28, 19, .08], [9, -9, .12]]) {
           ctx.save();
           ctx.translate(jx, jy);
           ctx.rotate(a);
@@ -7294,37 +7341,66 @@
         ctx.fillStyle = boss.accent || '#facc15';
         ctx.fillRect(-6, -116, 12, 24);
       } else if (boss.kind === 'seaCarrier') {
-        ctx.fillStyle = shade(boss.color, -.16);
-        poly([[0,-116],[76,-92],[132,-24],[118,58],[54,108],[-54,108],[-118,58],[-132,-24],[-76,-92]]);
+        ctx.fillStyle = shade(boss.color, -.38);
+        poly([[-78, 126], [72, 126], [122, 78], [132, -46], [78, -128], [0, -160], [-78, -128], [-126, -42], [-118, 82]]);
+        ctx.fillStyle = shade(boss.color, -.18);
+        poly([[-64, 106], [58, 106], [98, 66], [106, -35], [62, -104], [0, -132], [-62, -104], [-100, -35], [-94, 68]]);
         ctx.fillStyle = boss.color;
-        poly([[0,-98],[58,-76],[102,-20],[88,44],[38,82],[-38,82],[-88,44],[-102,-20],[-58,-76]]);
-        ctx.fillStyle = shade(boss.color, .2);
-        ctx.fillRect(-18, -88, 36, 164);
-        ctx.fillStyle = shade(boss.color, -.24);
-        ctx.fillRect(34, -62, 42, 62);
-        ctx.fillRect(48, -86, 20, 28);
-        ctx.fillStyle = shade(boss.color, .1);
-        for (const [x, y] of [[-70,-42],[0,-28],[70,-42],[-58,18],[58,18],[-30,56],[30,56]]) {
-          ctx.beginPath();
-          ctx.arc(x, y, 14, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#111827';
-          ctx.fillRect(x - 4, y - 22, 8, 22);
-          ctx.fillStyle = shade(boss.color, .1);
-        }
-        ctx.strokeStyle = 'rgba(226,232,240,.36)';
+        poly([[-50, 90], [44, 90], [76, 54], [80, -26], [48, -82], [0, -108], [-48, -82], [-78, -26], [-74, 58]]);
+        ctx.fillStyle = shade(boss.color, .18);
+        ctx.fillRect(-22, -96, 39, 172);
+        ctx.strokeStyle = 'rgba(241,245,249,.82)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-5, -86);
+        ctx.lineTo(-5, 68);
+        ctx.moveTo(13, -76);
+        ctx.lineTo(13, 58);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(226,232,240,.82)';
+        ctx.lineWidth = 3.2;
+        ctx.beginPath();
+        ctx.moveTo(-66, 72);
+        ctx.lineTo(62, -72);
+        ctx.moveTo(-52, 92);
+        ctx.lineTo(76, -50);
+        ctx.stroke();
+        ctx.strokeStyle = boss.accent || '#facc15';
         ctx.lineWidth = 2;
-        for (const x of [-44, 44]) {
-          ctx.beginPath();
-          ctx.moveTo(x, -84);
-          ctx.lineTo(x * .65, 82);
-          ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(3, -88);
+        ctx.lineTo(3, 72);
+        ctx.stroke();
+        ctx.fillStyle = shade(boss.color, -.28);
+        ctx.fillRect(-72, -18, 38, 52);
+        ctx.fillRect(28, 34, 48, 31);
+        ctx.fillRect(-40, 86, 80, 16);
+        ctx.fillStyle = shade(boss.color, .26);
+        poly([[48, -76], [84, -84], [102, -36], [82, 0], [50, -12]]);
+        ctx.fillStyle = shade(boss.color, -.34);
+        ctx.fillRect(68, -112, 20, 38);
+        ctx.fillRect(56, -128, 42, 14);
+        ctx.fillRect(65, -146, 25, 11);
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1.7;
+        ctx.beginPath();
+        ctx.moveTo(78, -128);
+        ctx.lineTo(78, -168);
+        ctx.moveTo(51, -158);
+        ctx.lineTo(105, -158);
+        ctx.moveTo(56, -143);
+        ctx.lineTo(100, -143);
+        ctx.stroke();
+        ctx.fillStyle = '#cbd5e1';
+        for (const [x, y, a] of [[-24, -66, -.04], [30, -20, .15], [-34, 20, .08], [28, 62, .2], [0, 80, 0]]) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(a);
+          poly([[0,-12],[6,1],[16,5],[5,8],[0,16],[-5,8],[-16,5],[-6,1]]);
+          ctx.restore();
         }
-        ctx.fillStyle = 'rgba(15,23,42,.82)';
-        for (const y of [-52, -8, 36]) ctx.fillRect(-25, y - 5, 50, 10);
         ctx.fillStyle = boss.accent || '#60a5fa';
-        for (const [x, y] of [[-96, 0], [-58, 52], [0, 72], [58, 52], [96, 0]]) {
+        for (const [x, y] of [[-104, 12], [-70, 74], [0, 102], [70, 74], [104, 12]]) {
           ctx.beginPath();
           ctx.arc(x, y, 6, 0, Math.PI * 2);
           ctx.fill();
@@ -7498,6 +7574,135 @@
           ctx.moveTo(x, -64);
           ctx.lineTo(x, -106);
           ctx.stroke();
+        }
+      } else if (boss.kind === 'warRobot') {
+        ctx.fillStyle = shade(boss.color, -.28);
+        for (const side of [-1, 1]) {
+          ctx.fillRect(side * 34 - 13, 46, 26, 74);
+          ctx.fillRect(side * 58 - 18, 100, 36, 24);
+        }
+        ctx.fillStyle = boss.color;
+        poly([[0,-118],[44,-86],[58,-28],[36,42],[0,66],[-36,42],[-58,-28],[-44,-86]]);
+        ctx.fillStyle = shade(boss.color, .16);
+        poly([[0,-88],[28,-58],[34,-14],[20,24],[0,40],[-20,24],[-34,-14],[-28,-58]]);
+        ctx.fillStyle = shade(boss.color, -.18);
+        for (const side of [-1, 1]) {
+          poly([[side * 46,-48],[side * 102,-18],[side * 90,28],[side * 48,16]]);
+          ctx.fillRect(side * 96 - 14, -12, 28, 58);
+          ctx.fillRect(side * 94 - 24, 34, 48, 18);
+        }
+        ctx.fillStyle = 'rgba(15,23,42,.86)';
+        ctx.fillRect(-18, -92, 36, 28);
+        ctx.fillStyle = boss.accent || '#facc15';
+        ctx.fillRect(-11, -84, 22, 8);
+        for (const [x, y] of [[-82, 42], [82, 42], [-34, -30], [34, -30], [0, 22]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = boss.accent || '#facc15';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-26, -112);
+        ctx.lineTo(-58, -142);
+        ctx.moveTo(26, -112);
+        ctx.lineTo(58, -142);
+        ctx.stroke();
+      } else if (boss.kind === 'landCruiser') {
+        ctx.fillStyle = shade(boss.color, -.3);
+        ctx.fillRect(-150, 50, 300, 34);
+        ctx.fillStyle = '#273021';
+        for (const x of [-126, -90, -54, -18, 18, 54, 90, 126]) {
+          ctx.beginPath();
+          ctx.arc(x, 68, 13, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.fillStyle = boss.color;
+        poly([[-132,-48],[132,-48],[148,36],[112,62],[-112,62],[-148,36]]);
+        ctx.fillStyle = shade(boss.color, .15);
+        ctx.fillRect(-86, -82, 172, 54);
+        ctx.fillRect(-42, -120, 84, 42);
+        ctx.fillStyle = shade(boss.color, -.26);
+        for (const x of [-92, -38, 38, 92]) {
+          ctx.fillRect(x - 20, -22, 40, 32);
+          ctx.fillRect(x - 5, -52, 10, 34);
+        }
+        ctx.fillStyle = boss.accent || '#fb923c';
+        for (const x of [-118, -68, 0, 68, 118]) {
+          ctx.beginPath();
+          ctx.arc(x, 24, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = boss.accent || '#fb923c';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(0, -118);
+        ctx.lineTo(0, -168);
+        ctx.moveTo(-40, -82);
+        ctx.lineTo(-88, -120);
+        ctx.moveTo(40, -82);
+        ctx.lineTo(88, -120);
+        ctx.stroke();
+      } else if (boss.kind === 'heliCarrier') {
+        ctx.fillStyle = shade(boss.color, -.2);
+        poly([[0,-98],[78,-72],[116,-10],[92,62],[32,96],[-32,96],[-92,62],[-116,-10],[-78,-72]]);
+        ctx.fillStyle = boss.color;
+        poly([[0,-74],[54,-54],[78,-8],[62,44],[22,68],[-22,68],[-62,44],[-78,-8],[-54,-54]]);
+        ctx.strokeStyle = boss.accent || '#38bdf8';
+        ctx.lineWidth = 3;
+        for (const [x, y, r] of [[-118, -32, 36], [118, -32, 36], [-86, 50, 30], [86, 50, 30]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x - r - 10, y);
+          ctx.lineTo(x + r + 10, y);
+          ctx.moveTo(x, y - r - 10);
+          ctx.lineTo(x, y + r + 10);
+          ctx.stroke();
+          ctx.fillStyle = shade(boss.color, .22);
+          ctx.beginPath();
+          ctx.arc(x, y, 11, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = 'rgba(15,23,42,.84)';
+        ctx.fillRect(-28, -50, 56, 76);
+        ctx.fillStyle = boss.accent || '#38bdf8';
+        for (const [x, y] of [[-56, 24], [0, 42], [56, 24], [-30, -22], [30, -22]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 5.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (boss.kind === 'skyDreadnought') {
+        ctx.fillStyle = shade(boss.color, -.25);
+        poly([[0,-124],[94,-84],[142,-8],[116,78],[50,122],[-50,122],[-116,78],[-142,-8],[-94,-84]]);
+        ctx.fillStyle = boss.color;
+        poly([[0,-100],[68,-66],[102,-4],[82,58],[34,88],[-34,88],[-82,58],[-102,-4],[-68,-66]]);
+        ctx.fillStyle = shade(boss.color, .16);
+        ctx.fillRect(-92, -28, 184, 28);
+        ctx.fillRect(-74, 22, 148, 26);
+        ctx.fillStyle = shade(boss.color, -.22);
+        ctx.fillRect(-32, -82, 64, 152);
+        for (const x of [-132, -88, 88, 132]) {
+          ctx.beginPath();
+          ctx.ellipse(x, 10, 20, 42, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.strokeStyle = boss.accent || '#c084fc';
+        ctx.lineWidth = 2.5;
+        for (const y of [-58, -20, 18, 56]) {
+          ctx.beginPath();
+          ctx.moveTo(-82, y);
+          ctx.lineTo(82, y);
+          ctx.stroke();
+        }
+        ctx.fillStyle = boss.accent || '#c084fc';
+        for (const [x, y] of [[-96, 54], [-48, 74], [0, 82], [48, 74], [96, 54], [0, -70]]) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
         }
       } else {
         const heavy = boss.kind === 'carrier' || boss.kind === 'fortress' || boss.kind === 'arsenal';
@@ -7695,24 +7900,48 @@
         return;
       }
       if (model.kind === 'seaCarrier') {
-        g.fillStyle = shade(model.color, -.16);
-        p([[0,-116],[76,-92],[132,-24],[118,58],[54,108],[-54,108],[-118,58],[-132,-24],[-76,-92]]);
+        g.fillStyle = shade(model.color, -.38);
+        p([[-78, 126], [72, 126], [122, 78], [132, -46], [78, -128], [0, -160], [-78, -128], [-126, -42], [-118, 82]]);
+        g.fillStyle = shade(model.color, -.18);
+        p([[-64, 106], [58, 106], [98, 66], [106, -35], [62, -104], [0, -132], [-62, -104], [-100, -35], [-94, 68]]);
         g.fillStyle = model.color;
-        p([[0,-98],[58,-76],[102,-20],[88,44],[38,82],[-38,82],[-88,44],[-102,-20],[-58,-76]]);
+        p([[-50, 90], [44, 90], [76, 54], [80, -26], [48, -82], [0, -108], [-48, -82], [-78, -26], [-74, 58]]);
         g.fillStyle = shade(model.color, .18);
-        g.fillRect(-18, -88, 36, 164);
-        g.fillStyle = shade(model.color, -.25);
-        g.fillRect(34, -62, 42, 62);
-        g.fillRect(48, -86, 20, 28);
-        g.fillStyle = shade(model.color, .1);
-        for (const [x, y] of [[-70,-42],[0,-28],[70,-42],[-58,18],[58,18],[-30,56],[30,56]]) {
-          g.beginPath();
-          g.arc(x, y, 14, 0, Math.PI * 2);
-          g.fill();
-          g.stroke();
+        g.fillRect(-22, -96, 39, 172);
+        g.strokeStyle = 'rgba(241,245,249,.82)';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(-5, -86);
+        g.lineTo(-5, 68);
+        g.moveTo(13, -76);
+        g.lineTo(13, 58);
+        g.stroke();
+        g.strokeStyle = 'rgba(226,232,240,.82)';
+        g.lineWidth = 3.2;
+        g.beginPath();
+        g.moveTo(-66, 72);
+        g.lineTo(62, -72);
+        g.moveTo(-52, 92);
+        g.lineTo(76, -50);
+        g.stroke();
+        g.fillStyle = shade(model.color, -.28);
+        g.fillRect(-72, -18, 38, 52);
+        g.fillRect(28, 34, 48, 31);
+        g.fillStyle = shade(model.color, .26);
+        p([[48, -76], [84, -84], [102, -36], [82, 0], [50, -12]]);
+        g.fillStyle = shade(model.color, -.34);
+        g.fillRect(68, -112, 20, 38);
+        g.fillRect(56, -128, 42, 14);
+        g.fillStyle = '#cbd5e1';
+        for (const [x, y, a] of [[-24, -66, -.04], [30, -20, .15], [-34, 20, .08], [28, 62, .2]]) {
+          g.save();
+          g.translate(x, y);
+          g.rotate(a);
+          p([[0,-12],[6,1],[16,5],[5,8],[0,16],[-5,8],[-16,5],[-6,1]]);
+          g.restore();
         }
         g.fillStyle = model.accent || '#60a5fa';
-        for (const [x, y] of [[-96, 0], [-58, 52], [0, 72], [58, 52], [96, 0]]) {
+        for (const [x, y] of [[-104, 12], [-70, 74], [0, 102], [70, 74], [104, 12]]) {
           g.beginPath();
           g.arc(x, y, 6, 0, Math.PI * 2);
           g.fill();
@@ -7740,6 +7969,102 @@
         g.beginPath();
         g.ellipse(0, 0, 86, 48, 0, 0, Math.PI * 2);
         g.stroke();
+        return;
+      }
+      if (model.kind === 'warRobot') {
+        g.fillStyle = shade(model.color, -.28);
+        for (const side of [-1, 1]) {
+          g.fillRect(side * 34 - 13, 46, 26, 74);
+          g.fillRect(side * 58 - 18, 100, 36, 24);
+        }
+        g.fillStyle = model.color;
+        p([[0,-118],[44,-86],[58,-28],[36,42],[0,66],[-36,42],[-58,-28],[-44,-86]]);
+        g.fillStyle = shade(model.color, -.18);
+        for (const side of [-1, 1]) {
+          p([[side * 46,-48],[side * 102,-18],[side * 90,28],[side * 48,16]]);
+          g.fillRect(side * 96 - 14, -12, 28, 58);
+        }
+        g.fillStyle = 'rgba(15,23,42,.86)';
+        g.fillRect(-18, -92, 36, 28);
+        g.fillStyle = model.accent || '#facc15';
+        for (const [x, y] of [[-82, 42], [82, 42], [-34, -30], [34, -30], [0, 22]]) {
+          g.beginPath();
+          g.arc(x, y, 6, 0, Math.PI * 2);
+          g.fill();
+        }
+        return;
+      }
+      if (model.kind === 'landCruiser') {
+        g.fillStyle = shade(model.color, -.3);
+        g.fillRect(-150, 50, 300, 34);
+        g.fillStyle = '#273021';
+        for (const x of [-126, -90, -54, -18, 18, 54, 90, 126]) {
+          g.beginPath();
+          g.arc(x, 68, 13, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+        }
+        g.fillStyle = model.color;
+        p([[-132,-48],[132,-48],[148,36],[112,62],[-112,62],[-148,36]]);
+        g.fillStyle = shade(model.color, .15);
+        g.fillRect(-86, -82, 172, 54);
+        g.fillRect(-42, -120, 84, 42);
+        g.fillStyle = model.accent || '#fb923c';
+        for (const x of [-118, -68, 0, 68, 118]) {
+          g.beginPath();
+          g.arc(x, 24, 6, 0, Math.PI * 2);
+          g.fill();
+        }
+        return;
+      }
+      if (model.kind === 'heliCarrier') {
+        g.fillStyle = shade(model.color, -.2);
+        p([[0,-98],[78,-72],[116,-10],[92,62],[32,96],[-32,96],[-92,62],[-116,-10],[-78,-72]]);
+        g.fillStyle = model.color;
+        p([[0,-74],[54,-54],[78,-8],[62,44],[22,68],[-22,68],[-62,44],[-78,-8],[-54,-54]]);
+        g.strokeStyle = model.accent || '#38bdf8';
+        g.lineWidth = 3;
+        for (const [x, y, r] of [[-118, -32, 36], [118, -32, 36], [-86, 50, 30], [86, 50, 30]]) {
+          g.beginPath();
+          g.arc(x, y, r, 0, Math.PI * 2);
+          g.stroke();
+          g.beginPath();
+          g.moveTo(x - r - 10, y);
+          g.lineTo(x + r + 10, y);
+          g.moveTo(x, y - r - 10);
+          g.lineTo(x, y + r + 10);
+          g.stroke();
+        }
+        g.fillStyle = model.accent || '#38bdf8';
+        for (const [x, y] of [[-56, 24], [0, 42], [56, 24], [-30, -22], [30, -22]]) {
+          g.beginPath();
+          g.arc(x, y, 5.5, 0, Math.PI * 2);
+          g.fill();
+        }
+        return;
+      }
+      if (model.kind === 'skyDreadnought') {
+        g.fillStyle = shade(model.color, -.25);
+        p([[0,-124],[94,-84],[142,-8],[116,78],[50,122],[-50,122],[-116,78],[-142,-8],[-94,-84]]);
+        g.fillStyle = model.color;
+        p([[0,-100],[68,-66],[102,-4],[82,58],[34,88],[-34,88],[-82,58],[-102,-4],[-68,-66]]);
+        g.fillStyle = shade(model.color, .16);
+        g.fillRect(-92, -28, 184, 28);
+        g.fillRect(-74, 22, 148, 26);
+        g.fillStyle = shade(model.color, -.22);
+        g.fillRect(-32, -82, 64, 152);
+        for (const x of [-132, -88, 88, 132]) {
+          g.beginPath();
+          g.ellipse(x, 10, 20, 42, 0, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+        }
+        g.fillStyle = model.accent || '#c084fc';
+        for (const [x, y] of [[-96, 54], [-48, 74], [0, 82], [48, 74], [96, 54], [0, -70]]) {
+          g.beginPath();
+          g.arc(x, y, 6, 0, Math.PI * 2);
+          g.fill();
+        }
         return;
       }
       const heavy = model.kind === 'carrier' || model.kind === 'fortress' || model.kind === 'arsenal';
@@ -7801,20 +8126,67 @@
     function drawPlayerBullet(b) {
       const style = b.style || { fill: '#94f7e9', core: '#ffffff' };
       if (b.powerTier) {
+        const visualTier = Math.min(5, b.powerTier);
+        const vx = b.vx || 0;
+        const vy = b.vy || -1;
+        const mag = Math.max(.001, Math.hypot(vx, vy));
+        const tailX = -vx / mag;
+        const tailY = -vy / mag;
+        const tailLen = b.r * (1.4 + visualTier * .22);
         ctx.save();
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = .08 + b.powerTier * .045;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = .08 + visualTier * .018;
         ctx.strokeStyle = style.accent || style.fill;
-        ctx.lineWidth = 2.2 + b.powerTier * .9;
+        ctx.lineWidth = .9 + visualTier * .18;
         ctx.beginPath();
-        ctx.moveTo(b.x, b.y + 4);
-        ctx.lineTo(b.x - (b.vx || 0) * (2.2 + b.powerTier), b.y - (b.vy || -1) * (2.2 + b.powerTier));
+        ctx.moveTo(b.x + tailX * b.r * .7, b.y + tailY * b.r * .7);
+        ctx.lineTo(b.x + tailX * tailLen, b.y + tailY * tailLen);
         ctx.stroke();
-        ctx.fillStyle = style.fill;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.r * (1.15 + b.powerTier * .16), 0, Math.PI * 2);
-        ctx.fill();
+        ctx.globalAlpha = 1;
+        if (!b.special && !style.skin) {
+          const shape = style.powerShape || 'dart';
+          const ang = Math.atan2(b.vy || -1, b.vx || 0) + Math.PI / 2;
+          const len = b.r * (1.25 + visualTier * .16);
+          ctx.translate(b.x, b.y);
+          ctx.rotate(ang);
+          ctx.fillStyle = style.fill;
+          ctx.strokeStyle = style.core || style.fill;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          if (shape === 'bar' || shape === 'rail') {
+            ctx.rect(-b.r * .38, -len, b.r * .76, len * 1.75);
+          } else if (shape === 'diamond' || shape === 'prism') {
+            ctx.moveTo(0, -len);
+            ctx.lineTo(b.r * .82, 0);
+            ctx.lineTo(0, len);
+            ctx.lineTo(-b.r * .82, 0);
+          } else if (shape === 'split') {
+            ctx.moveTo(0, -len);
+            ctx.lineTo(b.r * .98, len * .25);
+            ctx.lineTo(b.r * .24, len * .72);
+            ctx.lineTo(0, len * .3);
+            ctx.lineTo(-b.r * .24, len * .72);
+            ctx.lineTo(-b.r * .98, len * .25);
+          } else {
+            ctx.moveTo(0, -len);
+            ctx.lineTo(b.r * .82, len * .42);
+            ctx.lineTo(0, len);
+            ctx.lineTo(-b.r * .82, len * .42);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          if (visualTier >= 4) {
+            ctx.strokeStyle = style.accent || style.core || style.fill;
+            ctx.lineWidth = .7;
+            ctx.beginPath();
+            ctx.moveTo(-b.r * 1.15, len * .1);
+            ctx.lineTo(b.r * 1.15, len * .1);
+            ctx.stroke();
+          }
+        }
         ctx.restore();
+        if (!b.special && !style.skin) return;
       }
       if (b.special) {
         const shape = style.specialShape || 'dart';
@@ -7973,12 +8345,13 @@
         return;
       }
       if (style.skin) {
+        const skinShape = style.powerShape || style.skinShape;
         ctx.save();
         ctx.translate(b.x, b.y);
         ctx.fillStyle = style.fill;
         ctx.strokeStyle = style.core;
         ctx.lineWidth = style.skin === 2 ? 1.4 : 1.1;
-        if (style.skinShape === 'dot') {
+        if (skinShape === 'dot') {
           ctx.beginPath();
           ctx.arc(0, 0, b.r * 1.08, 0, Math.PI * 2);
           ctx.fill();
@@ -7987,12 +8360,12 @@
           ctx.beginPath();
           ctx.arc(0, 0, b.r * .45, 0, Math.PI * 2);
           ctx.fill();
-        } else if (style.skinShape === 'bar') {
+        } else if (skinShape === 'bar' || skinShape === 'rail') {
           ctx.fillRect(-b.r * .75, -b.r * 1.55, b.r * 1.5, b.r * 3.1);
           ctx.strokeRect(-b.r * .75, -b.r * 1.55, b.r * 1.5, b.r * 3.1);
           ctx.fillStyle = style.core;
           ctx.fillRect(-b.r * .25, -b.r * 1.35, b.r * .5, b.r * 2.7);
-        } else if (style.skinShape === 'diamond') {
+        } else if (skinShape === 'diamond' || skinShape === 'prism') {
           ctx.beginPath();
           ctx.moveTo(0, -b.r * 1.7);
           ctx.lineTo(b.r * 1.08, 0);
@@ -8004,9 +8377,9 @@
         } else {
           ctx.beginPath();
           ctx.moveTo(0, -b.r * 1.9);
-          ctx.lineTo(b.r * (style.skinShape === 'split' ? 1.35 : 1.08), b.r * .65);
+          ctx.lineTo(b.r * (skinShape === 'split' ? 1.35 : 1.08), b.r * .65);
           ctx.lineTo(0, b.r * 1.75);
-          ctx.lineTo(-b.r * (style.skinShape === 'split' ? 1.35 : 1.08), b.r * .65);
+          ctx.lineTo(-b.r * (skinShape === 'split' ? 1.35 : 1.08), b.r * .65);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -8076,10 +8449,10 @@
       } else if (e.type === 'powerBurst') {
         const radius = (1 - t) * 18 + t * 78;
         ctx.save();
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = .22 + t * .55;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = .16 + t * .28;
         ctx.strokeStyle = e.accent || '#facc15';
-        ctx.lineWidth = 3 + t * 5;
+        ctx.lineWidth = 2 + t * 3;
         for (const scale of [1, .62, .32]) {
           ctx.beginPath();
           ctx.arc(e.x, e.y, radius * scale + Math.sin(performance.now() / 45) * 3, 0, Math.PI * 2);
@@ -8089,7 +8462,7 @@
         for (let i = 0; i < 8; i++) {
           const a = i / 8 * Math.PI * 2 + performance.now() / 180;
           ctx.beginPath();
-          ctx.arc(e.x + Math.cos(a) * radius * .62, e.y + Math.sin(a) * radius * .62, 3.5 + t * 3, 0, Math.PI * 2);
+          ctx.arc(e.x + Math.cos(a) * radius * .62, e.y + Math.sin(a) * radius * .62, 2.7 + t * 2, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
@@ -8679,7 +9052,7 @@
     function updateHud() {
       const stage = visibleStage();
       document.getElementById('hudHp').textContent = `HP ${player ? Math.max(0, Math.ceil(player.hp)) : 0}`;
-      document.getElementById('hudBomb').textContent = `BOMB ${player ? player.bombs : 0}${player && player.fieldPower > 0 ? ' PWR ' + player.fieldPower + '/' + fieldPowerMax(stage.id) : ''}${player && player.shield > 0 ? ' SHIELD ' + player.shield : ''}${player && player.boostTimer > 0 ? ' BOOST ' + Math.ceil(player.boostTimer / 1000) : ''}${player && player.specialCooldown > 0 ? ' SP ' + Math.ceil(player.specialCooldown / 1000) : ' SP OK'}`;
+      document.getElementById('hudBomb').textContent = `BOMB ${player ? player.bombs : 0}${player && (player.fieldPower > 0 || save.selectedMode === 'endless') ? ' PWR ' + (player.fieldPower || 0) + '/' + fieldPowerMax(stage.id) : ''}${player && player.shield > 0 ? ' SHIELD ' + player.shield : ''}${player && player.boostTimer > 0 ? ' BOOST ' + Math.ceil(player.boostTimer / 1000) : ''}${player && player.specialCooldown > 0 ? ' SP ' + Math.ceil(player.specialCooldown / 1000) : ' SP OK'}`;
       document.getElementById('hudStage').textContent = save.selectedMode === 'endless' ? `END ${difficultyStage()} ${Math.floor(stageTime / 1000)}s` : `STAGE ${stage.id}`;
       document.getElementById('hudScore').textContent = `SCORE ${score}`;
       const specialBtn = document.getElementById('specialBtn');
