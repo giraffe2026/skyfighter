@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="980" viewBox="0 0 760 980">
+  <defs>
+    <linearGradient id="armor" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f2efe0"/>
+      <stop offset="0.48" stop-color="#c9c4ad"/>
+      <stop offset="1" stop-color="#8d8876"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f2e8a"/>
+      <stop offset="1" stop-color="#07124a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .panel{stroke:#172033;stroke-width:3;stroke-linejoin:round}
+      .line{stroke:#00c8ff;stroke-width:7;stroke-linecap:round;filter:url(#glow)}
+      .thin{stroke:#00c8ff;stroke-width:4;stroke-linecap:round;filter:url(#glow)}
+    </style>
+  </defs>
+  <rect width="760" height="980" fill="#101620"/>
+  <circle cx="380" cy="408" r="315" fill="#dce9ff" opacity=".08"/>
+  <g transform="translate(380 440)">
+    <g opacity=".98">
+      <path class="panel" fill="#4a4f58" d="M-278,-72 L-334,-42 L-328,56 L-268,32 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M-316,-34 L-364,-12 L-360,4 L-314,-12 Z"/>
+      <path class="panel" fill="#1f2937" d="M-366,-15 L-390,-4 L-366,7 Z"/>
+      <path class="line" d="M-302,-24 L-320,34"/>
+      <path class="panel" fill="#4a4f58" d="M278,-72 L334,-42 L328,56 L268,32 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M316,-34 L364,-12 L360,4 L314,-12 Z"/>
+      <path class="panel" fill="#1f2937" d="M366,-15 L390,-4 L366,7 Z"/>
+      <path class="line" d="M302,-24 L320,34"/>
+
+      <path class="panel" fill="#4a4f58" d="M-212,-250 L-278,-206 L-260,-128 L-206,-158 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M-262,-202 L-312,-170 L-306,-152 L-256,-176 Z"/>
+      <path class="panel" fill="#0f172a" d="M-316,-172 L-342,-158 L-314,-148 Z"/>
+      <path class="panel" fill="#4a4f58" d="M212,-250 L278,-206 L260,-128 L206,-158 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M262,-202 L312,-170 L306,-152 L256,-176 Z"/>
+      <path class="panel" fill="#0f172a" d="M316,-172 L342,-158 L314,-148 Z"/>
+    </g>
+
+    <g opacity=".95">
+      <path class="panel" fill="#625f54" d="M-130,-250 L-235,-82 L-178,48 L-92,-36 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-190,-178 L-236,-74 L-180,10 L-118,-62 Z"/>
+      <path class="line" d="M-150,-150 L-185,-58 L-150,-4"/>
+      <path class="panel" fill="#625f54" d="M130,-250 L235,-82 L178,48 L92,-36 Z"/>
+      <path class="panel" fill="url(#armor)" d="M190,-178 L236,-74 L180,10 L118,-62 Z"/>
+      <path class="line" d="M150,-150 L185,-58 L150,-4"/>
+    </g>
+
+    <path class="panel" fill="#5f5a4d" d="M0,-250 L88,-182 L116,-48 L70,74 L0,128 L-70,74 L-116,-48 L-88,-182 Z"/>
+    <path class="panel" fill="url(#armor)" d="M0,-214 L60,-154 L78,-50 L48,56 L0,102 L-48,56 L-78,-50 L-60,-154 Z"/>
+    <path class="panel" fill="#ebe8d6" d="M0,-158 L38,-94 L34,-12 L0,42 L-34,-12 L-38,-94 Z"/>
+    <path class="panel" fill="url(#blue)" d="M-42,-108 L42,-108 L32,-58 L-32,-58 Z"/>
+    <path class="line" d="M-46,-36 L46,-36"/>
+    <path class="thin" d="M-28,-178 L-10,-102 L-28,-28"/>
+    <path class="thin" d="M28,-178 L10,-102 L28,-28"/>
+    <path class="thin" d="M-38,34 L-8,92 L38,34"/>
+
+    <path class="panel" fill="#ebe8d6" d="M-39,-262 L0,-312 L39,-262 L21,-208 L-21,-208 Z"/>
+    <path class="panel" fill="url(#armor)" d="M-30,-238 L-10,-268 L0,-284 L10,-268 L30,-238 L16,-198 L-16,-198 Z"/>
+    <path class="panel" fill="url(#blue)" d="M-20,-232 L0,-252 L20,-232 L10,-212 L-10,-212 Z"/>
+    <path class="thin" d="M-42,-260 L-88,-324"/>
+    <path class="thin" d="M42,-260 L88,-324"/>
+
+    <g>
+      <path class="panel" fill="#4c493f" d="M-58,-132 L-142,-96 L-136,-36 L-78,-22 L-42,-58 Z"/>
+      <path class="panel" fill="url(#blue)" d="M-92,-102 L-142,-84 L-130,-50 L-86,-58 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-90,-20 L-152,18 L-138,84 L-84,54 L-62,4 Z"/>
+      <path class="panel" fill="#ebe8d6" d="M-108,-6 L-144,22 L-132,66 L-96,44 Z"/>
+      <circle class="panel" cx="-78" cy="-18" r="16" fill="#5f5a4d"/>
+      <path class="line" d="M-112,-2 L-132,52"/>
+      <path class="thin" d="M-88,-82 L-124,-68"/>
+
+      <path class="panel" fill="#4c493f" d="M58,-132 L142,-96 L136,-36 L78,-22 L42,-58 Z"/>
+      <path class="panel" fill="url(#blue)" d="M92,-102 L142,-84 L130,-50 L86,-58 Z"/>
+      <path class="panel" fill="url(#armor)" d="M90,-20 L152,18 L138,84 L84,54 L62,4 Z"/>
+      <path class="panel" fill="#ebe8d6" d="M108,-6 L144,22 L132,66 L96,44 Z"/>
+      <circle class="panel" cx="78" cy="-18" r="16" fill="#5f5a4d"/>
+      <path class="line" d="M112,-2 L132,52"/>
+      <path class="thin" d="M88,-82 L124,-68"/>
+    </g>
+
+    <g opacity=".98">
+      <path class="panel" fill="#334155" d="M-196,86 L-252,126 L-232,168 L-178,130 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M-246,129 L-292,158 L-284,174 L-238,150 Z"/>
+      <path class="panel" fill="#0f172a" d="M-296,156 L-320,170 L-292,178 Z"/>
+      <path class="line" d="M-214,108 L-230,144"/>
+      <path class="panel" fill="#334155" d="M196,86 L252,126 L232,168 L178,130 Z"/>
+      <path class="panel" fill="#d8d5bd" d="M246,129 L292,158 L284,174 L238,150 Z"/>
+      <path class="panel" fill="#0f172a" d="M296,156 L320,170 L292,178 Z"/>
+      <path class="line" d="M214,108 L230,144"/>
+    </g>
+
+    <path class="panel" fill="#4f4b42" d="M-62,88 L62,88 L45,186 L0,224 L-45,186 Z"/>
+    <path class="panel" fill="url(#armor)" d="M-38,108 L38,108 L26,170 L0,198 L-26,170 Z"/>
+    <path class="line" d="M0,112 L0,190"/>
+
+    <g>
+      <path class="panel" fill="#4c493f" d="M-30,168 L-98,178 L-88,286 L-38,270 L-12,202 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-48,194 L-86,204 L-72,270 L-36,252 Z"/>
+      <path class="line" d="M-60,206 L-56,260"/>
+      <path class="panel" fill="url(#armor)" d="M-40,270 L-122,322 L-102,448 L-34,412 L-12,312 Z"/>
+      <path class="panel" fill="#ebe8d6" d="M-58,302 L-104,334 L-84,416 L-44,386 Z"/>
+      <path class="line" d="M-70,324 L-78,390"/>
+      <path class="panel" fill="url(#blue)" d="M-72,420 L-158,454 L-126,502 L-36,470 Z"/>
+
+      <path class="panel" fill="#4c493f" d="M30,168 L98,178 L88,286 L38,270 L12,202 Z"/>
+      <path class="panel" fill="url(#armor)" d="M48,194 L86,204 L72,270 L36,252 Z"/>
+      <path class="line" d="M60,206 L56,260"/>
+      <path class="panel" fill="url(#armor)" d="M40,270 L122,322 L102,448 L34,412 L12,312 Z"/>
+      <path class="panel" fill="#ebe8d6" d="M58,302 L104,334 L84,416 L44,386 Z"/>
+      <path class="line" d="M70,324 L78,390"/>
+      <path class="panel" fill="url(#blue)" d="M72,420 L158,454 L126,502 L36,470 Z"/>
+    </g>
+
+    <circle cx="-96" cy="-38" r="10" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="96" cy="-38" r="10" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="-74" cy="100" r="9" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="74" cy="100" r="9" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="0" cy="-4" r="13" fill="#00c8ff" filter="url(#glow)"/>
+  </g>
+</svg>
