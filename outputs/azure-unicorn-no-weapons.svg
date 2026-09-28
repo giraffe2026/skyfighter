@@ -1,13 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="980" viewBox="0 0 760 980">
   <defs>
     <linearGradient id="armor" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#f2efe0"/>
-      <stop offset="0.48" stop-color="#c9c4ad"/>
-      <stop offset="1" stop-color="#8d8876"/>
+      <stop offset="0" stop-color="#f7f3df"/>
+      <stop offset=".46" stop-color="#c9c3a9"/>
+      <stop offset="1" stop-color="#827c68"/>
+    </linearGradient>
+    <linearGradient id="darkArmor" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#6f6a57"/>
+      <stop offset="1" stop-color="#2f2f2b"/>
     </linearGradient>
     <linearGradient id="blue" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#0f2e8a"/>
-      <stop offset="1" stop-color="#07124a"/>
+      <stop offset="0" stop-color="#153aa7"/>
+      <stop offset="1" stop-color="#07114a"/>
     </linearGradient>
     <filter id="glow">
       <feGaussianBlur stdDeviation="5" result="blur"/>
@@ -17,111 +21,119 @@
       </feMerge>
     </filter>
     <style>
-      .panel{stroke:#172033;stroke-width:3;stroke-linejoin:round}
+      .panel{stroke:#111827;stroke-width:3;stroke-linejoin:round}
+      .joint{stroke:#111827;stroke-width:2.2;stroke-linejoin:round}
       .line{stroke:#00c8ff;stroke-width:7;stroke-linecap:round;filter:url(#glow)}
       .thin{stroke:#00c8ff;stroke-width:4;stroke-linecap:round;filter:url(#glow)}
+      .weapon{stroke:#111827;stroke-width:2.6;stroke-linejoin:round}
     </style>
   </defs>
   <rect width="760" height="980" fill="#101620"/>
-  <circle cx="380" cy="408" r="315" fill="#dce9ff" opacity=".08"/>
-  <g transform="translate(380 440)">
-    <g opacity=".98">
-      <path class="panel" fill="#4a4f58" d="M-278,-72 L-334,-42 L-328,56 L-268,32 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M-316,-34 L-364,-12 L-360,4 L-314,-12 Z"/>
-      <path class="panel" fill="#1f2937" d="M-366,-15 L-390,-4 L-366,7 Z"/>
-      <path class="line" d="M-302,-24 L-320,34"/>
-      <path class="panel" fill="#4a4f58" d="M278,-72 L334,-42 L328,56 L268,32 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M316,-34 L364,-12 L360,4 L314,-12 Z"/>
-      <path class="panel" fill="#1f2937" d="M366,-15 L390,-4 L366,7 Z"/>
-      <path class="line" d="M302,-24 L320,34"/>
+  <radialGradient id="aura" cx="50%" cy="35%" r="55%">
+    <stop offset="0" stop-color="#dff7ff" stop-opacity=".24"/>
+    <stop offset="1" stop-color="#dff7ff" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="760" height="980" fill="url(#aura)"/>
+  <g transform="translate(380 438)">
+    <g opacity=".96">
+      <path class="panel" fill="url(#darkArmor)" d="M-82,-236 L-166,-330 L-214,-298 L-174,-80 L-92,-35 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-128,-304 L-176,-284 L-144,-105 L-96,-70 Z"/>
+      <path class="panel" fill="#050b2e" d="M-152,-286 L-179,-276 L-166,-244 L-139,-252 Z"/>
+      <path class="line" d="M-120,-246 L-138,-118"/>
+      <path class="panel" fill="url(#darkArmor)" d="M82,-236 L166,-330 L214,-298 L174,-80 L92,-35 Z"/>
+      <path class="panel" fill="url(#armor)" d="M128,-304 L176,-284 L144,-105 L96,-70 Z"/>
+      <path class="panel" fill="#050b2e" d="M152,-286 L179,-276 L166,-244 L139,-252 Z"/>
+      <path class="line" d="M120,-246 L138,-118"/>
 
-      <path class="panel" fill="#4a4f58" d="M-212,-250 L-278,-206 L-260,-128 L-206,-158 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M-262,-202 L-312,-170 L-306,-152 L-256,-176 Z"/>
-      <path class="panel" fill="#0f172a" d="M-316,-172 L-342,-158 L-314,-148 Z"/>
-      <path class="panel" fill="#4a4f58" d="M212,-250 L278,-206 L260,-128 L206,-158 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M262,-202 L312,-170 L306,-152 L256,-176 Z"/>
-      <path class="panel" fill="#0f172a" d="M316,-172 L342,-158 L314,-148 Z"/>
-    </g>
-
-    <g opacity=".95">
-      <path class="panel" fill="#625f54" d="M-130,-250 L-235,-82 L-178,48 L-92,-36 Z"/>
-      <path class="panel" fill="url(#armor)" d="M-190,-178 L-236,-74 L-180,10 L-118,-62 Z"/>
-      <path class="line" d="M-150,-150 L-185,-58 L-150,-4"/>
-      <path class="panel" fill="#625f54" d="M130,-250 L235,-82 L178,48 L92,-36 Z"/>
-      <path class="panel" fill="url(#armor)" d="M190,-178 L236,-74 L180,10 L118,-62 Z"/>
-      <path class="line" d="M150,-150 L185,-58 L150,-4"/>
-    </g>
-
-    <path class="panel" fill="#5f5a4d" d="M0,-250 L88,-182 L116,-48 L70,74 L0,128 L-70,74 L-116,-48 L-88,-182 Z"/>
-    <path class="panel" fill="url(#armor)" d="M0,-214 L60,-154 L78,-50 L48,56 L0,102 L-48,56 L-78,-50 L-60,-154 Z"/>
-    <path class="panel" fill="#ebe8d6" d="M0,-158 L38,-94 L34,-12 L0,42 L-34,-12 L-38,-94 Z"/>
-    <path class="panel" fill="url(#blue)" d="M-42,-108 L42,-108 L32,-58 L-32,-58 Z"/>
-    <path class="line" d="M-46,-36 L46,-36"/>
-    <path class="thin" d="M-28,-178 L-10,-102 L-28,-28"/>
-    <path class="thin" d="M28,-178 L10,-102 L28,-28"/>
-    <path class="thin" d="M-38,34 L-8,92 L38,34"/>
-
-    <path class="panel" fill="#ebe8d6" d="M-39,-262 L0,-312 L39,-262 L21,-208 L-21,-208 Z"/>
-    <path class="panel" fill="url(#armor)" d="M-30,-238 L-10,-268 L0,-284 L10,-268 L30,-238 L16,-198 L-16,-198 Z"/>
-    <path class="panel" fill="url(#blue)" d="M-20,-232 L0,-252 L20,-232 L10,-212 L-10,-212 Z"/>
-    <path class="thin" d="M-42,-260 L-88,-324"/>
-    <path class="thin" d="M42,-260 L88,-324"/>
-
-    <g>
-      <path class="panel" fill="#4c493f" d="M-58,-132 L-142,-96 L-136,-36 L-78,-22 L-42,-58 Z"/>
-      <path class="panel" fill="url(#blue)" d="M-92,-102 L-142,-84 L-130,-50 L-86,-58 Z"/>
-      <path class="panel" fill="url(#armor)" d="M-90,-20 L-152,18 L-138,84 L-84,54 L-62,4 Z"/>
-      <path class="panel" fill="#ebe8d6" d="M-108,-6 L-144,22 L-132,66 L-96,44 Z"/>
-      <circle class="panel" cx="-78" cy="-18" r="16" fill="#5f5a4d"/>
-      <path class="line" d="M-112,-2 L-132,52"/>
-      <path class="thin" d="M-88,-82 L-124,-68"/>
-
-      <path class="panel" fill="#4c493f" d="M58,-132 L142,-96 L136,-36 L78,-22 L42,-58 Z"/>
-      <path class="panel" fill="url(#blue)" d="M92,-102 L142,-84 L130,-50 L86,-58 Z"/>
-      <path class="panel" fill="url(#armor)" d="M90,-20 L152,18 L138,84 L84,54 L62,4 Z"/>
-      <path class="panel" fill="#ebe8d6" d="M108,-6 L144,22 L132,66 L96,44 Z"/>
-      <circle class="panel" cx="78" cy="-18" r="16" fill="#5f5a4d"/>
-      <path class="line" d="M112,-2 L132,52"/>
-      <path class="thin" d="M88,-82 L124,-68"/>
+      <path class="panel" fill="url(#darkArmor)" d="M-174,-152 L-278,-80 L-238,48 L-134,18 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-232,-84 L-292,-38 L-250,28 L-184,-14 Z"/>
+      <path class="panel" fill="url(#blue)" d="M-204,-111 L-278,-58 L-241,-7 L-162,-48 Z"/>
+      <path class="line" d="M-242,-66 L-204,-25"/>
+      <path class="panel" fill="url(#darkArmor)" d="M174,-152 L278,-80 L238,48 L134,18 Z"/>
+      <path class="panel" fill="url(#armor)" d="M232,-84 L292,-38 L250,28 L184,-14 Z"/>
+      <path class="panel" fill="url(#blue)" d="M204,-111 L278,-58 L241,-7 L162,-48 Z"/>
+      <path class="line" d="M242,-66 L204,-25"/>
     </g>
 
     <g opacity=".98">
-      <path class="panel" fill="#334155" d="M-196,86 L-252,126 L-232,168 L-178,130 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M-246,129 L-292,158 L-284,174 L-238,150 Z"/>
-      <path class="panel" fill="#0f172a" d="M-296,156 L-320,170 L-292,178 Z"/>
-      <path class="line" d="M-214,108 L-230,144"/>
-      <path class="panel" fill="#334155" d="M196,86 L252,126 L232,168 L178,130 Z"/>
-      <path class="panel" fill="#d8d5bd" d="M246,129 L292,158 L284,174 L238,150 Z"/>
-      <path class="panel" fill="#0f172a" d="M296,156 L320,170 L292,178 Z"/>
-      <path class="line" d="M214,108 L230,144"/>
+      <path class="weapon" fill="#4a4f58" d="M-280,-38 L-344,-7 L-338,96 L-270,56 Z"/>
+      <path class="weapon" fill="#d8d5bd" d="M-328,-4 L-386,22 L-379,39 L-321,16 Z"/>
+      <path class="weapon" fill="#0f172a" d="M-390,20 L-416,34 L-387,43 Z"/>
+      <path class="thin" d="M-304,4 L-321,68"/>
+      <path class="weapon" fill="#4a4f58" d="M280,-38 L344,-7 L338,96 L270,56 Z"/>
+      <path class="weapon" fill="#d8d5bd" d="M328,-4 L386,22 L379,39 L321,16 Z"/>
+      <path class="weapon" fill="#0f172a" d="M390,20 L416,34 L387,43 Z"/>
+      <path class="thin" d="M304,4 L321,68"/>
     </g>
 
-    <path class="panel" fill="#4f4b42" d="M-62,88 L62,88 L45,186 L0,224 L-45,186 Z"/>
-    <path class="panel" fill="url(#armor)" d="M-38,108 L38,108 L26,170 L0,198 L-26,170 Z"/>
-    <path class="line" d="M0,112 L0,190"/>
+    <path class="panel" fill="url(#darkArmor)" d="M0,-202 L72,-154 L100,-42 L58,76 L0,130 L-58,76 L-100,-42 L-72,-154 Z"/>
+    <path class="panel" fill="url(#armor)" d="M0,-174 L52,-128 L70,-42 L42,52 L0,98 L-42,52 L-70,-42 L-52,-128 Z"/>
+    <path class="panel" fill="#f5f0dc" d="M0,-126 L31,-77 L29,-10 L0,38 L-29,-10 L-31,-77 Z"/>
+    <path class="panel" fill="#06104b" d="M-44,-96 L44,-96 L30,-50 L-30,-50 Z"/>
+    <path class="line" d="M-42,-28 L42,-28"/>
+    <path class="thin" d="M-38,-154 L-14,-82 L-30,-14"/>
+    <path class="thin" d="M38,-154 L14,-82 L30,-14"/>
+    <path class="thin" d="M-34,32 L-8,86 L34,32"/>
+
+    <path class="panel" fill="#f5f0dc" d="M-34,-222 L0,-268 L34,-222 L18,-184 L-18,-184 Z"/>
+    <path class="panel" fill="url(#armor)" d="M-25,-207 L-7,-233 L0,-250 L7,-233 L25,-207 L14,-178 L-14,-178 Z"/>
+    <path class="panel" fill="#06104b" d="M-16,-202 L0,-218 L16,-202 L8,-188 L-8,-188 Z"/>
+    <path class="thin" d="M-36,-220 L-78,-282"/>
+    <path class="thin" d="M36,-220 L78,-282"/>
 
     <g>
-      <path class="panel" fill="#4c493f" d="M-30,168 L-98,178 L-88,286 L-38,270 L-12,202 Z"/>
-      <path class="panel" fill="url(#armor)" d="M-48,194 L-86,204 L-72,270 L-36,252 Z"/>
-      <path class="line" d="M-60,206 L-56,260"/>
-      <path class="panel" fill="url(#armor)" d="M-40,270 L-122,322 L-102,448 L-34,412 L-12,312 Z"/>
-      <path class="panel" fill="#ebe8d6" d="M-58,302 L-104,334 L-84,416 L-44,386 Z"/>
-      <path class="line" d="M-70,324 L-78,390"/>
-      <path class="panel" fill="url(#blue)" d="M-72,420 L-158,454 L-126,502 L-36,470 Z"/>
-
-      <path class="panel" fill="#4c493f" d="M30,168 L98,178 L88,286 L38,270 L12,202 Z"/>
-      <path class="panel" fill="url(#armor)" d="M48,194 L86,204 L72,270 L36,252 Z"/>
-      <path class="line" d="M60,206 L56,260"/>
-      <path class="panel" fill="url(#armor)" d="M40,270 L122,322 L102,448 L34,412 L12,312 Z"/>
-      <path class="panel" fill="#ebe8d6" d="M58,302 L104,334 L84,416 L44,386 Z"/>
-      <path class="line" d="M70,324 L78,390"/>
-      <path class="panel" fill="url(#blue)" d="M72,420 L158,454 L126,502 L36,470 Z"/>
+      <path class="panel" fill="url(#darkArmor)" d="M-56,-116 L-142,-77 L-138,-24 L-82,-10 L-40,-46 Z"/>
+      <path class="panel" fill="url(#blue)" d="M-88,-92 L-151,-66 L-132,-28 L-78,-39 Z"/>
+      <circle class="joint" cx="-75" cy="-8" r="16" fill="#5f5a4d"/>
+      <path class="panel" fill="url(#armor)" d="M-86,4 L-150,38 L-135,101 L-82,70 L-58,20 Z"/>
+      <path class="panel" fill="#f2eedc" d="M-105,16 L-141,42 L-128,82 L-94,59 Z"/>
+      <path class="line" d="M-111,21 L-129,72"/>
+      <path class="panel" fill="url(#darkArmor)" d="M56,-116 L142,-77 L138,-24 L82,-10 L40,-46 Z"/>
+      <path class="panel" fill="url(#blue)" d="M88,-92 L151,-66 L132,-28 L78,-39 Z"/>
+      <circle class="joint" cx="75" cy="-8" r="16" fill="#5f5a4d"/>
+      <path class="panel" fill="url(#armor)" d="M86,4 L150,38 L135,101 L82,70 L58,20 Z"/>
+      <path class="panel" fill="#f2eedc" d="M105,16 L141,42 L128,82 L94,59 Z"/>
+      <path class="line" d="M111,21 L129,72"/>
     </g>
 
-    <circle cx="-96" cy="-38" r="10" fill="#00c8ff" filter="url(#glow)"/>
-    <circle cx="96" cy="-38" r="10" fill="#00c8ff" filter="url(#glow)"/>
-    <circle cx="-74" cy="100" r="9" fill="#00c8ff" filter="url(#glow)"/>
-    <circle cx="74" cy="100" r="9" fill="#00c8ff" filter="url(#glow)"/>
-    <circle cx="0" cy="-4" r="13" fill="#00c8ff" filter="url(#glow)"/>
+    <g opacity=".98">
+      <path class="weapon" fill="#334155" d="M-180,98 L-254,144 L-238,184 L-169,140 Z"/>
+      <path class="weapon" fill="#d8d5bd" d="M-248,146 L-305,180 L-297,197 L-240,168 Z"/>
+      <path class="weapon" fill="#0f172a" d="M-309,179 L-335,194 L-305,202 Z"/>
+      <path class="thin" d="M-204,122 L-222,160"/>
+      <path class="weapon" fill="#334155" d="M180,98 L254,144 L238,184 L169,140 Z"/>
+      <path class="weapon" fill="#d8d5bd" d="M248,146 L305,180 L297,197 L240,168 Z"/>
+      <path class="weapon" fill="#0f172a" d="M309,179 L335,194 L305,202 Z"/>
+      <path class="thin" d="M204,122 L222,160"/>
+    </g>
+
+    <path class="panel" fill="#4f4b42" d="M-56,88 L56,88 L39,174 L0,211 L-39,174 Z"/>
+    <path class="panel" fill="url(#armor)" d="M-34,106 L34,106 L23,160 L0,187 L-23,160 Z"/>
+    <path class="line" d="M0,108 L0,181"/>
+
+    <g>
+      <path class="panel" fill="url(#darkArmor)" d="M-24,160 L-86,175 L-76,281 L-37,268 L-9,197 Z"/>
+      <path class="panel" fill="url(#armor)" d="M-44,188 L-78,202 L-64,266 L-33,249 Z"/>
+      <path class="line" d="M-56,206 L-52,258"/>
+      <path class="panel" fill="url(#armor)" d="M-39,266 L-116,322 L-99,451 L-29,410 L-10,310 Z"/>
+      <path class="panel" fill="#f2eedc" d="M-58,302 L-102,338 L-82,418 L-42,384 Z"/>
+      <path class="line" d="M-70,324 L-77,390"/>
+      <path class="panel" fill="url(#blue)" d="M-68,420 L-154,456 L-124,505 L-32,471 Z"/>
+      <path class="panel" fill="url(#darkArmor)" d="M24,160 L86,175 L76,281 L37,268 L9,197 Z"/>
+      <path class="panel" fill="url(#armor)" d="M44,188 L78,202 L64,266 L33,249 Z"/>
+      <path class="line" d="M56,206 L52,258"/>
+      <path class="panel" fill="url(#armor)" d="M39,266 L116,322 L99,451 L29,410 L10,310 Z"/>
+      <path class="panel" fill="#f2eedc" d="M58,302 L102,338 L82,418 L42,384 Z"/>
+      <path class="line" d="M70,324 L77,390"/>
+      <path class="panel" fill="url(#blue)" d="M68,420 L154,456 L124,505 L32,471 Z"/>
+    </g>
+
+    <path class="thin" d="M-202,170 L-270,300 L-300,438"/>
+    <path class="thin" d="M202,170 L270,300 L300,438"/>
+    <circle cx="-92" cy="-28" r="10" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="92" cy="-28" r="10" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="-66" cy="103" r="9" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="66" cy="103" r="9" fill="#00c8ff" filter="url(#glow)"/>
+    <circle cx="0" cy="-2" r="13" fill="#00c8ff" filter="url(#glow)"/>
   </g>
 </svg>

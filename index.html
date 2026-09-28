@@ -1413,6 +1413,7 @@
     let enemies = [];
     let enemyBullets = [];
     let bossLasers = [];
+    let bossBombs = [];
     let explosions = [];
     let fallout = null;
     let pickups = [];
@@ -2644,6 +2645,7 @@
       enemies = [];
       enemyBullets = [];
       bossLasers = [];
+      bossBombs = [];
       explosions = [];
       fallout = null;
       pickups = [];
@@ -2714,15 +2716,16 @@
         x: W / 2,
         y: -150,
         targetY: 146,
-        hp: 180000,
-        maxHp: 180000,
+        hp: 900000,
+        maxHp: 900000,
         power: 10,
         shots: 18,
-        fire: 700,
+        fire: 440,
         inv: 250,
         phase: 1,
         patternStep: 0,
         laserCooldown: 2600,
+        bombCooldown: 1800,
         t: 0,
         hitW: 230,
         hitH: 248,
@@ -3605,10 +3608,12 @@
         lastWarFrost: { fill: '#94a3b8', core: '#e0f2fe', shape: 'ring', size: 1.18 },
         lastWarTurret: { fill: '#38bdf8', core: '#ecfeff', shape: 'missile', size: 1.14 },
         lastWarGate: { fill: '#facc15', core: '#7f1d1d', shape: 'boss', size: 1.32 },
-        secretEnergy: { fill: '#0891b2', core: '#e0f2fe', shape: 'orb', size: 1.08 },
-        secretFan: { fill: '#2563eb', core: '#bfdbfe', shape: 'diamond', size: .96 },
+        secretEnergy: { fill: '#0891b2', core: '#e0f2fe', shape: 'energyOrb', size: 1.08 },
+        secretFan: { fill: '#2563eb', core: '#bfdbfe', shape: 'splitDiamond', size: .96 },
+        secretLance: { fill: '#06b6d4', core: '#ecfeff', shape: 'cyanLance', size: 1.1 },
+        secretArc: { fill: '#38bdf8', core: '#082f49', shape: 'arcShard', size: 1.04 },
         secretMissile: { fill: '#d8d5bd', core: '#00b7ff', shape: 'guidedMissile', size: 1.18 },
-        secretFinale: { fill: '#0ea5e9', core: '#ffffff', shape: 'ring', size: 1.18 },
+        secretFinale: { fill: '#0ea5e9', core: '#ffffff', shape: 'coreRing', size: 1.18 },
         wwAxisBiplane: { fill: '#dc2626', core: '#7f1d1d', shape: 'dart', size: .9 },
         wwAxisScout: { fill: '#f97316', core: '#fed7aa', shape: 'diamond', size: .95 },
         wwAxisOldBomber: { fill: '#a16207', core: '#fef3c7', shape: 'heavy', size: 1.12 },
@@ -3651,13 +3656,20 @@
       const late = st >= 11;
       const baseForm = form || bossBulletForm(boss.kind);
       const styleForm = baseForm;
-      const speedScale = boss?.kind === 'secretRobot' ? 1.14 : 1.08;
+      const speedScale = boss?.kind === 'secretRobot'
+        ? boss.phase >= 2 ? 1.26 : 1.14
+        : 1.08;
+      const secretRobotDamage = boss.kind === 'secretRobot'
+        ? boss.phase >= 2
+          ? 4 + boss.phase * 2 + Math.max(0, damage)
+          : 2 + Math.ceil((boss.phase || 1) * .9) + Math.max(0, damage)
+        : 0;
       enemyBullets.push({
         x,
         y,
         vx: Math.sin(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
         vy: Math.cos(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
-        dmg: boss.kind === 'secretRobot' ? Math.max(1, 2 + Math.ceil((boss.phase || 1) * .9) + Math.max(0, damage)) : Math.max(1, boss.power + damage),
+        dmg: boss.kind === 'secretRobot' ? Math.max(1, secretRobotDamage) : Math.max(1, boss.power + damage),
         r: Math.max(4, lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size),
         style: enemyBulletStyle(styleForm, true),
         homingTime: opts.homingTime || 0,
@@ -3710,6 +3722,41 @@
           absorbOrDamage(l.dmg);
         }
         l.hitTick = Math.max(0, (l.hitTick || 0) - dt);
+      });
+    }
+
+    function queueSecretRobotBombs() {
+      if (!boss || boss.kind !== 'secretRobot' || !player) return;
+      const offsets = [-132, -44, 44, 132];
+      offsets.forEach((offset, index) => {
+        const x = clamp(player.x + offset + Math.sin((boss.t || 0) / 300 + index) * 18, 58, W - 58);
+        const y = clamp(player.y - 88 + (index % 2) * 58, 128, H - 130);
+        bossBombs.push({
+          x,
+          y,
+          r: boss.phase >= 3 ? 56 : 48,
+          charge: boss.phase >= 3 ? 920 : 1080,
+          burst: 340,
+          time: 0,
+          dmg: boss.phase >= 3 ? 12 : 9,
+          hit: false
+        });
+      });
+      flash('BOMB WARNING');
+      playEnemyLaser(performance.now());
+    }
+
+    function updateBossBombs(dt) {
+      if (!player || mode !== 'play') return;
+      bossBombs.forEach(b => {
+        b.time += dt;
+        const active = b.time >= b.charge && b.time <= b.charge + b.burst;
+        if (!active || b.hit || player.inv > 0 || player?.jet?.godMode) return;
+        const hit = playerHitZones().some(zone => Math.hypot(zone.x - b.x, zone.y - b.y) < zone.r + b.r * .82);
+        if (hit) {
+          b.hit = true;
+          absorbOrDamage(b.dmg);
+        }
       });
     }
 
@@ -3825,23 +3872,31 @@
         else if (volley === 2) ring(boss.x, boss.y + 14, 10 + boss.phase * 2, boss.t / 620, 1.74 + st * .03, 'lastWarRecord', 0, 0, Math.floor((boss.t / 820) % (10 + boss.phase * 2)), 1);
         else lane([[-120, 6, .18], [-60, 62, .06], [60, 62, -.06], [120, 6, -.18]], 'launcher', 2.42 + st * .036);
       } else if (boss.kind === 'secretRobot') {
-        if (boss.phase >= 3 && volley === 0) {
-          ring(boss.x, boss.y - 8, 18, boss.t / 620, 1.82, 'secretFinale', 0, 0, Math.floor((boss.t / 820) % 18), 3);
-          lane([[-102, -72, .18], [102, -72, -.18], [-46, 54, -.05], [46, 54, .05]], 'secretEnergy', 2.35, 0, 0);
-        } else if (volley === 0) {
-          lane([[-86, -10, -.12], [86, -10, .12], [-52, 46, -.05], [52, 46, .05]], 'secretEnergy', 2.45 + boss.phase * .1, 0, 0);
-        } else if (volley === 1) {
-          fan(boss.x, boss.y + 72, 7 + boss.phase * 2, aimAtPlayer(boss.x, boss.y + 72) + weave * .08, .12, 2.22 + boss.phase * .12, 'secretFan', 0, 0);
-        } else if (volley === 2 && boss.phase >= 2) {
+        const robotVolley = step % 6;
+        if (robotVolley === 0) {
+          lane([[-116, -70, .2], [116, -70, -.2], [-58, 44, -.06], [58, 44, .06]], 'secretEnergy', 2.68 + boss.phase * .13, 0, 0);
+          if (boss.phase >= 2) lane([[-132, -4, .22], [132, -4, -.22]], 'secretLance', 2.85 + boss.phase * .12, 1, 1);
+        } else if (robotVolley === 1) {
+          fan(boss.x, boss.y + 72, 8 + boss.phase * 3, aimAtPlayer(boss.x, boss.y + 72) + weave * .09, .105, 2.5 + boss.phase * .16, 'secretFan', 0, 0);
+        } else if (robotVolley === 2) {
+          const count = 14 + boss.phase * 3;
+          ring(boss.x, boss.y - 6, count, boss.t / 520, 2.02 + boss.phase * .13, boss.phase >= 3 ? 'secretFinale' : 'secretEnergy', 0, 0, Math.floor((boss.t / 690) % count), 3);
+        } else if (robotVolley === 3) {
           for (const side of [-1, 1]) {
-            bossBullet(boss.x + side * 118, boss.y - 48, aimAtPlayer(boss.x + side * 118, boss.y - 48, side * .18), 2.32 + boss.phase * .08, 1, 1, 'secretMissile', { homingTime: 980, homingStrength: .035 + boss.phase * .006 });
-            bossBullet(boss.x + side * 86, boss.y + 40, aimAtPlayer(boss.x + side * 86, boss.y + 40, -side * .08), 2.18 + boss.phase * .08, 0, 0, 'secretMissile', { homingTime: 720, homingStrength: .028 });
+            bossBullet(boss.x + side * 128, boss.y - 58, aimAtPlayer(boss.x + side * 128, boss.y - 58, side * .22), 3.18 + boss.phase * .18, 1, 1, 'secretMissile', { homingTime: 1500, homingStrength: .078 + boss.phase * .012 });
+            bossBullet(boss.x + side * 92, boss.y + 38, aimAtPlayer(boss.x + side * 92, boss.y + 38, -side * .1), 2.96 + boss.phase * .16, 0, 0, 'secretMissile', { homingTime: 1220, homingStrength: .07 + boss.phase * .01 });
           }
+          if (boss.phase >= 3) lane([[-48, 82, -.04], [48, 82, .04]], 'secretArc', 2.7, 0, 1);
+        } else if (robotVolley === 4) {
+          const leftSpin = boss.t / 430;
+          ring(boss.x - 70, boss.y + 14, 9 + boss.phase * 2, leftSpin, 1.98 + boss.phase * .12, 'secretArc', 0, 0, Math.floor((boss.t / 760) % (9 + boss.phase * 2)), 2);
+          ring(boss.x + 70, boss.y + 14, 9 + boss.phase * 2, -leftSpin, 1.98 + boss.phase * .12, 'secretArc', 0, 0, Math.floor((boss.t / 780) % (9 + boss.phase * 2)), 2);
         } else {
-          ring(boss.x, boss.y - 4, 12 + boss.phase * 2, boss.t / 560, 1.72 + boss.phase * .1, 'secretEnergy', 0, 0, Math.floor((boss.t / 760) % (12 + boss.phase * 2)), 2);
+          fan(boss.x, boss.y + 48, 7 + boss.phase * 2, aimAtPlayer(boss.x, boss.y + 48), .13, 2.78 + boss.phase * .18, 'secretLance', 0, 1);
+          lane([[-100, -24, .18], [100, -24, -.18], [-34, 74, -.03], [34, 74, .03]], 'secretEnergy', 2.58, 0, 0);
         }
-        if (boss.phase >= 3 && volley === 3) {
-          fan(boss.x, boss.y + 44, 9, aimAtPlayer(boss.x, boss.y + 44), .1, 2.55, 'secretFan', 0, 1);
+        if (boss.phase >= 3 && (robotVolley === 1 || robotVolley === 5)) {
+          fan(boss.x, boss.y + 44, 10, aimAtPlayer(boss.x, boss.y + 44), .09, 2.88, 'secretFan', 0, 1);
         }
       } else if (boss.kind === 'warRobot') {
         if (volley === 0) lane([[-78, 28, -.1], [78, 28, .1]], 'lastWarTurret', 2.32 + st * .038);
@@ -4522,7 +4577,10 @@
       });
 
       if (boss) {
-        boss.t += dt;
+        const bossTimeScale = boss.kind === 'secretRobot'
+          ? boss.phase >= 3 ? 1.28 : boss.phase >= 2 ? 1.16 : 1
+          : 1;
+        boss.t += dt * bossTimeScale;
         boss.inv = Math.max(0, boss.inv - dt);
         boss.y += (boss.targetY - boss.y) * (1 - Math.pow(.975, frameStep));
         const st = difficultyStage();
@@ -4549,8 +4607,9 @@
           boss.x = W / 2 + Math.sin(boss.t / 980) * 92 + Math.sin(boss.t / 330) * 18;
         } else if (boss.kind === 'secretRobot') {
           const robotMargin = Math.min(214, W * .44);
-          boss.x = clamp(W / 2 + Math.sin(boss.t / 820) * 42 + Math.sin(boss.t / 290) * 10, robotMargin, W - robotMargin);
-          boss.targetY = 142 + Math.cos(boss.t / 760) * 12;
+          const phaseMove = boss.phase >= 3 ? 1.42 : boss.phase >= 2 ? 1.24 : 1;
+          boss.x = clamp(W / 2 + Math.sin(boss.t / 720) * 48 * phaseMove + Math.sin(boss.t / 250) * 14, robotMargin, W - robotMargin);
+          boss.targetY = 142 + Math.cos(boss.t / 650) * 14 * phaseMove;
         } else {
           boss.x = W / 2 + Math.sin(boss.t / 900) * (105 + st * 9);
         }
@@ -4558,15 +4617,20 @@
         if (boss.hitFlash > 0) boss.hitFlash = Math.max(0, boss.hitFlash - dt);
         if (boss.kind === 'secretRobot' && boss.phase >= 2) {
           boss.laserCooldown = Math.max(0, (boss.laserCooldown || 0) - dt);
-          if (boss.laserCooldown <= 0 && bossLasers.length < 2) {
+          if (boss.laserCooldown <= 0 && bossLasers.length < 3) {
             queueSecretRobotLaser();
-            boss.laserCooldown = boss.phase >= 3 ? 3600 : 4700;
+            boss.laserCooldown = 4000;
+          }
+          boss.bombCooldown = Math.max(0, (boss.bombCooldown || 0) - dt);
+          if (boss.bombCooldown <= 0 && bossBombs.length < 8) {
+            queueSecretRobotBombs();
+            boss.bombCooldown = 4000;
           }
         }
         boss.fire -= dt;
         if (boss.fire <= 0) {
           boss.fire = boss.kind === 'secretRobot'
-            ? Math.max(1350, 2300 - boss.phase * 260)
+            ? Math.max(780, 1760 - boss.phase * 310)
             : Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120);
           shootBoss();
         }
@@ -4591,6 +4655,7 @@
       });
 
       updateBossLasers(dt);
+      updateBossBombs(dt);
 
       handleHits(frameStep);
       cleanup();
@@ -4894,16 +4959,18 @@
       enemies = enemies.filter(e => !e.dead && e.y < H + 50);
       enemyBullets = enemyBullets.filter(b => !b.hit && b.y < H + 40 && b.x > -40 && b.x < W + 40);
       bossLasers = bossLasers.filter(l => l.time < l.charge + l.duration);
+      bossBombs = bossBombs.filter(b => b.time < b.charge + b.burst);
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
       const robotFight = boss?.kind === 'secretRobot';
       const bulletCap = robotFight ? 560 : 720;
-      const enemyBulletCap = robotFight ? 430 : 640;
-      const explosionCap = robotFight ? 56 : 90;
-      const effectCap = robotFight ? 18 : 24;
+      const enemyBulletCap = robotFight ? 560 : 640;
+      const explosionCap = robotFight ? 48 : 90;
+      const effectCap = robotFight ? 16 : 24;
       if (bullets.length > bulletCap) bullets.splice(0, bullets.length - bulletCap);
       if (enemyBullets.length > enemyBulletCap) enemyBullets.splice(0, enemyBullets.length - enemyBulletCap);
       if (bossLasers.length > 8) bossLasers.splice(0, bossLasers.length - 8);
+      if (bossBombs.length > 12) bossBombs.splice(0, bossBombs.length - 12);
       if (explosions.length > explosionCap) explosions.splice(0, explosions.length - explosionCap);
       if (specialEffects.length > effectCap) specialEffects.splice(0, specialEffects.length - effectCap);
       if (pickups.length > 36) pickups.splice(0, pickups.length - 36);
@@ -4924,6 +4991,7 @@
       bullets.forEach(drawPlayerBullet);
       specialEffects.forEach(drawSpecialEffect);
       enemyBullets.forEach(drawEnemyBullet);
+      bossBombs.forEach(drawBossBomb);
       bossLasers.forEach(drawBossLaser);
       explosions.forEach(drawExplosion);
       if (player && !player.dead) drawPlayer();
@@ -7894,13 +7962,13 @@
         ctx.lineWidth = 8;
         for (const side of [-1, 1]) {
           ctx.beginPath();
-          ctx.moveTo(side * 39, -84);
-          ctx.lineTo(side * 118, -198);
-          ctx.lineTo(side * 152, -62);
+          ctx.moveTo(side * 40, -112);
+          ctx.lineTo(side * 122, -232);
+          ctx.lineTo(side * 158, -66);
           ctx.stroke();
           ctx.beginPath();
-          ctx.moveTo(side * 54, -4);
-          ctx.lineTo(side * 162, 98);
+          ctx.moveTo(side * 56, -10);
+          ctx.lineTo(side * 158, 74);
           ctx.stroke();
         }
         ctx.restore();
@@ -7908,13 +7976,13 @@
         for (const side of [-1, 1]) {
           ctx.save();
           ctx.scale(side, 1);
-          drawPanel([[34,-120],[74,-204],[123,-184],[117,-78],[58,-30]], armorDark);
-          drawPanel([[56,-157],[87,-181],[98,-93],[65,-49]], armorLight);
-          drawPanel([[98,-128],[149,-146],[161,-112],[107,-85]], armorDark);
-          drawPanel([[109,-121],[146,-132],[151,-121],[108,-104]], rgbaColor(glow, .92), rgbaColor(glow, .95));
-          drawPanel([[46,-52],[122,-22],[91,18],[37,-17]], navy);
-          drawPanel([[72,-18],[132,20],[105,58],[58,35]], armorLight);
-          drawPanel([[62,-34],[110,-12],[88,5],[54,-18]], rgbaColor(glow, .9), rgbaColor(glow, .95));
+          drawPanel([[34,-152],[82,-246],[130,-228],[112,-76],[58,-31]], armorDark);
+          drawPanel([[57,-196],[91,-220],[101,-96],[65,-51]], armorLight);
+          drawPanel([[100,-134],[154,-154],[165,-116],[106,-83]], armorDark);
+          drawPanel([[111,-126],[150,-139],[155,-123],[107,-103]], rgbaColor(glow, .92), rgbaColor(glow, .95));
+          drawPanel([[45,-60],[132,-20],[94,23],[36,-18]], navy);
+          drawPanel([[72,-22],[143,20],[111,63],[58,36]], armorLight);
+          drawPanel([[62,-41],[114,-14],[88,8],[53,-20]], rgbaColor(glow, .9), rgbaColor(glow, .95));
           ctx.restore();
         }
 
@@ -7928,23 +7996,23 @@
         drawPanel([[-19,-111],[0,-134],[19,-111],[10,-88],[-10,-88]], armorLight);
         drawPanel([[-17,-98],[-5,-114],[0,-123],[5,-114],[17,-98],[9,-82],[-9,-82]], armor);
         drawPanel([[-10,-97],[0,-108],[10,-97],[5,-87],[-5,-87]], navy);
-        glowLine([[-20,-111],[-48,-143]]);
-        glowLine([[20,-111],[48,-143]]);
+        glowLine([[-20,-111],[-70,-174]]);
+        glowLine([[20,-111],[70,-174]]);
         glowLine([[-11,-97],[-3,-91],[3,-91],[11,-97]], 2.3);
 
         for (const side of [-1, 1]) {
           ctx.save();
           ctx.scale(side, 1);
-          drawPanel([[36,-60],[92,-39],[83,7],[38,22],[24,-18]], armorDark);
-          drawPanel([[48,-44],[79,-31],[67,-7],[39,-17]], panelBlue);
-          drawPanel([[64,-28],[119,-5],[104,31],[59,12]], armorLight);
-          drawPanel([[73,-18],[106,-6],[92,12],[63,-3]], rgbaColor(glow, .88), rgbaColor(glow, .95));
-          drawPanel([[44,16],[86,34],[74,77],[39,62],[29,27]], armor);
-          drawPanel([[50,27],[74,39],[62,57],[37,45]], panelBlue);
-          drawPanel([[57,35],[78,45],[68,62],[46,52]], rgbaColor(glow, .82), rgbaColor(glow, .95));
-          drawPanel([[91,-16],[137,10],[127,52],[87,28]], armorDark);
-          drawPanel([[101,-4],[128,13],[116,36],[91,22]], armorLight);
-          drawPanel([[109,4],[124,14],[116,29],[101,20]], rgbaColor(glow, .82), rgbaColor(glow, .95));
+          drawPanel([[36,-64],[96,-42],[87,8],[38,23],[23,-20]], armorDark);
+          drawPanel([[50,-48],[84,-34],[69,-7],[38,-18]], panelBlue);
+          drawPanel([[68,-31],[124,-6],[108,32],[60,13]], armorLight);
+          drawPanel([[76,-20],[110,-7],[94,13],[64,-3]], rgbaColor(glow, .88), rgbaColor(glow, .95));
+          drawPanel([[43,17],[86,35],[73,79],[38,63],[28,27]], armor);
+          drawPanel([[50,27],[76,39],[62,58],[37,45]], panelBlue);
+          drawPanel([[57,35],[80,45],[68,63],[46,52]], rgbaColor(glow, .82), rgbaColor(glow, .95));
+          drawPanel([[93,-18],[143,9],[130,55],[88,29]], armorDark);
+          drawPanel([[103,-5],[132,13],[119,37],[92,22]], armorLight);
+          drawPanel([[111,4],[128,14],[118,30],[101,20]], rgbaColor(glow, .82), rgbaColor(glow, .95));
           ctx.restore();
         }
 
@@ -9213,6 +9281,45 @@
       ctx.restore();
     }
 
+    function drawBossBomb(b) {
+      const active = b.time >= b.charge;
+      const ratio = active ? clamp((b.time - b.charge) / b.burst, 0, 1) : clamp(b.time / b.charge, 0, 1);
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      if (!active) {
+        ctx.strokeStyle = `rgba(239,68,68,${.35 + ratio * .42})`;
+        ctx.fillStyle = `rgba(239,68,68,${.08 + ratio * .16})`;
+        ctx.lineWidth = 3 + ratio * 3;
+        ctx.beginPath();
+        ctx.arc(0, 0, b.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(254,202,202,.9)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-b.r * .55, 0);
+        ctx.lineTo(b.r * .55, 0);
+        ctx.moveTo(0, -b.r * .55);
+        ctx.lineTo(0, b.r * .55);
+        ctx.stroke();
+      } else {
+        const fade = 1 - ratio;
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = `rgba(248,113,113,${.32 * fade})`;
+        ctx.strokeStyle = `rgba(254,202,202,${.82 * fade})`;
+        ctx.lineWidth = 6 * fade + 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, b.r * (1 + ratio * .35), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = `rgba(250,204,21,${.55 * fade})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, b.r * .38 * fade + 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
     function drawEnemyBullet(b) {
       const style = b.style || enemyBulletStyle();
       ctx.save();
@@ -9232,6 +9339,93 @@
         ctx.beginPath();
         ctx.arc(-r * .25, -r * .25, r * .42, 0, Math.PI * 2);
         ctx.fill();
+      } else if (style.shape === 'energyOrb') {
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 1.36, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.strokeStyle = style.core;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r * 1.9, r * .72, Math.PI / 5, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, r * 1.9, r * .72, -Math.PI / 5, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.beginPath();
+        ctx.arc(-r * .28, -r * .24, r * .54, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (style.shape === 'splitDiamond') {
+        ctx.beginPath();
+        ctx.moveTo(0, -r * 2.65);
+        ctx.lineTo(r * 1.35, -r * .25);
+        ctx.lineTo(r * .45, r * 2.15);
+        ctx.lineTo(0, r * 1.15);
+        ctx.lineTo(-r * .45, r * 2.15);
+        ctx.lineTo(-r * 1.35, -r * .25);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.beginPath();
+        ctx.moveTo(0, -r * 1.85);
+        ctx.lineTo(r * .56, -r * .1);
+        ctx.lineTo(0, r * .8);
+        ctx.lineTo(-r * .56, -r * .1);
+        ctx.closePath();
+        ctx.fill();
+      } else if (style.shape === 'cyanLance') {
+        ctx.beginPath();
+        ctx.moveTo(0, -r * 3.25);
+        ctx.lineTo(r * .72, -r * 1.35);
+        ctx.lineTo(r * .5, r * 2.35);
+        ctx.lineTo(0, r * 3.08);
+        ctx.lineTo(-r * .5, r * 2.35);
+        ctx.lineTo(-r * .72, -r * 1.35);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = style.core;
+        ctx.fillRect(-r * .18, -r * 2.2, r * .36, r * 4.4);
+        ctx.strokeStyle = style.core;
+        ctx.beginPath();
+        ctx.moveTo(-r * 1.12, r * .6);
+        ctx.lineTo(r * 1.12, r * .6);
+        ctx.stroke();
+      } else if (style.shape === 'arcShard') {
+        ctx.beginPath();
+        ctx.moveTo(-r * 1.35, r * 2.05);
+        ctx.quadraticCurveTo(r * 1.9, r * .7, r * .42, -r * 2.7);
+        ctx.lineTo(r * 1.5, -r * 2.25);
+        ctx.quadraticCurveTo(r * .18, r * .32, r * 1.48, r * 2.38);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.strokeStyle = style.core;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-r * .55, r * 1.35);
+        ctx.quadraticCurveTo(r * .72, r * .14, r * .38, -r * 1.8);
+        ctx.stroke();
+      } else if (style.shape === 'coreRing') {
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 1.85, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#061223';
+        ctx.beginPath();
+        ctx.arc(0, 0, r * .9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = style.core;
+        ctx.lineWidth = 1.3;
+        for (let i = 0; i < 4; i++) {
+          ctx.rotate(Math.PI / 4);
+          ctx.beginPath();
+          ctx.moveTo(0, -r * 2.5);
+          ctx.lineTo(0, -r * 1.52);
+          ctx.stroke();
+        }
       } else if (style.shape === 'guidedMissile') {
         const body = r * 3.9;
         ctx.lineJoin = 'round';
