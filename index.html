@@ -879,6 +879,13 @@
       { id: 'f15', name: 'F-15 이글', role: '정면 강타', color: '#8f9da8', power: 16, hp: 9, shots: 2, fireRate: 190, speed: 6.0, bulletSpeed: 11.7, hitbox: 7, startBombs: 2, special: '높은 단발 화력의 정통 제공기' },
       { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 9, hp: 12, shots: 4, fireRate: 166, speed: 5.9, bulletSpeed: 10.2, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
       { id: 'kf21', name: 'KF-21 글록3', role: '정밀 코어', color: '#6f7f8f', power: 12, hp: 10, shots: 3, fireRate: 142, speed: 6.55, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
+      { id: 'darkstar', name: '다크스타', role: '초고속 침투', color: '#1f2937', power: 15, hp: 7, shots: 2, fireRate: 178, speed: 8.05, bulletSpeed: 13.2, hitbox: 5, startBombs: 2, special: '특수기: 극초음속 침투. 긴 관통탄과 고속 회피' },
+      { id: 'adf11f', name: 'ADF-11F Raven', role: '무인 정밀기', color: '#d9d2bd', power: 11, hp: 9, shots: 5, fireRate: 148, speed: 6.85, bulletSpeed: 11.6, hitbox: 6, startBombs: 2, special: '특수기: 레이븐 드론 락온. 여러 표적을 추적하는 정밀탄' },
+      { id: 'adf01', name: 'ADF-01 FALKEN', role: '전술 레이저', color: '#53616f', power: 18, hp: 10, shots: 2, fireRate: 220, speed: 6.05, bulletSpeed: 12.6, hitbox: 7, startBombs: 2, special: '특수기: 팔켄 TLS. 직선 관통 레이저 사격' },
+      { id: 'adfx01', name: 'ADFX-01 Morgan', role: '중량 복합화력', color: '#8f969d', power: 17, hp: 13, shots: 3, fireRate: 230, speed: 5.38, bulletSpeed: 10.2, hitbox: 10, startBombs: 3, special: '특수기: 모르간 버스트. 폭발탄과 관통탄 동시 발사' },
+      { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 10, hp: 10, shots: 6, fireRate: 158, speed: 6.4, bulletSpeed: 10.7, hitbox: 7, startBombs: 2, special: '특수기: 노스페라투 ADMM. 다수의 소형 유도탄 산개' },
+      { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 12, hp: 10, shots: 4, fireRate: 150, speed: 6.75, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '특수기: 4연장 MSTM. Shift로 가변익 고속 비행' },
+      { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 9, hp: 9, shots: 5, fireRate: 132, speed: 7.25, bulletSpeed: 10.8, hitbox: 6, startBombs: 2, special: '특수기: 신덴 V/STOL 기동. 잠시 무적 회피 후 산개탄' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
     ];
@@ -1199,7 +1206,10 @@
       b29: ['#d8c699', '#f97316'], su57: ['#c7f4ff', '#22d3ee'], f16: ['#8bd3ff', '#60a5fa'], a10: ['#8fa37b', '#84cc16'],
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#4f5a78', '#818cf8'], geomancho: ['#0f766e', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
-      bomberfleet: ['#1f6f7a', '#43d3c4'], kf21: ['#6f7f8f', '#4fb3ff'], sr71: ['#3f4654', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
+      bomberfleet: ['#1f6f7a', '#43d3c4'], kf21: ['#6f7f8f', '#4fb3ff'], darkstar: ['#1f2937', '#38bdf8'],
+      adf11f: ['#d9d2bd', '#22d3ee'], adf01: ['#53616f', '#ef4444'], adfx01: ['#8f969d', '#facc15'],
+      cfa44: ['#49515a', '#60a5fa'], xfa27: ['#6b7280', '#f97316'], asfx: ['#334155', '#38bdf8'],
+      sr71: ['#3f4654', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
       f67: ['#7c3aed', '#22d3ee'],
       ww_camel: ['#c084fc', '#f59e0b'], ww_spitfire: ['#22c55e', '#38bdf8'], ww_hurricane: ['#64748b', '#facc15'],
       ww_mustang: ['#e5e7eb', '#2563eb'], ww_yak3: ['#38bdf8', '#ef4444'], ww_zero: ['#f8fafc', '#dc2626'],
@@ -2110,7 +2120,7 @@
     }
 
     function isVariableWingJet(id) {
-      return id === 'f111' || id === 'f14' || id === 'f67' || id === 'error' || id === 'geomancho' || id === 'operator';
+      return id === 'f111' || id === 'f14' || id === 'f67' || id === 'error' || id === 'geomancho' || id === 'operator' || id === 'xfa27';
     }
 
     function projectileFeatureText(id) {
@@ -2135,6 +2145,13 @@
         error: '투사체: 깨진 노이즈가 섞인 글리치 폭발탄.',
         bomberfleet: '투사체: 선택창에 보이는 함대 기체들이 각자 자기 탄도를 사용.',
         kf21: '투사체: 푸른 코어탄. 빠르고 정밀하지만 체력과 폭탄 수는 평범한 차세대 기체.',
+        darkstar: '투사체: 극초음속 침투기답게 매우 빠른 검푸른 관통탄. 탄 수는 적지만 정면 돌파가 강함.',
+        adf11f: '투사체: 무인기 Raven의 다탄 락온 코어. 넓게 퍼진 뒤 적을 추적하는 정밀 탄도.',
+        adf01: '투사체: FALKEN의 TLS풍 직선 관통탄. 강하지만 연사가 느려 조준이 중요함.',
+        adfx01: '투사체: Morgan의 무거운 폭발탄. 느리지만 넓은 범위와 높은 단발 화력.',
+        cfa44: '투사체: Nosferatu의 ADMM식 소형 다탄 산개. 화면 장악력이 좋지만 발당 화력은 낮음.',
+        xfa27: '투사체: XFA-27의 가변익 멀티 탄도. Shift 고속 모드에서 위치 싸움이 강함.',
+        asfx: '투사체: Shinden II의 전진익 기동탄. 빠르고 넓게 퍼지지만 체력은 낮음.',
         operator: '투사체: 어드민 스타 코어탄. 예전 어드민 기체처럼 전장을 압도하는 탄도.',
         sr71: '투사체: 매우 빠른 초고속 관통탄.',
         yf23: '투사체: 스텔스 기습형 유도 관통탄.',
@@ -2166,6 +2183,13 @@
       error: ['글리치 전익 폭격기', 'B-2를 닮은 넓은 전익기와 노이즈 폭발탄으로 적을 불안정하게 흔든다.', '폭격함대보다 약하고 화면 장악력은 부족하다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
       kf21: ['정밀 코어기', 'KF-21의 사다리꼴 주익과 쌍수직미익을 살린 빠른 정밀 제공기다.', '탄 수가 적어 대충 뿌리기보다 정면 조준을 잘해야 강하다.'],
+      darkstar: ['극초음속 침투기', '검은 삼각 동체와 긴 노즈를 살린 초고속 기체라 위험 구역을 빠르게 빠져나온다.', '체력과 탄 수가 낮아서 한 번 삐끗하면 손해가 크다.'],
+      adf11f: ['무인 정밀기', '분리형 노즈와 넓은 무미익 실루엣처럼 다탄 락온으로 움직이는 적을 잘 잡는다.', '발당 화력은 낮아 보스전에서는 꾸준히 맞춰야 한다.'],
+      adf01: ['전술 레이저기', '긴 동체와 붉은 코어 라인을 살린 강한 관통탄으로 대형 목표를 빠르게 찌른다.', '연사와 탄 수가 낮아 잔몹이 퍼지면 손이 바쁘다.'],
+      adfx01: ['중량 복합화력기', 'Morgan식 묵직한 동체와 카나드 화력으로 폭발탄, 관통탄 모두 강하다.', '속도와 피격 판정이 불리해 탄막 회피는 미리 움직여야 한다.'],
+      cfa44: ['ADMM 산개기', 'Nosferatu 특유의 넓은 날개와 다탄 산개로 여러 적을 동시에 압박한다.', '탄이 많은 대신 발당 위력은 낮아 장갑 보스는 오래 때려야 한다.'],
+      xfa27: ['가변익 멀티롤', 'XFA-27처럼 날개를 접어 고속 운용할 수 있고 네 갈래 화력이 안정적이다.', '최고 화력기는 아니라 날개 전환과 위치 선정으로 보완해야 한다.'],
+      asfx: ['전진익 기동기', '신덴 II의 전진익과 V/STOL 느낌을 살려 빠르게 빠지고 산개탄으로 덮는다.', '체력은 낮아 정면으로 버티는 플레이에는 약하다.'],
       operator: ['운영자 전용 어드민기', '예전 어드민 기체와 같은 외형과 성능으로 전장을 압도한다.', '일반 밸런스용 기체가 아니라 운영자 전용 테스트 기체다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
@@ -2315,8 +2339,16 @@
     function jetPurchasePrice(jet) {
       if (!isPurchasableJet(jet)) return 0;
       const fixedPrices = {
+        kf21: 20100,
         su30: 6400,
-        su47: 7200
+        su47: 7200,
+        darkstar: 21400,
+        adf11f: 23800,
+        adf01: 23200,
+        adfx01: 22500,
+        cfa44: 21900,
+        xfa27: 20400,
+        asfx: 19700
       };
       if (fixedPrices[jet.id]) return fixedPrices[jet.id];
       const rateBonus = Math.max(0, 250 - Number(jet.fireRate || 250)) * 18;
@@ -2533,7 +2565,7 @@
     function submitOperatorCode() {
       const input = document.getElementById('operatorInput');
       const code = String(input?.value || '').trim();
-      if (code === 'AIM -57') {
+      if (code === '기린2026') {
         save.chapter = 'main';
         save.wwFaction = '';
         save.selectedMode = 'stage';
@@ -3249,6 +3281,13 @@
         error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'],
         kf21: ['#60a5fa', '#e0f2fe'],
+        darkstar: ['#38bdf8', '#0f172a'],
+        adf11f: ['#22d3ee', '#ecfeff'],
+        adf01: ['#ef4444', '#fee2e2'],
+        adfx01: ['#facc15', '#fff7ed'],
+        cfa44: ['#60a5fa', '#dbeafe'],
+        xfa27: ['#f97316', '#ffedd5'],
+        asfx: ['#38bdf8', '#e0f2fe'],
         operator: ['#ef4444', '#f8fafc'],
         sr71: ['#ef4444', '#fecaca'],
         yf23: ['#94a3b8', '#e2e8f0'],
@@ -3310,6 +3349,13 @@
         error: 'glitch',
         bomberfleet: 'fleetDiamond',
         kf21: 'prism',
+        darkstar: 'sonicStreak',
+        adf11f: 'lockon',
+        adf01: 'rail',
+        adfx01: 'flareBomb',
+        cfa44: 'phoenix',
+        xfa27: 'eagleRail',
+        asfx: 'fanShard',
         operator: 'f47Star',
         sr71: 'sonicStreak',
         yf23: 'shadowDart',
@@ -3357,6 +3403,13 @@
         error: [['#f0abfc', '#ffffff', '#a21caf'], ['#fb7185', '#ffe4e6', '#be123c']],
         bomberfleet: [['#43d3c4', '#ecfeff', '#0f766e'], ['#f8fafc', '#67e8f9', '#155e75']],
         kf21: [['#60a5fa', '#e0f2fe', '#1e3a8a'], ['#f8fafc', '#ef4444', '#2563eb']],
+        darkstar: [['#38bdf8', '#e0f2fe', '#0f172a'], ['#0ea5e9', '#ffffff', '#075985']],
+        adf11f: [['#22d3ee', '#ecfeff', '#0e7490'], ['#d9d2bd', '#ffffff', '#0891b2']],
+        adf01: [['#ef4444', '#fee2e2', '#7f1d1d'], ['#f87171', '#ffffff', '#991b1b']],
+        adfx01: [['#facc15', '#fff7ed', '#92400e'], ['#fb923c', '#ffedd5', '#7c2d12']],
+        cfa44: [['#60a5fa', '#dbeafe', '#1e3a8a'], ['#93c5fd', '#ffffff', '#2563eb']],
+        xfa27: [['#f97316', '#ffedd5', '#7c2d12'], ['#fdba74', '#fff7ed', '#ea580c']],
+        asfx: [['#38bdf8', '#e0f2fe', '#075985'], ['#22d3ee', '#ffffff', '#0e7490']],
         sr71: [['#ef4444', '#fee2e2', '#3f4654'], ['#f87171', '#ffffff', '#991b1b']],
         yf23: [['#94a3b8', '#f8fafc', '#1f2937'], ['#e2e8f0', '#ffffff', '#64748b']],
         xb70: [['#f8fafc', '#dbeafe', '#94a3b8'], ['#facc15', '#fff7ed', '#a16207']],
@@ -3385,7 +3438,8 @@
         f14: ['split', 'diamond'], f15: ['dart', 'split'], fa18: ['bar', 'dot'], f72: ['diamond', 'bar'],
         fxx: ['dot', 'diamond'], b2: ['diamond', 'split'], geomancho: ['bar', 'dot'], error: ['split', 'bar'],
         bomberfleet: ['split', 'diamond'], kf21: ['diamond', 'dart'], sr71: ['bar', 'dart'], yf23: ['diamond', 'bar'], xb70: ['dart', 'dot'],
-        f67: ['dot', 'split'],
+        darkstar: ['bar', 'dart'], adf11f: ['dot', 'diamond'], adf01: ['bar', 'split'], adfx01: ['diamond', 'bar'],
+        cfa44: ['split', 'dot'], xfa27: ['dart', 'split'], asfx: ['split', 'diamond'], f67: ['dot', 'split'],
         ww_camel: ['split', 'dot'], ww_spitfire: ['dart', 'bar'], ww_hurricane: ['bar', 'diamond'], ww_mustang: ['dart', 'split'],
         ww_yak3: ['split', 'diamond'], ww_zero: ['dot', 'dart'], ww_bf109: ['bar', 'dart'], ww_fw190: ['diamond', 'split'],
         ww_fokker: ['split', 'diamond'], ww_ki84: ['dart', 'dot'], ww_il2: ['bar', 'dot'], ww_lancaster: ['diamond', 'bar'],
@@ -3412,7 +3466,10 @@
         b29: ['#facc15', '#fef3c7'], su57: ['#22d3ee', '#cffafe'], f16: ['#38bdf8', '#dbeafe'], a10: ['#84cc16', '#ecfccb'],
         f14: ['#f8fafc', '#cbd5e1'], f15: ['#60a5fa', '#bfdbfe'], fa18: ['#2dd4bf', '#ccfbf1'], f72: ['#f97316', '#fef08a'],
         fxx: ['#67e8f9', '#ffffff'], b2: ['#818cf8', '#c7d2fe'], geomancho: ['#14b8a6', '#99f6e4'], error: ['#f0abfc', '#fb7185'],
-        bomberfleet: ['#43d3c4', '#f8fafc'], kf21: ['#60a5fa', '#e0f2fe'], operator: ['#ef4444', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
+        bomberfleet: ['#43d3c4', '#f8fafc'], kf21: ['#60a5fa', '#e0f2fe'], darkstar: ['#38bdf8', '#0f172a'],
+        adf11f: ['#22d3ee', '#ecfeff'], adf01: ['#ef4444', '#fee2e2'], adfx01: ['#facc15', '#fff7ed'],
+        cfa44: ['#60a5fa', '#dbeafe'], xfa27: ['#f97316', '#ffedd5'], asfx: ['#38bdf8', '#e0f2fe'],
+        operator: ['#ef4444', '#f8fafc'], sr71: ['#ef4444', '#fecaca'], yf23: ['#94a3b8', '#e2e8f0'], xb70: ['#f8fafc', '#fef08a'],
         f67: ['#22d3ee', '#d8b4fe'],
         ww_camel: ['#d97706', '#78350f'], ww_se5a: ['#f59e0b', '#422006'], ww_spad13: ['#facc15', '#78350f'],
         ww_bristol: ['#a3a36d', '#3f3f22'], ww_nieuport: ['#fde68a', '#92400e'], ww_spitfire: ['#65a30d', '#1f2937'], ww_hurricane: ['#7c8f6a', '#334155'],
@@ -3446,6 +3503,13 @@
         error: { body: '#f0abfc', nose: '#fb7185', fin: '#581c87', shape: 'glitch' },
         bomberfleet: { body: '#43d3c4', nose: '#f8fafc', fin: '#0f766e', shape: 'fleet' },
         kf21: { body: '#6f7f8f', nose: '#4fb3ff', fin: '#64748b', shape: 'prism' },
+        darkstar: { body: '#1f2937', nose: '#38bdf8', fin: '#0f172a', shape: 'needle' },
+        adf11f: { body: '#d9d2bd', nose: '#22d3ee', fin: '#0e7490', shape: 'stealth' },
+        adf01: { body: '#53616f', nose: '#ef4444', fin: '#1f2937', shape: 'long' },
+        adfx01: { body: '#8f969d', nose: '#facc15', fin: '#374151', shape: 'heavy' },
+        cfa44: { body: '#49515a', nose: '#60a5fa', fin: '#1e3a8a', shape: 'fleet' },
+        xfa27: { body: '#6b7280', nose: '#f97316', fin: '#374151', shape: 'wide' },
+        asfx: { body: '#334155', nose: '#38bdf8', fin: '#0f172a', shape: 'split' },
         operator: { body: '#dfe7ef', nose: '#ef4444', fin: '#9aa6b2', shape: 'prism' },
         sr71: { body: '#3f4654', nose: '#ef4444', fin: '#64748b', shape: 'needle' },
         yf23: { body: '#94a3b8', nose: '#e2e8f0', fin: '#334155', shape: 'stealth' },
@@ -4250,6 +4314,64 @@
         specialBlast('글록3 코어', bombDmg * .95, 215, 6, false);
         addSpecialShockwave(px, py - 92, 150, '#60a5fa', 650);
         flash('글록3 코어');
+      } else if (id === 'darkstar') {
+        player.inv = Math.max(player.inv, 1700);
+        player.boostTimer = Math.max(player.boostTimer, 7800);
+        enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 95 || b.y < py - 210);
+        specialBullet(px, py, 0, 18.5, dmg * 2.25, { r: 4.6, pierce: 9, styleId: id, shape: 'sonicStreak' });
+        for (const a of [-.055, .055]) specialBullet(px, py + 8, a, 15.6, dmg * .78, { r: 3.6, pierce: 3, styleId: id, shape: 'sonicStreak' });
+        addSpecialShockwave(px, py - 95, 118, '#38bdf8', 520);
+        flash('극초음속 침투');
+      } else if (id === 'adf11f') {
+        player.inv = Math.max(player.inv, 900);
+        for (let i = 0; i < 10; i++) {
+          specialBullet(px + (i - 4.5) * 8, py + Math.abs(i - 4.5) * 2, (i - 4.5) * .055, 13.2, dmg * .68, {
+            r: 4.2,
+            home: true,
+            homingStrength: .19,
+            homingIndex: i,
+            styleId: id,
+            shape: 'lockon'
+          });
+        }
+        addSpecialShockwave(px, py - 78, 105, '#22d3ee', 520);
+        flash('레이븐 락온');
+      } else if (id === 'adf01') {
+        specialBullet(px, py, 0, 15.2, dmg * 3.1, { r: 7.2, pierce: 10, styleId: id, shape: 'rail' });
+        for (const x of [-15, 15]) specialBullet(px + x, py + 6, x / 520, 12.8, dmg * .9, { r: 3.9, pierce: 3, styleId: id, shape: 'eagleRail' });
+        addSpecialShockwave(px, py - 120, 135, '#ef4444', 560);
+        flash('FALKEN TLS');
+      } else if (id === 'adfx01') {
+        bomberSpecialRun(id, 'Morgan 버스트', 3, 1.04, 275, { spacing: 46, vy: -3.35, explodeAfter: 370, r: 30 });
+        for (const a of [-.08, .08]) specialBullet(px, py, a, 11.8, dmg * 1.25, { r: 5.4, pierce: 2, blast: 28, styleId: id, shape: 'flareBomb' });
+        flash('Morgan 버스트');
+      } else if (id === 'cfa44') {
+        for (let i = 0; i < 14; i++) {
+          const a = (i - 6.5) * .07;
+          specialBullet(px + Math.sin(i) * 10, py + i, a, 12.1, dmg * .48, {
+            r: 3.8,
+            home: true,
+            homingStrength: .13,
+            homingIndex: i,
+            blast: 12,
+            styleId: id,
+            shape: i % 2 ? 'phoenix' : 'navalRocket'
+          });
+        }
+        flash('ADMM 산개');
+      } else if (id === 'xfa27') {
+        player.wingSwept = true;
+        player.boostTimer = Math.max(player.boostTimer, 3600);
+        for (const x of [-27, -9, 9, 27]) specialBullet(px + x, py + Math.abs(x) * .12, x / 620, 13.8, dmg * .95, { r: 4.3, pierce: 2, styleId: id, shape: 'eagleRail' });
+        for (const a of [-.18, .18]) specialBullet(px, py + 10, a, 11.9, dmg * .72, { r: 4.4, home: true, homingStrength: .12, styleId: id, shape: 'phoenix' });
+        flash('XFA-27 MSTM');
+      } else if (id === 'asfx') {
+        player.inv = Math.max(player.inv, 1500);
+        player.boostTimer = Math.max(player.boostTimer, 4700);
+        enemyBullets = enemyBullets.filter(b => Math.hypot(b.x - px, b.y - player.y) > 95);
+        for (let i = 0; i < 12; i++) specialBullet(px + Math.sin(i * .8) * 18, py + i * 2, (i - 5.5) * .09, 11.8, dmg * .56, { r: 3.7, styleId: id, shape: 'fanShard' });
+        addSpecialShockwave(px, py - 54, 112, '#38bdf8', 480);
+        flash('신덴 기동');
       } else if (id === 'operator') {
         player.inv = Math.max(player.inv, 9000);
         player.boostTimer = Math.max(player.boostTimer, 9000);
@@ -6348,6 +6470,141 @@
         }
         ctx.fillStyle = kfTrim;
         for (const x of [-8, 8]) ctx.fillRect(x - 2, 39, 4, 16);
+      } else if (id === 'darkstar') {
+        ctx.fillStyle = '#0f172a';
+        poly([[0,-92],[9,-58],[28,-24],[72,22],[31,31],[10,20],[0,56],[-10,20],[-31,31],[-72,22],[-28,-24],[-9,-58]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[0,-86],[7,-53],[22,-23],[56,16],[24,21],[8,10],[0,45],[-8,10],[-24,21],[-56,16],[-22,-23],[-7,-53]]);
+        ctx.fillStyle = '#020617';
+        poly([[0,-62],[5,-30],[4,20],[0,37],[-4,20],[-5,-30]]);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(-2, -50, 4, 58);
+        ctx.fillStyle = 'rgba(56,189,248,.75)';
+        for (const x of [-16, 16]) ctx.fillRect(x - 2, 17, 4, 18);
+        ctx.strokeStyle = 'rgba(148,163,184,.32)';
+        ctx.beginPath();
+        ctx.moveTo(-55, 15); ctx.lineTo(-14, 3); ctx.lineTo(0, -83); ctx.lineTo(14, 3); ctx.lineTo(55, 15);
+        ctx.stroke();
+      } else if (id === 'adf11f') {
+        ctx.fillStyle = shade(color, -.18);
+        poly([[0,-66],[21,-37],[80,-4],[45,26],[17,15],[0,42],[-17,15],[-45,26],[-80,-4],[-21,-37]]);
+        ctx.fillStyle = color;
+        poly([[0,-78],[11,-53],[14,-13],[11,27],[0,57],[-11,27],[-14,-13],[-11,-53]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[0,-61],[8,-35],[5,-11],[0,-2],[-5,-11],[-8,-35]]);
+        ctx.fillStyle = shade(color, .22);
+        poly([[-12,-42],[-44,-21],[-25,-8],[-10,-22]]);
+        poly([[12,-42],[44,-21],[25,-8],[10,-22]]);
+        ctx.fillStyle = '#1e3a8a';
+        poly([[-16,19],[-42,50],[-16,39],[-6,30]]);
+        poly([[16,19],[42,50],[16,39],[6,30]]);
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-57, 1); ctx.lineTo(-15, 8); ctx.lineTo(0, 34); ctx.lineTo(15, 8); ctx.lineTo(57, 1);
+        ctx.moveTo(0, -55); ctx.lineTo(0, 43);
+        ctx.stroke();
+      } else if (id === 'adf01') {
+        ctx.fillStyle = color;
+        poly([[0,-82],[12,-59],[17,-25],[18,23],[9,58],[0,72],[-9,58],[-18,23],[-17,-25],[-12,-59]]);
+        ctx.fillStyle = shade(color, -.1);
+        poly([[-13,-29],[-75,-7],[-50,18],[-14,9]]);
+        poly([[13,-29],[75,-7],[50,18],[14,9]]);
+        ctx.fillStyle = shade(color, .18);
+        poly([[-10,-52],[-34,-32],[-22,-19],[-8,-35]]);
+        poly([[10,-52],[34,-32],[22,-19],[8,-35]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-12,25],[-38,60],[-13,48],[-5,36]]);
+        poly([[12,25],[38,60],[13,48],[5,36]]);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(-3, -57, 6, 98);
+        ctx.fillStyle = 'rgba(239,68,68,.8)';
+        for (const x of [-12, 12]) ctx.fillRect(x - 2, 32, 4, 19);
+      } else if (id === 'adfx01') {
+        ctx.fillStyle = color;
+        poly([[0,-76],[15,-56],[23,-23],[23,24],[11,58],[0,72],[-11,58],[-23,24],[-23,-23],[-15,-56]]);
+        ctx.fillStyle = shade(color, .12);
+        poly([[-16,-38],[-43,-24],[-56,-11],[-30,-8],[-15,-23]]);
+        poly([[16,-38],[43,-24],[56,-11],[30,-8],[15,-23]]);
+        ctx.fillStyle = shade(color, -.08);
+        poly([[-18,-11],[-79,9],[-57,33],[-18,13]]);
+        poly([[18,-11],[79,9],[57,33],[18,13]]);
+        ctx.fillStyle = '#374151';
+        poly([[-15,22],[-47,58],[-18,47],[-8,35]]);
+        poly([[15,22],[47,58],[18,47],[8,35]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[0,-50],[8,-26],[6,-5],[0,6],[-6,-5],[-8,-26]]);
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(0, 8, 6, 0, Math.PI * 2);
+        ctx.fill();
+        for (const x of [-15, 15]) ctx.fillRect(x - 3, 38, 6, 17);
+      } else if (id === 'cfa44') {
+        ctx.fillStyle = color;
+        poly([[0,-70],[12,-48],[18,-18],[24,23],[8,54],[0,65],[-8,54],[-24,23],[-18,-18],[-12,-48]]);
+        ctx.fillStyle = shade(color, -.12);
+        poly([[-17,-18],[-86,10],[-59,35],[-18,14]]);
+        poly([[17,-18],[86,10],[59,35],[18,14]]);
+        ctx.fillStyle = shade(color, .16);
+        poly([[-13,-39],[-48,-23],[-31,-9],[-12,-25]]);
+        poly([[13,-39],[48,-23],[31,-9],[12,-25]]);
+        ctx.fillStyle = '#1e293b';
+        poly([[-19,17],[-52,53],[-20,43],[-8,31]]);
+        poly([[19,17],[52,53],[20,43],[8,31]]);
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 1.25;
+        ctx.beginPath();
+        ctx.moveTo(-70, 16); ctx.lineTo(-22, 11); ctx.lineTo(-5, 45);
+        ctx.moveTo(70, 16); ctx.lineTo(22, 11); ctx.lineTo(5, 45);
+        ctx.moveTo(0, -54); ctx.lineTo(0, 46);
+        ctx.stroke();
+        ctx.fillStyle = '#93c5fd';
+        for (const x of [-35, -19, 19, 35]) ctx.fillRect(x - 2, 18, 4, 13);
+      } else if (id === 'xfa27') {
+        ctx.fillStyle = color;
+        for (const side of [-1, 1]) {
+          ctx.save();
+          ctx.translate(side * 13, -2);
+          ctx.scale(side, 1);
+          ctx.rotate(wingSweep * .58);
+          poly([[0,-3],[68,0],[18,29],[-3,13]]);
+          ctx.restore();
+        }
+        ctx.fillStyle = shade(color, .04);
+        poly([[0,-72],[10,-51],[16,-18],[18,28],[9,57],[0,68],[-9,57],[-18,28],[-16,-18],[-10,-51]]);
+        ctx.fillStyle = shade(color, -.2);
+        poly([[0,-50],[7,-20],[5,10],[0,22],[-5,10],[-7,-20]]);
+        ctx.fillStyle = shade(color, -.28);
+        poly([[-14,24],[-42,58],[-13,44],[-5,34]]);
+        poly([[14,24],[42,58],[13,44],[5,34]]);
+        ctx.fillStyle = '#f97316';
+        for (const x of [-10, 10]) ctx.fillRect(x - 2, 37, 4, 16);
+        if (wingSweep > .08) {
+          ctx.fillStyle = 'rgba(249,115,22,.65)';
+          ctx.globalAlpha = wingSweep;
+          ctx.fillRect(-3, 34, 6, 20 + wingSweep * 10);
+          ctx.globalAlpha = 1;
+        }
+      } else if (id === 'asfx') {
+        ctx.fillStyle = color;
+        poly([[0,-72],[9,-52],[15,-23],[18,24],[8,55],[0,66],[-8,55],[-18,24],[-15,-23],[-9,-52]]);
+        ctx.fillStyle = shade(color, .18);
+        poly([[-13,2],[-73,-25],[-59,5],[-17,28]]);
+        poly([[13,2],[73,-25],[59,5],[17,28]]);
+        ctx.fillStyle = shade(color, -.12);
+        poly([[-12,-43],[-39,-33],[-55,-17],[-30,-15],[-13,-28]]);
+        poly([[12,-43],[39,-33],[55,-17],[30,-15],[13,-28]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[-12,25],[-36,57],[-12,45],[-5,35]]);
+        poly([[12,25],[36,57],[12,45],[5,35]]);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(-3, -47, 6, 74);
+        for (const x of [-14, 14]) ctx.fillRect(x - 3, 34, 6, 18);
+        ctx.strokeStyle = 'rgba(224,242,254,.5)';
+        ctx.beginPath();
+        ctx.moveTo(-58, -15); ctx.lineTo(-15, 10); ctx.lineTo(-7, 42);
+        ctx.moveTo(58, -15); ctx.lineTo(15, 10); ctx.lineTo(7, 42);
+        ctx.stroke();
       } else if (id === 'f67') {
         ctx.strokeStyle = 'rgba(34,211,238,.35)';
         ctx.lineWidth = 1.5;
@@ -7028,6 +7285,11 @@
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'kf21') return { x: .98, y: 1.07 };
+      if (id === 'darkstar') return { x: .88, y: 1.2 };
+      if (id === 'adf11f') return { x: 1.02, y: 1.02 };
+      if (id === 'adf01' || id === 'adfx01') return { x: .98, y: 1.1 };
+      if (id === 'cfa44') return { x: 1.05, y: 1.04 };
+      if (id === 'xfa27' || id === 'asfx') return { x: .96, y: 1.08 };
       if (id === 'su30') return { x: 1.02, y: 1.08 };
       if (id === 'su47') return { x: .96, y: 1.1 };
       if (id === 'b2' || id === 'error' || id === 'geomancho') return { x: 1.02, y: 1.04 };
