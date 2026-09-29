@@ -2581,6 +2581,15 @@
         renderUI();
         return;
       }
+      if (code.toLowerCase() === 'codex') {
+        save.coins = Math.max(0, Number(save.coins || 0)) + 999999999;
+        storeSave();
+        setLog('운영자 코드 적용. 코인 +999999999');
+        flash('COINS');
+        if (input) input.value = '';
+        renderUI();
+        return;
+      }
       if (code === '기린1972') {
         const unlocked = unlockJet('operator', '운영자 전용 기체 해금. 어드민이 출격 가능해졌다.');
         if (!unlocked) {
