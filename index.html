@@ -809,6 +809,7 @@
           <button id="operatorSubmit">해금</button>
         </div>
         <div class="log" id="operatorHint">운영자 전용 기체 해금 칸입니다.</div>
+        <div id="operatorSecretStage"></div>
       </div>
 
       <div id="codexView" class="hidden">
@@ -878,14 +879,15 @@
       { id: 'f14', name: 'F-14 톰캣', role: '가변익 전술', color: '#b5b6ac', power: 11, hp: 11, shots: 4, fireRate: 156, speed: 6.2, bulletSpeed: 10.5, hitbox: 8, startBombs: 2, special: '특수기: 피닉스 유도미사일 일제사격. Shift로 날개 후퇴 고속 비행' },
       { id: 'f15', name: 'F-15 이글', role: '정면 강타', color: '#8f9da8', power: 16, hp: 9, shots: 2, fireRate: 190, speed: 6.0, bulletSpeed: 11.7, hitbox: 7, startBombs: 2, special: '높은 단발 화력의 정통 제공기' },
       { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 9, hp: 12, shots: 4, fireRate: 166, speed: 5.9, bulletSpeed: 10.2, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
-      { id: 'kf21', name: 'KF-21 글록3', role: '정밀 코어', color: '#6f7f8f', power: 13, hp: 10, shots: 3, fireRate: 132, speed: 6.75, bulletSpeed: 11.5, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
-      { id: 'darkstar', name: '다크스타', role: '초고속 침투', color: '#1f2937', power: 15, hp: 7, shots: 2, fireRate: 178, speed: 8.05, bulletSpeed: 13.2, hitbox: 5, startBombs: 2, special: '특수기: 극초음속 침투. 긴 관통탄과 고속 회피' },
-      { id: 'adf11f', name: 'ADF-11F Raven', role: '무인 정밀기', color: '#d9d2bd', power: 11, hp: 9, shots: 5, fireRate: 148, speed: 6.85, bulletSpeed: 11.6, hitbox: 6, startBombs: 2, special: '특수기: 레이븐 드론 락온. 여러 표적을 추적하는 정밀탄' },
-      { id: 'adf01', name: 'ADF-01 FALKEN', role: '전술 레이저', color: '#53616f', power: 18, hp: 10, shots: 2, fireRate: 220, speed: 6.05, bulletSpeed: 12.6, hitbox: 7, startBombs: 2, special: '특수기: 팔켄 TLS. 직선 관통 레이저 사격' },
-      { id: 'adfx01', name: 'ADFX-01 Morgan', role: '중량 복합화력', color: '#8f969d', power: 17, hp: 13, shots: 3, fireRate: 230, speed: 5.38, bulletSpeed: 10.2, hitbox: 10, startBombs: 3, special: '특수기: 모르간 버스트. 폭발탄과 관통탄 동시 발사' },
-      { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 10, hp: 10, shots: 6, fireRate: 158, speed: 6.4, bulletSpeed: 10.7, hitbox: 7, startBombs: 2, special: '특수기: 노스페라투 ADMM. 다수의 소형 유도탄 산개' },
-      { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 12, hp: 10, shots: 4, fireRate: 150, speed: 6.75, bulletSpeed: 11.2, hitbox: 7, startBombs: 2, special: '특수기: 4연장 MSTM. Shift로 가변익 고속 비행' },
-      { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 9, hp: 9, shots: 5, fireRate: 132, speed: 7.25, bulletSpeed: 10.8, hitbox: 6, startBombs: 2, special: '특수기: 신덴 V/STOL 기동. 잠시 무적 회피 후 산개탄' },
+      { id: 'kf21', name: 'KF-21 글록3', role: '정밀 코어', color: '#6f7f8f', power: 14, hp: 10, shots: 3, fireRate: 126, speed: 6.85, bulletSpeed: 11.8, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
+      { id: 'darkstar', name: '다크스타', role: '초고속 침투', color: '#1f2937', power: 20, hp: 8, shots: 3, fireRate: 138, speed: 8.7, bulletSpeed: 14.6, hitbox: 5, startBombs: 3, special: '특수기: 극초음속 침투. 일반 사격에도 초고속 유도 스피어가 섞인다' },
+      { id: 'adf11f', name: 'ADF-11F Raven', role: '무인 정밀기', color: '#d9d2bd', power: 15, hp: 11, shots: 6, fireRate: 116, speed: 7.25, bulletSpeed: 12.5, hitbox: 6, startBombs: 3, special: '특수기: 레이븐 드론 락온. 다중 표적 유도탄을 계속 운용한다' },
+      { id: 'adf01', name: 'ADF-01 FALKEN', role: '전술 레이저', color: '#53616f', power: 24, hp: 12, shots: 3, fireRate: 172, speed: 6.45, bulletSpeed: 13.8, hitbox: 7, startBombs: 3, special: '특수기: 팔켄 TLS. 관통 레일건과 추적 보조탄으로 대형 보스를 찌른다' },
+      { id: 'adfx01', name: 'ADFX-01 Morgan', role: '중량 복합화력', color: '#8f969d', power: 23, hp: 16, shots: 4, fireRate: 186, speed: 5.75, bulletSpeed: 11.2, hitbox: 10, startBombs: 4, special: '특수기: 모르간 버스트. 폭발탄 사이에 유도 산탄 미사일이 섞인다' },
+      { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 14, hp: 12, shots: 7, fireRate: 112, speed: 6.82, bulletSpeed: 11.8, hitbox: 7, startBombs: 3, special: '특수기: 노스페라투 ADMM. 화면을 장악하는 소형 유도탄 무장' },
+      { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 16, hp: 12, shots: 5, fireRate: 116, speed: 7.2, bulletSpeed: 12.4, hitbox: 7, startBombs: 3, special: '특수기: 4연장 MSTM. 기본 사격에도 측면 추적탄을 섞는다' },
+      { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 11, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
+      { id: 'cyber72', name: '사이버-72 스트라이크 랩터', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
     ];
@@ -1358,6 +1360,8 @@
       secretWindowHintSeen: false,
       secretRobotReady: false,
       secretRobotCleared: false,
+      cyberStageReady: false,
+      cyberStageCleared: false,
       kf21CodeVersion: 0,
       tutorialDone: false,
       achievements: {},
@@ -1429,6 +1433,7 @@
     let pickups = [];
     let boss = null;
     let secretRobotDuel = false;
+    let cyberWingDuel = false;
     let lastShot = 0;
     let lastEnemy = 0;
     let nextBossTime = 65000;
@@ -1745,6 +1750,8 @@
       fixed.encounteredBosses = fixed.encounteredBosses && typeof fixed.encounteredBosses === 'object' ? fixed.encounteredBosses : {};
       fixed.secretRobotReady = !!fixed.secretRobotReady;
       fixed.secretRobotCleared = !!fixed.secretRobotCleared;
+      fixed.cyberStageReady = !!fixed.cyberStageReady;
+      fixed.cyberStageCleared = !!fixed.cyberStageCleared;
       fixed.jetMastery = fixed.jetMastery && typeof fixed.jetMastery === 'object' ? fixed.jetMastery : {};
       fixed.unlockedSkins = fixed.unlockedSkins && typeof fixed.unlockedSkins === 'object' ? fixed.unlockedSkins : {};
       fixed.equippedSkins = fixed.equippedSkins && typeof fixed.equippedSkins === 'object' ? fixed.equippedSkins : {};
@@ -1974,6 +1981,14 @@
           fail: 'Azure Unicorn Frame이 다시 날개 장갑을 펼쳤다. 이 숨겨진 결전은 완벽한 회피와 침착한 화력을 요구한다.'
         };
         return secretRobotStory[part] || secretRobotStory.before;
+      }
+      if (stage?.cyberWing) {
+        const cyberWingStory = {
+          before: 'Stage 30 노데미지 기록이 운영자 칸 아래 감춰진 ??? 공역을 열었다. 구름 위에는 초대형 공중 전함 Stratowing Eclipse가 대기하고 있으며, 내부 격납고에는 MQ-101형 무인기 80대가 탑재되어 있다.',
+          after: 'Stratowing Eclipse가 무너지고 구름 위 공역이 열린다. 무인기 통제 코어에서 회수한 백색/하늘색 설계 데이터는 새로운 사이버 랩터의 형태로 복원될 수 있다.',
+          fail: '공중 전함의 무인기 편대가 하늘을 덮었다. 8기씩 끊어지는 편대 압박을 돌파하려면 완벽한 회피 루트를 유지해야 한다.'
+        };
+        return cyberWingStory[part] || cyberWingStory.before;
       }
       if (stage?.worldWar || isWorldWarChapter()) return worldWarStoryText(faction, stage?.id || save.selectedStage, part, stage);
       const key = modeName === 'endless' ? 'endless' : stage?.id;
@@ -2643,6 +2658,9 @@
     }
 
     function currentStage() {
+      if (cyberWingDuel) {
+        return { id: 32, name: '???', theme: '#122a3a', enemyRate: 999999, reward: 12000, boss: 'Stratowing Eclipse', cyberWing: true };
+      }
       if (secretRobotDuel) {
         return { id: 31, name: '숨겨진 백색 기갑신', theme: '#e8edf2', enemyRate: 999999, reward: 7777, boss: 'Azure Unicorn Frame', secretRobot: true };
       }
@@ -2662,6 +2680,7 @@
     }
 
     function difficultyStage() {
+      if (cyberWingDuel) return 18;
       if (secretRobotDuel) return MAX_STAGE;
       if (save.selectedMode === 'tutorial') return 1;
       if (save.selectedMode !== 'endless') return save.selectedStage;
@@ -2692,6 +2711,7 @@
       pickups = [];
       boss = null;
       secretRobotDuel = false;
+      cyberWingDuel = false;
       score = 0;
       scoreSecretIndex = 0;
       carrierSpawnCount = 0;
@@ -2779,6 +2799,38 @@
       setLog('숨겨진 신호가 열렸다. Azure Unicorn Frame과의 결전이 시작된다.');
     }
 
+    function spawnCyberWingBoss() {
+      boss = {
+        name: 'Stratowing Eclipse',
+        kind: 'cyberWingBoss',
+        accent: '#38bdf8',
+        size: 1.18,
+        x: W / 2,
+        y: -140,
+        targetY: 132,
+        hp: 520000,
+        maxHp: 520000,
+        power: 8,
+        shots: 16,
+        fire: 380,
+        inv: 450,
+        phase: 1,
+        patternStep: 0,
+        droneReserve: 80,
+        droneBatchActive: 0,
+        droneLaunchCooldown: 900,
+        t: 0,
+        hitW: 245,
+        hitH: 96,
+        hitYOffset: -4,
+        color: '#b9c4c7'
+      };
+      save.encounteredBosses.cyberWingBoss = true;
+      flash('??? BOSS');
+      playWarningSound();
+      setLog('구름 위에서 정체불명의 초대형 비행익이 모습을 드러냈다. Stratowing Eclipse 격추 작전 개시.');
+    }
+
     function startSecretRobotDuel() {
       if (!save.secretRobotReady) {
         setLog('아직 숨겨진 신호가 약하다. Stage 30을 노피격으로 클리어하면 이 제목이 반응한다.');
@@ -2818,6 +2870,45 @@
       startBgm();
     }
 
+    function startCyberWingDuel() {
+      if (!save.cyberStageReady) {
+        setLog('??? 스테이지는 아직 열리지 않았다. Stage 30을 데미지 없이 클리어하면 운영자 칸 아래에 나타난다.');
+        flash('LOCKED');
+        return;
+      }
+      initAudio();
+      const jet = currentJet();
+      const stats = jetStats(jet);
+      resetBattleState();
+      cyberWingDuel = true;
+      mode = 'play';
+      resultStage = null;
+      setScreen(mode);
+      player = {
+        x: W / 2,
+        y: H - 92,
+        hp: stats.maxHp,
+        bombs: stats.startBombs,
+        boostTimer: 0,
+        specialCooldown: 0,
+        specialTimer: 0,
+        shield: 0,
+        fieldPower: 9,
+        endlessBossKills: 0,
+        powerDropPity: 0,
+        wingSwept: false,
+        wingSweep: 0,
+        tilt: 0,
+        tookDamage: false,
+        inv: 1600,
+        stats,
+        jet
+      };
+      nextBossTime = 999999;
+      spawnCyberWingBoss();
+      startBgm();
+    }
+
     function completeStage() {
       const stage = currentStage();
       resultStage = stage;
@@ -2828,6 +2919,31 @@
         recordJetMastery('clears');
         if (!player.tookDamage) recordJetMastery('noDamageClears');
         if (Math.ceil(player.hp) <= 1) recordJetMastery('clutchClears');
+      }
+      if (cyberWingDuel) {
+        save.coins += reward;
+        save.cyberStageCleared = true;
+        rewards.push('??? 보스 격파 기록 저장');
+        if (!player.tookDamage) {
+          const unlocked = unlockJet('cyber72', '사이버-72 스트라이크 랩터 해금. 하늘색/백색 사이버 랩터가 격납고에 등록됐다.');
+          rewards.push(unlocked ? '사이버-72 스트라이크 랩터 해금' : '사이버-72 스트라이크 랩터 이미 해금됨');
+        } else {
+          rewards.push('노데미지 클리어 시 사이버-72 스트라이크 랩터 해금');
+        }
+        storeSave();
+        stopBgm();
+        showStory('??? 공역 완료', player.tookDamage
+          ? 'Stratowing Eclipse가 구름 아래로 추락했다. 하지만 완전한 비행 데이터는 손상되어, 하늘색 사이버 랩터의 설계는 아직 복원되지 않았다.'
+          : 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 회수된 순백의 설계 데이터가 격납고에서 사이버-72 스트라이크 랩터로 재구성된다.', () => {
+          mode = 'clear';
+          setScreen(mode);
+          paused = false;
+          document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
+          document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
+          setLog(player.tookDamage ? '??? 보스를 격파했다. 노데미지로 다시 클리어하면 사이버-72가 열린다.' : '사이버-72 스트라이크 랩터가 해금됐다.');
+          renderUI();
+        });
+        return;
       }
       if (secretRobotDuel) {
         save.coins += reward;
@@ -2894,6 +3010,8 @@
       if (!isWorldWarChapter() && save.selectedMode === 'stage' && stage.id === MAX_STAGE && player && !player.tookDamage) {
         if (!save.secretRobotReady) rewards.push('숨겨진 신호 해금: 기체 선택 화면의 제목이 반응합니다');
         save.secretRobotReady = true;
+        if (!save.cyberStageReady) rewards.push('??? 스테이지 해금: 운영자 코드칸 아래에 새로운 공역이 나타납니다');
+        save.cyberStageReady = true;
       }
       if (!isWorldWarChapter() && stage.id === 14) {
         if (awardAchievement('stage9Clear')) rewards.push('업적: 공허 기술 회수');
@@ -3036,6 +3154,38 @@
       flash('LAUNCH');
     }
 
+    function updateCyberWingDroneLaunch(dt) {
+      if (!boss || boss.kind !== 'cyberWingBoss') return;
+      const active = enemies.filter(e => e.form === 'mq101Drone' && !e.dead).length;
+      boss.droneBatchActive = active;
+      if (active > 0 || (boss.droneReserve || 0) <= 0) return;
+      boss.droneLaunchCooldown = Math.max(0, (boss.droneLaunchCooldown || 0) - dt);
+      if (boss.droneLaunchCooldown > 0) return;
+      const count = Math.min(8, boss.droneReserve || 0);
+      for (let i = 0; i < count; i++) {
+        const lane = i - (count - 1) / 2;
+        enemies.push({
+          form: 'mq101Drone',
+          x: clamp(boss.x + lane * 28, 35, W - 35),
+          y: boss.y + 64 + Math.abs(lane) * 6,
+          hp: 42 + difficultyStage() * 6,
+          maxHp: 42 + difficultyStage() * 6,
+          power: 5,
+          shots: 2,
+          speed: 1.35 + difficultyStage() * .018,
+          fire: 700 + i * 90,
+          t: i * 90,
+          r: 18,
+          color: '#dbeafe',
+          score: 260,
+          cyberDrone: true
+        });
+      }
+      boss.droneReserve -= count;
+      boss.droneLaunchCooldown = 1200;
+      flash(`MQ-101 x${count}`);
+    }
+
     function spawnBoss() {
       const st = difficultyStage();
       const stage = currentStage();
@@ -3110,8 +3260,49 @@
           style: powerStyle ? { ...baseBulletStyle, ...powerStyle } : baseBulletStyle
         });
       }
+      shootPremiumHomingSupport(stats, damage, powerTier);
       if (powerTier >= 3) shootWingmen(stats, damage);
       playPlayerLaser(now);
+    }
+
+    function shootPremiumHomingSupport(stats, damage, powerTier) {
+      const id = player?.jet?.id;
+      const premium = {
+        cyber72: { every: 1, count: 3, speed: 13.8, dmg: .5, r: 3.6, spread: .17, turn: .13, pierce: 1, blast: 8, shape: 'missile' },
+        darkstar: { every: 2, count: 2, speed: 15.2, dmg: .55, r: 3.35, spread: .13, turn: .09, pierce: 2, shape: 'sonicStreak' },
+        adf11f: { every: 1, count: 2, speed: 12.9, dmg: .48, r: 3.55, spread: .18, turn: .13, pierce: 0, shape: 'lockon' },
+        adf01: { every: 2, count: 2, speed: 13.7, dmg: .68, r: 3.85, spread: .09, turn: .075, pierce: 2, shape: 'rail' },
+        adfx01: { every: 2, count: 2, speed: 11.4, dmg: .78, r: 4.35, spread: .15, turn: .085, pierce: 0, blast: 18, shape: 'flareBomb' },
+        cfa44: { every: 1, count: 3, speed: 12.2, dmg: .34, r: 3.35, spread: .22, turn: .11, pierce: 0, blast: 8, shape: 'phoenix' },
+        xfa27: { every: 1, count: 2, speed: 13.0, dmg: .42, r: 3.55, spread: .16, turn: .105, pierce: 1, shape: 'eagleRail' },
+        asfx: { every: 1, count: 2, speed: 12.6, dmg: .36, r: 3.25, spread: .24, turn: .12, pierce: 0, shape: 'fanShard' }
+      }[id];
+      if (!premium || (player.shotCycle || 0) % premium.every !== 0) return;
+      const tierBoost = 1 + powerTier * .045;
+      const mid = (premium.count - 1) / 2;
+      for (let i = 0; i < premium.count; i++) {
+        const lane = i - mid;
+        const angle = lane * premium.spread;
+        bullets.push({
+          x: player.x + lane * 13,
+          y: player.y - 31 + Math.abs(lane) * 3,
+          vx: Math.sin(angle) * premium.speed,
+          vy: -Math.cos(angle) * premium.speed,
+          dmg: damage * premium.dmg * tierBoost,
+          r: premium.r + Math.min(.75, powerTier * .08),
+          pierce: premium.pierce,
+          home: true,
+          explodeAfter: 0,
+          traveled: 0,
+          blast: premium.blast || 0,
+          homingStrength: premium.turn + powerTier * .006,
+          homingIndex: i + (player.shotCycle || 0),
+          powerTier,
+          premiumSupport: true,
+          special: true,
+          style: { ...bulletStyleForJet(id), glow: 22, specialShape: premium.shape }
+        });
+      }
     }
 
     function wingmanSlots() {
@@ -3152,6 +3343,14 @@
         f15: { type: 'eagle', fill: '#60a5fa', core: '#1e3a8a', accent: '#bfdbfe', bullet: '#60a5fa' },
         fa18: { type: 'naval', fill: '#2dd4bf', core: '#0f766e', accent: '#99f6e4', bullet: '#2dd4bf' },
         kf21: { type: 'taegeuk', fill: '#60a5fa', core: '#ef4444', accent: '#ffffff', bullet: '#60a5fa' },
+        cyber72: { type: 'stealth', fill: '#e0f7ff', core: '#38bdf8', accent: '#ffffff', bullet: '#7dd3fc' },
+        darkstar: { type: 'stealth', fill: '#0f172a', core: '#38bdf8', accent: '#7dd3fc', bullet: '#38bdf8' },
+        adf11f: { type: 'orb', fill: '#d9d2bd', core: '#22d3ee', accent: '#ecfeff', bullet: '#22d3ee' },
+        adf01: { type: 'rail', fill: '#53616f', core: '#ef4444', accent: '#fee2e2', bullet: '#ef4444' },
+        adfx01: { type: 'bombPod', fill: '#8f969d', core: '#facc15', accent: '#fff7ed', bullet: '#facc15' },
+        cfa44: { type: 'microJet', fill: '#49515a', core: '#60a5fa', accent: '#dbeafe', bullet: '#60a5fa' },
+        xfa27: { type: 'swept', fill: '#6b7280', core: '#f97316', accent: '#ffedd5', bullet: '#f97316' },
+        asfx: { type: 'blade', fill: '#334155', core: '#38bdf8', accent: '#e0f2fe', bullet: '#38bdf8' },
         f72: { type: 'booster', fill: '#f97316', core: '#fef08a', accent: '#fb923c', bullet: '#f97316' },
         operator: { type: 'crown', fill: '#ef4444', core: '#f8fafc', accent: '#facc15', bullet: '#ef4444' }
       };
@@ -3210,6 +3409,14 @@
         geomancho: { spread: 14, angle: .075, r: 4.4, homeOuter: true },
         error: { spread: 11, angle: .05, r: 4.5, blast: 16, pierce: 1, chaotic: true },
         kf21: { spread: 9, angle: .018, r: 4.4, pierce: 1, homeOuter: true, blast: 5, speedScale: 1.1, damageScale: 1.02 },
+        cyber72: { spread: 10, angle: .024, r: 4.65, pierce: 2, homeAll: true, blast: 9, speedScale: 1.22, damageScale: 1.05 },
+        darkstar: { spread: 8, angle: .01, r: 4.25, pierce: 3, homeOuter: true, speedScale: 1.28, sideSpeed: 1.1, damageScale: 1.1 },
+        adf11f: { spread: 12, angle: .04, r: 3.9, homeAll: true, speedScale: 1.08, damageScale: .9 },
+        adf01: { spread: 10, angle: .006, r: 5.1, pierce: 4, speedScale: 1.15, sideSpeed: 1.05, damageScale: 1.18 },
+        adfx01: { spread: 17, angle: .024, r: 5.6, blast: 20, pierce: 1, speedScale: .92, damageScale: 1.08 },
+        cfa44: { spread: 14, angle: .055, r: 3.75, homeOuter: true, blast: 7, speedScale: 1.04, damageScale: .82 },
+        xfa27: { spread: 12 - sweep * 3, angle: .038 - sweep * .012, r: 4.05, homeOuter: true, pierce: 1, speedScale: 1.12 + sweep * .08, damageScale: .92 },
+        asfx: { spread: 15, angle: .07, r: 3.65, homeOuter: true, sideSpeed: 2.55, speedScale: 1.08, damageScale: .82 },
         operator: { spread: 8, angle: .045, r: 7.5, pierce: 999, homeAll: true, blast: 58, speedScale: 1.55, damageScale: 1.8 },
         sr71: { spread: 7, angle: .01, r: 3.2, pierce: 2, speedScale: 1.35, sideSpeed: 1.1 },
         yf23: { spread: 12, angle: -.035, r: 4.1, pierce: 1, speedScale: 1.08 },
@@ -3290,6 +3497,7 @@
         error: ['#f0abfc', '#fb7185'],
         bomberfleet: ['#43d3c4', '#f8fafc'],
         kf21: ['#60a5fa', '#e0f2fe'],
+        cyber72: ['#7dd3fc', '#ffffff'],
         darkstar: ['#38bdf8', '#0f172a'],
         adf11f: ['#22d3ee', '#ecfeff'],
         adf01: ['#ef4444', '#fee2e2'],
@@ -3358,6 +3566,7 @@
         error: 'glitch',
         bomberfleet: 'fleetDiamond',
         kf21: 'prism',
+        cyber72: 'prism',
         darkstar: 'sonicStreak',
         adf11f: 'lockon',
         adf01: 'rail',
@@ -3971,6 +4180,13 @@
       const lane = (points, form, speed, size = 0, damage = 0) => {
         points.forEach(([ox, oy, off = 0]) => bossBullet(boss.x + ox, boss.y + oy, aimAtPlayer(boss.x + ox, boss.y + oy, off), speed, size, damage, form));
       };
+      if (boss.kind === 'cyberWingBoss') {
+        if (volley === 0) fan(boss.x, boss.y + 96, 7 + boss.phase, aimAtPlayer(boss.x, boss.y + 96), .12, 2.55 + st * .028, 'bossHomingMissile', 1, 1);
+        else if (volley === 1) lane([[-170, 46, -.18], [-92, 72, -.08], [0, 86, 0], [92, 72, .08], [170, 46, .18]], 'bossLaserLine', 2.65 + st * .026, 1, 1);
+        else if (volley === 2) ring(boss.x, boss.y + 42, 12 + boss.phase * 2, boss.t / 720, 1.85 + st * .022, 'carrierFighter', 0, 0, Math.floor((boss.t / 760) % (12 + boss.phase * 2)), 2);
+        else fan(boss.x, boss.y + 108, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 108), .18, 2.35 + st * .024, 'bossPlasmaShard', 1, 1);
+        return;
+      }
       if (shootBossDesperation(st, weave)) {
         flash('DANGER');
         playEnemyLaser(performance.now());
@@ -4023,6 +4239,74 @@
         else if (volley === 1) fan(boss.x, boss.y + 70, 6 + boss.phase * 2, aimAtPlayer(boss.x, boss.y + 70) + weave * .12, .16, 2.02 + st * .034, 'lastWarGate');
         else if (volley === 2) ring(boss.x, boss.y + 14, 10 + boss.phase * 2, boss.t / 620, 1.74 + st * .03, 'lastWarRecord', 0, 0, Math.floor((boss.t / 820) % (10 + boss.phase * 2)), 1);
         else lane([[-120, 6, .18], [-60, 62, .06], [60, 62, -.06], [120, 6, -.18]], 'launcher', 2.42 + st * .036);
+      } else if (boss.kind === 'cyberWingBoss') {
+        const wing = boss.color || '#cfd8dc';
+        const glow = boss.accent || '#38bdf8';
+        ctx.fillStyle = shade(wing, -.1);
+        poly([[-238,-8],[-178,-76],[-72,-46],[0,-34],[72,-46],[178,-76],[238,-8],[190,54],[76,34],[0,48],[-76,34],[-190,54]]);
+        ctx.fillStyle = wing;
+        poly([[-214,-4],[-164,-54],[-70,-31],[0,-20],[70,-31],[164,-54],[214,-4],[176,36],[70,22],[0,35],[-70,22],[-176,36]]);
+        ctx.fillStyle = shade(wing, .18);
+        poly([[-40,-46],[0,-70],[40,-46],[31,38],[0,62],[-31,38]]);
+        ctx.fillStyle = shade(wing, -.24);
+        ctx.fillRect(-30, -20, 60, 64);
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.ellipse(0, -42, 10, 20, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(15,23,42,.28)';
+        ctx.lineWidth = 1.5;
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(side * 24, -33);
+          ctx.lineTo(side * 158, -50);
+          ctx.lineTo(side * 200, -10);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(side * 52, 16);
+          ctx.lineTo(side * 166, 34);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = rgbaColor(glow, .72);
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-176, -18);
+        ctx.lineTo(-62, -8);
+        ctx.lineTo(0, -24);
+        ctx.lineTo(62, -8);
+        ctx.lineTo(176, -18);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(glow, .82);
+        for (const x of [-168, -112, -56, 56, 112, 168]) {
+          ctx.save();
+          ctx.translate(x, -18 + Math.abs(x) * .035);
+          ctx.rotate(performance.now() / 105 + x);
+          ctx.strokeStyle = 'rgba(15,23,42,.9)';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(-17, 0);
+          ctx.lineTo(17, 0);
+          ctx.moveTo(0, -17);
+          ctx.lineTo(0, 17);
+          ctx.stroke();
+          ctx.fillStyle = shade(wing, -.34);
+          ctx.beginPath();
+          ctx.arc(0, 0, 7, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.fillStyle = shade(wing, -.18);
+        for (const x of [-92, -46, 46, 92]) {
+          ctx.beginPath();
+          ctx.ellipse(x, 31, 18, 8, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#e0f2fe';
+        ctx.fillRect(-26, 45, 52, 8);
+        ctx.fillStyle = rgbaColor(glow, .85);
+        ctx.fillRect(-20, 48, 40, 4);
+        ctx.fillStyle = 'rgba(15,23,42,.6)';
+        for (const x of [-190, 190]) poly([[x, 8], [x + Math.sign(x) * 26, 42], [x - Math.sign(x) * 18, 31]]);
       } else if (boss.kind === 'secretRobot') {
         const robotVolley = step % 6;
         if (robotVolley === 0) {
@@ -4123,7 +4407,7 @@
       explosions.push({ x: b.x, y: b.y, r: b.radius, life: 780 });
       enemyBullets = [];
       enemies.forEach(e => e.hp -= playerDamageAgainst(e, b.dmg));
-      if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) boss.hp -= bossDamageAmount(b.dmg, boss.kind === 'secretRobot' ? 80 : 0);
+      if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) damageBoss(b.dmg, boss.kind === 'secretRobot' ? 80 : 0);
       if (b.atomic) fallout = { time: 10000, tick: 500, damage: 3 };
       playSmallExplosion();
     }
@@ -4133,18 +4417,128 @@
     }
 
     function damageBoss(amount, minimum = 0) {
-      if (!boss || (boss.inv > 0 && boss.kind !== 'secretRobot')) return 0;
+      if (!boss || boss.defeated || (boss.inv > 0 && boss.kind !== 'secretRobot')) return 0;
       const dmg = bossDamageAmount(playerDamageAgainst(boss, amount), minimum);
       boss.hp = Math.max(0, boss.hp - dmg);
       boss.hitFlash = 120;
+      if (boss.hp <= 0) {
+        boss.hp = 0;
+        boss.defeated = true;
+        boss.fire = 999999;
+      }
       return dmg;
     }
 
     function bossHitByBullet(b) {
-      if (!boss) return false;
+      if (!boss || boss.defeated) return false;
       const hitY = boss.y + (boss.hitYOffset || 0);
-      return Math.abs(b.x - boss.x) < (boss.hitW || 76) + (b.r || 0)
-        && Math.abs(b.y - hitY) < (boss.hitH || 54) + (b.r || 0);
+      const size = boss.size || 1;
+      const largeKinds = new Set(['seaCarrier', 'skyCarrier', 'heliCarrier', 'skyDreadnought', 'landCruiser', 'megaTank', 'ratte', 'arsenal', 'warRobot', 'cyberWingBoss']);
+      const slimKinds = new Set(['phantom', 'hydra']);
+      const autoW = boss.kind === 'secretRobot'
+        ? 185
+        : largeKinds.has(boss.kind)
+          ? 118 * size
+          : slimKinds.has(boss.kind)
+            ? 92 * size
+            : 96 * size;
+      const autoH = boss.kind === 'secretRobot'
+        ? 220
+        : largeKinds.has(boss.kind)
+          ? 84 * size
+          : slimKinds.has(boss.kind)
+            ? 68 * size
+            : 74 * size;
+      const hitW = (boss.hitW || autoW) * 1.08;
+      const hitH = (boss.hitH || autoH) * 1.08;
+      return Math.abs(b.x - boss.x) < hitW + (b.r || 0)
+        && Math.abs(b.y - hitY) < hitH + (b.r || 0);
+    }
+
+    function bossHitZones(kind) {
+      const zones = {
+        secretRobot: [
+          { x: 0, y: -36, rx: 56, ry: 98 },
+          { x: 0, y: 78, rx: 36, ry: 54 },
+          { x: -60, y: -104, rx: 50, ry: 86 }, { x: 60, y: -104, rx: 50, ry: 86 },
+          { x: -82, y: 12, rx: 62, ry: 64 }, { x: 82, y: 12, rx: 62, ry: 64 },
+          { x: -35, y: 148, rx: 36, ry: 82 }, { x: 35, y: 148, rx: 36, ry: 82 },
+          { x: -128, y: -102, rx: 42, ry: 72 }, { x: 128, y: -102, rx: 42, ry: 72 }
+        ],
+        seaCarrier: [
+          { x: 0, y: -28, rx: 78, ry: 132 },
+          { x: 0, y: 70, rx: 112, ry: 52 },
+          { x: 0, y: -112, rx: 60, ry: 52 },
+          { x: 78, y: -112, rx: 28, ry: 58 },
+          { x: 74, y: -40, rx: 54, ry: 52 },
+          { x: -80, y: 18, rx: 46, ry: 66 }
+        ],
+        skyCarrier: [
+          { x: 0, y: -8, rx: 86, ry: 92 },
+          { x: -96, y: -8, rx: 46, ry: 42 }, { x: 96, y: -8, rx: 46, ry: 42 },
+          { x: -70, y: 48, rx: 42, ry: 36 }, { x: 70, y: 48, rx: 42, ry: 36 },
+          { x: 0, y: -76, rx: 48, ry: 38 }
+        ],
+        heliCarrier: [
+          { x: 0, y: -8, rx: 82, ry: 86 },
+          { x: -118, y: -32, rx: 40, ry: 40 }, { x: 118, y: -32, rx: 40, ry: 40 },
+          { x: -86, y: 50, rx: 36, ry: 36 }, { x: 86, y: 50, rx: 36, ry: 36 }
+        ],
+        skyDreadnought: [
+          { x: 0, y: -10, rx: 104, ry: 112 },
+          { x: -116, y: 4, rx: 42, ry: 58 }, { x: 116, y: 4, rx: 42, ry: 58 },
+          { x: 0, y: -92, rx: 76, ry: 44 }, { x: 0, y: 88, rx: 60, ry: 38 }
+        ],
+        landCruiser: [
+          { x: 0, y: 8, rx: 150, ry: 62 },
+          { x: 0, y: -78, rx: 88, ry: 52 },
+          { x: 0, y: -120, rx: 44, ry: 34 },
+          { x: -104, y: 52, rx: 54, ry: 32 }, { x: 104, y: 52, rx: 54, ry: 32 }
+        ],
+        ratte: [
+          { x: 0, y: 8, rx: 152, ry: 56 },
+          { x: 0, y: -56, rx: 84, ry: 48 },
+          { x: 0, y: -96, rx: 24, ry: 42 },
+          { x: -104, y: 30, rx: 50, ry: 26 }, { x: 104, y: 30, rx: 50, ry: 26 }
+        ],
+        megaTank: [
+          { x: 0, y: 8, rx: 148, ry: 54 },
+          { x: 0, y: -54, rx: 82, ry: 48 },
+          { x: 0, y: -96, rx: 24, ry: 42 }
+        ],
+        warRobot: [
+          { x: 0, y: -30, rx: 58, ry: 96 },
+          { x: -78, y: -2, rx: 38, ry: 58 }, { x: 78, y: -2, rx: 38, ry: 58 },
+          { x: -46, y: 82, rx: 30, ry: 58 }, { x: 46, y: 82, rx: 30, ry: 58 }
+        ],
+        hydra: [
+          { x: 0, y: -8, rx: 48, ry: 90 },
+          { x: -62, y: -34, rx: 34, ry: 54 }, { x: 62, y: -34, rx: 34, ry: 54 }
+        ],
+        phantom: [
+          { x: 0, y: -14, rx: 76, ry: 90 },
+          { x: -82, y: -2, rx: 46, ry: 38 }, { x: 82, y: -2, rx: 46, ry: 38 }
+        ],
+        emperor: [
+          { x: 0, y: 0, rx: 92, ry: 78 },
+          { x: 0, y: -88, rx: 42, ry: 34 },
+          { x: -82, y: -34, rx: 28, ry: 28 }, { x: 82, y: -34, rx: 28, ry: 28 }
+        ],
+        arsenal: [
+          { x: 0, y: -4, rx: 76, ry: 108 },
+          { x: -104, y: -10, rx: 40, ry: 66 }, { x: 104, y: -10, rx: 40, ry: 66 },
+          { x: -50, y: -22, rx: 34, ry: 82 }, { x: 50, y: -22, rx: 34, ry: 82 }
+        ],
+        fortress: [
+          { x: 0, y: -2, rx: 82, ry: 88 },
+          { x: -94, y: 6, rx: 42, ry: 38 }, { x: 94, y: 6, rx: 42, ry: 38 }
+        ]
+      };
+      return zones[kind] || [
+        { x: 0, y: -6, rx: 78, ry: 84 },
+        { x: -84, y: 0, rx: 38, ry: 34 },
+        { x: 84, y: 0, rx: 38, ry: 34 }
+      ];
     }
 
     function playerDamageAgainst(target, amount) {
@@ -4165,8 +4559,8 @@
       });
       if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) {
         const d = Math.hypot(boss.x - b.x, boss.y + (boss.hitYOffset || 0) - b.y);
-        const secretHitRect = boss.kind === 'secretRobot' && bossHitByBullet(b);
-        if (d < b.blast + 70 || secretHitRect) damageBoss(b.dmg * .9, boss.kind === 'secretRobot' ? 15 : 0);
+        const hitRect = bossHitByBullet({ ...b, r: Math.max(b.r || 0, (b.blast || 0) * .38) });
+        if (d < b.blast + 70 || hitRect) damageBoss(b.dmg * .9, boss.kind === 'secretRobot' ? 15 : 0);
       }
       playSmallExplosion();
     }
@@ -4251,7 +4645,7 @@
       });
       if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) {
         const d = Math.hypot(boss.x - player.x, boss.y + (boss.hitYOffset || 0) - player.y);
-        if (d < radius + 80) boss.hp -= bossDamageAmount(dmg * .85, boss.kind === 'secretRobot' ? 70 : 0);
+        if (d < radius + 80) damageBoss(dmg * .85, boss.kind === 'secretRobot' ? 70 : 0);
       }
       for (let i = 0; i < count; i++) explosions.push({ x: W * (.12 + Math.random() * .76), y: H * (.08 + Math.random() * .62), r: 16 + Math.random() * 18, life: 620 });
       addSpecialShockwave(player.x, player.y - 90, radius * .7, '#facc15', 680);
@@ -4402,21 +4796,40 @@
         specialBlast('글록3 코어', bombDmg * .95, 215, 6, false);
         addSpecialShockwave(px, py - 92, 150, '#60a5fa', 650);
         flash('글록3 코어');
+      } else if (id === 'cyber72') {
+        player.inv = Math.max(player.inv, 2200);
+        player.boostTimer = Math.max(player.boostTimer, 5400);
+        enemyBullets = enemyBullets.filter(b => Math.hypot(b.x - px, b.y - player.y) > 135);
+        for (let i = 0; i < 12; i++) {
+          specialBullet(px + (i - 5.5) * 8, py + Math.abs(i - 5.5) * 2, (i - 5.5) * .055, 14.4, dmg * .82, {
+            r: 4.25,
+            pierce: 2,
+            home: true,
+            homingStrength: .2,
+            homingIndex: i,
+            blast: 12,
+            styleId: 'cyber72',
+            shape: i % 2 ? 'prism' : 'missile'
+          });
+        }
+        specialBlast('사이버 스트라이크', bombDmg * .9, 205, 5, false);
+        addSpecialShockwave(px, py - 82, 132, '#7dd3fc', 620);
+        flash('사이버 스트라이크');
       } else if (id === 'darkstar') {
-        player.inv = Math.max(player.inv, 1700);
-        player.boostTimer = Math.max(player.boostTimer, 7800);
-        enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 95 || b.y < py - 210);
-        specialBullet(px, py, 0, 18.5, dmg * 2.25, { r: 4.6, pierce: 9, styleId: id, shape: 'sonicStreak' });
-        for (const a of [-.055, .055]) specialBullet(px, py + 8, a, 15.6, dmg * .78, { r: 3.6, pierce: 3, styleId: id, shape: 'sonicStreak' });
+        player.inv = Math.max(player.inv, 2200);
+        player.boostTimer = Math.max(player.boostTimer, 9200);
+        enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 125 || b.y < py - 240);
+        specialBullet(px, py, 0, 19.5, dmg * 2.85, { r: 5.1, pierce: 12, home: true, homingStrength: .1, styleId: id, shape: 'sonicStreak' });
+        for (const a of [-.09, -.035, .035, .09]) specialBullet(px, py + 8, a, 16.2, dmg * .86, { r: 3.7, pierce: 4, home: true, homingStrength: .075, styleId: id, shape: 'missile' });
         addSpecialShockwave(px, py - 95, 118, '#38bdf8', 520);
         flash('극초음속 침투');
       } else if (id === 'adf11f') {
-        player.inv = Math.max(player.inv, 900);
-        for (let i = 0; i < 10; i++) {
-          specialBullet(px + (i - 4.5) * 8, py + Math.abs(i - 4.5) * 2, (i - 4.5) * .055, 13.2, dmg * .68, {
-            r: 4.2,
+        player.inv = Math.max(player.inv, 1300);
+        for (let i = 0; i < 14; i++) {
+          specialBullet(px + (i - 6.5) * 7, py + Math.abs(i - 6.5) * 2, (i - 6.5) * .052, 13.8, dmg * .78, {
+            r: 4.35,
             home: true,
-            homingStrength: .19,
+            homingStrength: .24,
             homingIndex: i,
             styleId: id,
             shape: 'lockon'
@@ -4425,23 +4838,23 @@
         addSpecialShockwave(px, py - 78, 105, '#22d3ee', 520);
         flash('레이븐 락온');
       } else if (id === 'adf01') {
-        specialBullet(px, py, 0, 15.2, dmg * 3.1, { r: 7.2, pierce: 10, styleId: id, shape: 'rail' });
-        for (const x of [-15, 15]) specialBullet(px + x, py + 6, x / 520, 12.8, dmg * .9, { r: 3.9, pierce: 3, styleId: id, shape: 'eagleRail' });
+        specialBullet(px, py, 0, 16.2, dmg * 3.8, { r: 7.6, pierce: 14, home: true, homingStrength: .065, styleId: id, shape: 'rail' });
+        for (const x of [-24, -8, 8, 24]) specialBullet(px + x, py + 6, x / 600, 13.5, dmg * .98, { r: 4.0, pierce: 4, home: true, homingStrength: .08, styleId: id, shape: 'eagleRail' });
         addSpecialShockwave(px, py - 120, 135, '#ef4444', 560);
         flash('FALKEN TLS');
       } else if (id === 'adfx01') {
-        bomberSpecialRun(id, 'Morgan 버스트', 3, 1.04, 275, { spacing: 46, vy: -3.35, explodeAfter: 370, r: 30 });
-        for (const a of [-.08, .08]) specialBullet(px, py, a, 11.8, dmg * 1.25, { r: 5.4, pierce: 2, blast: 28, styleId: id, shape: 'flareBomb' });
+        bomberSpecialRun(id, 'Morgan 버스트', 4, 1.18, 315, { spacing: 42, vy: -3.45, explodeAfter: 390, r: 34 });
+        for (const a of [-.14, -.05, .05, .14]) specialBullet(px, py, a, 12.2, dmg * 1.32, { r: 5.55, pierce: 2, blast: 32, home: true, homingStrength: .08, styleId: id, shape: 'flareBomb' });
         flash('Morgan 버스트');
       } else if (id === 'cfa44') {
-        for (let i = 0; i < 14; i++) {
-          const a = (i - 6.5) * .07;
-          specialBullet(px + Math.sin(i) * 10, py + i, a, 12.1, dmg * .48, {
+        for (let i = 0; i < 20; i++) {
+          const a = (i - 9.5) * .065;
+          specialBullet(px + Math.sin(i) * 13, py + i, a, 12.8, dmg * .5, {
             r: 3.8,
             home: true,
-            homingStrength: .13,
+            homingStrength: .17,
             homingIndex: i,
-            blast: 12,
+            blast: 13,
             styleId: id,
             shape: i % 2 ? 'phoenix' : 'navalRocket'
           });
@@ -4449,15 +4862,15 @@
         flash('ADMM 산개');
       } else if (id === 'xfa27') {
         player.wingSwept = true;
-        player.boostTimer = Math.max(player.boostTimer, 3600);
-        for (const x of [-27, -9, 9, 27]) specialBullet(px + x, py + Math.abs(x) * .12, x / 620, 13.8, dmg * .95, { r: 4.3, pierce: 2, styleId: id, shape: 'eagleRail' });
-        for (const a of [-.18, .18]) specialBullet(px, py + 10, a, 11.9, dmg * .72, { r: 4.4, home: true, homingStrength: .12, styleId: id, shape: 'phoenix' });
+        player.boostTimer = Math.max(player.boostTimer, 4700);
+        for (const x of [-34, -17, 0, 17, 34]) specialBullet(px + x, py + Math.abs(x) * .12, x / 620, 14.3, dmg * 1.02, { r: 4.45, pierce: 2, home: Math.abs(x) > 0, homingStrength: .095, styleId: id, shape: 'eagleRail' });
+        for (const a of [-.22, -.1, .1, .22]) specialBullet(px, py + 10, a, 12.6, dmg * .82, { r: 4.45, home: true, homingStrength: .15, styleId: id, shape: 'phoenix' });
         flash('XFA-27 MSTM');
       } else if (id === 'asfx') {
-        player.inv = Math.max(player.inv, 1500);
-        player.boostTimer = Math.max(player.boostTimer, 4700);
-        enemyBullets = enemyBullets.filter(b => Math.hypot(b.x - px, b.y - player.y) > 95);
-        for (let i = 0; i < 12; i++) specialBullet(px + Math.sin(i * .8) * 18, py + i * 2, (i - 5.5) * .09, 11.8, dmg * .56, { r: 3.7, styleId: id, shape: 'fanShard' });
+        player.inv = Math.max(player.inv, 1900);
+        player.boostTimer = Math.max(player.boostTimer, 5600);
+        enemyBullets = enemyBullets.filter(b => Math.hypot(b.x - px, b.y - player.y) > 125);
+        for (let i = 0; i < 16; i++) specialBullet(px + Math.sin(i * .8) * 20, py + i * 2, (i - 7.5) * .082, 12.6, dmg * .62, { r: 3.85, home: i % 2 === 0, homingStrength: .13, homingIndex: i, styleId: id, shape: 'fanShard' });
         addSpecialShockwave(px, py - 54, 112, '#38bdf8', 480);
         flash('신덴 기동');
       } else if (id === 'operator') {
@@ -4495,7 +4908,7 @@
         const beamDmg = player.stats.power * 4.2;
         enemies.forEach(e => { if (Math.abs(e.x - px) < 115) e.hp -= playerDamageAgainst(e, beamDmg); });
         if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot') && Math.abs(boss.x - px) < (boss.kind === 'secretRobot' ? 175 : 135)) {
-          boss.hp -= bossDamageAmount(playerDamageAgainst(boss, beamDmg * 1.7), boss.kind === 'secretRobot' ? 30 : 0);
+          damageBoss(beamDmg * 1.7, boss.kind === 'secretRobot' ? 30 : 0);
         }
         enemyBullets = enemyBullets.filter(b => Math.abs(b.x - px) > 125);
         explosions.push({ x: px, y: py - 220, r: 42, life: 780 });
@@ -4612,7 +5025,7 @@
           fallout.tick += 500;
           const falloutDamage = fallout.damage || 1;
           enemies.forEach(e => e.hp -= playerDamageAgainst(e, falloutDamage));
-          if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) boss.hp -= bossDamageAmount(falloutDamage, boss.kind === 'secretRobot' ? 4 : 0);
+          if (boss && (boss.inv <= 0 || boss.kind === 'secretRobot')) damageBoss(falloutDamage, boss.kind === 'secretRobot' ? 4 : 0);
           explosions.push({ x: Math.random() * W, y: Math.random() * H, r: 7, life: 260 });
         }
         if (fallout.time <= 0) fallout = null;
@@ -4667,7 +5080,7 @@
       bullets.forEach(b => {
         if (b.home) {
           const candidates = [...enemies];
-          if (boss && boss.inv <= 0) candidates.push(boss);
+          if (boss && !boss.defeated && boss.inv <= 0) candidates.push(boss);
           const rankedTargets = candidates.map(e => {
             const verticalPenalty = e.y > b.y + 80 ? 260 : 0;
             const score = Math.hypot(e.x - b.x, e.y - b.y) + verticalPenalty;
@@ -4786,7 +5199,7 @@
         }
       });
 
-      if (boss) {
+      if (boss && !boss.defeated) {
         const bossTimeScale = boss.kind === 'secretRobot'
           ? boss.phase >= 3 ? 1.28 : boss.phase >= 2 ? 1.16 : 1
           : 1;
@@ -4820,6 +5233,9 @@
           const phaseMove = boss.phase >= 3 ? 1.42 : boss.phase >= 2 ? 1.24 : 1;
           boss.x = clamp(W / 2 + Math.sin(boss.t / 720) * 48 * phaseMove + Math.sin(boss.t / 250) * 14, robotMargin, W - robotMargin);
           boss.targetY = 142 + Math.cos(boss.t / 650) * 14 * phaseMove;
+        } else if (boss.kind === 'cyberWingBoss') {
+          boss.x = clamp(W / 2 + Math.sin(boss.t / 920) * 42 + Math.sin(boss.t / 370) * 12, 170, W - 170);
+          boss.targetY = 122 + Math.cos(boss.t / 760) * 10;
         } else {
           boss.x = W / 2 + Math.sin(boss.t / 900) * (105 + st * 9);
         }
@@ -4837,6 +5253,7 @@
             boss.bombCooldown = 4000;
           }
         }
+        if (boss.kind === 'cyberWingBoss') updateCyberWingDroneLaunch(dt);
         boss.fire -= dt;
         if (boss.fire <= 0) {
           boss.fire = boss.kind === 'secretRobot'
@@ -4994,15 +5411,22 @@
         }
       });
 
-      if (mode === 'play' && boss && boss.hp <= 0) {
-        if (boss.kind === 'secretRobot') {
+      if (mode === 'play' && boss && (boss.hp <= 0 || boss.defeated)) {
+        const defeatedBoss = boss;
+        defeatedBoss.hp = 0;
+        defeatedBoss.defeated = true;
+        boss = null;
+        bossLasers = [];
+        bossBombs = [];
+        enemyBullets = [];
+        if (defeatedBoss.kind === 'secretRobot') {
           const bursts = [[0,-94,34],[-76,-38,28],[76,-38,28],[-112,48,36],[112,48,36],[-42,116,30],[42,116,30],[0,30,58]];
           bursts.forEach(([ox, oy, r], i) => {
-            explosions.push({ x: boss.x + ox, y: boss.y + oy, r, life: 760 + i * 95 });
+            explosions.push({ x: defeatedBoss.x + ox, y: defeatedBoss.y + oy, r, life: 760 + i * 95 });
           });
-          specialEffects.push({ x: boss.x, y: boss.y + 8, life: 1100, maxLife: 1100, type: 'powerBurst', color: boss.accent || '#00b7ff', accent: '#ffffff' });
+          specialEffects.push({ x: defeatedBoss.x, y: defeatedBoss.y + 8, life: 1100, maxLife: 1100, type: 'powerBurst', color: defeatedBoss.accent || '#00b7ff', accent: '#ffffff' });
         } else {
-          explosions.push({ x: boss.x, y: boss.y, r: 45, life: 900 });
+          explosions.push({ x: defeatedBoss.x, y: defeatedBoss.y, r: 45, life: 900 });
         }
         playPlayerExplosion();
         if (save.selectedMode === 'endless') {
@@ -5015,8 +5439,8 @@
             for (let i = 0; i < 3; i++) {
               pickups.push({
                 kind: 'power',
-                x: boss.x + (i - 1) * 36,
-                y: Math.min(H - 180, boss.y + 38 + Math.abs(i - 1) * 12),
+                x: defeatedBoss.x + (i - 1) * 36,
+                y: Math.min(H - 180, defeatedBoss.y + 38 + Math.abs(i - 1) * 12),
                 vy: 1.25,
                 value: 1
               });
@@ -5027,12 +5451,10 @@
           storeSave();
           if (!hinted) setLog(`보스 격파. 점수 +${bonus}, 코인 +${coinBonus}. 무한모드 최대 파워가 ${newPowerMax}까지 확장됐다.`);
           flash(`POWER MAX ${newPowerMax}`);
-          boss = null;
           nextBossTime = stageTime + Math.max(28000, 52000 - difficultyStage() * 1200);
           bossWarningShown = false;
           return;
         }
-        boss = null;
         completeStage();
       }
     }
@@ -5197,7 +5619,7 @@
       drawDepthOverlay(stage);
       pickups.forEach(drawPickup);
       enemies.forEach(drawEnemy);
-      if (boss) drawBoss();
+      if (boss && !boss.defeated) drawBoss();
       bullets.forEach(drawPlayerBullet);
       specialEffects.forEach(drawSpecialEffect);
       enemyBullets.forEach(drawEnemyBullet);
@@ -6216,7 +6638,36 @@
       ctx.scale(proportion.x, proportion.y);
       const wingSweep = friendly && player && player.jet?.id === id && isVariableWingJet(id) ? (player.wingSweep || 0) : 0;
 
-      if (id === 'bomberfleet') {
+      if (id === 'cyber72') {
+        ctx.strokeStyle = 'rgba(14,165,233,.46)';
+        ctx.lineWidth = 1.35;
+        ctx.fillStyle = '#e0f7ff';
+        poly([[0,-76],[19,-42],[17,29],[0,58],[-17,29],[-19,-42]]);
+        ctx.fillStyle = '#bfefff';
+        poly([[-15,-30],[-78,-2],[-60,30],[-18,16]]);
+        poly([[15,-30],[78,-2],[60,30],[18,16]]);
+        ctx.fillStyle = '#ffffff';
+        poly([[0,-64],[10,-36],[9,24],[0,43],[-9,24],[-10,-36]]);
+        ctx.fillStyle = '#7dd3fc';
+        poly([[-23,25],[-45,60],[-10,43]]);
+        poly([[23,25],[45,60],[10,43]]);
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        ctx.ellipse(0, -42, 5, 17, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.ellipse(0, -43, 2.8, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(14,165,233,.72)';
+        ctx.beginPath();
+        ctx.moveTo(-54, 4);
+        ctx.lineTo(-17, 12);
+        ctx.lineTo(0, -8);
+        ctx.lineTo(17, 12);
+        ctx.lineTo(54, 4);
+        ctx.stroke();
+      } else if (id === 'bomberfleet') {
         ctx.strokeStyle = 'rgba(67,211,196,.28)';
         ctx.lineWidth = 1.3;
         ctx.beginPath();
@@ -7102,9 +7553,118 @@
         poly([[0,-34],[24,11],[8,7],[6,31],[0,22],[-6,31],[-8,7],[-24,11]]);
       }
 
+      drawAdvancedJetDetails(id, color);
       if (friendly) drawSkinOrnaments(id, equippedSkin(id), color);
       drawJetFinish(id, color, friendly);
       if (friendly) drawUpgradeOrnaments(id);
+      ctx.restore();
+    }
+
+    function drawAdvancedJetDetails(id, color) {
+      const detailJets = new Set(['kf21', 'darkstar', 'adf11f', 'adf01', 'adfx01', 'cfa44', 'xfa27', 'asfx']);
+      if (!detailJets.has(id)) return;
+      const accents = {
+        kf21: '#60a5fa',
+        darkstar: '#38bdf8',
+        adf11f: '#22d3ee',
+        adf01: '#ef4444',
+        adfx01: '#facc15',
+        cfa44: '#60a5fa',
+        xfa27: '#f97316',
+        asfx: '#38bdf8'
+      };
+      const accent = accents[id] || '#60a5fa';
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = 'rgba(15,23,42,.42)';
+      ctx.lineWidth = 1.05;
+      for (const side of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(side * 8, -46);
+        ctx.lineTo(side * 15, -18);
+        ctx.lineTo(side * 12, 22);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(side * 18, -10);
+        ctx.lineTo(side * 44, 6);
+        ctx.stroke();
+      }
+      ctx.strokeStyle = rgbaColor(accent, .78);
+      ctx.lineWidth = 1.35;
+      if (id === 'kf21') {
+        ctx.beginPath();
+        ctx.moveTo(0, -60); ctx.lineTo(0, 51);
+        ctx.moveTo(-43, -4); ctx.lineTo(-17, 8); ctx.lineTo(-11, 37);
+        ctx.moveTo(43, -4); ctx.lineTo(17, 8); ctx.lineTo(11, 37);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .72);
+        for (const x of [-33, 33]) ctx.fillRect(x - 5, -5, 10, 4);
+      } else if (id === 'darkstar') {
+        ctx.beginPath();
+        ctx.moveTo(0, -82); ctx.lineTo(0, 43);
+        ctx.moveTo(-58, 18); ctx.lineTo(-18, 3); ctx.lineTo(-6, 30);
+        ctx.moveTo(58, 18); ctx.lineTo(18, 3); ctx.lineTo(6, 30);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .9);
+        ctx.fillRect(-2, -48, 4, 42);
+        for (const x of [-18, 18]) ctx.fillRect(x - 3, 22, 6, 18);
+      } else if (id === 'adf11f') {
+        ctx.beginPath();
+        ctx.moveTo(-64, -2); ctx.lineTo(-23, 8); ctx.lineTo(-5, 37);
+        ctx.moveTo(64, -2); ctx.lineTo(23, 8); ctx.lineTo(5, 37);
+        ctx.moveTo(0, -68); ctx.lineTo(0, 48);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .72);
+        for (const x of [-48, -22, 22, 48]) ctx.fillRect(x - 3, 7, 6, 13);
+      } else if (id === 'adf01') {
+        ctx.beginPath();
+        ctx.moveTo(0, -64); ctx.lineTo(0, 54);
+        ctx.moveTo(-56, -4); ctx.lineTo(-17, 11); ctx.lineTo(-11, 43);
+        ctx.moveTo(56, -4); ctx.lineTo(17, 11); ctx.lineTo(11, 43);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .86);
+        ctx.fillRect(-3, -51, 6, 78);
+        for (const x of [-15, 15]) ctx.fillRect(x - 2, 33, 4, 18);
+      } else if (id === 'adfx01') {
+        ctx.beginPath();
+        ctx.moveTo(-62, 10); ctx.lineTo(-20, 10); ctx.lineTo(-8, 48);
+        ctx.moveTo(62, 10); ctx.lineTo(20, 10); ctx.lineTo(8, 48);
+        ctx.moveTo(-34, -20); ctx.lineTo(-12, -15);
+        ctx.moveTo(34, -20); ctx.lineTo(12, -15);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .82);
+        ctx.beginPath();
+        ctx.arc(0, 8, 5.4, 0, Math.PI * 2);
+        ctx.fill();
+        for (const x of [-21, 21]) ctx.fillRect(x - 3, 36, 6, 18);
+      } else if (id === 'cfa44') {
+        ctx.beginPath();
+        ctx.moveTo(-73, 13); ctx.lineTo(-24, 11); ctx.lineTo(-8, 48);
+        ctx.moveTo(73, 13); ctx.lineTo(24, 11); ctx.lineTo(8, 48);
+        ctx.moveTo(0, -54); ctx.lineTo(0, 50);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .8);
+        for (const x of [-44, -28, -12, 12, 28, 44]) ctx.fillRect(x - 2, 15, 4, 12);
+      } else if (id === 'xfa27') {
+        ctx.beginPath();
+        ctx.moveTo(-54, 4); ctx.lineTo(-17, 14); ctx.lineTo(-8, 48);
+        ctx.moveTo(54, 4); ctx.lineTo(17, 14); ctx.lineTo(8, 48);
+        ctx.moveTo(0, -54); ctx.lineTo(0, 49);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .8);
+        for (const x of [-12, 12]) ctx.fillRect(x - 3, 37, 6, 17);
+      } else if (id === 'asfx') {
+        ctx.beginPath();
+        ctx.moveTo(-59, -15); ctx.lineTo(-17, 10); ctx.lineTo(-7, 48);
+        ctx.moveTo(59, -15); ctx.lineTo(17, 10); ctx.lineTo(7, 48);
+        ctx.moveTo(-38, -27); ctx.lineTo(-13, -24);
+        ctx.moveTo(38, -27); ctx.lineTo(13, -24);
+        ctx.stroke();
+        ctx.fillStyle = rgbaColor(accent, .78);
+        ctx.fillRect(-3, -45, 6, 64);
+        for (const x of [-16, 16]) ctx.fillRect(x - 3, 31, 6, 19);
+      }
       ctx.restore();
     }
 
@@ -7370,6 +7930,7 @@
     function jetProportion(id) {
       if (id === 'bomberfleet') return { x: 1, y: 1 };
       if (id === 'operator') return { x: .96, y: 1.08 };
+      if (id === 'cyber72') return { x: .96, y: 1.12 };
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'kf21') return { x: .98, y: 1.07 };
@@ -7401,7 +7962,27 @@
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
-      if (e.form === 'escortCarrier') {
+      if (e.form === 'mq101Drone') {
+        ctx.fillStyle = shade(e.color, -.08);
+        poly([[0,-34],[34,-6],[54,22],[19,17],[0,31],[-19,17],[-54,22],[-34,-6]]);
+        ctx.fillStyle = '#f8fafc';
+        poly([[0,-25],[20,-3],[31,13],[10,9],[0,20],[-10,9],[-31,13],[-20,-3]]);
+        ctx.fillStyle = '#93c5fd';
+        ctx.beginPath();
+        ctx.ellipse(0, -8, 6, 13, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(-5, 18, 10, 7);
+        ctx.strokeStyle = 'rgba(59,130,246,.65)';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(-30, 4);
+        ctx.lineTo(-8, 11);
+        ctx.lineTo(0, 2);
+        ctx.lineTo(8, 11);
+        ctx.lineTo(30, 4);
+        ctx.stroke();
+      } else if (e.form === 'escortCarrier') {
         ctx.fillStyle = shade(e.color, -.42);
         poly([[-50, 78], [44, 78], [70, 52], [76, -50], [42, -112], [0, -136], [-42, -112], [-72, -48], [-66, 55]]);
         ctx.fillStyle = shade(e.color, -.18);
@@ -8017,6 +8598,7 @@
     }
 
     function drawBoss() {
+      if (!boss || boss.defeated) return;
       ctx.save();
       ctx.translate(boss.x, boss.y);
       ctx.scale((boss.size || 1) * 1.03, (boss.size || 1) * 1.03);
@@ -8660,11 +9242,22 @@
       ctx.globalAlpha = 1;
       if (boss.hitFlash > 0) {
         ctx.globalCompositeOperation = 'screen';
-        ctx.globalAlpha = clamp(boss.hitFlash / 120, 0, 1) * .38;
-        ctx.fillStyle = boss.kind === 'secretRobot' ? '#e0f2fe' : '#ffffff';
-        ctx.beginPath();
-        ctx.ellipse(0, boss.kind === 'secretRobot' ? -18 : 4, boss.kind === 'secretRobot' ? 170 : 120, boss.kind === 'secretRobot' ? 210 : 92, 0, 0, Math.PI * 2);
-        ctx.fill();
+        const flashT = clamp(boss.hitFlash / 120, 0, 1);
+        ctx.globalAlpha = flashT * .72;
+        ctx.strokeStyle = boss.kind === 'secretRobot' ? '#e0f2fe' : '#f8fafc';
+        ctx.lineWidth = 2.2;
+        const sparks = boss.kind === 'secretRobot'
+          ? [[0,-58,22],[-42,-14,16],[42,-14,16],[-60,54,14],[60,54,14],[0,95,18]]
+          : [[0,-42,18],[-44,-10,14],[44,-10,14],[0,34,16]];
+        sparks.forEach(([sx, sy, len], i) => {
+          const spin = performance.now() / 95 + i * 1.7;
+          ctx.beginPath();
+          ctx.moveTo(sx - Math.cos(spin) * len, sy - Math.sin(spin) * len);
+          ctx.lineTo(sx + Math.cos(spin) * len, sy + Math.sin(spin) * len);
+          ctx.moveTo(sx - Math.sin(spin) * len * .55, sy + Math.cos(spin) * len * .55);
+          ctx.lineTo(sx + Math.sin(spin) * len * .55, sy - Math.cos(spin) * len * .55);
+          ctx.stroke();
+        });
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
       }
@@ -10229,6 +10822,18 @@
       document.getElementById('operatorHint').textContent = save.unlockedJets?.operator
         ? '운영자 전용 기체가 해금되어 있습니다.'
         : '운영자 비밀번호를 입력하면 전용 기체가 해금됩니다.';
+      const operatorSecretStage = document.getElementById('operatorSecretStage');
+      if (operatorSecretStage) {
+        operatorSecretStage.innerHTML = save.cyberStageReady
+          ? `<button class="stage-card" id="cyberStageButton">
+              <div class="card-head"><span class="name">??? 스테이지</span><span class="tag">${save.cyberStageCleared ? 'CLEARED' : 'SECRET'}</span></div>
+              <div class="small">초대형 공중 전함 Stratowing Eclipse 격추 작전</div>
+              <div class="small">노데미지 클리어 보상: 사이버-72 스트라이크 랩터</div>
+            </button>`
+          : `<div class="log">??? 스테이지: Stage 30 노데미지 클리어 후 표시됩니다.</div>`;
+        const cyberButton = document.getElementById('cyberStageButton');
+        if (cyberButton) cyberButton.onclick = () => startCyberWingDuel();
+      }
 
       const jetsEl = document.getElementById('jets');
       const stagesEl = document.getElementById('stages');
