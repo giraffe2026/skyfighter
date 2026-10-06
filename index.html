@@ -889,6 +889,7 @@
       { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 11, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
       { id: 'cyber72', name: '사이버-72 스트라이크 랩터', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
+      { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 가변익 사냥꾼', color: '#7c3aed', power: 18, hp: 10, shots: 4, fireRate: 132, speed: 7.05, bulletSpeed: 11.8, hitbox: 6, startBombs: 3, hidden: true, rewardOnly: true, special: '특수기: 보이드 랜스. Shift로 가변익 고속 비행을 유지하며 공허 적에게 강하다' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
     ];
 
@@ -2779,14 +2780,14 @@
         targetY: 146,
         hp: 900000,
         maxHp: 900000,
-        power: 10,
+        power: 8,
         shots: 18,
         fire: 440,
         inv: 250,
         phase: 1,
         patternStep: 0,
-        laserCooldown: 2600,
-        bombCooldown: 1800,
+        laserCooldown: 3400,
+        bombCooldown: 2800,
         t: 0,
         hitW: 230,
         hitH: 248,
@@ -2808,8 +2809,8 @@
         x: W / 2,
         y: -140,
         targetY: 132,
-        hp: 720000,
-        maxHp: 720000,
+        hp: 560000,
+        maxHp: 560000,
         power: 9,
         shots: 16,
         fire: 330,
@@ -3016,6 +3017,10 @@
       if (!isWorldWarChapter() && stage.id === 14) {
         if (awardAchievement('stage9Clear')) rewards.push('업적: 공허 기술 회수');
       }
+      if (!isWorldWarChapter() && save.selectedMode === 'stage' && stage.id === 17) {
+        const unlocked = unlockJet('f67', 'F-67 보이드팰컨 해금. 공허 코어로 되살린 가변익 기체가 격납고에 복귀했다.');
+        rewards.push(unlocked ? 'F-67 보이드팰컨 해금' : 'F-67 보이드팰컨 이미 해금됨');
+      }
       const unlockedLastWar = maybeUnlockLastWar();
       if (unlockedLastWar) rewards.push('THE LAST WAR 해금: Stage 21 개방');
       storeSave();
@@ -3168,16 +3173,16 @@
           form: 'mq101Drone',
           x: clamp(boss.x + lane * 28, 35, W - 35),
           y: boss.y + 64 + Math.abs(lane) * 6,
-          hp: 42 + difficultyStage() * 6,
-          maxHp: 42 + difficultyStage() * 6,
-          power: 5,
-          shots: 2,
-          speed: 1.35 + difficultyStage() * .018,
-          fire: 700 + i * 90,
+          hp: 72 + difficultyStage() * 9,
+          maxHp: 72 + difficultyStage() * 9,
+          power: 8,
+          shots: 3,
+          speed: 1.58 + difficultyStage() * .024,
+          fire: 520 + i * 65,
           t: i * 90,
           r: 18,
           color: '#dbeafe',
-          score: 260,
+          score: 420,
           cyberDrone: true
         });
       }
@@ -3943,12 +3948,12 @@
       const baseForm = form || bossBulletForm(boss.kind);
       const styleForm = baseForm;
       const speedScale = boss?.kind === 'secretRobot'
-        ? boss.phase >= 2 ? 1.26 : 1.14
+        ? boss.phase >= 2 ? 1.18 : 1.08
         : 1.08;
       const secretRobotDamage = boss.kind === 'secretRobot'
         ? boss.phase >= 2
-          ? 4 + boss.phase * 2 + Math.max(0, damage)
-          : 2 + Math.ceil((boss.phase || 1) * .9) + Math.max(0, damage)
+          ? 3 + Math.ceil(boss.phase * 1.5) + Math.max(0, damage)
+          : 2 + Math.max(0, damage)
         : 0;
       enemyBullets.push({
         x,
@@ -5177,19 +5182,19 @@
           boss.laserCooldown = Math.max(0, (boss.laserCooldown || 0) - dt);
           if (boss.laserCooldown <= 0 && bossLasers.length < 3) {
             queueSecretRobotLaser();
-            boss.laserCooldown = 4000;
+            boss.laserCooldown = 5400;
           }
           boss.bombCooldown = Math.max(0, (boss.bombCooldown || 0) - dt);
           if (boss.bombCooldown <= 0 && bossBombs.length < 8) {
             queueSecretRobotBombs();
-            boss.bombCooldown = 4000;
+            boss.bombCooldown = 5600;
           }
         }
         if (boss.kind === 'cyberWingBoss') updateCyberWingDroneLaunch(dt);
         boss.fire -= dt;
         if (boss.fire <= 0) {
           boss.fire = boss.kind === 'secretRobot'
-            ? Math.max(780, 1760 - boss.phase * 310)
+            ? Math.max(920, 1940 - boss.phase * 310)
             : boss.kind === 'cyberWingBoss'
               ? Math.max(940, 1680 - boss.phase * 220)
             : Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120);
@@ -6573,33 +6578,81 @@
       const wingSweep = friendly && player && player.jet?.id === id && isVariableWingJet(id) ? (player.wingSweep || 0) : 0;
 
       if (id === 'cyber72') {
-        ctx.strokeStyle = 'rgba(14,165,233,.46)';
-        ctx.lineWidth = 1.35;
-        ctx.fillStyle = '#e0f7ff';
-        poly([[0,-76],[19,-42],[17,29],[0,58],[-17,29],[-19,-42]]);
-        ctx.fillStyle = '#bfefff';
-        poly([[-15,-30],[-78,-2],[-60,30],[-18,16]]);
-        poly([[15,-30],[78,-2],[60,30],[18,16]]);
+        const glow = '#38bdf8';
+        const pale = '#e9fbff';
+        const ice = '#a8ecff';
+        const white = '#ffffff';
+        const steel = '#516172';
+        ctx.strokeStyle = 'rgba(14,165,233,.42)';
+        ctx.lineWidth = 1.25;
+
+        ctx.fillStyle = 'rgba(125,211,252,.18)';
+        poly([[0,-92],[12,-57],[48,-17],[82,14],[52,24],[26,11],[11,51],[0,72],[-11,51],[-26,11],[-52,24],[-82,14],[-48,-17],[-12,-57]]);
+
+        ctx.fillStyle = pale;
+        poly([[0,-96],[12,-65],[16,-22],[13,39],[0,72],[-13,39],[-16,-22],[-12,-65]]);
+        ctx.fillStyle = white;
+        poly([[0,-88],[7,-56],[8,31],[0,58],[-8,31],[-7,-56]]);
+        ctx.fillStyle = '#d7f6ff';
+        poly([[-10,-35],[-25,-7],[-18,26],[-8,14]]);
+        poly([[10,-35],[25,-7],[18,26],[8,14]]);
+
+        // Forward-swept main wings: the tips sit ahead of the roots for a sharper experimental silhouette.
+        ctx.fillStyle = ice;
+        poly([[-13,-22],[-88,-4],[-62,35],[-22,17]]);
+        poly([[13,-22],[88,-4],[62,35],[22,17]]);
+        ctx.fillStyle = 'rgba(255,255,255,.84)';
+        poly([[-18,-15],[-69,0],[-54,17],[-22,8]]);
+        poly([[18,-15],[69,0],[54,17],[22,8]]);
+
+        // Nose canards, small but visible like a high-agility prototype.
+        ctx.fillStyle = '#bdefff';
+        poly([[-9,-55],[-42,-43],[-21,-30],[-8,-38]]);
+        poly([[9,-55],[42,-43],[21,-30],[8,-38]]);
         ctx.fillStyle = '#ffffff';
-        poly([[0,-64],[10,-36],[9,24],[0,43],[-9,24],[-10,-36]]);
+        poly([[-11,-50],[-31,-42],[-15,-37]]);
+        poly([[11,-50],[31,-42],[15,-37]]);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.ellipse(0, -58, 5.5, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.ellipse(0, -59, 3, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = steel;
+        poly([[-15,35],[-35,68],[-8,52]]);
+        poly([[15,35],[35,68],[8,52]]);
         ctx.fillStyle = '#7dd3fc';
-        poly([[-23,25],[-45,60],[-10,43]]);
-        poly([[23,25],[45,60],[10,43]]);
-        ctx.fillStyle = '#334155';
+        poly([[-24,28],[-55,66],[-13,50]]);
+        poly([[24,28],[55,66],[13,50]]);
+        ctx.fillStyle = '#1e293b';
+        poly([[-8,48],[-18,72],[-3,65]]);
+        poly([[8,48],[18,72],[3,65]]);
+
+        ctx.fillStyle = glow;
+        for (const [ex, ey] of [[-7, 52], [7, 52]]) {
+          ctx.beginPath();
+          ctx.ellipse(ex, ey, 3.2, 9, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = 'rgba(14,165,233,.82)';
+        ctx.lineWidth = 1.7;
         ctx.beginPath();
-        ctx.ellipse(0, -42, 5, 17, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#38bdf8';
+        ctx.moveTo(-63, 3);
+        ctx.lineTo(-22, 10);
+        ctx.lineTo(0, -12);
+        ctx.lineTo(22, 10);
+        ctx.lineTo(63, 3);
+        ctx.stroke();
         ctx.beginPath();
-        ctx.ellipse(0, -43, 2.8, 11, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(14,165,233,.72)';
-        ctx.beginPath();
-        ctx.moveTo(-54, 4);
-        ctx.lineTo(-17, 12);
-        ctx.lineTo(0, -8);
-        ctx.lineTo(17, 12);
-        ctx.lineTo(54, 4);
+        ctx.moveTo(-8, -68);
+        ctx.lineTo(-3, 28);
+        ctx.moveTo(8, -68);
+        ctx.lineTo(3, 28);
         ctx.stroke();
       } else if (id === 'bomberfleet') {
         ctx.strokeStyle = 'rgba(67,211,196,.28)';
@@ -6959,23 +7012,37 @@
         ctx.moveTo(-55, 15); ctx.lineTo(-14, 3); ctx.lineTo(0, -83); ctx.lineTo(14, 3); ctx.lineTo(55, 15);
         ctx.stroke();
       } else if (id === 'adf11f') {
-        ctx.fillStyle = shade(color, -.18);
-        poly([[0,-66],[21,-37],[80,-4],[45,26],[17,15],[0,42],[-17,15],[-45,26],[-80,-4],[-21,-37]]);
-        ctx.fillStyle = color;
-        poly([[0,-78],[11,-53],[14,-13],[11,27],[0,57],[-11,27],[-14,-13],[-11,-53]]);
+        ctx.fillStyle = shade(color, -.22);
+        poly([[0,-82],[24,-52],[92,-8],[62,21],[27,15],[14,42],[0,62],[-14,42],[-27,15],[-62,21],[-92,-8],[-24,-52]]);
+        ctx.fillStyle = shade(color, .08);
+        poly([[0,-94],[13,-66],[17,-19],[14,34],[0,68],[-14,34],[-17,-19],[-13,-66]]);
+        ctx.fillStyle = '#f8fafc';
+        poly([[0,-84],[8,-56],[9,-18],[5,27],[0,48],[-5,27],[-9,-18],[-8,-56]]);
         ctx.fillStyle = '#0f172a';
-        poly([[0,-61],[8,-35],[5,-11],[0,-2],[-5,-11],[-8,-35]]);
-        ctx.fillStyle = shade(color, .22);
-        poly([[-12,-42],[-44,-21],[-25,-8],[-10,-22]]);
-        poly([[12,-42],[44,-21],[25,-8],[10,-22]]);
-        ctx.fillStyle = '#1e3a8a';
-        poly([[-16,19],[-42,50],[-16,39],[-6,30]]);
-        poly([[16,19],[42,50],[16,39],[6,30]]);
-        ctx.strokeStyle = '#22d3ee';
-        ctx.lineWidth = 1.4;
+        poly([[0,-70],[10,-43],[7,-16],[0,-6],[-7,-16],[-10,-43]]);
+        ctx.fillStyle = '#22d3ee';
+        poly([[0,-64],[4,-41],[3,-20],[0,-12],[-3,-20],[-4,-41]]);
+        ctx.fillStyle = shade(color, .2);
+        poly([[-10,-51],[-42,-32],[-61,-17],[-30,-11],[-10,-27]]);
+        poly([[10,-51],[42,-32],[61,-17],[30,-11],[10,-27]]);
+        ctx.fillStyle = shade(color, -.1);
+        poly([[-18,-16],[-100,3],[-64,34],[-20,16]]);
+        poly([[18,-16],[100,3],[64,34],[20,16]]);
+        ctx.fillStyle = 'rgba(34,211,238,.9)';
+        poly([[-64,4],[-36,10],[-18,34],[-52,24]]);
+        poly([[64,4],[36,10],[18,34],[52,24]]);
+        ctx.fillStyle = '#0e7490';
+        poly([[-18,22],[-52,64],[-18,48],[-7,36]]);
+        poly([[18,22],[52,64],[18,48],[7,36]]);
+        ctx.fillStyle = '#1e293b';
+        poly([[-8,42],[-21,70],[-3,59]]);
+        poly([[8,42],[21,70],[3,59]]);
+        ctx.strokeStyle = 'rgba(236,254,255,.72)';
+        ctx.lineWidth = 1.25;
         ctx.beginPath();
-        ctx.moveTo(-57, 1); ctx.lineTo(-15, 8); ctx.lineTo(0, 34); ctx.lineTo(15, 8); ctx.lineTo(57, 1);
-        ctx.moveTo(0, -55); ctx.lineTo(0, 43);
+        ctx.moveTo(-78, -1); ctx.lineTo(-26, 8); ctx.lineTo(-8, 42);
+        ctx.moveTo(78, -1); ctx.lineTo(26, 8); ctx.lineTo(8, 42);
+        ctx.moveTo(0, -77); ctx.lineTo(0, 53);
         ctx.stroke();
       } else if (id === 'adf01') {
         ctx.fillStyle = color;
@@ -7034,28 +7101,43 @@
         ctx.fillStyle = '#93c5fd';
         for (const x of [-35, -19, 19, 35]) ctx.fillRect(x - 2, 18, 4, 13);
       } else if (id === 'xfa27') {
-        ctx.fillStyle = color;
+        ctx.fillStyle = shade(color, .08);
         for (const side of [-1, 1]) {
           ctx.save();
-          ctx.translate(side * 13, -2);
+          ctx.translate(side * 13, -4);
           ctx.scale(side, 1);
-          ctx.rotate(wingSweep * .58);
-          poly([[0,-3],[68,0],[18,29],[-3,13]]);
+          ctx.rotate(wingSweep * .62);
+          poly([[0,-5],[78,-4],[24,31],[-4,15]]);
           ctx.restore();
         }
-        ctx.fillStyle = shade(color, .04);
-        poly([[0,-72],[10,-51],[16,-18],[18,28],[9,57],[0,68],[-9,57],[-18,28],[-16,-18],[-10,-51]]);
-        ctx.fillStyle = shade(color, -.2);
-        poly([[0,-50],[7,-20],[5,10],[0,22],[-5,10],[-7,-20]]);
+        ctx.fillStyle = color;
+        poly([[0,-84],[12,-59],[18,-22],[20,29],[10,62],[0,76],[-10,62],[-20,29],[-18,-22],[-12,-59]]);
+        ctx.fillStyle = shade(color, .18);
+        poly([[-12,-49],[-45,-30],[-59,-15],[-29,-13],[-12,-29]]);
+        poly([[12,-49],[45,-30],[59,-15],[29,-13],[12,-29]]);
+        ctx.fillStyle = shade(color, -.18);
+        poly([[0,-60],[7,-27],[6,12],[0,27],[-6,12],[-7,-27]]);
+        ctx.fillStyle = '#111827';
+        poly([[0,-55],[6,-32],[5,-8],[0,2],[-5,-8],[-6,-32]]);
         ctx.fillStyle = shade(color, -.28);
-        poly([[-14,24],[-42,58],[-13,44],[-5,34]]);
-        poly([[14,24],[42,58],[13,44],[5,34]]);
+        poly([[-16,26],[-50,66],[-16,50],[-6,38]]);
+        poly([[16,26],[50,66],[16,50],[6,38]]);
+        ctx.fillStyle = '#374151';
+        poly([[-13,39],[-31,74],[-5,58]]);
+        poly([[13,39],[31,74],[5,58]]);
         ctx.fillStyle = '#f97316';
-        for (const x of [-10, 10]) ctx.fillRect(x - 2, 37, 4, 16);
+        for (const x of [-18, -7, 7, 18]) ctx.fillRect(x - 2.2, 34 + Math.abs(x) * .15, 4.4, 16);
+        ctx.strokeStyle = 'rgba(255,237,213,.72)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-65, -1); ctx.lineTo(-20, 12); ctx.lineTo(-8, 48);
+        ctx.moveTo(65, -1); ctx.lineTo(20, 12); ctx.lineTo(8, 48);
+        ctx.moveTo(0, -64); ctx.lineTo(0, 56);
+        ctx.stroke();
         if (wingSweep > .08) {
           ctx.fillStyle = 'rgba(249,115,22,.65)';
           ctx.globalAlpha = wingSweep;
-          ctx.fillRect(-3, 34, 6, 20 + wingSweep * 10);
+          ctx.fillRect(-3, 36, 6, 22 + wingSweep * 10);
           ctx.globalAlpha = 1;
         }
       } else if (id === 'asfx') {
@@ -7545,12 +7627,16 @@
         for (const x of [-18, 18]) ctx.fillRect(x - 3, 22, 6, 18);
       } else if (id === 'adf11f') {
         ctx.beginPath();
-        ctx.moveTo(-64, -2); ctx.lineTo(-23, 8); ctx.lineTo(-5, 37);
-        ctx.moveTo(64, -2); ctx.lineTo(23, 8); ctx.lineTo(5, 37);
-        ctx.moveTo(0, -68); ctx.lineTo(0, 48);
+        ctx.moveTo(-84, 2); ctx.lineTo(-30, 9); ctx.lineTo(-9, 47);
+        ctx.moveTo(84, 2); ctx.lineTo(30, 9); ctx.lineTo(9, 47);
+        ctx.moveTo(-45, -27); ctx.lineTo(-15, -21);
+        ctx.moveTo(45, -27); ctx.lineTo(15, -21);
+        ctx.moveTo(0, -78); ctx.lineTo(0, 58);
         ctx.stroke();
         ctx.fillStyle = rgbaColor(accent, .72);
-        for (const x of [-48, -22, 22, 48]) ctx.fillRect(x - 3, 7, 6, 13);
+        for (const x of [-66, -38, 38, 66]) ctx.fillRect(x - 3, 8, 6, 15);
+        ctx.fillStyle = 'rgba(236,254,255,.78)';
+        ctx.fillRect(-3, -60, 6, 36);
       } else if (id === 'adf01') {
         ctx.beginPath();
         ctx.moveTo(0, -64); ctx.lineTo(0, 54);
@@ -7582,12 +7668,14 @@
         for (const x of [-44, -28, -12, 12, 28, 44]) ctx.fillRect(x - 2, 15, 4, 12);
       } else if (id === 'xfa27') {
         ctx.beginPath();
-        ctx.moveTo(-54, 4); ctx.lineTo(-17, 14); ctx.lineTo(-8, 48);
-        ctx.moveTo(54, 4); ctx.lineTo(17, 14); ctx.lineTo(8, 48);
-        ctx.moveTo(0, -54); ctx.lineTo(0, 49);
+        ctx.moveTo(-70, -2); ctx.lineTo(-22, 12); ctx.lineTo(-9, 54);
+        ctx.moveTo(70, -2); ctx.lineTo(22, 12); ctx.lineTo(9, 54);
+        ctx.moveTo(-42, -25); ctx.lineTo(-13, -20);
+        ctx.moveTo(42, -25); ctx.lineTo(13, -20);
+        ctx.moveTo(0, -64); ctx.lineTo(0, 57);
         ctx.stroke();
         ctx.fillStyle = rgbaColor(accent, .8);
-        for (const x of [-12, 12]) ctx.fillRect(x - 3, 37, 6, 17);
+        for (const x of [-20, -8, 8, 20]) ctx.fillRect(x - 2.5, 36 + Math.abs(x) * .12, 5, 16);
       } else if (id === 'asfx') {
         ctx.beginPath();
         ctx.moveTo(-59, -15); ctx.lineTo(-17, 10); ctx.lineTo(-7, 48);
@@ -7864,15 +7952,16 @@
     function jetProportion(id) {
       if (id === 'bomberfleet') return { x: 1, y: 1 };
       if (id === 'operator') return { x: .96, y: 1.08 };
-      if (id === 'cyber72') return { x: .96, y: 1.12 };
+      if (id === 'cyber72') return { x: .82, y: 1.08 };
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
       if (id === 'xb70') return { x: 1, y: 1.12 };
       if (id === 'kf21') return { x: .98, y: 1.07 };
       if (id === 'darkstar') return { x: .88, y: 1.2 };
-      if (id === 'adf11f') return { x: 1.02, y: 1.02 };
+      if (id === 'adf11f') return { x: 1.05, y: 1.06 };
       if (id === 'adf01' || id === 'adfx01') return { x: .98, y: 1.1 };
       if (id === 'cfa44') return { x: 1.05, y: 1.04 };
-      if (id === 'xfa27' || id === 'asfx') return { x: .96, y: 1.08 };
+      if (id === 'xfa27') return { x: .98, y: 1.12 };
+      if (id === 'asfx') return { x: .96, y: 1.08 };
       if (id === 'su30') return { x: 1.02, y: 1.08 };
       if (id === 'su47') return { x: .96, y: 1.1 };
       if (id === 'b2' || id === 'error' || id === 'geomancho') return { x: 1.02, y: 1.04 };
@@ -9289,18 +9378,28 @@
         ctx.globalAlpha = flashT * .72;
         ctx.strokeStyle = boss.kind === 'secretRobot' ? '#e0f2fe' : '#f8fafc';
         ctx.lineWidth = 2.2;
-        const sparks = boss.kind === 'secretRobot'
-          ? [[0,-58,22],[-42,-14,16],[42,-14,16],[-60,54,14],[60,54,14],[0,95,18]]
-          : [[0,-42,18],[-44,-10,14],[44,-10,14],[0,34,16]];
-        sparks.forEach(([sx, sy, len], i) => {
-          const spin = performance.now() / 95 + i * 1.7;
-          ctx.beginPath();
-          ctx.moveTo(sx - Math.cos(spin) * len, sy - Math.sin(spin) * len);
-          ctx.lineTo(sx + Math.cos(spin) * len, sy + Math.sin(spin) * len);
-          ctx.moveTo(sx - Math.sin(spin) * len * .55, sy + Math.cos(spin) * len * .55);
-          ctx.lineTo(sx + Math.sin(spin) * len * .55, sy - Math.cos(spin) * len * .55);
-          ctx.stroke();
-        });
+        if (boss.kind === 'secretRobot') {
+          const sparks = [[0,-58,18,0],[-42,-14,14,-.7],[42,-14,14,.7],[-60,54,12,.45],[60,54,12,-.45],[0,95,16,0]];
+          sparks.forEach(([sx, sy, len, lean]) => {
+            ctx.beginPath();
+            ctx.moveTo(sx - len * .45, sy + lean * 5);
+            ctx.lineTo(sx + len * .45, sy - lean * 5);
+            ctx.moveTo(sx, sy - len * .55);
+            ctx.lineTo(sx, sy + len * .55);
+            ctx.stroke();
+          });
+        } else {
+          const sparks = [[0,-42,18],[-44,-10,14],[44,-10,14],[0,34,16]];
+          sparks.forEach(([sx, sy, len], i) => {
+            const spin = performance.now() / 95 + i * 1.7;
+            ctx.beginPath();
+            ctx.moveTo(sx - Math.cos(spin) * len, sy - Math.sin(spin) * len);
+            ctx.lineTo(sx + Math.cos(spin) * len, sy + Math.sin(spin) * len);
+            ctx.moveTo(sx - Math.sin(spin) * len * .55, sy + Math.cos(spin) * len * .55);
+            ctx.lineTo(sx + Math.sin(spin) * len * .55, sy - Math.cos(spin) * len * .55);
+            ctx.stroke();
+          });
+        }
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = 1;
       }
