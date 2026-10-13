@@ -2809,17 +2809,17 @@
         x: W / 2,
         y: -140,
         targetY: 132,
-        hp: 560000,
-        maxHp: 560000,
-        power: 9,
-        shots: 16,
-        fire: 330,
-        inv: 450,
+        hp: 320000,
+        maxHp: 320000,
+        power: 6,
+        shots: 11,
+        fire: 620,
+        inv: 360,
         phase: 1,
         patternStep: 0,
-        droneReserve: 80,
+        droneReserve: 56,
         droneBatchActive: 0,
-        droneLaunchCooldown: 900,
+        droneLaunchCooldown: 2800,
         t: 0,
         hitW: 292,
         hitH: 126,
@@ -2925,23 +2925,17 @@
         save.coins += reward;
         save.cyberStageCleared = true;
         rewards.push('??? 보스 격파 기록 저장');
-        if (!player.tookDamage) {
-          const unlocked = unlockJet('cyber72', '사이버-72 스트라이크 랩터 해금. 하늘색/백색 사이버 랩터가 격납고에 등록됐다.');
-          rewards.push(unlocked ? '사이버-72 스트라이크 랩터 해금' : '사이버-72 스트라이크 랩터 이미 해금됨');
-        } else {
-          rewards.push('노데미지 클리어 시 사이버-72 스트라이크 랩터 해금');
-        }
+        const unlocked = unlockJet('cyber72', '사이버-72 스트라이크 랩터 해금. 하늘색/백색 사이버 랩터가 격납고에 등록됐다.');
+        rewards.push(unlocked ? '사이버-72 스트라이크 랩터 해금' : '사이버-72 스트라이크 랩터 이미 해금됨');
         storeSave();
         stopBgm();
-        showStory('??? 공역 완료', player.tookDamage
-          ? 'Stratowing Eclipse가 구름 아래로 추락했다. 하지만 완전한 비행 데이터는 손상되어, 하늘색 사이버 랩터의 설계는 아직 복원되지 않았다.'
-          : 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 회수된 순백의 설계 데이터가 격납고에서 사이버-72 스트라이크 랩터로 재구성된다.', () => {
+        showStory('??? 공역 완료', 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 회수된 순백의 설계 데이터가 격납고에서 사이버-72 스트라이크 랩터로 재구성된다.', () => {
           mode = 'clear';
           setScreen(mode);
           paused = false;
           document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
           document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
-          setLog(player.tookDamage ? '??? 보스를 격파했다. 노데미지로 다시 클리어하면 사이버-72가 열린다.' : '사이버-72 스트라이크 랩터가 해금됐다.');
+          setLog('??? 보스를 격파했다. 사이버-72 스트라이크 랩터가 클리어 보상으로 해금됐다.');
           renderUI();
         });
         return;
@@ -2952,15 +2946,13 @@
         rewards.push('숨겨진 보스 격파 기록 저장');
         storeSave();
         stopBgm();
-        showStory('숨겨진 결전 완료', 'Azure Unicorn Frame이 푸른 코어를 잃고 정지했다. Stage 30의 노피격 기록에 반응하던 숨겨진 전투 신호는 이제 격납고의 전설로 남았다.', () => {
-          mode = 'clear';
-          setScreen(mode);
-          paused = false;
-          document.getElementById('clearSummary').textContent = '숨겨진 로봇 보스 클리어';
-          document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
-          setLog('숨겨진 로봇 보스를 격파했다. 돌아가기를 누르면 기체 선택창으로 이동해.');
-          renderUI();
-        });
+        mode = 'clear';
+        setScreen(mode);
+        paused = false;
+        document.getElementById('clearSummary').textContent = '숨겨진 로봇 보스 클리어';
+        document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
+        setLog('Azure Unicorn Frame 격파. 숨겨진 로봇 보스 클리어가 저장됐다.');
+        renderUI();
         return;
       }
       if (save.selectedMode === 'tutorial') {
@@ -3166,19 +3158,19 @@
       if (active > 0 || (boss.droneReserve || 0) <= 0) return;
       boss.droneLaunchCooldown = Math.max(0, (boss.droneLaunchCooldown || 0) - dt);
       if (boss.droneLaunchCooldown > 0) return;
-      const count = Math.min(8, boss.droneReserve || 0);
+      const count = Math.min(6, boss.droneReserve || 0);
       for (let i = 0; i < count; i++) {
         const lane = i - (count - 1) / 2;
         enemies.push({
           form: 'mq101Drone',
-          x: clamp(boss.x + lane * 28, 35, W - 35),
+          x: clamp(boss.x + lane * 32, 35, W - 35),
           y: boss.y + 64 + Math.abs(lane) * 6,
-          hp: 72 + difficultyStage() * 9,
-          maxHp: 72 + difficultyStage() * 9,
-          power: 8,
-          shots: 3,
-          speed: 1.58 + difficultyStage() * .024,
-          fire: 520 + i * 65,
+          hp: 48 + difficultyStage() * 5,
+          maxHp: 48 + difficultyStage() * 5,
+          power: 5,
+          shots: 2,
+          speed: 1.22 + difficultyStage() * .014,
+          fire: 760 + i * 90,
           t: i * 90,
           r: 18,
           color: '#dbeafe',
@@ -3187,7 +3179,7 @@
         });
       }
       boss.droneReserve -= count;
-      boss.droneLaunchCooldown = 1200;
+      boss.droneLaunchCooldown = 5200;
       flash(`MQ-101 x${count}`);
     }
 
@@ -4186,10 +4178,19 @@
         points.forEach(([ox, oy, off = 0]) => bossBullet(boss.x + ox, boss.y + oy, aimAtPlayer(boss.x + ox, boss.y + oy, off), speed, size, damage, form));
       };
       if (boss.kind === 'cyberWingBoss') {
-        if (volley === 0) fan(boss.x, boss.y + 96, 7 + boss.phase, aimAtPlayer(boss.x, boss.y + 96), .12, 2.55 + st * .028, 'bossHomingMissile', 1, 1);
-        else if (volley === 1) lane([[-170, 46, -.18], [-92, 72, -.08], [0, 86, 0], [92, 72, .08], [170, 46, .18]], 'bossLaserLine', 2.65 + st * .026, 1, 1);
-        else if (volley === 2) ring(boss.x, boss.y + 42, 12 + boss.phase * 2, boss.t / 720, 1.85 + st * .022, 'carrierFighter', 0, 0, Math.floor((boss.t / 760) % (12 + boss.phase * 2)), 2);
-        else fan(boss.x, boss.y + 108, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 108), .18, 2.35 + st * .024, 'bossPlasmaShard', 1, 1);
+        if (boss.phase >= 2 && step % 7 === 3) {
+          const count = boss.phase >= 3 ? 12 : 10;
+          const gap = Math.floor((Math.sin(boss.t / 560) * .5 + .5) * count);
+          ring(boss.x, boss.y + 28, count, boss.t / 720, 1.55 + st * .014, 'bossPlasmaShard', 0, 0, gap, 3);
+          lane([[-168, 28, .18], [-92, 70, .08], [92, 70, -.08], [168, 28, -.18]], 'bossHomingMissile', 2.18 + st * .012, 0, 1);
+          if (boss.phase >= 3) fan(boss.x, boss.y + 102, 5, aimAtPlayer(boss.x, boss.y + 102), .13, 1.98 + st * .012, 'bossLaserLine', 1, 1);
+          flash('ECLIPSE SHIFT');
+          return;
+        }
+        if (volley === 0) fan(boss.x, boss.y + 96, 5 + boss.phase, aimAtPlayer(boss.x, boss.y + 96), .13, 2.05 + st * .018, 'bossHomingMissile', 1, 1);
+        else if (volley === 1) lane([[-138, 48, -.16], [-62, 74, -.06], [62, 74, .06], [138, 48, .16]], 'bossLaserLine', 2.12 + st * .018, 1, 1);
+        else if (volley === 2) ring(boss.x, boss.y + 42, 8 + boss.phase, boss.t / 820, 1.45 + st * .016, 'carrierFighter', 0, 0, Math.floor((boss.t / 880) % (8 + boss.phase)), 2);
+        else fan(boss.x, boss.y + 108, 4 + boss.phase, aimAtPlayer(boss.x, boss.y + 108), .2, 1.92 + st * .016, 'bossPlasmaShard', 1, 1);
         return;
       }
       if (shootBossDesperation(st, weave)) {
@@ -5171,8 +5172,8 @@
           boss.x = clamp(W / 2 + Math.sin(boss.t / 720) * 48 * phaseMove + Math.sin(boss.t / 250) * 14, robotMargin, W - robotMargin);
           boss.targetY = 142 + Math.cos(boss.t / 650) * 14 * phaseMove;
         } else if (boss.kind === 'cyberWingBoss') {
-          boss.x = clamp(W / 2 + Math.sin(boss.t / 920) * 42 + Math.sin(boss.t / 370) * 12, 170, W - 170);
-          boss.targetY = 122 + Math.cos(boss.t / 760) * 10;
+          boss.x = clamp(W / 2 + Math.sin(boss.t / 1120) * 30 + Math.sin(boss.t / 520) * 7, 170, W - 170);
+          boss.targetY = 124 + Math.cos(boss.t / 920) * 7;
         } else {
           boss.x = W / 2 + Math.sin(boss.t / 900) * (105 + st * 9);
         }
@@ -5196,7 +5197,7 @@
           boss.fire = boss.kind === 'secretRobot'
             ? Math.max(920, 1940 - boss.phase * 310)
             : boss.kind === 'cyberWingBoss'
-              ? Math.max(940, 1680 - boss.phase * 220)
+              ? Math.max(1320, 2220 - boss.phase * 260)
             : Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120);
           shootBoss();
         }
@@ -6997,23 +6998,37 @@
         ctx.fillStyle = kfTrim;
         for (const x of [-8, 8]) ctx.fillRect(x - 2, 39, 4, 16);
       } else if (id === 'darkstar') {
-        ctx.fillStyle = '#0f172a';
-        poly([[0,-92],[9,-58],[28,-24],[72,22],[31,31],[10,20],[0,56],[-10,20],[-31,31],[-72,22],[-28,-24],[-9,-58]]);
-        ctx.fillStyle = '#1f2937';
-        poly([[0,-86],[7,-53],[22,-23],[56,16],[24,21],[8,10],[0,45],[-8,10],[-24,21],[-56,16],[-22,-23],[-7,-53]]);
         ctx.fillStyle = '#020617';
-        poly([[0,-62],[5,-30],[4,20],[0,37],[-4,20],[-5,-30]]);
+        poly([[0,-96],[8,-72],[28,-42],[96,16],[118,34],[48,29],[20,18],[7,61],[0,76],[-7,61],[-20,18],[-48,29],[-118,34],[-96,16],[-28,-42],[-8,-72]]);
+        ctx.fillStyle = '#111827';
+        poly([[0,-90],[7,-66],[24,-38],[82,16],[40,22],[17,10],[5,53],[0,64],[-5,53],[-17,10],[-40,22],[-82,16],[-24,-38],[-7,-66]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[0,-75],[9,-39],[8,18],[0,48],[-8,18],[-9,-39]]);
+        ctx.fillStyle = '#374151';
+        poly([[-24,-37],[-82,12],[-44,12],[-14,-14]]);
+        poly([[24,-37],[82,12],[44,12],[14,-14]]);
+        ctx.fillStyle = '#020617';
+        poly([[-8,31],[-26,70],[-6,59]]);
+        poly([[8,31],[26,70],[6,59]]);
         ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(-2, -50, 4, 58);
-        ctx.fillStyle = 'rgba(56,189,248,.75)';
-        for (const x of [-16, 16]) ctx.fillRect(x - 2, 17, 4, 18);
-        ctx.strokeStyle = 'rgba(148,163,184,.32)';
+        ctx.fillRect(-2, -61, 4, 70);
+        ctx.fillStyle = '#67e8f9';
+        for (const x of [-22, 22]) ctx.fillRect(x - 2, 22, 4, 25);
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath(); ctx.arc(-86, 20, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath(); ctx.arc(86, 20, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = 'rgba(148,163,184,.42)';
+        ctx.lineWidth = 1.15;
         ctx.beginPath();
-        ctx.moveTo(-55, 15); ctx.lineTo(-14, 3); ctx.lineTo(0, -83); ctx.lineTo(14, 3); ctx.lineTo(55, 15);
+        ctx.moveTo(-104, 27); ctx.lineTo(-32, -8); ctx.lineTo(0, -90); ctx.lineTo(32, -8); ctx.lineTo(104, 27);
+        ctx.moveTo(-39, 21); ctx.lineTo(-8, 9); ctx.lineTo(0, 58); ctx.lineTo(8, 9); ctx.lineTo(39, 21);
         ctx.stroke();
       } else if (id === 'adf11f') {
         ctx.fillStyle = shade(color, -.22);
         poly([[0,-82],[24,-52],[92,-8],[62,21],[27,15],[14,42],[0,62],[-14,42],[-27,15],[-62,21],[-92,-8],[-24,-52]]);
+        ctx.fillStyle = '#334155';
+        poly([[-4,-97],[9,-80],[14,-58],[0,-49],[-14,-58],[-9,-80]]);
         ctx.fillStyle = shade(color, .08);
         poly([[0,-94],[13,-66],[17,-19],[14,34],[0,68],[-14,34],[-17,-19],[-13,-66]]);
         ctx.fillStyle = '#f8fafc';
@@ -7037,69 +7052,100 @@
         ctx.fillStyle = '#1e293b';
         poly([[-8,42],[-21,70],[-3,59]]);
         poly([[8,42],[21,70],[3,59]]);
+        ctx.fillStyle = '#22d3ee';
+        for (const x of [-78, 78]) {
+          ctx.beginPath();
+          ctx.ellipse(x, 2, 5, 10, x < 0 ? -.35 : .35, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.strokeStyle = 'rgba(236,254,255,.72)';
         ctx.lineWidth = 1.25;
         ctx.beginPath();
         ctx.moveTo(-78, -1); ctx.lineTo(-26, 8); ctx.lineTo(-8, 42);
         ctx.moveTo(78, -1); ctx.lineTo(26, 8); ctx.lineTo(8, 42);
         ctx.moveTo(0, -77); ctx.lineTo(0, 53);
+        ctx.moveTo(-12, -54); ctx.lineTo(0, -45); ctx.lineTo(12, -54);
         ctx.stroke();
       } else if (id === 'adf01') {
-        ctx.fillStyle = color;
-        poly([[0,-82],[12,-59],[17,-25],[18,23],[9,58],[0,72],[-9,58],[-18,23],[-17,-25],[-12,-59]]);
-        ctx.fillStyle = shade(color, -.1);
-        poly([[-13,-29],[-75,-7],[-50,18],[-14,9]]);
-        poly([[13,-29],[75,-7],[50,18],[14,9]]);
-        ctx.fillStyle = shade(color, .18);
-        poly([[-10,-52],[-34,-32],[-22,-19],[-8,-35]]);
-        poly([[10,-52],[34,-32],[22,-19],[8,-35]]);
-        ctx.fillStyle = '#1f2937';
-        poly([[-12,25],[-38,60],[-13,48],[-5,36]]);
-        poly([[12,25],[38,60],[13,48],[5,36]]);
-        ctx.fillStyle = '#ef4444';
-        ctx.fillRect(-3, -57, 6, 98);
-        ctx.fillStyle = 'rgba(239,68,68,.8)';
-        for (const x of [-12, 12]) ctx.fillRect(x - 2, 32, 4, 19);
-      } else if (id === 'adfx01') {
-        ctx.fillStyle = color;
-        poly([[0,-76],[15,-56],[23,-23],[23,24],[11,58],[0,72],[-11,58],[-23,24],[-23,-23],[-15,-56]]);
-        ctx.fillStyle = shade(color, .12);
-        poly([[-16,-38],[-43,-24],[-56,-11],[-30,-8],[-15,-23]]);
-        poly([[16,-38],[43,-24],[56,-11],[30,-8],[15,-23]]);
-        ctx.fillStyle = shade(color, -.08);
-        poly([[-18,-11],[-79,9],[-57,33],[-18,13]]);
-        poly([[18,-11],[79,9],[57,33],[18,13]]);
-        ctx.fillStyle = '#374151';
-        poly([[-15,22],[-47,58],[-18,47],[-8,35]]);
-        poly([[15,22],[47,58],[18,47],[8,35]]);
-        ctx.fillStyle = '#0f172a';
-        poly([[0,-50],[8,-26],[6,-5],[0,6],[-6,-5],[-8,-26]]);
-        ctx.fillStyle = '#facc15';
-        ctx.beginPath();
-        ctx.arc(0, 8, 6, 0, Math.PI * 2);
-        ctx.fill();
-        for (const x of [-15, 15]) ctx.fillRect(x - 3, 38, 6, 17);
-      } else if (id === 'cfa44') {
-        ctx.fillStyle = color;
-        poly([[0,-70],[12,-48],[18,-18],[24,23],[8,54],[0,65],[-8,54],[-24,23],[-18,-18],[-12,-48]]);
         ctx.fillStyle = shade(color, -.12);
-        poly([[-17,-18],[-86,10],[-59,35],[-18,14]]);
-        poly([[17,-18],[86,10],[59,35],[18,14]]);
-        ctx.fillStyle = shade(color, .16);
-        poly([[-13,-39],[-48,-23],[-31,-9],[-12,-25]]);
-        poly([[13,-39],[48,-23],[31,-9],[12,-25]]);
-        ctx.fillStyle = '#1e293b';
-        poly([[-19,17],[-52,53],[-20,43],[-8,31]]);
-        poly([[19,17],[52,53],[20,43],[8,31]]);
-        ctx.strokeStyle = '#60a5fa';
+        poly([[0,-91],[13,-66],[20,-28],[22,22],[12,61],[0,78],[-12,61],[-22,22],[-20,-28],[-13,-66]]);
+        ctx.fillStyle = color;
+        poly([[0,-84],[9,-61],[14,-25],[15,25],[7,56],[0,68],[-7,56],[-15,25],[-14,-25],[-9,-61]]);
+        ctx.fillStyle = shade(color, -.2);
+        poly([[-13,-31],[-89,-5],[-58,25],[-17,8]]);
+        poly([[13,-31],[89,-5],[58,25],[17,8]]);
+        ctx.fillStyle = shade(color, .22);
+        poly([[-17,-53],[-43,-38],[-58,-18],[-29,-17],[-10,-35]]);
+        poly([[17,-53],[43,-38],[58,-18],[29,-17],[10,-35]]);
+        ctx.fillStyle = '#111827';
+        poly([[0,-64],[7,-38],[6,-12],[0,2],[-6,-12],[-7,-38]]);
+        ctx.fillStyle = '#1f2937';
+        poly([[-15,24],[-48,66],[-18,51],[-7,38]]);
+        poly([[15,24],[48,66],[18,51],[7,38]]);
+        ctx.fillStyle = '#ef4444';
+        poly([[0,-60],[4,-31],[3,42],[0,56],[-3,42],[-4,-31]]);
+        ctx.fillStyle = '#fca5a5';
+        for (const x of [-15, 15]) ctx.fillRect(x - 2, 31, 4, 24);
+        ctx.strokeStyle = 'rgba(248,113,113,.82)';
         ctx.lineWidth = 1.25;
         ctx.beginPath();
-        ctx.moveTo(-70, 16); ctx.lineTo(-22, 11); ctx.lineTo(-5, 45);
-        ctx.moveTo(70, 16); ctx.lineTo(22, 11); ctx.lineTo(5, 45);
-        ctx.moveTo(0, -54); ctx.lineTo(0, 46);
+        ctx.moveTo(-72, -1); ctx.lineTo(-21, 8); ctx.lineTo(-7, 47);
+        ctx.moveTo(72, -1); ctx.lineTo(21, 8); ctx.lineTo(7, 47);
+        ctx.stroke();
+      } else if (id === 'adfx01') {
+        ctx.fillStyle = shade(color, -.14);
+        poly([[0,-82],[17,-61],[26,-25],[27,22],[16,61],[0,78],[-16,61],[-27,22],[-26,-25],[-17,-61]]);
+        ctx.fillStyle = color;
+        poly([[0,-75],[12,-55],[19,-22],[19,24],[9,56],[0,68],[-9,56],[-19,24],[-19,-22],[-12,-55]]);
+        ctx.fillStyle = shade(color, .16);
+        poly([[-18,-42],[-50,-30],[-70,-10],[-34,-10],[-14,-25]]);
+        poly([[18,-42],[50,-30],[70,-10],[34,-10],[14,-25]]);
+        ctx.fillStyle = shade(color, -.12);
+        poly([[-19,-10],[-92,9],[-62,38],[-19,15]]);
+        poly([[19,-10],[92,9],[62,38],[19,15]]);
+        ctx.fillStyle = '#991b1b';
+        poly([[-89,10],[-70,18],[-61,34],[-82,26]]);
+        poly([[89,10],[70,18],[61,34],[82,26]]);
+        ctx.fillStyle = '#374151';
+        poly([[-17,24],[-55,65],[-20,50],[-8,36]]);
+        poly([[17,24],[55,65],[20,50],[8,36]]);
+        ctx.fillStyle = '#0f172a';
+        poly([[0,-55],[9,-29],[7,-5],[0,8],[-7,-5],[-9,-29]]);
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(0, 9, 7.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fde68a';
+        ctx.fillRect(-3, -19, 6, 40);
+        for (const x of [-18, 18]) ctx.fillRect(x - 4, 37, 8, 22);
+      } else if (id === 'cfa44') {
+        ctx.fillStyle = shade(color, -.18);
+        poly([[0,-76],[14,-52],[24,-18],[30,23],[11,58],[0,71],[-11,58],[-30,23],[-24,-18],[-14,-52]]);
+        ctx.fillStyle = color;
+        poly([[0,-68],[10,-47],[17,-16],[21,22],[7,51],[0,62],[-7,51],[-21,22],[-17,-16],[-10,-47]]);
+        ctx.fillStyle = shade(color, -.08);
+        poly([[-18,-19],[-106,10],[-78,43],[-23,15]]);
+        poly([[18,-19],[106,10],[78,43],[23,15]]);
+        ctx.fillStyle = shade(color, .2);
+        poly([[-15,-42],[-57,-28],[-42,-9],[-13,-25]]);
+        poly([[15,-42],[57,-28],[42,-9],[13,-25]]);
+        ctx.fillStyle = '#1e293b';
+        poly([[-22,17],[-62,57],[-23,46],[-8,30]]);
+        poly([[22,17],[62,57],[23,46],[8,30]]);
+        ctx.fillStyle = '#111827';
+        poly([[-10,33],[-30,72],[-4,56]]);
+        poly([[10,33],[30,72],[4,56]]);
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 1.35;
+        ctx.beginPath();
+        ctx.moveTo(-91, 14); ctx.lineTo(-24, 9); ctx.lineTo(-6, 49);
+        ctx.moveTo(91, 14); ctx.lineTo(24, 9); ctx.lineTo(6, 49);
+        ctx.moveTo(0, -57); ctx.lineTo(0, 51);
         ctx.stroke();
         ctx.fillStyle = '#93c5fd';
-        for (const x of [-35, -19, 19, 35]) ctx.fillRect(x - 2, 18, 4, 13);
+        for (const x of [-52, -36, -20, 20, 36, 52]) ctx.fillRect(x - 2.5, 18, 5, 15);
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath(); ctx.arc(0, -30, 4.5, 0, Math.PI * 2); ctx.fill();
       } else if (id === 'xfa27') {
         ctx.fillStyle = shade(color, .08);
         for (const side of [-1, 1]) {
@@ -7115,6 +7161,9 @@
         ctx.fillStyle = shade(color, .18);
         poly([[-12,-49],[-45,-30],[-59,-15],[-29,-13],[-12,-29]]);
         poly([[12,-49],[45,-30],[59,-15],[29,-13],[12,-29]]);
+        ctx.fillStyle = shade(color, .3);
+        poly([[-19,-19],[-78,-4],[-61,18],[-20,8]]);
+        poly([[19,-19],[78,-4],[61,18],[20,8]]);
         ctx.fillStyle = shade(color, -.18);
         poly([[0,-60],[7,-27],[6,12],[0,27],[-6,12],[-7,-27]]);
         ctx.fillStyle = '#111827';
@@ -7132,6 +7181,8 @@
         ctx.beginPath();
         ctx.moveTo(-65, -1); ctx.lineTo(-20, 12); ctx.lineTo(-8, 48);
         ctx.moveTo(65, -1); ctx.lineTo(20, 12); ctx.lineTo(8, 48);
+        ctx.moveTo(-45, -24); ctx.lineTo(-18, -14); ctx.lineTo(-60, 18);
+        ctx.moveTo(45, -24); ctx.lineTo(18, -14); ctx.lineTo(60, 18);
         ctx.moveTo(0, -64); ctx.lineTo(0, 56);
         ctx.stroke();
         if (wingSweep > .08) {
@@ -7141,24 +7192,40 @@
           ctx.globalAlpha = 1;
         }
       } else if (id === 'asfx') {
-        ctx.fillStyle = color;
-        poly([[0,-72],[9,-52],[15,-23],[18,24],[8,55],[0,66],[-8,55],[-18,24],[-15,-23],[-9,-52]]);
-        ctx.fillStyle = shade(color, .18);
-        poly([[-13,2],[-73,-25],[-59,5],[-17,28]]);
-        poly([[13,2],[73,-25],[59,5],[17,28]]);
         ctx.fillStyle = shade(color, -.12);
-        poly([[-12,-43],[-39,-33],[-55,-17],[-30,-15],[-13,-28]]);
-        poly([[12,-43],[39,-33],[55,-17],[30,-15],[13,-28]]);
+        poly([[0,-78],[11,-57],[18,-24],[20,25],[10,58],[0,70],[-10,58],[-20,25],[-18,-24],[-11,-57]]);
+        ctx.fillStyle = color;
+        poly([[0,-70],[8,-51],[13,-21],[15,24],[7,53],[0,62],[-7,53],[-15,24],[-13,-21],[-8,-51]]);
+        ctx.fillStyle = shade(color, .2);
+        poly([[-13,0],[-86,-31],[-70,5],[-18,31]]);
+        poly([[13,0],[86,-31],[70,5],[18,31]]);
+        ctx.fillStyle = shade(color, -.14);
+        poly([[-13,-45],[-44,-36],[-64,-16],[-33,-15],[-13,-29]]);
+        poly([[13,-45],[44,-36],[64,-16],[33,-15],[13,-29]]);
         ctx.fillStyle = '#0f172a';
-        poly([[-12,25],[-36,57],[-12,45],[-5,35]]);
-        poly([[12,25],[36,57],[12,45],[5,35]]);
+        poly([[-14,25],[-42,61],[-13,47],[-5,35]]);
+        poly([[14,25],[42,61],[13,47],[5,35]]);
         ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(-3, -47, 6, 74);
-        for (const x of [-14, 14]) ctx.fillRect(x - 3, 34, 6, 18);
-        ctx.strokeStyle = 'rgba(224,242,254,.5)';
+        poly([[0,-49],[4,-23],[3,30],[0,45],[-3,30],[-4,-23]]);
+        for (const x of [-16, 16]) ctx.fillRect(x - 3, 32, 6, 22);
+        ctx.fillStyle = '#ffffff';
+        for (const x of [-45, 45]) {
+          ctx.beginPath();
+          ctx.arc(x, -4, 5.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ef4444';
+          ctx.beginPath();
+          ctx.arc(x, -4, 3.6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+        }
+        ctx.strokeStyle = 'rgba(224,242,254,.65)';
+        ctx.lineWidth = 1.15;
         ctx.beginPath();
-        ctx.moveTo(-58, -15); ctx.lineTo(-15, 10); ctx.lineTo(-7, 42);
-        ctx.moveTo(58, -15); ctx.lineTo(15, 10); ctx.lineTo(7, 42);
+        ctx.moveTo(-70, -20); ctx.lineTo(-18, 9); ctx.lineTo(-7, 46);
+        ctx.moveTo(70, -20); ctx.lineTo(18, 9); ctx.lineTo(7, 46);
+        ctx.moveTo(-42, -29); ctx.lineTo(-14, -24);
+        ctx.moveTo(42, -29); ctx.lineTo(14, -24);
         ctx.stroke();
       } else if (id === 'f67') {
         ctx.strokeStyle = 'rgba(34,211,238,.35)';
@@ -10970,7 +11037,7 @@
           ? `<button class="stage-card" id="cyberStageButton">
               <div class="card-head"><span class="name">??? 스테이지</span><span class="tag">${save.cyberStageCleared ? 'CLEARED' : 'SECRET'}</span></div>
               <div class="small">초대형 공중 전함 Stratowing Eclipse 격추 작전</div>
-              <div class="small">노데미지 클리어 보상: 사이버-72 스트라이크 랩터</div>
+              <div class="small">클리어 보상: 사이버-72 스트라이크 랩터</div>
             </button>`
           : `<div class="log">??? 스테이지: Stage 30 노데미지 클리어 후 표시됩니다.</div>`;
         const cyberButton = document.getElementById('cyberStageButton');
