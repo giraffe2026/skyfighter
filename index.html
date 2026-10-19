@@ -2644,10 +2644,7 @@
         return;
       }
       if (code === '하늘에 불가능은 없다') {
-        if (!save.cyberStageCleared) {
-          setLog('??? 공역의 비행기 보스를 먼저 격파해야 사용할 수 있다.');
-          flash('LOCKED');
-        } else if (!unlockJet('cyber72', '사이버-72 해금. 격납고에 등록됐다.')) {
+        if (!unlockJet('cyber72', '사이버-72 해금. 격납고에 등록됐다.')) {
           setLog('사이버-72는 이미 해금되어 있다.');
           flash('UNLOCKED');
         }
@@ -2985,18 +2982,15 @@
         save.coins += reward;
         save.cyberStageCleared = true;
         rewards.push('??? 보스 격파 기록 저장');
-        rewards.push('운영자 암호 해금: 하늘에 불가능은 없다');
         storeSave();
         stopBgm();
-        showStory('??? 공역 완료', 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 운영자 칸에 하늘에 불가능은 없다를 입력하면 사이버-72의 설계 데이터를 복원할 수 있다.', () => {
-          mode = 'clear';
-          setScreen(mode);
-          paused = false;
-          document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
-          document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
-          setLog('??? 보스를 격파했다. 운영자 칸에 해금 암호를 입력하면 사이버-72를 받을 수 있다.');
-          renderUI();
-        });
+        mode = 'clear';
+        setScreen(mode);
+        paused = false;
+        document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
+        document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
+        setLog('Stratowing Eclipse 격파. 무인기 통제 코어가 정지하고 클리어 기록이 저장됐다.');
+        renderUI();
         return;
       }
       if (secretRobotDuel) {
@@ -11115,7 +11109,7 @@
           ? `<button class="stage-card" id="cyberStageButton">
               <div class="card-head"><span class="name">??? 스테이지</span><span class="tag">${save.cyberStageCleared ? 'CLEARED' : 'SECRET'}</span></div>
               <div class="small">초대형 공중 전함 Stratowing Eclipse 격추 작전</div>
-              <div class="small">클리어 후 운영자 칸에 해금 암호 입력</div>
+              <div class="small">운영자 암호로 사이버-72 해금 가능</div>
             </button>`
           : `<div class="log">??? 스테이지: Stage 30 노데미지 클리어 후 표시됩니다.</div>`;
         const cyberButton = document.getElementById('cyberStageButton');
@@ -11350,7 +11344,7 @@
           <div class="card-head"><span class="name">${unlocked ? j.name : '???'}</span><span class="tag">${j.rewardOnly ? 'REWARD' : j.hidden ? 'SECRET' : 'JET'}</span></div>
           <div class="small">${unlocked ? j.role : '아직 기록이 해독되지 않았습니다.'}</div>
           ${unlocked ? `<div class="small codex-desc">특징: ${profile.style}</div>` : ''}
-          <div class="small">${unlocked ? `무장: ${compactText(j.special, 28)}` : j.rewardOnly ? '특정 스테이지 클리어 보상' : '암호/특수 조건 해금'}</div>
+          <div class="small">${unlocked ? `무장: ${compactText(j.special, 28)}` : j.id === 'cyber72' ? '운영자 암호 해금' : j.rewardOnly ? '특정 스테이지 클리어 보상' : '암호/특수 조건 해금'}</div>
           ${unlocked ? `<div class="small">숙련도: 격추 ${m.kills || 0} / 클리어 ${m.clears || 0} / 특수기 ${m.specials || 0} / 노데미지 ${m.noDamageClears || 0} / 체력1 ${m.clutchClears || 0} / 무한 ${m.endlessScore || 0}</div>
           <div class="small">${jetSkinLabel(j.id, 1)}: ${save.unlockedSkins?.[skin1] ? '해금됨' : skinConditionText(j.id, 1)}</div>
           <div class="small">${jetSkinLabel(j.id, 2)}: ${save.unlockedSkins?.[skin2] ? '해금됨' : skinConditionText(j.id, 2)}</div>
