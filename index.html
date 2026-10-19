@@ -480,6 +480,17 @@
       margin-top: 3px;
     }
 
+    .jet-tradeoff {
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 4px;
+      color: #b9d9d5;
+    }
+
+    .jet-tradeoff.weakness {
+      color: #f2b8ad;
+    }
+
     .card-head {
       display: flex;
       align-items: center;
@@ -880,14 +891,14 @@
       { id: 'f15', name: 'F-15 이글', role: '정면 강타', color: '#8f9da8', power: 16, hp: 9, shots: 2, fireRate: 190, speed: 6.0, bulletSpeed: 11.7, hitbox: 7, startBombs: 2, special: '높은 단발 화력의 정통 제공기' },
       { id: 'fa18', name: 'F/A-18 슈퍼호넷', role: '함재 안정', color: '#7f93a6', power: 9, hp: 12, shots: 4, fireRate: 166, speed: 5.9, bulletSpeed: 10.2, hitbox: 8, startBombs: 3, special: '특수기: 유도 함재 로켓과 1회 보호막' },
       { id: 'kf21', name: 'KF-21 글록3', role: '정밀 코어', color: '#6f7f8f', power: 14, hp: 10, shots: 3, fireRate: 126, speed: 6.85, bulletSpeed: 11.8, hitbox: 7, startBombs: 2, special: '특수기: 글록3 코어. 잠시 가속하며 정밀 코어탄을 발사' },
-      { id: 'darkstar', name: '다크스타', role: '마하 10 초고속 침투', color: '#1f2937', power: 20, hp: 8, shots: 3, fireRate: 138, speed: 12.4, bulletSpeed: 14.8, hitbox: 5, startBombs: 3, special: '특수기: 극초음속 침투. 강화 없이도 압도적인 최고 속도로 위험 구역을 찢고 지나간다' },
-      { id: 'adf11f', name: 'ADF-11F Raven', role: '무인 정밀기', color: '#d9d2bd', power: 15, hp: 11, shots: 6, fireRate: 116, speed: 7.25, bulletSpeed: 12.5, hitbox: 6, startBombs: 3, special: '특수기: 레이븐 드론 락온. 다중 표적 유도탄을 계속 운용한다' },
+      { id: 'darkstar', name: '다크스타', role: '마하 10 초고속 침투', color: '#1f2937', power: 16, hp: 7, shots: 2, fireRate: 150, speed: 12.4, bulletSpeed: 14.8, hitbox: 5, startBombs: 3, special: '특수기: 극초음속 침투. 강화 없이도 압도적인 최고 속도로 위험 구역을 찢고 지나간다' },
+      { id: 'adf11f', name: 'ADF-11F Raven', role: '무인 정밀기', color: '#d9d2bd', power: 15, hp: 8, shots: 6, fireRate: 116, speed: 7.25, bulletSpeed: 12.5, hitbox: 6, startBombs: 3, special: '특수기: 레이븐 드론 락온. 다중 표적 유도탄을 계속 운용한다' },
       { id: 'adf01', name: 'ADF-01 FALKEN', role: '전술 레이저', color: '#53616f', power: 24, hp: 12, shots: 3, fireRate: 172, speed: 6.45, bulletSpeed: 13.8, hitbox: 7, startBombs: 3, special: '특수기: 팔켄 TLS. 관통 레일건과 추적 보조탄으로 대형 보스를 찌른다' },
       { id: 'adfx01', name: 'ADFX-01 Morgan', role: '중량 복합화력', color: '#8f969d', power: 23, hp: 16, shots: 4, fireRate: 186, speed: 5.75, bulletSpeed: 11.2, hitbox: 10, startBombs: 4, special: '특수기: 모르간 버스트. 폭발탄 사이에 유도 산탄 미사일이 섞인다' },
-      { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 14, hp: 12, shots: 7, fireRate: 112, speed: 6.82, bulletSpeed: 11.8, hitbox: 7, startBombs: 3, special: '특수기: 노스페라투 ADMM. 화면을 장악하는 소형 유도탄 무장' },
+      { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 14, hp: 9, shots: 7, fireRate: 112, speed: 6.82, bulletSpeed: 11.8, hitbox: 7, startBombs: 3, special: '특수기: 노스페라투 ADMM. 화면을 장악하는 소형 유도탄 무장' },
       { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 16, hp: 12, shots: 5, fireRate: 116, speed: 7.2, bulletSpeed: 12.4, hitbox: 7, startBombs: 3, special: '특수기: 4연장 MSTM. 기본 사격에도 측면 추적탄을 섞는다' },
-      { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 11, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
-      { id: 'cyber72', name: '사이버-72 스트라이크 랩터', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
+      { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 8, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
+      { id: 'cyber72', name: '사이버-2 스트라이크 랩터', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 가변익 사냥꾼', color: '#7c3aed', power: 18, hp: 10, shots: 4, fireRate: 132, speed: 7.05, bulletSpeed: 11.8, hitbox: 6, startBombs: 3, hidden: true, rewardOnly: true, special: '특수기: 보이드 랜스. Shift로 가변익 고속 비행을 유지하며 공허 적에게 강하다' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
@@ -2181,8 +2192,8 @@
     const jetCharacterProfiles = {
       f22: ['입문 올라운더', '조작감과 탄도가 안정적이라 처음부터 끝까지 무난하게 굴릴 수 있다.', '특화 화력은 낮아서 보스나 대형 중간보스는 다른 기체보다 오래 걸린다.'],
       f35: ['락온 생존기', '작은 피격 판정과 락온 탄, 스텔스 특수기로 움직이는 적을 안정적으로 잡는다.', '공격력과 연사가 낮아 단단한 적을 빠르게 녹이지는 못한다.'],
-      f111: ['대형 관통기', '관통탄이 대형 적과 보스에게 잘 박혀서 단단한 목표를 빨리 깎는다.', '강한 한 발 대신 연사와 기동이 느려 잔몹이 퍼지는 스테이지에서는 답답하다.'],
-      b117: ['스텔스 폭격수', '폭탄과 넓은 탄도로 위험한 구역을 정리하는 능력이 좋고 피격 판정도 폭격기치고 작다.', '지속 화력과 탄속이 낮아 빠른 적을 계속 따라잡기는 어렵다.'],
+      f111: ['대형 관통기', '관통탄이 일렬로 몰린 적과 보스에게 강하다.', '발사 간격이 길고 속도가 느려 흩어진 적 처리에 약하다.'],
+      b117: ['스텔스 폭격수', '폭탄 3개와 범위탄으로 적이 몰린 구역을 정리한다.', '탄속과 연사가 낮고 피격 판정이 커서 근접 회피에 불리하다.'],
       b29: ['초중폭격기', '체력, 폭탄 수, 폭발탄이 좋아 실수를 버티며 큰 적을 녹인다.', '가장 느리고 연사 간격도 길며 몸집이 커서 탄막 회피 난도가 높다.'],
       su57: ['회피 산탄기', '빠른 이동과 넓은 산탄으로 여러 방향의 잡몹을 압박한다.', '발당 화력과 체력이 낮아 단일 보스에게 모든 화력을 넣기 어렵다.'],
       su30: ['카나드 중전투기', '카나드와 쌍발 엔진을 살린 체력과 안정감이 좋아 실수 복구가 쉽다.', '몸집이 약간 크고 연사가 느려 기록 경쟁용 순간 화력은 부족하다.'],
@@ -2198,19 +2209,45 @@
       geomancho: ['전익 포화기', '넓은 탄막과 높은 체력으로 전장을 밀어붙인다.', '몸집이 있고 속도가 애매해 촘촘한 탄막에 약하다.'],
       error: ['글리치 전익 폭격기', 'B-2를 닮은 넓은 전익기와 노이즈 폭발탄으로 적을 불안정하게 흔든다.', '폭격함대보다 약하고 화면 장악력은 부족하다.'],
       bomberfleet: ['함대 지휘관', '여러 기체가 함께 쏘는 압도적인 화면 장악력이 있다.', '히트박스가 넓고 화면이 복잡해 세밀한 회피가 어렵다.'],
-      kf21: ['정밀 코어기', 'KF-21의 사다리꼴 주익과 쌍수직미익을 살린 빠른 정밀 제공기다.', '탄 수가 적어 대충 뿌리기보다 정면 조준을 잘해야 강하다.'],
-        darkstar: ['마하 10 극초음속 침투기', '강화 없이도 모든 일반 기체를 압도하는 최고 속도로 위험 구역을 순식간에 빠져나온다.', '체력과 탄 수가 낮아서 빠른 조작에 익숙하지 않으면 오히려 충돌 위험이 크다.'],
-      adf11f: ['무인 정밀기', '분리형 노즈와 넓은 무미익 실루엣처럼 다탄 락온으로 움직이는 적을 잘 잡는다.', '발당 화력은 낮아 보스전에서는 꾸준히 맞춰야 한다.'],
+      kf21: ['정밀 코어기', '빠른 연사와 관통 정밀탄으로 정면의 강한 적을 집중 공격한다.', '탄 수가 적어 넓게 퍼진 적은 직접 조준해야 한다.'],
+      darkstar: ['마하 10 극초음속 침투기', '압도적인 최고 속도와 작은 피격 판정으로 위험 구역을 빠져나온다.', '체력이 낮고 주포가 2발이라 빠른 조작에 익숙하지 않으면 화력 손실이 크다.'],
+      adf11f: ['무인 정밀기', '다탄 락온과 보조 유도탄으로 움직이는 적을 놓치지 않는다.', '장갑이 얇고 발당 화력이 낮아 피격을 피하며 오래 쏴야 한다.'],
       adf01: ['전술 레이저기', '긴 동체와 붉은 코어 라인을 살린 강한 관통탄으로 대형 목표를 빠르게 찌른다.', '연사와 탄 수가 낮아 잔몹이 퍼지면 손이 바쁘다.'],
       adfx01: ['중량 복합화력기', 'Morgan식 묵직한 동체와 카나드 화력으로 폭발탄, 관통탄 모두 강하다.', '속도와 피격 판정이 불리해 탄막 회피는 미리 움직여야 한다.'],
-      cfa44: ['ADMM 산개기', 'Nosferatu 특유의 넓은 날개와 다탄 산개로 여러 적을 동시에 압박한다.', '탄이 많은 대신 발당 위력은 낮아 장갑 보스는 오래 때려야 한다.'],
-      xfa27: ['가변익 멀티롤', 'XFA-27처럼 날개를 접어 고속 운용할 수 있고 네 갈래 화력이 안정적이다.', '최고 화력기는 아니라 날개 전환과 위치 선정으로 보완해야 한다.'],
-      asfx: ['전진익 기동기', '신덴 II의 전진익과 V/STOL 느낌을 살려 빠르게 빠지고 산개탄으로 덮는다.', '체력은 낮아 정면으로 버티는 플레이에는 약하다.'],
+      cfa44: ['ADMM 산개기', '7발 산개탄과 보조 유도탄으로 넓은 화면을 압박한다.', '장갑이 얇고 발당 위력이 낮아 단일 보스에게는 화력이 분산된다.'],
+      xfa27: ['가변익 멀티롤', '날개를 접어 고속 운용할 수 있고 5발 화력과 추적탄이 안정적이다.', '단발 위력이 낮아 장갑 적에게는 위치를 잡고 계속 맞혀야 한다.'],
+      asfx: ['전진익 기동기', '빠른 연사와 기동으로 적 무리의 측면을 계속 공격한다.', '장갑이 얇고 산개탄이라 단단한 단일 목표에 화력이 모이기 어렵다.'],
+      cyber72: ['사이버 제공기', '정밀 유도탄과 보조 미사일로 강한 적을 빠르게 제거한다.', '강력한 보상기지만 발사 효과가 많아 좁은 탄막에서는 시야와 위치 선정에 주의해야 한다.'],
       operator: ['운영자 전용 어드민기', '예전 어드민 기체와 같은 외형과 성능으로 전장을 압도한다.', '일반 밸런스용 기체가 아니라 운영자 전용 테스트 기체다.'],
       sr71: ['초고속 생존기', '압도적인 속도와 작은 피격 면적으로 오래 살아남기 좋다.', '체력이 낮고 탄 수가 적어 실수와 장기 보스전에 약하다.'],
       yf23: ['스텔스 암살자', '빠른 유도 관통탄으로 위험한 목표를 빠르게 자른다.', '해금 난도가 있고 폭격 능력은 폭격기보다 약하다.'],
       xb70: ['거대 초음속 폭격기', '최상급 화력과 폭탄 수로 보스와 대형 적을 압도한다.', '크고 느려서 후반 탄막에서는 위치 선정이 매우 중요하다.'],
-      f67: ['공허 사냥꾼', '공허 군단에게 추가 피해를 주고 고성능 폭발탄을 사용한다.', '해금이 늦고 강한 만큼 일반 스테이지 초반용으로는 과하다.']
+      f67: ['공허 사냥꾼', '공허 군단 추가 피해와 유도 폭발탄으로 후반 적에게 강하다.', '체력이 낮고 산개탄은 좁은 목표에 전탄을 맞히기 어렵다.'],
+      ww_camel: ['선회 난사 복엽기', '벌어진 기관총 탄도로 좌우 잔몹을 긁는다.', '방어력이 낮고 정면 집중 화력이 약하다.'],
+      ww_se5a: ['고속 집중 복엽기', '빠른 탄속과 좁은 탄도로 정면 적을 조준하기 쉽다.', '2발 탄도라 넓게 퍼진 적에게는 약하다.'],
+      ww_spad13: ['돌격 복엽기', '관통 기관총으로 일렬의 적을 뚫는다.', '발사 간격이 길어 빈틈에 접근한 적을 놓치기 쉽다.'],
+      ww_bristol: ['복좌 경호기', '3발 사격과 넉넉한 체력으로 측면을 지킨다.', '큰 몸집과 느린 이동으로 탄막 회피가 어렵다.'],
+      ww_nieuport: ['경량 선회기', '작은 피격 판정과 산개 사격으로 좁은 틈을 누빈다.', '체력이 가장 낮고 탄이 퍼져 보스 화력이 떨어진다.'],
+      ww_spitfire: ['균형 제공기', '빠른 선회와 좁은 3발 탄도로 정면 교전에 안정적이다.', '폭탄이 1개라 위급한 탄막 정리 수단이 적다.'],
+      ww_hurricane: ['방공 기관총기', '4발 탄도와 체력으로 다수 적을 막는다.', '기동이 둔해 빠른 측면 적을 쫓기 어렵다.'],
+      ww_mustang: ['장거리 호위기', '관통탄과 2개의 폭탄으로 긴 전투에 잘 대응한다.', '한 분야에 특화한 기체보다 순간 화력이 낮다.'],
+      ww_yak3: ['저공 고속기', '빠른 이동과 탄속으로 작은 목표를 추격한다.', '체력이 낮고 폭탄이 1개뿐이다.'],
+      ww_zero: ['고기동 산개기', '빠른 연사와 넓은 기관총 탄도로 잔몹을 정리한다.', '장갑이 얇고 화력이 퍼져 장갑 적에게 약하다.'],
+      ww_bf109: ['정면 요격기', '좁은 관통 기관포로 단단한 목표를 찌른다.', '측면을 덮는 탄이 적고 폭탄도 1개다.'],
+      ww_fw190: ['중무장 돌격기', '4발 관통탄과 폭탄 2개로 밀집된 적을 압박한다.', '몸집이 크고 탄이 분산되어 정밀 보스전에는 불리하다.'],
+      ww_fokker: ['곡예 삼엽기', '짧은 발사 간격과 산개탄으로 가까운 적을 견제한다.', '탄속이 낮고 단일 목표 화력이 약하다.'],
+      ww_albatros: ['균형 복엽기', '무난한 체력과 탄도로 안정적인 첫 출격에 좋다.', '폭탄과 탄 수가 적어 대규모 적 무리에 약하다.'],
+      ww_fokkerdvii: ['관통 제공기', '빠른 관통탄으로 정면의 적을 연속 처리한다.', '2발 탄도와 폭탄 1개로 측면 방어가 약하다.'],
+      ww_pfalz: ['장갑 복엽기', '체력과 관통탄으로 앞쪽 공격을 오래 유지한다.', '느린 기동과 연사로 빠른 적을 쫓기 어렵다.'],
+      ww_gotha: ['초기 중폭격기', '폭발탄과 높은 체력으로 밀집된 적을 정리한다.', '몸집이 크고 느려 탄막을 미리 읽어야 한다.'],
+      ww_ki84: ['고속 요격기', '빠른 이동과 넓은 4발 탄도로 잔몹을 쫓는다.', '체력이 낮고 폭탄이 1개라 실수에 취약하다.'],
+      ww_il2: ['장갑 공격기', '폭발탄과 3개 폭탄으로 지상 목표에 강하다.', '속도가 느리고 피격 판정이 커 공중 탄막에 약하다.'],
+      ww_lancaster: ['대형 폭격기', '넓은 폭발탄과 4개 폭탄으로 큰 무리를 지운다.', '발사 간격이 길고 몸집이 커 작은 적에게 취약하다.'],
+      ww_b17: ['요새 폭격기', '높은 체력과 3발 폭발탄으로 버티며 공격한다.', '속도가 느리고 피격 판정이 커 집중 탄막 회피가 어렵다.'],
+      ww_b29: ['초중장갑 폭격기', '강한 폭발탄과 높은 체력으로 대형 적을 압박한다.', '연사가 매우 느리고 몸집이 가장 커 빠른 적을 놓친다.'],
+      ww_ju87: ['급강하 폭격기', '묵직한 폭발탄과 3개 폭탄으로 목표 지역을 때린다.', '2발 탄도와 느린 이동으로 사방의 적에 약하다.'],
+      ww_he111: ['쌍발 폭격기', '3발 폭발탄과 넉넉한 폭탄으로 넓은 구역을 정리한다.', '피격 판정이 크고 탄속이 낮아 회피가 어렵다.'],
+      ww_me262: ['제트 요격기', '빠른 이동과 관통탄으로 위험한 적을 선제 처리한다.', '체력이 낮아 빠른 속도로 탄막에 들어가면 위험하다.']
     };
 
     function inferredJetCharacterProfile(id) {
@@ -2446,8 +2483,8 @@
 
     function addScore(points) {
       score += points;
-      if (save.selectedMode === 'endless' && score >= 10000) awardAchievement('endless10k');
-      if (save.selectedMode === 'endless' && player?.jet?.id) {
+      if (isEndlessRun() && score >= 10000) awardAchievement('endless10k');
+      if (isEndlessRun() && player?.jet?.id) {
         const m = masteryFor(player.jet.id);
         if (score > (m.endlessScore || 0)) {
           m.endlessScore = score;
@@ -2606,6 +2643,17 @@
         renderUI();
         return;
       }
+      if (code === '하늘에 불가능은 없다') {
+        if (!save.cyberStageCleared) {
+          setLog('??? 공역의 비행기 보스를 먼저 격파해야 사용할 수 있다.');
+          flash('LOCKED');
+        } else if (!unlockJet('cyber72', '사이버-2 스트라이크 랩터 해금. 격납고에 등록됐다.')) {
+          setLog('사이버-2 스트라이크 랩터는 이미 해금되어 있다.');
+          flash('UNLOCKED');
+        }
+        if (input) input.value = '';
+        return;
+      }
       if (code === '기린1972') {
         const unlocked = unlockJet('operator', '운영자 전용 기체 해금. 어드민이 출격 가능해졌다.');
         if (!unlocked) {
@@ -2688,9 +2736,20 @@
       return clamp(1 + Math.floor(stageTime / 55000), 1, currentMaxStage());
     }
 
+    function isEndlessRun() {
+      return save.selectedMode === 'endless' && !secretRobotDuel && !cyberWingDuel;
+    }
+
+    function endlessEnemyMultiplier() {
+      if (!isEndlessRun()) return 1;
+      const waves = Math.floor(stageTime / 55000);
+      return 1 + waves * .08 + waves * waves * .003;
+    }
+
     function fieldPowerMax(stageId = difficultyStage()) {
-      if (save.selectedMode === 'endless') {
-        return 6 + Math.max(0, player?.endlessBossKills || 0) * 3;
+      if (secretRobotDuel || cyberWingDuel) return 9;
+      if (isEndlessRun()) {
+        return 6 + Math.floor(Math.max(0, player?.endlessBossKills || 0) / 2) * 2;
       }
       const stage = Math.max(1, stageId);
       const cap = stage >= 24 ? 12 : 9;
@@ -2820,6 +2879,7 @@
         droneReserve: 56,
         droneBatchActive: 0,
         droneLaunchCooldown: 2800,
+        wingLaserCooldown: 4600,
         t: 0,
         hitW: 292,
         hitH: 126,
@@ -2925,17 +2985,16 @@
         save.coins += reward;
         save.cyberStageCleared = true;
         rewards.push('??? 보스 격파 기록 저장');
-        const unlocked = unlockJet('cyber72', '사이버-72 스트라이크 랩터 해금. 하늘색/백색 사이버 랩터가 격납고에 등록됐다.');
-        rewards.push(unlocked ? '사이버-72 스트라이크 랩터 해금' : '사이버-72 스트라이크 랩터 이미 해금됨');
+        rewards.push('운영자 암호 해금: 하늘에 불가능은 없다');
         storeSave();
         stopBgm();
-        showStory('??? 공역 완료', 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 회수된 순백의 설계 데이터가 격납고에서 사이버-72 스트라이크 랩터로 재구성된다.', () => {
+        showStory('??? 공역 완료', 'Stratowing Eclipse가 무너지고 무인기 통제 코어가 정지했다. 운영자 칸에 하늘에 불가능은 없다를 입력하면 사이버-2 스트라이크 랩터의 설계 데이터를 복원할 수 있다.', () => {
           mode = 'clear';
           setScreen(mode);
           paused = false;
           document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
           document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
-          setLog('??? 보스를 격파했다. 사이버-72 스트라이크 랩터가 클리어 보상으로 해금됐다.');
+          setLog('??? 보스를 격파했다. 운영자 칸에 해금 암호를 입력하면 사이버-2 스트라이크 랩터를 받을 수 있다.');
           renderUI();
         });
         return;
@@ -3028,12 +3087,12 @@
     }
 
     function gameOver() {
-      if (mode === 'defeat' || mode === 'story') return;
+      if (mode === 'defeat' || mode === 'story' || (boss && (boss.hp <= 0 || boss.defeated))) return;
       const stage = currentStage();
       resultStage = stage;
       const storyFail = stageStoryText('fail', stage, save.selectedMode, save.wwFaction || 'allies');
       stopBgm();
-      const endlessBonus = save.selectedMode === 'endless';
+      const endlessBonus = isEndlessRun();
       const defeatBonus = endlessBonus ? Math.floor(score / 2) : 0;
       const newBest = endlessBonus && score > save.bestEndlessScore;
       if (newBest) save.bestEndlessScore = score;
@@ -3075,6 +3134,7 @@
 
     function spawnEnemy() {
       const st = difficultyStage();
+      const endlessMultiplier = endlessEnemyMultiplier();
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
@@ -3112,14 +3172,14 @@
       const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
       const carrierRankScale = .95 + seaRank * .32 + Math.max(0, st - 3) * .025;
-      const hpValue = type.carrier ? Math.round(type.hp * carrierRankScale) : Math.max(3, Math.round(type.hp * scale * hpTone));
+      const hpValue = type.carrier ? Math.round(type.hp * carrierRankScale * endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
         y: -35,
         hp: hpValue,
         maxHp: hpValue,
-        power: type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2)) : Math.max(1, type.power),
+        power: Math.max(1, Math.ceil((type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2)) : type.power) * endlessMultiplier)),
         shots: type.carrier ? Math.max(3, Math.min(5, type.shots + Math.floor((seaRank - 1) / 2))) : Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
         speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
         fire: type.carrier ? Math.max(540, 1040 - seaRank * 85 + Math.random() * 320) : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
@@ -3134,13 +3194,14 @@
       if (!type) return;
       const st = difficultyStage();
       const scale = .92 + st * .035;
+      const endlessMultiplier = endlessEnemyMultiplier();
       enemies.push({
         ...type,
         x: clamp(carrier.x + side * 42, 40, W - 40),
         y: carrier.y - 28,
-        hp: Math.max(3, Math.round(type.hp * scale)),
-        maxHp: Math.max(3, Math.round(type.hp * scale)),
-        power: type.power,
+        hp: Math.max(3, Math.round(type.hp * scale * endlessMultiplier)),
+        maxHp: Math.max(3, Math.round(type.hp * scale * endlessMultiplier)),
+        power: Math.max(1, Math.ceil(type.power * endlessMultiplier)),
         shots: type.shots,
         speed: type.speed + st * .02,
         fire: 820 + Math.random() * 520,
@@ -3185,6 +3246,7 @@
 
     function spawnBoss() {
       const st = difficultyStage();
+      const endlessMultiplier = endlessEnemyMultiplier();
       const stage = currentStage();
       const blueprint = terrainBossProfile(stage);
       const ww = isWorldWarChapter();
@@ -3193,7 +3255,7 @@
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
-      const hp = Math.round(hpBase * blueprint.hp * hpNerf);
+      const hp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier);
       const wideBoss = blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' || blueprint.kind === 'heliCarrier' || blueprint.kind === 'skyDreadnought' || blueprint.kind === 'landCruiser';
       const tankBoss = blueprint.kind === 'megaTank' || blueprint.kind === 'warRobot';
       const hitScale = blueprint.size || 1;
@@ -3207,7 +3269,7 @@
         targetY: 120,
         hp,
         maxHp: hp,
-        power: tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62),
+        power: Math.ceil((tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62)) * endlessMultiplier),
         shots: tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48),
         fire: 0,
         inv: 3000,
@@ -3991,6 +4053,27 @@
       });
       specialEffects.push({ x: sx, y: sy, life: 820, maxLife: 820, type: 'powerBurst', color: boss.accent || '#00b7ff', accent: '#e0f2fe' });
       flash('LASER WARNING');
+    }
+
+    function queueCyberWingLaser() {
+      if (!boss || boss.kind !== 'cyberWingBoss' || !player) return;
+      const safeCenter = clamp(player.x, 116, W - 116);
+      for (const side of [-1, 1]) {
+        bossLasers.push({
+          x1: boss.x + side * 174,
+          y1: boss.y + 34,
+          x2: safeCenter + side * 106,
+          y2: H + 24,
+          charge: 1100,
+          duration: boss.phase >= 3 ? 650 : 520,
+          time: 0,
+          width: 15,
+          dmg: boss.phase >= 3 ? 7 : 5,
+          color: '#38bdf8'
+        });
+      }
+      flash('WING LASER WARNING');
+      playEnemyLaser(performance.now());
     }
 
     function updateBossLasers(dt) {
@@ -5191,7 +5274,16 @@
             boss.bombCooldown = 5600;
           }
         }
-        if (boss.kind === 'cyberWingBoss') updateCyberWingDroneLaunch(dt);
+        if (boss.kind === 'cyberWingBoss') {
+          updateCyberWingDroneLaunch(dt);
+          if (boss.phase >= 2) {
+            boss.wingLaserCooldown = Math.max(0, boss.wingLaserCooldown - dt);
+            if (boss.wingLaserCooldown <= 0 && bossLasers.length === 0) {
+              queueCyberWingLaser();
+              boss.wingLaserCooldown = boss.phase >= 3 ? 5800 : 7200;
+            }
+          }
+        }
         boss.fire -= dt;
         if (boss.fire <= 0) {
           boss.fire = boss.kind === 'secretRobot'
@@ -5221,10 +5313,9 @@
         b.y += b.vy * frameStep;
       });
 
+      handleHits(frameStep);
       updateBossLasers(dt);
       updateBossBombs(dt);
-
-      handleHits(frameStep);
       cleanup();
     }
 
@@ -5271,6 +5362,8 @@
           }
         }
       }
+
+      if (boss && (boss.hp <= 0 || boss.defeated)) player.inv = Math.max(player.inv, 1000);
 
       enemies.forEach(e => {
         if (!player || mode !== 'play') return;
@@ -5369,7 +5462,8 @@
           explosions.push({ x: defeatedBoss.x, y: defeatedBoss.y, r: 45, life: 900 });
         }
         playPlayerExplosion();
-        if (save.selectedMode === 'endless') {
+        if (isEndlessRun()) {
+          const previousPowerMax = fieldPowerMax();
           player.endlessBossKills = (player.endlessBossKills || 0) + 1;
           const bonus = 500 + difficultyStage() * 120;
           const coinBonus = 25 + difficultyStage() * 8;
@@ -5389,8 +5483,8 @@
           const hinted = addScore(bonus);
           save.coins += coinBonus;
           storeSave();
-          if (!hinted) setLog(`보스 격파. 점수 +${bonus}, 코인 +${coinBonus}. 무한모드 최대 파워가 ${newPowerMax}까지 확장됐다.`);
-          flash(`POWER MAX ${newPowerMax}`);
+          if (!hinted) setLog(`보스 ${player.endlessBossKills}기 격파. 점수 +${bonus}, 코인 +${coinBonus}.${newPowerMax > previousPowerMax ? ` 최대 파워 ${newPowerMax} 해금.` : ` 현재 최대 파워 ${newPowerMax}.`}`);
+          if (newPowerMax > previousPowerMax) flash(`POWER MAX ${newPowerMax}`);
           nextBossTime = stageTime + Math.max(28000, 52000 - difficultyStage() * 1200);
           bossWarningShown = false;
           return;
@@ -5477,6 +5571,7 @@
 
     function damagePlayer(amount) {
       if (!player || mode !== 'play') return;
+      if (boss && (boss.hp <= 0 || boss.defeated)) return;
       if (player.jet.godMode) {
         player.inv = 450;
         flash('BLOCK');
@@ -6579,82 +6674,55 @@
       const wingSweep = friendly && player && player.jet?.id === id && isVariableWingJet(id) ? (player.wingSweep || 0) : 0;
 
       if (id === 'cyber72') {
+        const hull = '#eaf9ff';
+        const panel = '#a8d8e8';
+        const edge = '#567c91';
         const glow = '#38bdf8';
-        const pale = '#e9fbff';
-        const ice = '#a8ecff';
-        const white = '#ffffff';
-        const steel = '#516172';
-        ctx.strokeStyle = 'rgba(14,165,233,.42)';
-        ctx.lineWidth = 1.25;
-
-        ctx.fillStyle = 'rgba(125,211,252,.18)';
-        poly([[0,-92],[12,-57],[48,-17],[82,14],[52,24],[26,11],[11,51],[0,72],[-11,51],[-26,11],[-52,24],[-82,14],[-48,-17],[-12,-57]]);
-
-        ctx.fillStyle = pale;
-        poly([[0,-96],[12,-65],[16,-22],[13,39],[0,72],[-13,39],[-16,-22],[-12,-65]]);
-        ctx.fillStyle = white;
-        poly([[0,-88],[7,-56],[8,31],[0,58],[-8,31],[-7,-56]]);
-        ctx.fillStyle = '#d7f6ff';
-        poly([[-10,-35],[-25,-7],[-18,26],[-8,14]]);
-        poly([[10,-35],[25,-7],[18,26],[8,14]]);
-
-        // Forward-swept main wings: the tips sit ahead of the roots for a sharper experimental silhouette.
-        ctx.fillStyle = ice;
-        poly([[-13,-22],[-88,-4],[-62,35],[-22,17]]);
-        poly([[13,-22],[88,-4],[62,35],[22,17]]);
-        ctx.fillStyle = 'rgba(255,255,255,.84)';
-        poly([[-18,-15],[-69,0],[-54,17],[-22,8]]);
-        poly([[18,-15],[69,0],[54,17],[22,8]]);
-
-        // Nose canards, small but visible like a high-agility prototype.
-        ctx.fillStyle = '#bdefff';
-        poly([[-9,-55],[-42,-43],[-21,-30],[-8,-38]]);
-        poly([[9,-55],[42,-43],[21,-30],[8,-38]]);
+        ctx.fillStyle = edge;
+        poly([[-14,9],[-82,-14],[-76,34],[-39,53],[-19,40]]);
+        poly([[14,9],[82,-14],[76,34],[39,53],[19,40]]);
+        ctx.fillStyle = hull;
+        poly([[-16,13],[-76,-11],[-68,29],[-36,45],[-18,34]]);
+        poly([[16,13],[76,-11],[68,29],[36,45],[18,34]]);
+        ctx.fillStyle = panel;
+        poly([[-20,17],[-69,-7],[-61,18],[-33,36]]);
+        poly([[20,17],[69,-7],[61,18],[33,36]]);
         ctx.fillStyle = '#ffffff';
-        poly([[-11,-50],[-31,-42],[-15,-37]]);
-        poly([[11,-50],[31,-42],[15,-37]]);
-
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.ellipse(0, -58, 5.5, 18, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.ellipse(0, -59, 3, 11, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = steel;
-        poly([[-15,35],[-35,68],[-8,52]]);
-        poly([[15,35],[35,68],[8,52]]);
-        ctx.fillStyle = '#7dd3fc';
-        poly([[-24,28],[-55,66],[-13,50]]);
-        poly([[24,28],[55,66],[13,50]]);
+        poly([[-12,-50],[-38,-36],[-35,-26],[-11,-36]]);
+        poly([[12,-50],[38,-36],[35,-26],[11,-36]]);
+        ctx.fillStyle = edge;
+        poly([[-17,26],[-50,70],[-30,62],[-12,47]]);
+        poly([[17,26],[50,70],[30,62],[12,47]]);
+        ctx.fillStyle = hull;
+        poly([[-15,31],[-42,63],[-29,55],[-10,43]]);
+        poly([[15,31],[42,63],[29,55],[10,43]]);
+        ctx.fillStyle = '#344b5e';
+        poly([[-12,32],[-20,70],[-5,61]]);
+        poly([[12,32],[20,70],[5,61]]);
+        ctx.fillStyle = '#d8f5ff';
+        poly([[0,-98],[7,-78],[11,-48],[17,-11],[16,35],[9,61],[0,70],[-9,61],[-16,35],[-17,-11],[-11,-48],[-7,-78]]);
+        ctx.fillStyle = '#ffffff';
+        poly([[0,-92],[4,-73],[7,-40],[8,24],[0,55],[-8,24],[-7,-40],[-4,-73]]);
         ctx.fillStyle = '#1e293b';
-        poly([[-8,48],[-18,72],[-3,65]]);
-        poly([[8,48],[18,72],[3,65]]);
-
+        poly([[0,-71],[6,-58],[7,-33],[0,-24],[-7,-33],[-6,-58]]);
+        ctx.fillStyle = '#7dd3fc';
+        poly([[0,-68],[3,-55],[4,-36],[0,-30],[-4,-36],[-3,-55]]);
+        ctx.strokeStyle = '#5bbde3';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-72,-7); ctx.lineTo(-23,22); ctx.lineTo(-12,47);
+        ctx.moveTo(72,-7); ctx.lineTo(23,22); ctx.lineTo(12,47);
+        ctx.moveTo(-34,-33); ctx.lineTo(-13,-36);
+        ctx.moveTo(34,-33); ctx.lineTo(13,-36);
+        ctx.moveTo(-7,-25); ctx.lineTo(-7,43);
+        ctx.moveTo(7,-25); ctx.lineTo(7,43);
+        ctx.stroke();
         ctx.fillStyle = glow;
-        for (const [ex, ey] of [[-7, 52], [7, 52]]) {
+        for (const ex of [-9,9]) {
           ctx.beginPath();
-          ctx.ellipse(ex, ey, 3.2, 9, 0, 0, Math.PI * 2);
+          ctx.ellipse(ex, 53, 3.5, 10, 0, 0, Math.PI * 2);
           ctx.fill();
         }
-
-        ctx.strokeStyle = 'rgba(14,165,233,.82)';
-        ctx.lineWidth = 1.7;
-        ctx.beginPath();
-        ctx.moveTo(-63, 3);
-        ctx.lineTo(-22, 10);
-        ctx.lineTo(0, -12);
-        ctx.lineTo(22, 10);
-        ctx.lineTo(63, 3);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(-8, -68);
-        ctx.lineTo(-3, 28);
-        ctx.moveTo(8, -68);
-        ctx.lineTo(3, 28);
-        ctx.stroke();
       } else if (id === 'bomberfleet') {
         ctx.strokeStyle = 'rgba(67,211,196,.28)';
         ctx.lineWidth = 1.3;
@@ -10917,7 +10985,7 @@
       const stage = visibleStage();
       document.getElementById('hudHp').textContent = `HP ${player ? player.jet.godMode ? '∞' : Math.max(0, Math.ceil(player.hp)) : 0}`;
       document.getElementById('hudBomb').textContent = `BOMB ${player ? player.bombs : 0}${player && (player.fieldPower > 0 || save.selectedMode === 'endless') ? ' PWR ' + (player.fieldPower || 0) + '/' + fieldPowerMax(stage.id) : ''}${player && player.shield > 0 ? ' SHIELD ' + player.shield : ''}${player && player.boostTimer > 0 ? ' BOOST ' + Math.ceil(player.boostTimer / 1000) : ''}${player && player.specialCooldown > 0 ? ' SP ' + Math.ceil(player.specialCooldown / 1000) : ' SP OK'}`;
-      document.getElementById('hudStage').textContent = save.selectedMode === 'endless' ? `END ${difficultyStage()} ${Math.floor(stageTime / 1000)}s` : `STAGE ${stage.id}`;
+      document.getElementById('hudStage').textContent = isEndlessRun() ? `END ${difficultyStage()} x${endlessEnemyMultiplier().toFixed(1)} ${Math.floor(stageTime / 1000)}s` : `STAGE ${stage.id}`;
       document.getElementById('hudScore').textContent = `SCORE ${score}`;
       const specialBtn = document.getElementById('specialBtn');
       if (specialBtn) {
@@ -11037,7 +11105,7 @@
           ? `<button class="stage-card" id="cyberStageButton">
               <div class="card-head"><span class="name">??? 스테이지</span><span class="tag">${save.cyberStageCleared ? 'CLEARED' : 'SECRET'}</span></div>
               <div class="small">초대형 공중 전함 Stratowing Eclipse 격추 작전</div>
-              <div class="small">클리어 보상: 사이버-72 스트라이크 랩터</div>
+              <div class="small">클리어 후 운영자 칸에 해금 암호 입력</div>
             </button>`
           : `<div class="log">??? 스테이지: Stage 30 노데미지 클리어 후 표시됩니다.</div>`;
         const cyberButton = document.getElementById('cyberStageButton');
@@ -11051,14 +11119,16 @@
 
       if (tab === 'jets') {
         jetsEl.innerHTML = currentJetPool().filter(j => !j.hidden || isJetPurchased(j.id)).map(j => {
-          const s = jetStats(j);
           const selected = j.id === save.selectedJet;
           const purchased = isJetPurchased(j.id);
           const price = jetPurchasePrice(j);
-          const compactStats = j.godMode ? `공 ∞ / 체 ∞ / 탄 ${s.shots} / 폭 ∞` : `공 ${s.power} / 체 ${s.maxHp} / 탄 ${s.shots} / 폭 ${s.startBombs}`;
+          const profile = jetCharacterProfile(j.id);
+          const compactStats = j.godMode ? '공 ∞ / 체 ∞ / 폭 ∞' : `기본 공 ${j.power} / 체 ${j.hp} / 탄 ${j.shots} / 발사 간격 ${j.fireRate}ms / 속 ${j.speed} / 폭 ${j.startBombs}`;
           return `<div class="jet-card ${selected ? 'selected' : ''} ${purchased ? '' : 'locked'}" ${purchased ? `data-jet="${j.id}"` : `data-buy-jet="${j.id}"`} role="button" tabindex="0">
-            <div class="card-head"><span class="name">${j.name}</span><span class="tag">${purchased ? j.role : price + 'C'}</span></div>
+            <div class="card-head"><span class="name">${escapeHtml(j.name)}</span><span class="tag">${purchased ? escapeHtml(j.role) : price + 'C'}</span></div>
             <div class="stat-line">${compactStats}</div>
+            <div class="jet-tradeoff">강점: ${escapeHtml(profile.good)}</div>
+            <div class="jet-tradeoff weakness">약점: ${escapeHtml(profile.bad)}</div>
             ${purchased ? '' : `<button data-buy-jet="${j.id}" ${save.coins < price ? 'disabled' : ''}>구매</button>`}
           </div>`;
         }).join('');
@@ -11092,7 +11162,7 @@
           </button>` : `<button class="stage-card ${save.selectedMode === 'endless' ? 'selected' : ''}" data-mode="endless">
           <div class="card-head"><span class="name">무한 모드</span><span class="tag">SCORE</span></div>
           <div class="small">클리어 없이 계속 진행됩니다.</div>
-          <div class="small">시간이 지날수록 적과 보스가 강해집니다.</div>
+          <div class="small">55초마다 적과 보스의 체력·공격 배율이 계속 증가합니다.</div>
           <div class="small">목표: 최고 점수 갱신</div>
         </button><button class="stage-card" data-ww-enter>
           <div class="card-head"><span class="name">세계대전 챕터</span><span class="tag">NEW</span></div>
