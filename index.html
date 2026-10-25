@@ -7186,26 +7186,26 @@
         ctx.fillStyle = color;
         poly([[0,-68],[10,-47],[17,-16],[21,22],[7,51],[0,62],[-7,51],[-21,22],[-17,-16],[-10,-47]]);
         ctx.fillStyle = shade(color, -.08);
-        poly([[-18,-19],[-106,10],[-78,43],[-23,15]]);
-        poly([[18,-19],[106,10],[78,43],[23,15]]);
+        poly([[-18,-19],[-82,9],[-64,37],[-23,15]]);
+        poly([[18,-19],[82,9],[64,37],[23,15]]);
         ctx.fillStyle = shade(color, .2);
-        poly([[-15,-42],[-57,-28],[-42,-9],[-13,-25]]);
-        poly([[15,-42],[57,-28],[42,-9],[13,-25]]);
+        poly([[-15,-42],[-46,-28],[-36,-9],[-13,-25]]);
+        poly([[15,-42],[46,-28],[36,-9],[13,-25]]);
         ctx.fillStyle = '#1e293b';
-        poly([[-22,17],[-62,57],[-23,46],[-8,30]]);
-        poly([[22,17],[62,57],[23,46],[8,30]]);
+        poly([[-22,17],[-48,52],[-23,46],[-8,30]]);
+        poly([[22,17],[48,52],[23,46],[8,30]]);
         ctx.fillStyle = '#111827';
         poly([[-10,33],[-30,72],[-4,56]]);
         poly([[10,33],[30,72],[4,56]]);
         ctx.strokeStyle = '#60a5fa';
         ctx.lineWidth = 1.35;
         ctx.beginPath();
-        ctx.moveTo(-91, 14); ctx.lineTo(-24, 9); ctx.lineTo(-6, 49);
-        ctx.moveTo(91, 14); ctx.lineTo(24, 9); ctx.lineTo(6, 49);
+        ctx.moveTo(-70, 13); ctx.lineTo(-24, 9); ctx.lineTo(-6, 49);
+        ctx.moveTo(70, 13); ctx.lineTo(24, 9); ctx.lineTo(6, 49);
         ctx.moveTo(0, -57); ctx.lineTo(0, 51);
         ctx.stroke();
         ctx.fillStyle = '#93c5fd';
-        for (const x of [-52, -36, -20, 20, 36, 52]) ctx.fillRect(x - 2.5, 18, 5, 15);
+        for (const x of [-42, -30, -18, 18, 30, 42]) ctx.fillRect(x - 2.5, 18, 5, 15);
         ctx.fillStyle = '#22c55e';
         ctx.beginPath(); ctx.arc(0, -30, 4.5, 0, Math.PI * 2); ctx.fill();
       } else if (id === 'xfa27') {
@@ -7711,7 +7711,91 @@
       drawAdvancedJetDetails(id, color);
       if (friendly) drawSkinOrnaments(id, equippedSkin(id), color);
       drawJetFinish(id, color, friendly);
+      drawLegacyJetDetails(id, color, wingSweep);
       if (friendly) drawUpgradeOrnaments(id);
+      ctx.restore();
+    }
+
+    const legacyJetSurfaceProfiles = {
+      f22: { wing: [[19,-20],[48,-7],[42,6],[23,2]], tail: [[15,17],[29,39],[18,32]], intake: [[11,-26],[24,-17],[17,-4],[10,-7]], accent: '#9bd7ed', exhausts: [-8,8], exhaustY: 37 },
+      f35: { wing: [[15,-18],[42,-7],[37,10],[20,6]], tail: [[12,17],[22,35],[13,28]], intake: [[10,-23],[20,-16],[15,-3],[9,-7]], accent: '#8de1e0', exhausts: [0], exhaustY: 36 },
+      f111: { wing: [[5,-2],[54,7],[45,15],[17,16]], sweep: true, tail: [[11,29],[27,51],[13,44]], intake: [[10,-23],[19,-17],[17,-3],[10,-6]], accent: '#b7cd86', exhausts: [-7,7], exhaustY: 42 },
+      b117: { wing: [[22,-24],[57,9],[43,20],[28,8]], intake: [[14,-11],[31,1],[23,8],[12,2]], accent: '#a9c2cf', exhausts: [-13,13], exhaustY: 26 },
+      b29: { wing: [[16,-8],[73,-8],[71,1],[15,1]], tail: [[12,36],[32,39],[24,46]], accent: '#dce5d6', propellers: [34,58] },
+      b2: { wing: [[24,-22],[71,3],[48,20],[24,7]], intake: [[10,-17],[24,-5],[15,5],[6,-3]], accent: '#98b2d4', exhausts: [-30,-10,10,30], exhaustY: 10 },
+      su57: { wing: [[24,-24],[63,-8],[51,10],[26,2]], tail: [[18,19],[39,43],[23,34]], intake: [[13,-25],[27,-17],[17,5],[9,2]], accent: '#8cd0dc', exhausts: [-9,9], exhaustY: 37 },
+      su30: { wing: [[20,-14],[68,2],[54,20],[24,7]], tail: [[14,28],[37,49],[20,41]], intake: [[13,-23],[23,-13],[18,11],[9,6]], accent: '#a8d6e9', exhausts: [-11,11], exhaustY: 43 },
+      su47: { wing: [[22,9],[70,-12],[61,8],[31,20]], tail: [[14,29],[37,53],[20,44]], intake: [[12,-23],[24,-14],[17,12],[9,8]], accent: '#a9c7ef', exhausts: [-9,9], exhaustY: 45 },
+      f16: { wing: [[11,-6],[39,10],[27,18],[12,13]], tail: [[6,19],[12,36],[6,30]], intake: [[5,-19],[11,-9],[8,6],[3,7]], accent: '#8ad5ee', exhausts: [0], exhaustY: 37 },
+      a10: { wing: [[17,0],[62,0],[57,9],[17,9]], tail: [[12,29],[30,33],[25,40]], intake: [[7,-17],[14,-8],[12,15],[7,14]], accent: '#cad8ba', exhausts: [-12,12], exhaustY: 37 },
+      f14: { wing: [[5,-2],[58,8],[47,17],[18,17]], sweep: true, tail: [[15,18],[35,45],[21,37]], intake: [[11,-22],[22,-13],[18,12],[9,7]], accent: '#a8dbeb', exhausts: [-8,8], exhaustY: 39 },
+      f15: { wing: [[17,-8],[47,7],[33,17],[18,9]], tail: [[14,15],[30,40],[17,32]], intake: [[10,-19],[20,-11],[17,11],[9,7]], accent: '#c1d6e8', exhausts: [-8,8], exhaustY: 40 },
+      fa18: { wing: [[18,-19],[40,-5],[30,10],[19,5]], tail: [[14,22],[31,42],[18,34]], intake: [[10,-20],[23,-12],[16,10],[9,6]], accent: '#9bded7', exhausts: [-8,8], exhaustY: 40 },
+      f72: { wing: [[18,-17],[43,0],[32,16],[20,8]], tail: [[12,18],[30,42],[17,33]], intake: [[10,-22],[21,-12],[17,9],[8,4]], accent: '#f8bf78', exhausts: [-9,9], exhaustY: 41 },
+      sr71: { wing: [[12,-37],[28,-18],[20,0],[11,-5]], tail: [[10,20],[31,26],[16,31]], intake: [[9,-25],[21,-11],[16,3],[8,-4]], accent: '#9cb8ce', exhausts: [-9,9], exhaustY: 43 },
+      yf23: { wing: [[23,-23],[50,-8],[38,9],[23,4]], tail: [[16,19],[51,27],[25,28]], intake: [[12,-22],[24,-12],[17,6],[9,1]], accent: '#91b6d6', exhausts: [-9,9], exhaustY: 39 },
+      xb70: { wing: [[22,3],[60,32],[29,31],[19,18]], intake: [[12,-18],[20,-8],[16,26],[11,18]], accent: '#e2ecf4', exhausts: [-15,-5,5,15], exhaustY: 45 },
+      fxx: { wing: [[22,-25],[56,-12],[39,6],[23,1]], tail: [[18,16],[59,26],[28,25]], intake: [[11,-22],[25,-14],[16,8],[9,4]], accent: '#78e4d8', exhausts: [-9,9], exhaustY: 39 }
+    };
+
+    function drawLegacyJetDetails(id, color, wingSweep) {
+      const profile = legacyJetSurfaceProfiles[id];
+      if (!profile) return;
+      ctx.save();
+      ctx.lineWidth = 1.05;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = shade(color, -.36);
+      for (const side of [-1, 1]) {
+        if (profile.sweep) {
+          ctx.save();
+          ctx.translate(side * (id === 'f14' ? 15 : 12), id === 'f14' ? -2 : -4);
+          ctx.scale(side, 1);
+          ctx.rotate(wingSweep * (id === 'f14' ? .62 : .58));
+          ctx.fillStyle = shade(color, side < 0 ? .25 : -.1);
+          poly(profile.wing);
+          ctx.restore();
+        } else {
+          ctx.fillStyle = shade(color, side < 0 ? .25 : -.1);
+          poly(profile.wing.map(([x,y]) => [side * x,y]));
+        }
+        if (profile.tail) {
+          ctx.fillStyle = shade(color, side < 0 ? .13 : -.24);
+          poly(profile.tail.map(([x,y]) => [side * x,y]));
+        }
+        if (profile.intake) {
+          ctx.fillStyle = '#263747';
+          poly(profile.intake.map(([x,y]) => [side * x,y]));
+        }
+      }
+      if (profile.propellers) {
+        ctx.strokeStyle = '#28323c';
+        ctx.lineWidth = 1.4;
+        for (const offset of profile.propellers) for (const side of [-1, 1]) {
+          const x = side * offset;
+          ctx.beginPath();
+          ctx.arc(x, -1, 6, 0, Math.PI * 2);
+          ctx.moveTo(x - 8, -1); ctx.lineTo(x + 8, -1);
+          ctx.moveTo(x, -9); ctx.lineTo(x, 7);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = '#263747';
+        for (const x of profile.exhausts) {
+          ctx.beginPath();
+          ctx.ellipse(x, profile.exhaustY, 3.5, 5.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = profile.accent;
+          ctx.fillRect(x - 1.5, profile.exhaustY - 2, 3, 7);
+          ctx.fillStyle = '#263747';
+        }
+      }
+      ctx.strokeStyle = profile.accent;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.moveTo(0, id === 'xb70' ? -72 : -50);
+      ctx.lineTo(0, id === 'xb70' ? 37 : 23);
+      ctx.stroke();
       ctx.restore();
     }
 
@@ -7799,12 +7883,12 @@
         for (const x of [-21, 21]) ctx.fillRect(x - 3, 36, 6, 18);
       } else if (id === 'cfa44') {
         ctx.beginPath();
-        ctx.moveTo(-73, 13); ctx.lineTo(-24, 11); ctx.lineTo(-8, 48);
-        ctx.moveTo(73, 13); ctx.lineTo(24, 11); ctx.lineTo(8, 48);
+        ctx.moveTo(-65, 13); ctx.lineTo(-24, 11); ctx.lineTo(-8, 48);
+        ctx.moveTo(65, 13); ctx.lineTo(24, 11); ctx.lineTo(8, 48);
         ctx.moveTo(0, -54); ctx.lineTo(0, 50);
         ctx.stroke();
         ctx.fillStyle = rgbaColor(accent, .8);
-        for (const x of [-44, -28, -12, 12, 28, 44]) ctx.fillRect(x - 2, 15, 4, 12);
+        for (const x of [-39, -27, -12, 12, 27, 39]) ctx.fillRect(x - 2, 15, 4, 12);
       } else if (id === 'xfa27') {
         ctx.beginPath();
         ctx.moveTo(-47, -20); ctx.lineTo(-23, -18); ctx.lineTo(-13, -34);
@@ -8098,7 +8182,7 @@
       if (id === 'darkstar') return { x: .88, y: 1.2 };
       if (id === 'adf11f') return { x: 1.05, y: 1.06 };
       if (id === 'adf01' || id === 'adfx01') return { x: .98, y: 1.1 };
-      if (id === 'cfa44') return { x: 1.05, y: 1.04 };
+      if (id === 'cfa44') return { x: .98, y: 1.04 };
       if (id === 'xfa27') return { x: .98, y: 1.12 };
       if (id === 'asfx') return { x: .96, y: 1.08 };
       if (id === 'su30') return { x: 1.02, y: 1.08 };
