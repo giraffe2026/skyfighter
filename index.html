@@ -872,7 +872,8 @@
     const W = canvas.width;
     const H = canvas.height;
     const VOID_STAGE_END = 20;
-    const MAX_STAGE = 30;
+    const LAST_WAR_STAGE_END = 30;
+    const MAX_STAGE = 40;
     const MAX_UPGRADE_LEVEL = 5;
     const upgradeCaps = {};
 
@@ -1006,7 +1007,17 @@
       { id: 27, name: 'The Last War: 무명 함대', theme: '#1d3340', enemyRate: 485, reward: 4360, boss: 'Nameless Armada' },
       { id: 28, name: 'The Last War: 붉은 궤도', theme: '#3f1f32', enemyRate: 475, reward: 4720, boss: 'Red Orbit Crown' },
       { id: 29, name: 'The Last War: 마지막 관문', theme: '#2b1c3f', enemyRate: 465, reward: 5100, boss: 'Final Gatekeeper' },
-      { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 455, reward: 5600, boss: 'The Last War' }
+      { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 455, reward: 5600, boss: 'The Last War' },
+      { id: 31, name: '통곡의 벽: 붉은 시가지', theme: '#512d36', enemyRate: 450, reward: 6100, boss: 'Scarlet Vanguard', forcedJet: 'f22' },
+      { id: 32, name: '통곡의 벽: 안개 항로', theme: '#273f51', enemyRate: 440, reward: 6500, boss: 'Mist Dreadnought', forcedJet: 'f35' },
+      { id: 33, name: '통곡의 벽: 협곡 요새', theme: '#524131', enemyRate: 430, reward: 6900, boss: 'Canyon Bastion', forcedJet: 'f111' },
+      { id: 34, name: '통곡의 벽: 그림자 도시', theme: '#283044', enemyRate: 420, reward: 7300, boss: 'Shadow Revenant', forcedJet: 'b117' },
+      { id: 35, name: '통곡의 벽: 철의 해상 함대', theme: '#254452', enemyRate: 410, reward: 7700, boss: 'Iron Armada', forcedJet: 'b29' },
+      { id: 36, name: '통곡의 벽: 얼어붙은 고공', theme: '#33495a', enemyRate: 400, reward: 8100, boss: 'Frost Seraph', forcedJet: 'su57' },
+      { id: 37, name: '통곡의 벽: 지상 포격선', theme: '#504438', enemyRate: 390, reward: 8500, boss: 'Siege Colossus', forcedJet: 'a10' },
+      { id: 38, name: '통곡의 벽: 초속 항로', theme: '#243d54', enemyRate: 380, reward: 8900, boss: 'Velocity Crown', forcedJet: 'f16' },
+      { id: 39, name: '통곡의 벽: 최후의 관문', theme: '#3d314e', enemyRate: 370, reward: 9400, boss: 'Phoenix Gate', forcedJet: 'f14' },
+      { id: 40, name: '통곡의 벽: 마지막 하늘', theme: '#3d2348', enemyRate: 360, reward: 10000, boss: 'Skyfall Origin', forcedJet: 'kf21' }
     ];
 
     const stageStories = {
@@ -1071,6 +1082,7 @@
     ];
 
     function bossTerrainForStage(stage) {
+      if (stage?.forcedJet) return stage.id === 32 || stage.id === 35 ? 'sea' : stage.id === 36 || stage.id === 38 || stage.id === 40 ? 'sky' : 'land';
       const text = `${stage?.name || ''} ${stage?.boss || ''}`;
       if (/해상|해안|함대|해협|대서양|지중해|항구|상륙|봉쇄/.test(text)) return 'sea';
       if (/고공|우주|궤도|무중력|차원|공허 함대|균열 중심|균열 외곽|관문|항로/.test(text)) return 'sky';
@@ -1099,6 +1111,19 @@
         29: { kind: 'arsenal', name: 'Final Gatekeeper', color: '#46306d', accent: '#e879f9', hp: 2.42, size: 1.24, pattern: '최종 관문 복합 무장' },
         30: { kind: 'emperor', name: 'The Last War', color: '#681f45', accent: '#facc15', hp: 2.65, size: 1.28, pattern: '모든 전쟁의 최후 탄막' }
       };
+      const gauntletBosses = {
+        31: { kind: 'arsenal', name: 'Scarlet Vanguard', color: '#713c4b', accent: '#fb7185', hp: 2.65, size: 1.2, pattern: '시가지 교차 탄막' },
+        32: { kind: 'seaCarrier', name: 'Mist Dreadnought', color: '#44647a', accent: '#7dd3fc', hp: 2.7, size: 1.2, pattern: '안개 함포 포위 사격' },
+        33: { kind: 'megaTank', name: 'Canyon Bastion', color: '#72614b', accent: '#fb923c', hp: 2.76, size: 1.08, pattern: '협곡 주포와 측면 압박' },
+        34: { kind: 'phantom', name: 'Shadow Revenant', color: '#53607d', accent: '#a5b4fc', hp: 2.82, size: 1.14, pattern: '은폐 저격과 유인 탄막' },
+        35: { kind: 'seaCarrier', name: 'Iron Armada', color: '#3d5d65', accent: '#facc15', hp: 2.88, size: 1.24, pattern: '해상 함대 집중 포격' },
+        36: { kind: 'skyCarrier', name: 'Frost Seraph', color: '#54758b', accent: '#67e8f9', hp: 2.94, size: 1.2, pattern: '고공 빙결 부채꼴' },
+        37: { kind: 'warRobot', name: 'Siege Colossus', color: '#69654e', accent: '#fbbf24', hp: 3, size: 1.16, pattern: '지상 거대 포대 복합 사격' },
+        38: { kind: 'emperor', name: 'Velocity Crown', color: '#365c76', accent: '#38bdf8', hp: 3.06, size: 1.2, pattern: '고속 회전 나선 탄막' },
+        39: { kind: 'arsenal', name: 'Phoenix Gate', color: '#654664', accent: '#f472b6', hp: 3.12, size: 1.26, pattern: '관문 다중 포대 탄막' },
+        40: { kind: 'skyCarrier', name: 'Skyfall Origin', color: '#584268', accent: '#c084fc', hp: 3.2, size: 1.3, pattern: '마지막 하늘 복합 포격' }
+      };
+      if (!isWorldWarChapter() && gauntletBosses[st]) return gauntletBosses[st];
       if (!isWorldWarChapter() && lastWarBosses[st]) return lastWarBosses[st];
       const aerialLandBosses = {
         2: { kind: 'phantom', name: 'Mirage Interceptor', color: '#8fa4b8', accent: '#93c5fd', hp: 1.16, size: .9, pattern: '고속 요격기 순간 저격탄' },
@@ -1368,6 +1393,7 @@
       wwUnlockedStage: { allies: 1, axis: 1 },
       lastWarUnlocked: false,
       lastWarEverUnlocked: false,
+      gauntletUnlocked: false,
       bestEndlessScore: 0,
       secretWindowHintSeen: false,
       secretRobotReady: false,
@@ -1754,6 +1780,7 @@
       const rawSelectedStage = Number(data?.selectedStage || 1);
       fixed.lastWarEverUnlocked = !!fixed.lastWarEverUnlocked || !!fixed.lastWarUnlocked || rawUnlockedStage > VOID_STAGE_END || rawSelectedStage > VOID_STAGE_END;
       fixed.lastWarUnlocked = !!fixed.lastWarUnlocked || fixed.lastWarEverUnlocked;
+      fixed.gauntletUnlocked = !!fixed.gauntletUnlocked || rawUnlockedStage > LAST_WAR_STAGE_END;
       fixed.wwUnlockedStage = fixed.wwUnlockedStage && typeof fixed.wwUnlockedStage === 'object' ? fixed.wwUnlockedStage : {};
       fixed.wwUnlockedStage.allies = clamp(Math.round(fixed.wwUnlockedStage.allies || 1), 1, 20);
       fixed.wwUnlockedStage.axis = clamp(Math.round(fixed.wwUnlockedStage.axis || 1), 1, 20);
@@ -1767,7 +1794,7 @@
       fixed.jetMastery = fixed.jetMastery && typeof fixed.jetMastery === 'object' ? fixed.jetMastery : {};
       fixed.unlockedSkins = fixed.unlockedSkins && typeof fixed.unlockedSkins === 'object' ? fixed.unlockedSkins : {};
       fixed.equippedSkins = fixed.equippedSkins && typeof fixed.equippedSkins === 'object' ? fixed.equippedSkins : {};
-      const mainStageCap = fixed.lastWarUnlocked ? MAX_STAGE : VOID_STAGE_END;
+      const mainStageCap = fixed.gauntletUnlocked ? MAX_STAGE : fixed.lastWarUnlocked ? LAST_WAR_STAGE_END : VOID_STAGE_END;
       fixed.unlockedStage = clamp(Math.round(fixed.unlockedStage || 1), 1, mainStageCap);
       fixed.selectedMode = fixed.chapter === 'worldWar' ? 'stage' : fixed.selectedMode === 'endless' ? 'endless' : 'stage';
       const stageLimit = fixed.chapter === 'worldWar' ? (fixed.wwUnlockedStage[fixed.wwFaction || 'allies'] || 1) : fixed.unlockedStage;
@@ -2003,6 +2030,16 @@
         return cyberWingStory[part] || cyberWingStory.before;
       }
       if (stage?.worldWar || isWorldWarChapter()) return worldWarStoryText(faction, stage?.id || save.selectedStage, part, stage);
+      if (stage?.forcedJet) {
+        const jetName = jets.find(jet => jet.id === stage.forcedJet)?.name || stage.forcedJet;
+        const next = stages.find(candidate => candidate.id === stage.id + 1);
+        const text = {
+          before: `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 이 구역에서는 ${jetName} 한 기체로만 출격할 수 있다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다. 보유하지 않은 기체라도 이번 임무에서는 지급되며, 기존 강화 상태는 그대로 적용된다.`,
+          after: `${jetName}이 ${stage.boss}를 격파했다. ${next ? `다음 검증 공역 ${next.name}의 신호가 열린다.` : '열 개의 벽이 모두 무너지고 최후의 비행 기록이 완성됐다.'}`,
+          fail: `${stage.boss}의 방어선에서 ${jetName}의 신호가 끊겼다. 이 구역은 지정 기체의 장점만큼 약점도 시험한다. 항로를 다시 읽고 재출격하라.`
+        };
+        return text[part] || text.before;
+      }
       const key = modeName === 'endless' ? 'endless' : stage?.id;
       return stageStories[key]?.[part] || stageStories.endless[part];
     }
@@ -2343,7 +2380,7 @@
     }
 
     function visibleMainStageCap(source = save) {
-      return source.lastWarUnlocked ? MAX_STAGE : VOID_STAGE_END;
+      return source.gauntletUnlocked ? MAX_STAGE : source.lastWarUnlocked ? LAST_WAR_STAGE_END : VOID_STAGE_END;
     }
 
     function currentStageList(source = save) {
@@ -2624,11 +2661,11 @@
         save.selectedMode = 'stage';
         save.lastWarUnlocked = true;
         save.lastWarEverUnlocked = true;
-        save.unlockedStage = MAX_STAGE;
-        save.selectedStage = Math.min(Math.max(save.selectedStage || 1, 1), MAX_STAGE);
+        save.unlockedStage = Math.max(save.unlockedStage, LAST_WAR_STAGE_END);
+        save.selectedStage = Math.min(Math.max(save.selectedStage || 1, 1), save.gauntletUnlocked ? MAX_STAGE : LAST_WAR_STAGE_END);
         save.wwUnlockedStage = { allies: 20, axis: 20 };
         storeSave();
-        setLog('운영자 코드 적용. 모든 스테이지가 해금됐다.');
+        setLog('운영자 코드 적용. Stage 30까지 해금됐다. 통곡의 벽은 별도 조건이 필요하다.');
         flash('ALL STAGES');
         if (input) input.value = '';
         renderUI();
@@ -2705,10 +2742,10 @@
 
     function currentStage() {
       if (cyberWingDuel) {
-        return { id: 32, name: '???', theme: '#122a3a', enemyRate: 999999, reward: 12000, boss: 'Stratowing Eclipse', cyberWing: true };
+        return { id: 42, name: '???', theme: '#122a3a', enemyRate: 999999, reward: 12000, boss: 'Stratowing Eclipse', cyberWing: true };
       }
       if (secretRobotDuel) {
-        return { id: 31, name: '숨겨진 백색 기갑신', theme: '#e8edf2', enemyRate: 999999, reward: 7777, boss: 'Azure Unicorn Frame', secretRobot: true };
+        return { id: 41, name: '숨겨진 백색 기갑신', theme: '#e8edf2', enemyRate: 999999, reward: 7777, boss: 'Azure Unicorn Frame', secretRobot: true };
       }
       if (save.selectedMode === 'tutorial') {
         return { id: 1, name: '기초 비행 훈련장', theme: '#263548', enemyRate: 1300, reward: 80, boss: 'Training Drone' };
@@ -2727,7 +2764,7 @@
 
     function difficultyStage() {
       if (cyberWingDuel) return 18;
-      if (secretRobotDuel) return MAX_STAGE;
+      if (secretRobotDuel) return LAST_WAR_STAGE_END;
       if (save.selectedMode === 'tutorial') return 1;
       if (save.selectedMode !== 'endless') return save.selectedStage;
       return clamp(1 + Math.floor(stageTime / 55000), 1, currentMaxStage());
@@ -2787,9 +2824,10 @@
 
     function startGame() {
       initAudio();
-      const jet = currentJet();
-      const stats = jetStats(jet);
       resetBattleState();
+      const stage = currentStage();
+      const jet = (stage.forcedJet && jets.find(candidate => candidate.id === stage.forcedJet)) || currentJet();
+      const stats = jetStats(jet);
       mode = 'play';
       resultStage = null;
       setScreen(mode);
@@ -2813,9 +2851,8 @@
         stats,
         jet
       };
-      const stage = currentStage();
       const bossName = terrainBossProfile(stage).name;
-      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격. 보스 ${bossName}를 격파해.`);
+      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격${stage.forcedJet ? `: ${jet.name} 고정` : ''}. 보스 ${bossName}를 격파해.`);
       if (save.selectedMode === 'tutorial') {
         nextBossTime = 18000;
         setLog('튜토리얼 출격. 이동, 폭탄, 특수기를 연습하고 Training Drone을 격추해.');
@@ -3027,6 +3064,10 @@
         return;
       }
       save.coins += reward;
+      if (!isWorldWarChapter() && save.selectedMode === 'stage' && stage.id === LAST_WAR_STAGE_END && !save.gauntletUnlocked && (player?.jet?.id === 'operator' || (player?.hp > 0 && player.hp <= 1))) {
+        save.gauntletUnlocked = true;
+        rewards.push('통곡의 벽 해금: Stage 31~40');
+      }
       if (isWorldWarChapter()) {
         const faction = save.wwFaction || 'allies';
         if (!save.wwUnlockedStage) save.wwUnlockedStage = { allies: 1, axis: 1 };
@@ -3053,7 +3094,7 @@
       if (!isWorldWarChapter() && stage.id === 1 && player && !player.tookDamage) {
         if (awardAchievement('noDamageStage1')) rewards.push('업적: 완벽한 첫 출격');
       }
-      if (!isWorldWarChapter() && save.selectedMode === 'stage' && stage.id === MAX_STAGE && player && !player.tookDamage) {
+      if (!isWorldWarChapter() && save.selectedMode === 'stage' && stage.id === LAST_WAR_STAGE_END && player && !player.tookDamage) {
         if (!save.secretRobotReady) rewards.push('숨겨진 신호 해금: 기체 선택 화면의 제목이 반응합니다');
         save.secretRobotReady = true;
         if (!save.cyberStageReady) rewards.push('??? 스테이지 해금: 운영자 코드칸 아래에 새로운 공역이 나타납니다');
@@ -3126,6 +3167,11 @@
       return index >= 0 ? index + 1 : 1;
     }
 
+    function carrierHpForStage(type, stageId, seaRank, multiplier = 1) {
+      const rankScale = .95 + seaRank * .32 + Math.max(0, stageId - 3) * .025;
+      return Math.round(type.hp * rankScale * multiplier);
+    }
+
     function spawnEnemy() {
       const st = difficultyStage();
       const endlessMultiplier = endlessEnemyMultiplier();
@@ -3165,8 +3211,7 @@
       const scale = ww ? .95 + (st - 1) * .04 : lastWarStage ? 1.02 + (st - VOID_STAGE_END) * .028 : voidStage ? 1 + (st - 11) * .035 : .82 + (st - 1) * .045;
       const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
-      const carrierRankScale = .95 + seaRank * .32 + Math.max(0, st - 3) * .025;
-      const hpValue = type.carrier ? Math.round(type.hp * carrierRankScale * endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
+      const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
@@ -3249,7 +3294,10 @@
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
-      const hp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier);
+      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier);
+      const stageThreeCarrier = enemyTypes.find(type => type.form === 'escortCarrier');
+      const minimumHp = stageThreeCarrier ? Math.ceil(carrierHpForStage(stageThreeCarrier, 3, 1) * 1.05 * endlessMultiplier) : 0;
+      const hp = tutorial ? scaledHp : Math.max(scaledHp, minimumHp);
       const wideBoss = blueprint.kind === 'seaCarrier' || blueprint.kind === 'skyCarrier' || blueprint.kind === 'heliCarrier' || blueprint.kind === 'skyDreadnought' || blueprint.kind === 'landCruiser';
       const tankBoss = blueprint.kind === 'megaTank' || blueprint.kind === 'warRobot';
       const hitScale = blueprint.size || 1;
@@ -7087,73 +7135,84 @@
         ctx.moveTo(-32, 20); ctx.lineTo(-8, 9); ctx.lineTo(0, 58); ctx.lineTo(8, 9); ctx.lineTo(32, 20);
         ctx.stroke();
       } else if (id === 'adf11f') {
-        ctx.fillStyle = shade(color, -.22);
-        poly([[0,-82],[24,-52],[92,-8],[62,21],[27,15],[14,42],[0,62],[-14,42],[-27,15],[-62,21],[-92,-8],[-24,-52]]);
-        ctx.fillStyle = '#334155';
-        poly([[-4,-97],[9,-80],[14,-58],[0,-49],[-14,-58],[-9,-80]]);
-        ctx.fillStyle = shade(color, .08);
-        poly([[0,-94],[13,-66],[17,-19],[14,34],[0,68],[-14,34],[-17,-19],[-13,-66]]);
-        ctx.fillStyle = '#f8fafc';
-        poly([[0,-84],[8,-56],[9,-18],[5,27],[0,48],[-5,27],[-9,-18],[-8,-56]]);
-        ctx.fillStyle = '#0f172a';
-        poly([[0,-70],[10,-43],[7,-16],[0,-6],[-7,-16],[-10,-43]]);
-        ctx.fillStyle = '#22d3ee';
-        poly([[0,-64],[4,-41],[3,-20],[0,-12],[-3,-20],[-4,-41]]);
-        ctx.fillStyle = shade(color, .2);
-        poly([[-10,-51],[-42,-32],[-61,-17],[-30,-11],[-10,-27]]);
-        poly([[10,-51],[42,-32],[61,-17],[30,-11],[10,-27]]);
-        ctx.fillStyle = shade(color, -.1);
-        poly([[-18,-16],[-100,3],[-64,34],[-20,16]]);
-        poly([[18,-16],[100,3],[64,34],[20,16]]);
-        ctx.fillStyle = 'rgba(34,211,238,.9)';
-        poly([[-64,4],[-36,10],[-18,34],[-52,24]]);
-        poly([[64,4],[36,10],[18,34],[52,24]]);
-        ctx.fillStyle = '#0e7490';
-        poly([[-18,22],[-52,64],[-18,48],[-7,36]]);
-        poly([[18,22],[52,64],[18,48],[7,36]]);
-        ctx.fillStyle = '#1e293b';
-        poly([[-8,42],[-21,70],[-3,59]]);
-        poly([[8,42],[21,70],[3,59]]);
-        ctx.fillStyle = '#22d3ee';
-        for (const x of [-78, 78]) {
-          ctx.beginPath();
-          ctx.ellipse(x, 2, 5, 10, x < 0 ? -.35 : .35, 0, Math.PI * 2);
-          ctx.fill();
+        ctx.fillStyle = '#243444';
+        poly([[0,-100],[13,-66],[24,-43],[36,-29],[91,-7],[85,6],[59,24],[33,17],[21,40],[48,58],[17,66],[0,71],[-17,66],[-48,58],[-21,40],[-33,17],[-59,24],[-85,6],[-91,-7],[-36,-29],[-24,-43],[-13,-66]]);
+        for (const side of [-1, 1]) {
+          const mirror = points => points.map(([px, py]) => [side * px, py]);
+          ctx.fillStyle = shade(color, side < 0 ? .08 : -.14);
+          poly(mirror([[18,-45],[34,-29],[84,-6],[77,6],[57,18],[30,10],[19,-4]]));
+          ctx.fillStyle = shade(color, side < 0 ? .28 : .03);
+          poly(mirror([[24,-36],[38,-25],[70,-8],[45,-13],[24,-21]]));
+          poly(mirror([[27,11],[55,21],[45,31],[26,25]]));
+          ctx.fillStyle = '#172738';
+          poly(mirror([[24,-12],[36,-5],[53,14],[30,7],[20,7]]));
+          poly(mirror([[18,32],[46,55],[24,55],[13,48]]));
+          ctx.fillStyle = '#476174';
+          poly(mirror([[14,-37],[21,-23],[23,18],[19,49],[10,58],[8,7]]));
+          ctx.fillStyle = '#a9c5cb';
+          poly(mirror([[13,-37],[17,-27],[18,13],[13,39],[9,41],[9,-20]]));
+          ctx.fillStyle = '#111f2e';
+          poly(mirror([[13,47],[22,48],[22,66],[11,65]]));
+          ctx.fillStyle = '#0891b2';
+          poly(mirror([[17,-3],[23,2],[29,15],[23,17],[17,11]]));
+          ctx.fillStyle = '#67e8f9';
+          poly(mirror([[54,0],[73,-3],[66,5],[58,7]]));
         }
-        ctx.strokeStyle = 'rgba(236,254,255,.72)';
-        ctx.lineWidth = 1.25;
-        ctx.beginPath();
-        ctx.moveTo(-78, -1); ctx.lineTo(-26, 8); ctx.lineTo(-8, 42);
-        ctx.moveTo(78, -1); ctx.lineTo(26, 8); ctx.lineTo(8, 42);
-        ctx.moveTo(0, -77); ctx.lineTo(0, 53);
-        ctx.moveTo(-12, -54); ctx.lineTo(0, -45); ctx.lineTo(12, -54);
-        ctx.stroke();
-      } else if (id === 'adf01') {
-        ctx.fillStyle = shade(color, -.12);
-        poly([[0,-91],[13,-66],[20,-28],[22,22],[12,61],[0,78],[-12,61],[-22,22],[-20,-28],[-13,-66]]);
-        ctx.fillStyle = color;
-        poly([[0,-84],[9,-61],[14,-25],[15,25],[7,56],[0,68],[-7,56],[-15,25],[-14,-25],[-9,-61]]);
-        ctx.fillStyle = shade(color, -.2);
-        poly([[-13,-31],[-89,-5],[-58,25],[-17,8]]);
-        poly([[13,-31],[89,-5],[58,25],[17,8]]);
-        ctx.fillStyle = shade(color, .22);
-        poly([[-17,-53],[-43,-38],[-58,-18],[-29,-17],[-10,-35]]);
-        poly([[17,-53],[43,-38],[58,-18],[29,-17],[10,-35]]);
+        ctx.fillStyle = '#132738';
+        poly([[-13,-70],[0,-103],[13,-70],[16,-39],[10,-17],[0,-9],[-10,-17],[-16,-39]]);
+        ctx.fillStyle = '#d4e7e8';
+        poly([[0,-94],[9,-68],[11,-40],[7,-20],[0,-16],[-7,-20],[-11,-40],[-9,-68]]);
         ctx.fillStyle = '#111827';
-        poly([[0,-64],[7,-38],[6,-12],[0,2],[-6,-12],[-7,-38]]);
-        ctx.fillStyle = '#1f2937';
-        poly([[-15,24],[-48,66],[-18,51],[-7,38]]);
-        poly([[15,24],[48,66],[18,51],[7,38]]);
+        poly([[0,-77],[7,-53],[7,-31],[0,-18],[-7,-31],[-7,-53]]);
+        ctx.fillStyle = '#38d7f2';
+        poly([[0,-70],[3,-50],[3,-29],[0,-23],[-3,-29],[-3,-50]]);
+        ctx.fillStyle = '#182e3e';
+        poly([[-11,-12],[0,-18],[11,-12],[13,-5],[0,0],[-13,-5]]);
+        ctx.fillStyle = '#cae9ee';
+        poly([[0,0],[10,7],[10,35],[0,58],[-10,35],[-10,7]]);
+        ctx.fillStyle = '#287b95';
+        poly([[-3,4],[0,1],[3,4],[3,38],[0,46],[-3,38]]);
+      } else if (id === 'adf01') {
+        ctx.fillStyle = '#202b37';
+        poly([[0,-96],[11,-73],[20,-43],[26,14],[21,52],[10,74],[0,80],[-10,74],[-21,52],[-26,14],[-20,-43],[-11,-73]]);
+        for (const side of [-1, 1]) {
+          const mirror = points => points.map(([px, py]) => [side * px, py]);
+          ctx.fillStyle = '#263442';
+          poly(mirror([[15,-37],[42,-28],[88,-3],[81,6],[63,24],[28,18],[18,7]]));
+          poly(mirror([[16,30],[37,47],[52,65],[25,61],[11,50]]));
+          ctx.fillStyle = shade(color, side < 0 ? .2 : -.06);
+          poly(mirror([[15,-33],[43,-24],[81,-2],[67,19],[27,14],[17,2]]));
+          ctx.fillStyle = shade(color, side < 0 ? .33 : .08);
+          poly(mirror([[21,-27],[48,-18],[66,-5],[39,-6],[17,-19]]));
+          poly(mirror([[16,32],[36,47],[45,59],[25,54],[15,45]]));
+          ctx.fillStyle = '#202c39';
+          poly(mirror([[15,-49],[39,-33],[48,-21],[28,-18],[15,-31]]));
+          poly(mirror([[17,-9],[30,0],[27,24],[17,30],[11,16]]));
+          ctx.fillStyle = '#94a3b8';
+          poly(mirror([[16,-46],[34,-34],[40,-25],[23,-25],[14,-33]]));
+          ctx.fillStyle = '#ab3a48';
+          poly(mirror([[72,1],[81,-2],[67,19],[59,20]]));
+          ctx.fillStyle = '#121d2b';
+          poly(mirror([[12,45],[22,47],[22,68],[11,67]]));
+          ctx.fillStyle = '#f87171';
+          poly(mirror([[13,46],[18,47],[18,65],[13,64]]));
+        }
+        ctx.fillStyle = color;
+        poly([[0,-90],[9,-69],[15,-40],[17,27],[12,56],[0,72],[-12,56],[-17,27],[-15,-40],[-9,-69]]);
+        ctx.fillStyle = shade(color, .26);
+        poly([[-2,-86],[-9,-65],[-11,-39],[-8,20],[0,50],[0,-90]]);
+        ctx.fillStyle = shade(color, -.24);
+        poly([[2,-86],[9,-65],[11,-39],[8,20],[0,50],[0,-90]]);
+        ctx.fillStyle = '#111827';
+        poly([[0,-67],[8,-47],[7,-19],[0,-7],[-7,-19],[-8,-47]]);
+        ctx.fillStyle = '#9bdcf2';
+        poly([[-3,-53],[0,-61],[3,-53],[3,-27],[0,-19],[-3,-27]]);
+        ctx.fillStyle = '#192635';
+        poly([[-5,-90],[0,-96],[5,-90],[5,-74],[0,-69],[-5,-74]]);
         ctx.fillStyle = '#ef4444';
-        poly([[0,-60],[4,-31],[3,42],[0,56],[-3,42],[-4,-31]]);
-        ctx.fillStyle = '#fca5a5';
-        for (const x of [-15, 15]) ctx.fillRect(x - 2, 31, 4, 24);
-        ctx.strokeStyle = 'rgba(248,113,113,.82)';
-        ctx.lineWidth = 1.25;
-        ctx.beginPath();
-        ctx.moveTo(-72, -1); ctx.lineTo(-21, 8); ctx.lineTo(-7, 47);
-        ctx.moveTo(72, -1); ctx.lineTo(21, 8); ctx.lineTo(7, 47);
-        ctx.stroke();
+        poly([[-2,-90],[0,-94],[2,-90],[2,-76],[0,-72],[-2,-76]]);
+        ctx.fillStyle = '#7f2634';
+        poly([[-3,-10],[0,-18],[3,-10],[3,42],[0,51],[-3,42]]);
       } else if (id === 'adfx01') {
         ctx.fillStyle = shade(color, -.14);
         poly([[0,-82],[17,-61],[26,-25],[27,22],[16,61],[0,78],[-16,61],[-27,22],[-26,-25],[-17,-61]]);
@@ -7708,9 +7767,10 @@
         poly([[0,-34],[24,11],[8,7],[6,31],[0,22],[-6,31],[-8,7],[-24,11]]);
       }
 
-      drawAdvancedJetDetails(id, color);
+      if (id !== 'adf01' && id !== 'adf11f') drawAdvancedJetDetails(id, color);
       if (friendly) drawSkinOrnaments(id, equippedSkin(id), color);
       drawJetFinish(id, color, friendly);
+      if (id === 'adf01' || id === 'adf11f') drawAdvancedJetDetails(id, color);
       drawLegacyJetDetails(id, color, wingSweep);
       if (friendly) drawUpgradeOrnaments(id);
       ctx.restore();
@@ -7850,25 +7910,33 @@
         for (const x of [-18, 18]) ctx.fillRect(x - 3, 22, 6, 18);
       } else if (id === 'adf11f') {
         ctx.beginPath();
-        ctx.moveTo(-84, 2); ctx.lineTo(-30, 9); ctx.lineTo(-9, 47);
-        ctx.moveTo(84, 2); ctx.lineTo(30, 9); ctx.lineTo(9, 47);
-        ctx.moveTo(-45, -27); ctx.lineTo(-15, -21);
-        ctx.moveTo(45, -27); ctx.lineTo(15, -21);
-        ctx.moveTo(0, -78); ctx.lineTo(0, 58);
+        ctx.moveTo(-76, 1); ctx.lineTo(-35, -9); ctx.lineTo(-20, 9);
+        ctx.moveTo(76, 1); ctx.lineTo(35, -9); ctx.lineTo(20, 9);
+        ctx.moveTo(-54, 20); ctx.lineTo(-27, 13); ctx.lineTo(-14, 43);
+        ctx.moveTo(54, 20); ctx.lineTo(27, 13); ctx.lineTo(14, 43);
+        ctx.moveTo(-38, -24); ctx.lineTo(-18, -34);
+        ctx.moveTo(38, -24); ctx.lineTo(18, -34);
+        ctx.moveTo(-12, -12); ctx.lineTo(12, -12);
         ctx.stroke();
-        ctx.fillStyle = rgbaColor(accent, .72);
-        for (const x of [-66, -38, 38, 66]) ctx.fillRect(x - 3, 8, 6, 15);
-        ctx.fillStyle = 'rgba(236,254,255,.78)';
-        ctx.fillRect(-3, -60, 6, 36);
+        ctx.fillStyle = rgbaColor(accent, .95);
+        for (const x of [-57, -42, 42, 57]) ctx.fillRect(x - 2, 4, 4, 8);
+        for (const x of [-17, 17]) ctx.fillRect(x - 2, 53, 4, 10);
+        ctx.fillStyle = '#ecfeff';
+        ctx.fillRect(-1.5, -63, 3, 24);
       } else if (id === 'adf01') {
         ctx.beginPath();
-        ctx.moveTo(0, -64); ctx.lineTo(0, 54);
-        ctx.moveTo(-56, -4); ctx.lineTo(-17, 11); ctx.lineTo(-11, 43);
-        ctx.moveTo(56, -4); ctx.lineTo(17, 11); ctx.lineTo(11, 43);
+        ctx.moveTo(-72, 0); ctx.lineTo(-36, -5); ctx.lineTo(-18, 7);
+        ctx.moveTo(72, 0); ctx.lineTo(36, -5); ctx.lineTo(18, 7);
+        ctx.moveTo(-62, 18); ctx.lineTo(-26, 13); ctx.lineTo(-13, 46);
+        ctx.moveTo(62, 18); ctx.lineTo(26, 13); ctx.lineTo(13, 46);
+        ctx.moveTo(-32, -32); ctx.lineTo(-18, -27);
+        ctx.moveTo(32, -32); ctx.lineTo(18, -27);
         ctx.stroke();
-        ctx.fillStyle = rgbaColor(accent, .86);
-        ctx.fillRect(-3, -51, 6, 78);
-        for (const x of [-15, 15]) ctx.fillRect(x - 2, 33, 4, 18);
+        ctx.fillStyle = '#62c7f0';
+        for (const x of [-43, -33, 33, 43]) ctx.fillRect(x - 2, -11, 4, 4);
+        ctx.fillStyle = rgbaColor(accent, .92);
+        ctx.fillRect(-1.5, -84, 3, 8);
+        for (const x of [-15, 15]) ctx.fillRect(x - 2, 48, 4, 12);
       } else if (id === 'adfx01') {
         ctx.beginPath();
         ctx.moveTo(-62, 10); ctx.lineTo(-20, 10); ctx.lineTo(-8, 48);
@@ -8082,7 +8150,7 @@
     function drawJetFinish(id, color, friendly) {
       const skin = friendly ? equippedSkin(id) : '';
       const glow = skin ? rgbaColor(shade(color, skin.endsWith('skin2') ? .42 : .3), .9) : friendly ? 'rgba(67,211,196,.85)' : 'rgba(239,68,68,.85)';
-      const glass = id === 'b2' || id === 'error' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
+      const glass = id === 'adf01' || id === 'adf11f' ? 'rgba(37,93,119,.82)' : id === 'b2' || id === 'error' || id === 'geomancho' || id === 'b117' ? 'rgba(30,41,59,.82)' : 'rgba(15,23,42,.82)';
       const longBody = id === 'sr71' || id === 'xb70' || id === 'b29' || id === 'ww_b29' || id === 'su30' || id === 'su47';
       const wingBody = id === 'b2' || id === 'error' || id === 'geomancho';
       ctx.save();
@@ -8121,6 +8189,8 @@
         ctx.ellipse(0, -43, 4.6, 14, 0, 0, Math.PI * 2);
       } else if (id === 'kf21') {
         ctx.ellipse(0, -36, 5.2, 13, 0, 0, Math.PI * 2);
+      } else if (id === 'adf01' || id === 'adf11f') {
+        ctx.ellipse(0, -40, 4.7, 16, 0, 0, Math.PI * 2);
       } else if (id === 'su30' || id === 'su47') {
         ctx.ellipse(0, -42, 5.4, 14, 0, 0, Math.PI * 2);
       } else if (wingBody) {
@@ -8143,10 +8213,10 @@
 
       ctx.fillStyle = glow;
       const twinModern = id === 'kf21' || id === 'operator' || id === 'su30' || id === 'su47';
-      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'a10' ? [-12, 12] : id === 'error' ? [-28, -9, 9, 28] : twinModern ? [-9, 9] : [-5, 5];
+      const exhausts = id === 'b29' || id === 'ww_b29' || id === 'xb70' ? [-16, -5, 5, 16] : id === 'adf01' || id === 'adf11f' ? [-15, 15] : id === 'a10' ? [-12, 12] : id === 'error' ? [-28, -9, 9, 28] : twinModern ? [-9, 9] : [-5, 5];
       for (const x of exhausts) {
         ctx.beginPath();
-        ctx.ellipse(x, id === 'sr71' ? 42 : twinModern ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, id === 'adf01' || id === 'adf11f' ? 62 : id === 'sr71' ? 42 : twinModern ? 43 : 35, 3.2, 7, 0, 0, Math.PI * 2);
         ctx.fill();
       }
       if (skin) {
@@ -11086,6 +11156,7 @@
       if (isWorldWarChapter()) return id <= 10 ? `1차대전 파트 ${id}/10` : `2차대전 파트 ${id - 10}/10`;
       if (id <= 10) return `전쟁 파트 ${id}/10`;
       if (id <= VOID_STAGE_END) return `공허 파트 ${id - 10}/10`;
+      if (id > LAST_WAR_STAGE_END) return `통곡의 벽 ${id - LAST_WAR_STAGE_END}/10`;
       return `THE LAST WAR ${id - VOID_STAGE_END}/10`;
     }
 
@@ -11102,18 +11173,20 @@
       }
       if (id <= 10) return { key: 'main1', name: '챕터 1: 전쟁', desc: '현대전 10스테이지' };
       if (id <= VOID_STAGE_END) return { key: 'main2', name: '챕터 2: 공허', desc: '공허 침공 10스테이지' };
+      if (id > LAST_WAR_STAGE_END) return { key: 'gauntlet', name: '히든 챕터: 통곡의 벽', desc: '각 스테이지마다 지정된 전투기로 출격', lastWar: true };
       return { key: 'lastWar', name: '히든 챕터: THE LAST WAR', desc: '최종 조건 달성 후 열리는 마지막 10스테이지', lastWar: true };
     }
 
     function renderStageCard(s, unlockedLimit) {
       const locked = s.id > unlockedLimit;
       const bossName = bossPreviewBlueprint(s).name;
-      const localStage = !isWorldWarChapter() && s.id > VOID_STAGE_END ? s.id - VOID_STAGE_END : s.id;
-      const stageName = !isWorldWarChapter() && s.id > VOID_STAGE_END ? `Last War ${localStage}` : `Stage ${s.id}`;
+      const stageName = !isWorldWarChapter() && s.id > LAST_WAR_STAGE_END ? `Wall ${s.id - LAST_WAR_STAGE_END}` : !isWorldWarChapter() && s.id > VOID_STAGE_END ? `Last War ${s.id - VOID_STAGE_END}` : `Stage ${s.id}`;
+      const forcedJet = s.forcedJet ? jets.find(jet => jet.id === s.forcedJet) : null;
       return `<button class="stage-card ${save.selectedMode === 'stage' && s.id === save.selectedStage ? 'selected' : ''}" data-stage="${s.id}" ${locked ? 'disabled' : ''}>
         <div class="card-head"><span class="name">${stageName}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
         <div class="small">${s.name}</div>
         <div class="small">${stagePartLabel(s.id)}</div>
+        ${forcedJet ? `<div class="small">고정 기체: ${forcedJet.name} · 보유/구매 여부와 무관 · 보유 강화 적용</div>` : ''}
         <div class="small">보스: ${bossName}</div>
         <div class="small">난이도 ${difficultyMeter(s.id)}</div>
       </button>`;
@@ -11145,6 +11218,15 @@
         <div class="card-head"><span class="name">히든 챕터: THE LAST WAR</span><span class="tag">LOCKED</span></div>
         <div class="small">${line(status.stageDone, '챕터 2 공허 Stage 20까지 열기')}</div>
         <div class="small">${line(status.jetsDone, `기체 해금: ${summarizeMissing(status.missingJets, '모두 해금됨')}`)}</div>
+      </div>`;
+    }
+
+    function renderGauntletRequirementCard() {
+      if (isWorldWarChapter() || !save.lastWarUnlocked || save.gauntletUnlocked) return '';
+      return `<div class="chapter-heading last-war">
+        <div class="card-head"><span class="name">히든 챕터: 통곡의 벽</span><span class="tag">LOCKED</span></div>
+        <div class="small">Stage 30을 남은 체력 1로 클리어하거나 어드민 기체로 클리어하면 Stage 31~40 개방</div>
+        <div class="small">매 스테이지 다른 지정 기체로 강제 출격 · 미구매 기체도 임무 중 지급</div>
       </div>`;
     }
 
@@ -11244,7 +11326,7 @@
         } else {
           const stageList = currentStageList();
           const unlockedLimit = currentUnlockedStage();
-          stagesEl.innerHTML = renderStageChapterList(stageList, unlockedLimit) + renderLastWarRequirementCard() + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
+          stagesEl.innerHTML = renderStageChapterList(stageList, unlockedLimit) + renderLastWarRequirementCard() + renderGauntletRequirementCard() + (isWorldWarChapter() ? `<button class="stage-card" data-ww-exit>
             <div class="card-head"><span class="name">원래 세계로</span><span class="tag">RETURN</span></div>
             <div class="small">현대전과 공허 스테이지로 돌아갑니다.</div>
           </button>` : `<button class="stage-card ${save.selectedMode === 'endless' ? 'selected' : ''}" data-mode="endless">
