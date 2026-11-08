@@ -1008,16 +1008,16 @@
       { id: 28, name: 'The Last War: 붉은 궤도', theme: '#3f1f32', enemyRate: 475, reward: 4720, boss: 'Red Orbit Crown' },
       { id: 29, name: 'The Last War: 마지막 관문', theme: '#2b1c3f', enemyRate: 465, reward: 5100, boss: 'Final Gatekeeper' },
       { id: 30, name: 'The Last War: 전쟁의 끝', theme: '#461b35', enemyRate: 455, reward: 5600, boss: 'The Last War' },
-      { id: 31, name: '통곡의 벽: 붉은 시가지', theme: '#512d36', enemyRate: 450, reward: 6100, boss: 'Scarlet Vanguard', forcedJet: 'f22' },
-      { id: 32, name: '통곡의 벽: 안개 항로', theme: '#273f51', enemyRate: 440, reward: 6500, boss: 'Mist Dreadnought', forcedJet: 'f35' },
-      { id: 33, name: '통곡의 벽: 협곡 요새', theme: '#524131', enemyRate: 430, reward: 6900, boss: 'Canyon Bastion', forcedJet: 'f111' },
-      { id: 34, name: '통곡의 벽: 그림자 도시', theme: '#283044', enemyRate: 420, reward: 7300, boss: 'Shadow Revenant', forcedJet: 'b117' },
-      { id: 35, name: '통곡의 벽: 철의 해상 함대', theme: '#254452', enemyRate: 410, reward: 7700, boss: 'Iron Armada', forcedJet: 'b29' },
-      { id: 36, name: '통곡의 벽: 얼어붙은 고공', theme: '#33495a', enemyRate: 400, reward: 8100, boss: 'Frost Seraph', forcedJet: 'su57' },
-      { id: 37, name: '통곡의 벽: 지상 포격선', theme: '#504438', enemyRate: 390, reward: 8500, boss: 'Siege Colossus', forcedJet: 'a10' },
-      { id: 38, name: '통곡의 벽: 초속 항로', theme: '#243d54', enemyRate: 380, reward: 8900, boss: 'Velocity Crown', forcedJet: 'f16' },
-      { id: 39, name: '통곡의 벽: 최후의 관문', theme: '#3d314e', enemyRate: 370, reward: 9400, boss: 'Phoenix Gate', forcedJet: 'f14' },
-      { id: 40, name: '통곡의 벽: 마지막 하늘', theme: '#3d2348', enemyRate: 360, reward: 10000, boss: 'Skyfall Origin', forcedJet: 'kf21' }
+      { id: 31, name: '통곡의 벽: 붉은 시가지', theme: '#60434a', enemyRate: 450, reward: 6100, boss: 'Scarlet Vanguard', forcedJet: 'f22' },
+      { id: 32, name: '통곡의 벽: 안개 항로', theme: '#28545a', enemyRate: 440, reward: 6500, boss: 'Mist Dreadnought', forcedJet: 'f35' },
+      { id: 33, name: '통곡의 벽: 협곡 요새', theme: '#655438', enemyRate: 430, reward: 6900, boss: 'Canyon Bastion', forcedJet: 'f111' },
+      { id: 34, name: '통곡의 벽: 그림자 도시', theme: '#454964', enemyRate: 420, reward: 7300, boss: 'Shadow Revenant', forcedJet: 'b117' },
+      { id: 35, name: '통곡의 벽: 철의 해상 함대', theme: '#25605e', enemyRate: 410, reward: 7700, boss: 'Iron Armada', forcedJet: 'b29' },
+      { id: 36, name: '통곡의 벽: 얼어붙은 고공', theme: '#44677b', enemyRate: 400, reward: 8100, boss: 'Frost Seraph', forcedJet: 'su57' },
+      { id: 37, name: '통곡의 벽: 지상 포격선', theme: '#616149', enemyRate: 390, reward: 8500, boss: 'Siege Colossus', forcedJet: 'a10' },
+      { id: 38, name: '통곡의 벽: 초속 항로', theme: '#3c5d7c', enemyRate: 380, reward: 8900, boss: 'Velocity Crown', forcedJet: 'f16' },
+      { id: 39, name: '통곡의 벽: 최후의 관문', theme: '#68536c', enemyRate: 370, reward: 9400, boss: 'Phoenix Gate', forcedJet: 'f14' },
+      { id: 40, name: '통곡의 벽: 마지막 하늘', theme: '#675576', enemyRate: 360, reward: 10000, boss: 'Skyfall Origin', forcedJet: 'kf21' }
     ];
 
     const stageStories = {
@@ -3287,6 +3287,7 @@
       const st = difficultyStage();
       const endlessMultiplier = endlessEnemyMultiplier();
       const stage = currentStage();
+      const gauntletRank = stage.forcedJet ? stage.id - LAST_WAR_STAGE_END : 0;
       const blueprint = terrainBossProfile(stage);
       const ww = isWorldWarChapter();
       const voidStage = !ww && st >= 11;
@@ -3294,7 +3295,7 @@
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
-      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier);
+      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier * (gauntletRank ? 1.16 + gauntletRank * .02 : 1));
       const stageThreeCarrier = enemyTypes.find(type => type.form === 'escortCarrier');
       const minimumHp = stageThreeCarrier ? Math.ceil(carrierHpForStage(stageThreeCarrier, 3, 1) * 1.05 * endlessMultiplier) : 0;
       const hp = tutorial ? scaledHp : Math.max(scaledHp, minimumHp);
@@ -3312,7 +3313,8 @@
         hp,
         maxHp: hp,
         power: Math.ceil((tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62)) * endlessMultiplier),
-        shots: tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48),
+        shots: (tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48)) + (gauntletRank ? 2 : 0),
+        fireIntervalScale: gauntletRank ? .92 - gauntletRank * .01 : 1,
         fire: 0,
         inv: 3000,
         phase: 1,
@@ -5332,7 +5334,7 @@
             ? Math.max(920, 1940 - boss.phase * 310)
             : boss.kind === 'cyberWingBoss'
               ? Math.max(1180, 1900 - boss.phase * 220)
-            : Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120);
+            : Math.max(1600, Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120) * (boss.fireIntervalScale || 1));
           shootBoss();
         }
       }
@@ -5720,6 +5722,10 @@
         drawWorldWarBackground(stage);
         return;
       }
+      if (stage.forcedJet) {
+        drawGauntletBackground(stage);
+        return;
+      }
       if (stage.id > VOID_STAGE_END) {
         drawLastWarBackground(stage);
         return;
@@ -5922,6 +5928,78 @@
             ctx.quadraticCurveTo(W / 2, y - 75, W - 50, y + 26);
             ctx.stroke();
           }
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawGauntletBackground(stage) {
+      const rank = stage.id - LAST_WAR_STAGE_END;
+      const terrain = bossTerrainForStage(stage);
+      const accents = ['#f5a38f', '#8fe4dd', '#ffd285', '#b9b9f5', '#72d4c6', '#b7e6ff', '#d4c98f', '#8dc4ff', '#dbb7e9', '#f4a9cf'];
+      const accent = accents[rank - 1];
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, terrain === 'sea' ? '#09252c' : terrain === 'sky' ? '#182338' : '#28242b');
+      g.addColorStop(.5, stage.theme);
+      g.addColorStop(1, terrain === 'land' ? '#29282b' : '#102630');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.strokeStyle = rgbaColor(accent, .25);
+      ctx.lineWidth = 1.5;
+      for (let i = -4; i <= 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(W / 2 + i * 24, -40);
+        ctx.lineTo(W / 2 + i * 92, H + 40);
+        ctx.stroke();
+      }
+      for (let i = 0; i < 12; i++) {
+        const y = (i * 90 + bgY * .6) % (H + 90) - 45;
+        ctx.globalAlpha = .22 + .2 * y / H;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      const sideColor = terrain === 'sea' ? 'rgba(16,65,75,.6)' : terrain === 'sky' ? 'rgba(31,50,71,.55)' : 'rgba(44,46,51,.72)';
+      for (const side of [-1, 1]) {
+        for (let i = 0; i < 6; i++) {
+          const y = (i * 156 + bgY * .45) % (H + 180) - 90;
+          const x = side < 0 ? 12 : W - 116;
+          ctx.fillStyle = sideColor;
+          ctx.fillRect(x, y, 104, 56);
+          ctx.fillStyle = rgbaColor(accent, .34);
+          ctx.fillRect(x + 12, y + 9, 58, 3);
+          ctx.fillRect(x + 12, y + 44, 82, 2);
+          ctx.strokeStyle = rgbaColor(accent, .4);
+          ctx.strokeRect(x + 5, y + 5, 94, 46);
+        }
+      }
+      if (terrain === 'sea') {
+        ctx.strokeStyle = 'rgba(133,218,218,.24)';
+        for (let i = 0; i < 14; i++) {
+          const y = (i * 63 + bgY * .75) % (H + 70) - 35;
+          ctx.beginPath();
+          ctx.moveTo(128, y);
+          ctx.quadraticCurveTo(W / 2, y + Math.sin(i + bgY / 110) * 12, W - 128, y);
+          ctx.stroke();
+        }
+      } else if (terrain === 'sky') {
+        ctx.fillStyle = 'rgba(191,223,236,.1)';
+        for (let i = 0; i < 9; i++) {
+          const y = (i * 112 + bgY * .36) % (H + 130) - 65;
+          const x = 130 + (i * 97) % (W - 260);
+          ctx.beginPath();
+          ctx.ellipse(x, y, 62, 12, -.15, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        ctx.fillStyle = 'rgba(12,16,24,.24)';
+        for (let i = 0; i < 8; i++) {
+          const y = (i * 120 + bgY * .5) % (H + 140) - 70;
+          ctx.fillRect(165 + (i % 2) * 36, y, 82, 24);
         }
       }
       ctx.restore();
