@@ -1211,6 +1211,23 @@
       { name: '최후 관문 파수기', color: '#facc15', hp: 88, power: 3, shots: 3, speed: 1.06, score: 540, minStage: 29, form: 'lastWarGate' }
     ];
 
+    const gauntletEnemies = [
+      { name: '돌격 창날개', color: '#e59b83', hp: 48, power: 2, shots: 2, speed: 2.34, score: 420, minStage: 31, form: 'wallPike' },
+      { name: '굴절 프리즘', color: '#9cd7d8', hp: 58, power: 2, shots: 4, speed: 1.52, score: 480, minStage: 31, form: 'wallPrism' },
+      { name: '기갑 방벽', color: '#c9bb8b', hp: 105, power: 2, shots: 3, speed: 1.08, score: 590, minStage: 31, form: 'wallBulwark' },
+      { name: '쌍날 만타', color: '#75c6b4', hp: 82, power: 2, shots: 4, speed: 1.38, score: 550, minStage: 31, form: 'wallManta' },
+      { name: '위상 유령기', color: '#a7b4e8', hp: 52, power: 2, shots: 3, speed: 2.08, score: 500, minStage: 31, form: 'wallGhost' },
+      { name: '부유 감시포', color: '#dfaa8d', hp: 92, power: 3, shots: 3, speed: 1.2, score: 610, minStage: 31, form: 'wallSentinel' }
+    ];
+
+    const gauntletEnemyForms = {
+      31: ['wallPike', 'wallPrism'], 32: ['wallManta', 'wallPrism'],
+      33: ['wallBulwark', 'wallPike'], 34: ['wallGhost', 'wallSentinel'],
+      35: ['wallManta', 'wallSentinel'], 36: ['wallGhost', 'wallPrism'],
+      37: ['wallBulwark', 'wallSentinel'], 38: ['wallPike', 'wallGhost'],
+      39: ['wallPrism', 'wallBulwark'], 40: ['wallGhost', 'wallSentinel', 'wallManta']
+    };
+
     const bomberFleetSlots = [
       { x: 0, y: -76, s: .45 },
       { x: -42, y: -52, s: .43 },
@@ -2389,7 +2406,7 @@
     }
 
     function currentEnemyList() {
-      if (!isWorldWarChapter()) return difficultyStage() > VOID_STAGE_END ? lastWarEnemies : enemyTypes;
+      if (!isWorldWarChapter()) return currentStage().forcedJet ? gauntletEnemies : difficultyStage() > VOID_STAGE_END ? lastWarEnemies : enemyTypes;
       return worldWarEnemies[save.wwFaction || 'allies'];
     }
 
@@ -3179,6 +3196,7 @@
       const voidStage = !ww && st >= 11;
       const lastWarStage = !ww && st > VOID_STAGE_END;
       const stage = currentStage();
+      const gauntletForms = gauntletEnemyForms[stage.id];
       const terrain = bossTerrainForStage(stage);
       const seaRank = terrain === 'sea' ? seaStageRank(stage) : 1;
       const basePool = currentEnemyList().filter(e => {
@@ -3186,7 +3204,7 @@
         if (e.carrierOnly) return false;
         if (e.terrain && e.terrain !== terrain) return false;
         if (ww) return true;
-        return lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift');
+        return gauntletForms ? gauntletForms.includes(e.form) : lastWarStage ? e.form.startsWith('lastWar') : voidStage ? e.form.startsWith('rift') : !e.form.startsWith('rift');
       });
       const pool = basePool.filter(e => !e.carrier).flatMap(e => {
         if (terrain === 'land' && e.form === 'tank') return [e, e, e, e, e];
@@ -3210,7 +3228,7 @@
       markEnemyEncounter(type.form);
       const scale = ww ? .95 + (st - 1) * .04 : lastWarStage ? 1.02 + (st - VOID_STAGE_END) * .028 : voidStage ? 1 + (st - 11) * .035 : .82 + (st - 1) * .045;
       const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
-      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
+      const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate', 'wallBulwark', 'wallManta', 'wallSentinel'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
       const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
       enemies.push({
         ...type,
@@ -3315,6 +3333,7 @@
         power: Math.ceil((tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62)) * endlessMultiplier),
         shots: (tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48)) + (gauntletRank ? 2 : 0),
         fireIntervalScale: gauntletRank ? .92 - gauntletRank * .01 : 1,
+        gauntletRank,
         fire: 0,
         inv: 3000,
         phase: 1,
@@ -3905,7 +3924,43 @@
       });
     }
 
+    function shootGauntletEnemy(e) {
+      const style = enemyBulletStyle(e.form);
+      const damage = Math.max(1, Math.ceil(e.power * .75));
+      const cycle = e.shotCycle = (e.shotCycle || 0) + 1;
+      const fire = (x, y, angle, speed, radius = 5.2, options = {}) => {
+        enemyBullets.push({ x, y, vx: Math.sin(angle) * speed, vy: Math.cos(angle) * speed, dmg: damage, r: radius, style, ...options });
+      };
+      const aim = (x = e.x, y = e.y + 18) => aimAtPlayer(x, y);
+      if (e.form === 'wallPike') {
+        for (const side of [-1, 1]) fire(e.x + side * 13, e.y + 18, aim() + side * (cycle % 2 ? .12 : .24), 3.35, 4.8);
+      } else if (e.form === 'wallPrism') {
+        const offset = cycle % 2 ? 0 : .12;
+        for (const angle of [-.7, -.34, .34, .7]) fire(e.x, e.y + 13, angle + offset, 2.68, 5.1);
+      } else if (e.form === 'wallBulwark') {
+        for (const side of [-1, 0, 1]) fire(e.x + side * 20, e.y + 25, side * .27 + (cycle % 2 ? 0 : .08), 2.46, 6.2);
+        if (cycle % 2 === 0) fire(e.x, e.y + 12, aim(), 2.9, 5.5);
+      } else if (e.form === 'wallManta') {
+        for (const side of [-1, 1]) {
+          fire(e.x + side * 30, e.y + 14, aim(e.x + side * 30, e.y + 14) + side * .16, 2.9, 5.3);
+          fire(e.x + side * 43, e.y + 7, side * .37, 2.55, 4.8);
+        }
+      } else if (e.form === 'wallGhost') {
+        const offset = cycle % 2 ? -.18 : .18;
+        fire(e.x, e.y + 24, aim() + offset, 3.65, 4.4);
+        for (const side of [-1, 1]) fire(e.x + side * 18, e.y + 10, side * .46, 2.48, 4.6);
+      } else if (e.form === 'wallSentinel') {
+        fire(e.x, e.y + 21, aim(), 2.7, 5.4, { homingTime: 580, homingStrength: .025 });
+        for (const side of [-1, 1]) fire(e.x + side * 20, e.y + 16, side * .45, 2.45, 5);
+      }
+      playEnemyLaser(performance.now());
+    }
+
     function shootEnemy(e) {
+      if (e.form.startsWith('wall')) {
+        shootGauntletEnemy(e);
+        return;
+      }
       const count = e.carrier ? Math.max(4, Math.min(e.shots || 5, 5)) : Math.max(1, Math.min(e.shots || 1, 2));
       const st = difficultyStage();
       const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
@@ -3993,6 +4048,22 @@
         lastWarFrost: { fill: '#94a3b8', core: '#e0f2fe', shape: 'ring', size: 1.18 },
         lastWarTurret: { fill: '#38bdf8', core: '#ecfeff', shape: 'missile', size: 1.14 },
         lastWarGate: { fill: '#facc15', core: '#7f1d1d', shape: 'boss', size: 1.32 },
+        wallPike: { fill: '#f3a58b', core: '#fff0db', shape: 'spear', size: .88 },
+        wallPrism: { fill: '#94d5d6', core: '#eafff8', shape: 'diamond', size: .9 },
+        wallBulwark: { fill: '#c8b985', core: '#fff2c9', shape: 'heavy', size: 1.02 },
+        wallManta: { fill: '#6ec6b0', core: '#dcfff2', shape: 'blade', size: .94 },
+        wallGhost: { fill: '#a2b3e9', core: '#edf0ff', shape: 'dart', size: .86 },
+        wallSentinel: { fill: '#e8aa89', core: '#fff3d5', shape: 'ring', size: .96 },
+        wallBoss31: { fill: '#db786d', core: '#ffe5ce', shape: 'spear', size: .94 },
+        wallBoss32: { fill: '#64bcbf', core: '#dcfff7', shape: 'missile', size: .94 },
+        wallBoss33: { fill: '#c7a768', core: '#fff0bf', shape: 'heavy', size: .95 },
+        wallBoss34: { fill: '#9594cd', core: '#f1eaff', shape: 'blade', size: .9 },
+        wallBoss35: { fill: '#55b6a2', core: '#d9fff0', shape: 'bar', size: .92 },
+        wallBoss36: { fill: '#91d4e8', core: '#f0ffff', shape: 'splitDiamond', size: .9 },
+        wallBoss37: { fill: '#bdac70', core: '#fff1c4', shape: 'guidedMissile', size: .95 },
+        wallBoss38: { fill: '#77b8ed', core: '#eaf7ff', shape: 'dart', size: .88 },
+        wallBoss39: { fill: '#c4a1d4', core: '#f9eaff', shape: 'coreRing', size: .92 },
+        wallBoss40: { fill: '#dda2c7', core: '#fff0fa', shape: 'arcShard', size: .94 },
         bossLaserLine: { fill: '#22d3ee', core: '#ecfeff', shape: 'cyanLance', size: 1.18 },
         bossBombCore: { fill: '#ef4444', core: '#fff7ed', shape: 'coreRing', size: 1.22 },
         bossHomingMissile: { fill: '#d8d5bd', core: '#facc15', shape: 'guidedMissile', size: 1.12 },
@@ -4281,6 +4352,53 @@
       return true;
     }
 
+    function shootGauntletBoss() {
+      let attack = Math.floor(Math.random() * 3);
+      if (attack === boss.lastGauntletAttack) attack = (attack + 1 + Math.floor(Math.random() * 2)) % 3;
+      boss.lastGauntletAttack = attack;
+      const rank = boss.gauntletRank;
+      const form = `wallBoss${LAST_WAR_STAGE_END + rank}`;
+      const speed = 2.62 + rank * .035 + (boss.phase - 1) * .14;
+      const fire = (ox, oy, angle, speedScale = 1, options = {}) => {
+        bossBullet(boss.x + ox, boss.y + oy, angle, speed * speedScale, 0, 0, form, options);
+      };
+      const aim = (ox = 0, oy = 58) => aimAtPlayer(boss.x + ox, boss.y + oy);
+      if (attack === 0) {
+        const count = 5 + boss.phase + Math.floor(rank / 4);
+        const center = aim();
+        for (let i = 0; i < count; i++) fire(0, 60, center + (i - (count - 1) / 2) * .16);
+      } else if (attack === 1) {
+        const count = 12 + boss.phase * 2 + Math.floor(rank / 3);
+        const spin = boss.t / 850;
+        const gap = Math.round((aim() - spin) * count / (Math.PI * 2));
+        for (let i = 0; i < count; i++) {
+          const distance = Math.abs((i - gap % count + count) % count);
+          if (Math.min(distance, count - distance) <= 2) continue;
+          fire(0, 30, spin + i * Math.PI * 2 / count, .84);
+        }
+      } else if (rank === 1) {
+        for (const side of [-1, 1]) for (const spread of [-.14, 0, .14]) fire(side * 86, 36, aim(side * 86, 36) + spread + side * .12, .95);
+      } else if (rank === 2) {
+        for (const side of [-1, 1]) fire(side * 104, 30, aim(side * 104, 30) + side * .18, .9, { homingTime: 680, homingStrength: .03 });
+      } else if (rank === 3) {
+        for (const offset of [-.27, -.09, .09, .27]) fire(offset * 250, 50, aim(offset * 250, 50) + offset, .82);
+      } else if (rank === 4) {
+        for (const side of [-1, 0, 1]) fire(side * 76, 44, aim(side * 76, 44) + side * .12, 1.23);
+      } else if (rank === 5) {
+        for (const side of [-1, 1]) for (const spread of [-.16, 0, .16]) fire(side * 118, 72, aim(side * 118, 72) + spread + side * .1, .88);
+      } else if (rank === 6) {
+        for (const angle of [-.72, -.42, -.2, .2, .42, .72]) fire(0, 42, angle, .8);
+      } else if (rank === 7) {
+        for (const side of [-1, 1]) for (const spread of [-.12, .12]) fire(side * 78, 34, aim(side * 78, 34) + spread, 1.03);
+      } else if (rank === 8) {
+        for (const offset of [-.3, -.15, 0, .15, .3]) fire(offset * 150, 58, aim(offset * 150, 58) + offset, 1.2);
+      } else if (rank === 9) {
+        for (const side of [-1, 1]) for (const spread of [-.2, 0, .2]) fire(side * 94, 52, aim(side * 94, 52) + spread + side * .12, .92);
+      } else {
+        for (const side of [-1, 1]) for (const spread of [-.23, -.08, .08, .23]) fire(side * 108, 48, aim(side * 108, 48) + spread + side * .1, .94);
+      }
+    }
+
     function shootBoss() {
       const st = difficultyStage();
       const step = boss.patternStep || 0;
@@ -4318,6 +4436,11 @@
         else if (volley === 1) lane([[-138, 48, -.16], [-62, 74, -.06], [62, 74, .06], [138, 48, .16]], 'bossLaserLine', 2.12 + st * .018, 1, 1);
         else if (volley === 2) ring(boss.x, boss.y + 42, 8 + boss.phase, boss.t / 820, 1.45 + st * .016, 'carrierFighter', 0, 0, Math.floor((boss.t / 880) % (8 + boss.phase)), 2);
         else fan(boss.x, boss.y + 108, 4 + boss.phase, aimAtPlayer(boss.x, boss.y + 108), .2, 1.92 + st * .016, 'bossPlasmaShard', 1, 1);
+        return;
+      }
+      if (boss.gauntletRank) {
+        shootGauntletBoss();
+        playEnemyLaser(performance.now());
         return;
       }
       if (shootBossDesperation(st, weave)) {
@@ -6000,6 +6123,52 @@
         for (let i = 0; i < 8; i++) {
           const y = (i * 120 + bgY * .5) % (H + 140) - 70;
           ctx.fillRect(165 + (i % 2) * 36, y, 82, 24);
+        }
+      }
+      ctx.strokeStyle = rgbaColor(accent, .2);
+      ctx.lineWidth = 2;
+      if (rank === 1 || rank === 4) {
+        for (let i = 0; i < 5; i++) {
+          const y = (i * 184 + bgY * .28) % (H + 180) - 90;
+          ctx.strokeRect(28, y, rank === 1 ? 66 : 92, 104);
+          ctx.strokeRect(W - (rank === 1 ? 94 : 120), y + 44, rank === 1 ? 66 : 92, 88);
+        }
+      } else if (rank === 2 || rank === 5) {
+        for (let i = 0; i < 7; i++) {
+          const y = (i * 124 + bgY * .52) % (H + 130) - 65;
+          ctx.beginPath();
+          ctx.moveTo(150, y);
+          ctx.lineTo(rank === 2 ? 228 : 190, y + 38);
+          ctx.moveTo(W - 150, y);
+          ctx.lineTo(rank === 2 ? W - 228 : W - 190, y + 38);
+          ctx.stroke();
+        }
+      } else if (rank === 3 || rank === 7) {
+        for (let i = 0; i < 6; i++) {
+          const y = (i * 142 + bgY * .42) % (H + 160) - 80;
+          ctx.beginPath();
+          ctx.moveTo(48, y - 36);
+          ctx.lineTo(rank === 3 ? 150 : 126, y);
+          ctx.lineTo(48, y + 36);
+          ctx.moveTo(W - 48, y - 36);
+          ctx.lineTo(rank === 3 ? W - 150 : W - 126, y);
+          ctx.lineTo(W - 48, y + 36);
+          ctx.stroke();
+        }
+      } else if (rank === 6 || rank === 8) {
+        for (let i = 0; i < 9; i++) {
+          const y = (i * 94 + bgY * (rank === 8 ? 1.1 : .38)) % (H + 110) - 55;
+          ctx.beginPath();
+          ctx.moveTo(160 + i % 3 * 30, y - 25);
+          ctx.lineTo(146 + i % 3 * 30, y + (rank === 8 ? 72 : 35));
+          ctx.stroke();
+        }
+      } else {
+        for (let i = 0; i < 5; i++) {
+          const y = (i * 176 + bgY * .46) % (H + 190) - 95;
+          ctx.beginPath();
+          ctx.ellipse(W / 2, y, rank === 10 ? 120 : 86, rank === 10 ? 34 : 56, 0, 0, Math.PI * 2);
+          ctx.stroke();
         }
       }
       ctx.restore();
@@ -8344,19 +8513,80 @@
       return { x: .92, y: 1.1 };
     }
 
+    function drawGauntletEnemy(e) {
+      const dark = shade(e.color, -.38);
+      const light = shade(e.color, .32);
+      ctx.strokeStyle = dark;
+      ctx.lineWidth = 1.8;
+      if (e.form === 'wallPike') {
+        ctx.fillStyle = dark;
+        poly([[0,-52],[12,-15],[30,0],[12,8],[9,34],[0,25],[-9,34],[-12,8],[-30,0],[-12,-15]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-48],[6,-10],[9,16],[0,28],[-9,16],[-6,-10]]);
+        for (const side of [-1, 1]) poly([[side * 11,-17],[side * 37,-28],[side * 26,-4],[side * 10,2]]);
+      } else if (e.form === 'wallPrism') {
+        ctx.fillStyle = dark;
+        poly([[0,-37],[31,-17],[31,17],[0,37],[-31,17],[-31,-17]]);
+        ctx.fillStyle = e.color;
+        for (let i = 0; i < 6; i++) {
+          const a = i * Math.PI / 3 + (e.t || 0) / 900;
+          poly([[Math.sin(a) * 14, Math.cos(a) * 14],[Math.sin(a + .3) * 37, Math.cos(a + .3) * 37],[Math.sin(a + .7) * 30, Math.cos(a + .7) * 30]]);
+        }
+      } else if (e.form === 'wallBulwark') {
+        ctx.fillStyle = dark;
+        poly([[-44,-22],[44,-22],[53,20],[32,38],[-32,38],[-53,20]]);
+        ctx.fillStyle = e.color;
+        poly([[-23,-36],[23,-36],[34,-7],[24,30],[-24,30],[-34,-7]]);
+        ctx.fillStyle = light;
+        for (const side of [-1, 1]) poly([[side * 29,-27],[side * 56,-14],[side * 48,19],[side * 32,11]]);
+      } else if (e.form === 'wallManta') {
+        ctx.fillStyle = dark;
+        poly([[0,-36],[16,-13],[59,-18],[47,2],[70,25],[29,18],[0,35],[-29,18],[-70,25],[-47,2],[-59,-18],[-16,-13]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-29],[12,-8],[48,-7],[27,14],[0,25],[-27,14],[-48,-7],[-12,-8]]);
+        ctx.fillStyle = light;
+        for (const side of [-1, 1]) poly([[side * 31,0],[side * 57,13],[side * 34,10]]);
+      } else if (e.form === 'wallGhost') {
+        ctx.fillStyle = dark;
+        for (const side of [-1, 1]) poly([[side * 9,-37],[side * 29,-19],[side * 48,8],[side * 19,7],[side * 12,34],[side * 4,19]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-52],[10,-12],[5,35],[0,44],[-5,35],[-10,-12]]);
+        ctx.fillStyle = light;
+        for (const side of [-1, 1]) poly([[side * 16,-15],[side * 37,0],[side * 16,7]]);
+      } else if (e.form === 'wallSentinel') {
+        ctx.fillStyle = dark;
+        poly([[-33,-26],[33,-26],[43,24],[0,42],[-43,24]]);
+        ctx.fillStyle = e.color;
+        poly([[-20,-22],[20,-22],[26,16],[0,31],[-26,16]]);
+        for (const side of [-1, 1]) {
+          ctx.fillStyle = light;
+          poly([[side * 34,-31],[side * 55,-17],[side * 47,11],[side * 31,5]]);
+          ctx.fillStyle = dark;
+          ctx.fillRect(side * 39 - 3, 0, 6, 25);
+        }
+      }
+      ctx.fillStyle = '#e9fbf8';
+      ctx.beginPath();
+      ctx.arc(0, e.form === 'wallPike' ? -12 : -3, e.form === 'wallBulwark' ? 6 : 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     function drawEnemy(e) {
       const depth = perspectiveScale(e.y, .88, 1.12);
       ctx.save();
       ctx.translate(e.x, e.y);
       const bigScale = {
         bomber: .84, riftBomber: .78, riftShield: .86, riftCutter: .84,
-        lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86
+        lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86,
+        wallBulwark: .9, wallManta: .8, wallSentinel: .88
       }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
       ctx.scale(bigScale * depth * 1.08, bigScale * depth * 1.08);
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
-      if (e.form === 'mq101Drone') {
+      if (e.form.startsWith('wall')) {
+        drawGauntletEnemy(e);
+      } else if (e.form === 'mq101Drone') {
         ctx.fillStyle = shade(e.color, -.08);
         poly([[0,-34],[34,-6],[54,22],[19,17],[0,31],[-19,17],[-54,22],[-34,-6]]);
         ctx.fillStyle = '#f8fafc';
@@ -8814,6 +9044,7 @@
     }
 
     function drawEnemyDetail(e) {
+      if (e.form?.startsWith?.('wall')) return;
       const rift = e.form?.startsWith?.('rift');
       const lastWar = e.form?.startsWith?.('lastWar');
       ctx.save();
