@@ -2679,11 +2679,12 @@
         save.selectedMode = 'stage';
         save.lastWarUnlocked = true;
         save.lastWarEverUnlocked = true;
-        save.unlockedStage = Math.max(save.unlockedStage, LAST_WAR_STAGE_END);
-        save.selectedStage = Math.min(Math.max(save.selectedStage || 1, 1), save.gauntletUnlocked ? MAX_STAGE : LAST_WAR_STAGE_END);
+        save.gauntletUnlocked = true;
+        save.unlockedStage = MAX_STAGE;
+        save.selectedStage = Math.min(Math.max(save.selectedStage || 1, 1), MAX_STAGE);
         save.wwUnlockedStage = { allies: 20, axis: 20 };
         storeSave();
-        setLog('운영자 코드 적용. Stage 30까지 해금됐다. 통곡의 벽은 별도 조건이 필요하다.');
+        setLog('운영자 코드 적용. Stage 1~40과 세계대전 스테이지가 모두 해금됐다.');
         flash('ALL STAGES');
         if (input) input.value = '';
         renderUI();
