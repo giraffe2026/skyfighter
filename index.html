@@ -1483,6 +1483,7 @@
     let enemyBullets = [];
     let bossLasers = [];
     let bossBombs = [];
+    let bossTraps = [];
     let explosions = [];
     let fallout = null;
     let pickups = [];
@@ -2817,6 +2818,7 @@
       enemyBullets = [];
       bossLasers = [];
       bossBombs = [];
+      bossTraps = [];
       explosions = [];
       fallout = null;
       pickups = [];
@@ -3313,7 +3315,8 @@
       const tutorial = save.selectedMode === 'tutorial';
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
-      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier * (gauntletRank ? 1.16 + gauntletRank * .02 : 1));
+      const gauntletHpScale = gauntletRank ? (1.16 + gauntletRank * .02) * (1.65 + gauntletRank * .035) : 1;
+      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier * gauntletHpScale);
       const stageThreeCarrier = enemyTypes.find(type => type.form === 'escortCarrier');
       const minimumHp = stageThreeCarrier ? Math.ceil(carrierHpForStage(stageThreeCarrier, 3, 1) * 1.05 * endlessMultiplier) : 0;
       const hp = tutorial ? scaledHp : Math.max(scaledHp, minimumHp);
@@ -3334,6 +3337,9 @@
         shots: (tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48)) + (gauntletRank ? 2 : 0),
         fireIntervalScale: gauntletRank ? .92 - gauntletRank * .01 : 1,
         gauntletRank,
+        regularHazards: !tutorial,
+        hazardCooldown: 1800,
+        hazardStep: 0,
         fire: 0,
         inv: 3000,
         phase: 1,
@@ -4227,6 +4233,48 @@
       playEnemyLaser(performance.now());
     }
 
+    function queueRegularBossHazard() {
+      if (!boss?.regularHazards || !player) return;
+      const st = difficultyStage();
+      const rank = boss.gauntletRank || 0;
+      const attack = boss.hazardStep++ % 3;
+      if (attack === 0) {
+        const side = boss.hazardStep % 2 ? -1 : 1;
+        bossLasers.push({
+          x1: boss.x + side * Math.min(70, boss.hitW * .25), y1: boss.y + 36,
+          x2: clamp(player.x + side * 28, 45, W - 45), y2: H + 32,
+          charge: rank ? 1050 : 1250, duration: 520, time: 0,
+          width: rank ? 13 : 9, dmg: rank ? 6 + Math.floor(rank / 3) : st >= 21 ? 4 : st >= 11 ? 3 : 2,
+          color: boss.accent || '#22d3ee'
+        });
+        flash('LASER WARNING');
+      } else if (attack === 1) {
+        const r = rank ? 72 + rank * 2 : st >= 21 ? 64 : 52;
+        bossBombs.push({
+          x: clamp(player.x + Math.sin(boss.t / 500) * 24, r + 16, W - r - 16),
+          y: clamp(player.y - 28, 150, H - 100), r,
+          charge: rank ? 1350 : 1550, burst: 440, time: 0, hit: false,
+          dmg: rank ? 7 + Math.floor(rank / 3) : st >= 21 ? 5 : st >= 11 ? 3 : 2,
+          nuclear: true
+        });
+        flash('NUCLEAR WARNING');
+      } else {
+        const radius = rank ? 24 + Math.floor(rank / 3) : 20;
+        for (const side of [-1, 1]) {
+          bossTraps.push({
+            x: clamp(player.x + side * (72 + rank * 2), radius + 14, W - radius - 14),
+            y: clamp(player.y - 48 + side * 24, 150, H - 92),
+            r: radius, charge: 900, duration: 2900, burst: 260,
+            time: 0, burstTime: 0, triggered: false,
+            dmg: rank ? 4 + Math.floor(rank / 4) : st >= 21 ? 3 : 2,
+            color: boss.accent || '#f97316'
+          });
+        }
+        flash('TRAP WARNING');
+      }
+      playEnemyLaser(performance.now());
+    }
+
     function updateBossBombs(dt) {
       if (!player || mode !== 'play') return;
       bossBombs.forEach(b => {
@@ -4238,6 +4286,23 @@
           b.hit = true;
           absorbOrDamage(b.dmg);
         }
+      });
+    }
+
+    function updateBossTraps(dt) {
+      if (!player || mode !== 'play') return;
+      bossTraps.forEach(trap => {
+        trap.time += dt;
+        if (trap.triggered) {
+          trap.burstTime += dt;
+          return;
+        }
+        if (trap.time < trap.charge || trap.time > trap.charge + trap.duration) return;
+        const touched = playerHitZones().some(zone => Math.hypot(zone.x - trap.x, zone.y - trap.y) < zone.r + trap.r * .75);
+        if (!touched) return;
+        trap.triggered = true;
+        explosions.push({ x: trap.x, y: trap.y, r: trap.r, life: 360 });
+        if (player.inv <= 0 && !player.jet?.godMode) absorbOrDamage(trap.dmg);
       });
     }
 
@@ -5451,6 +5516,15 @@
             }
           }
         }
+        if (boss.regularHazards && boss.inv <= 0) {
+          boss.hazardCooldown -= dt;
+          if (boss.hazardCooldown <= 0 && !bossLasers.length && !bossBombs.length && !bossTraps.length) {
+            queueRegularBossHazard();
+            boss.hazardCooldown = boss.gauntletRank
+              ? Math.max(4300, 6000 - boss.gauntletRank * 140)
+              : Math.max(6800, 9800 - st * 90);
+          }
+        }
         boss.fire -= dt;
         if (boss.fire <= 0) {
           boss.fire = boss.kind === 'secretRobot'
@@ -5483,6 +5557,7 @@
       handleHits(frameStep);
       updateBossLasers(dt);
       updateBossBombs(dt);
+      updateBossTraps(dt);
       cleanup();
     }
 
@@ -5618,6 +5693,7 @@
         boss = null;
         bossLasers = [];
         bossBombs = [];
+        bossTraps = [];
         enemyBullets = [];
         if (defeatedBoss.kind === 'secretRobot') {
           const bursts = [[0,-94,34],[-76,-38,28],[76,-38,28],[-112,48,36],[112,48,36],[-42,116,30],[42,116,30],[0,30,58]];
@@ -5794,6 +5870,7 @@
       enemyBullets = enemyBullets.filter(b => !b.hit && b.y < H + 40 && b.x > -40 && b.x < W + 40);
       bossLasers = bossLasers.filter(l => l.time < l.charge + l.duration);
       bossBombs = bossBombs.filter(b => b.time < b.charge + b.burst);
+      bossTraps = bossTraps.filter(trap => trap.triggered ? trap.burstTime < trap.burst : trap.time < trap.charge + trap.duration);
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
       const robotFight = boss?.kind === 'secretRobot';
@@ -5805,6 +5882,7 @@
       if (enemyBullets.length > enemyBulletCap) enemyBullets.splice(0, enemyBullets.length - enemyBulletCap);
       if (bossLasers.length > 8) bossLasers.splice(0, bossLasers.length - 8);
       if (bossBombs.length > 12) bossBombs.splice(0, bossBombs.length - 12);
+      if (bossTraps.length > 8) bossTraps.splice(0, bossTraps.length - 8);
       if (explosions.length > explosionCap) explosions.splice(0, explosions.length - explosionCap);
       if (specialEffects.length > effectCap) specialEffects.splice(0, specialEffects.length - effectCap);
       if (pickups.length > 36) pickups.splice(0, pickups.length - 36);
@@ -5827,6 +5905,7 @@
       enemyBullets.forEach(drawEnemyBullet);
       bossBombs.forEach(drawBossBomb);
       bossLasers.forEach(drawBossLaser);
+      bossTraps.forEach(drawBossTrap);
       explosions.forEach(drawExplosion);
       if (player && !player.dead) drawPlayer();
       stukaDives.forEach(drawStukaDive);
@@ -10934,7 +11013,7 @@
       ctx.save();
       ctx.lineCap = 'round';
       if (!active) {
-        ctx.strokeStyle = `rgba(34,211,238,${.16 + chargeRatio * .38})`;
+        ctx.strokeStyle = rgbaColor(l.color || '#22d3ee', .16 + chargeRatio * .38);
         ctx.lineWidth = 8 + chargeRatio * 5;
         ctx.setLineDash([18, 14]);
         ctx.beginPath();
@@ -10952,7 +11031,7 @@
         const fade = 1 - clamp((l.time - l.charge) / l.duration, 0, 1) * .35;
         ctx.shadowColor = l.color;
         ctx.shadowBlur = 22;
-        ctx.strokeStyle = `rgba(8,145,178,${.44 * fade})`;
+        ctx.strokeStyle = rgbaColor(l.color || '#22d3ee', .44 * fade);
         ctx.lineWidth = l.width * 2.4;
         ctx.beginPath();
         ctx.moveTo(l.x1, l.y1);
@@ -10981,6 +11060,23 @@
         ctx.arc(0, 0, b.r, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        if (b.nuclear) {
+          ctx.strokeStyle = 'rgba(250,204,21,.82)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, 0, b.r * .76, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(250,204,21,.75)';
+          for (let i = 0; i < 3; i++) {
+            const angle = i * Math.PI * 2 / 3;
+            ctx.beginPath();
+            ctx.moveTo(Math.sin(angle) * b.r * .12, Math.cos(angle) * b.r * .12);
+            ctx.lineTo(Math.sin(angle - .34) * b.r * .47, Math.cos(angle - .34) * b.r * .47);
+            ctx.lineTo(Math.sin(angle + .34) * b.r * .47, Math.cos(angle + .34) * b.r * .47);
+            ctx.closePath();
+            ctx.fill();
+          }
+        }
         ctx.strokeStyle = 'rgba(254,202,202,.9)';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -11002,6 +11098,32 @@
         ctx.fillStyle = `rgba(250,204,21,${.55 * fade})`;
         ctx.beginPath();
         ctx.arc(0, 0, b.r * .38 * fade + 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawBossTrap(trap) {
+      ctx.save();
+      ctx.translate(trap.x, trap.y);
+      const charging = trap.time < trap.charge;
+      const fade = trap.triggered ? 1 - clamp(trap.burstTime / trap.burst, 0, 1) : 1;
+      ctx.strokeStyle = trap.triggered ? rgbaColor('#f97316', fade) : charging ? 'rgba(250,204,21,.8)' : rgbaColor(trap.color, .9);
+      ctx.fillStyle = trap.triggered ? rgbaColor('#f97316', .28 * fade) : charging ? 'rgba(250,204,21,.08)' : rgbaColor(trap.color, .2);
+      ctx.lineWidth = charging ? 2 : 3;
+      if (charging) ctx.setLineDash([7, 6]);
+      ctx.beginPath();
+      ctx.arc(0, 0, trap.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (!trap.triggered) {
+        ctx.fillStyle = charging ? '#facc15' : trap.color;
+        ctx.beginPath();
+        ctx.moveTo(0, -trap.r * .55);
+        ctx.lineTo(trap.r * .5, trap.r * .35);
+        ctx.lineTo(-trap.r * .5, trap.r * .35);
+        ctx.closePath();
         ctx.fill();
       }
       ctx.restore();
