@@ -1498,6 +1498,7 @@
     let score = 0;
     let scoreSecretIndex = 0;
     let carrierSpawnCount = 0;
+    let midbossSpawnCount = 0;
     let paused = false;
     let messageTimer = 0;
     let message = 'READY';
@@ -2829,6 +2830,7 @@
       score = 0;
       scoreSecretIndex = 0;
       carrierSpawnCount = 0;
+      midbossSpawnCount = 0;
       stageTime = 0;
       lastEnemy = 0;
       lastShot = 0;
@@ -3223,30 +3225,44 @@
         return true;
       });
       const safePool = pool.length ? pool : fallbackPool.length ? fallbackPool : currentEnemyList().filter(e => !e.carrier && !e.carrierOnly);
-      const type = canSpawnCarrier && Math.random() < .1
+      let type = canSpawnCarrier && Math.random() < .1
         ? carrierType
         : safePool[Math.floor(Math.random() * safePool.length)];
       if (!type) return;
+      const midbossPool = safePool.filter(e =>
+        ['heli', 'tank', 'gunboat', 'bomber', 'riftShield', 'riftBomber', 'riftCutter',
+          'lastWarBomber', 'lastWarFrost', 'lastWarGate', 'wallBulwark', 'wallManta', 'wallSentinel'].includes(e.form)
+      );
+      const midboss = !type.carrier && st >= 3 && stageTime > 12000 &&
+        stageTime < nextBossTime - 30000 && midbossSpawnCount < 1 &&
+        !enemies.some(e => e.midboss) && midbossPool.length > 0 && Math.random() < .035;
+      if (midboss) {
+        type = midbossPool[Math.floor(Math.random() * midbossPool.length)];
+        midbossSpawnCount++;
+      }
       if (type.carrier) carrierSpawnCount += 1;
       markEnemyEncounter(type.form);
       const scale = ww ? .95 + (st - 1) * .04 : lastWarStage ? 1.02 + (st - VOID_STAGE_END) * .028 : voidStage ? 1 + (st - 11) * .035 : .82 + (st - 1) * .045;
       const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate', 'wallBulwark', 'wallManta', 'wallSentinel'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
-      const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
+      const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier * (midboss ? 8 + st * .05 : 1)));
       enemies.push({
         ...type,
         x: 45 + Math.random() * (W - 90),
         y: -35,
         hp: hpValue,
         maxHp: hpValue,
+        midboss,
+        score: midboss ? type.score * 8 : type.score,
         power: Math.max(1, Math.ceil((type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2)) : type.power) * endlessMultiplier)),
         shots: type.carrier ? Math.max(3, Math.min(5, type.shots + Math.floor((seaRank - 1) / 2))) : Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
         speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: type.carrier ? Math.max(540, 1040 - seaRank * 85 + Math.random() * 320) : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
+        fire: type.carrier ? Math.max(540, 1040 - seaRank * 85 + Math.random() * 320) : midboss ? 900 : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
         launch: type.carrier ? Math.max(760, 1320 - seaRank * 95) : 0,
         t: 0,
-        r: type.carrier ? 58 : largeEnemy ? 13 : type.ground ? 18 : 15
+        r: type.carrier ? 58 : midboss ? 32 : largeEnemy ? 13 : type.ground ? 18 : 15
       });
+      if (midboss) flash('MIDBOSS INCOMING');
     }
 
     function launchCarrierFighter(carrier, side = 1) {
@@ -3317,7 +3333,8 @@
       const hpBase = tutorial ? 200 : ww ? 360 + st * 90 : lastWarStage ? 1740 + (st - VOID_STAGE_END) * 155 : voidStage ? 1080 + (st - 11) * 126 : 520 + st * 138;
       const hpNerf = tutorial ? 1 : lastWarStage ? .78 : voidStage ? .82 : ww ? .85 : .82;
       const gauntletHpScale = gauntletRank ? (1.16 + gauntletRank * .02) * (1.65 + gauntletRank * .035) : 1;
-      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier * gauntletHpScale);
+      const bossHpScale = tutorial ? 1 : gauntletRank ? 1.45 : 1.28;
+      const scaledHp = Math.round(hpBase * blueprint.hp * hpNerf * endlessMultiplier * gauntletHpScale * bossHpScale);
       const stageThreeCarrier = enemyTypes.find(type => type.form === 'escortCarrier');
       const minimumHp = stageThreeCarrier ? Math.ceil(carrierHpForStage(stageThreeCarrier, 3, 1) * 1.05 * endlessMultiplier) : 0;
       const hp = tutorial ? scaledHp : Math.max(scaledHp, minimumHp);
@@ -3933,7 +3950,7 @@
 
     function shootGauntletEnemy(e) {
       const style = enemyBulletStyle(e.form);
-      const damage = Math.max(1, Math.ceil(e.power * .75));
+      const damage = Math.max(1, Math.ceil(e.power * .75)) + 2;
       const cycle = e.shotCycle = (e.shotCycle || 0) + 1;
       const fire = (x, y, angle, speed, radius = 5.2, options = {}) => {
         enemyBullets.push({ x, y, vx: Math.sin(angle) * speed, vy: Math.cos(angle) * speed, dmg: damage, r: radius, style, ...options });
@@ -3964,6 +3981,26 @@
     }
 
     function shootEnemy(e) {
+      if (!e.carrier && Math.random() < (e.midboss ? .42 : .14)) {
+        const style = enemyBulletStyle(e.form);
+        const st = difficultyStage();
+        const damage = Math.max(1, Math.ceil(e.power * .75)) + 2;
+        const count = e.midboss ? 5 : 3;
+        const aimed = aimAtPlayer(e.x, e.y + 20);
+        const alternate = (e.specialVolley = (e.specialVolley || 0) + 1) % 2 === 0;
+        for (let i = 0; i < count; i++) {
+          const offset = (i - (count - 1) / 2) * (alternate ? .24 : .16);
+          const angle = alternate ? offset : aimed + offset;
+          const speed = (alternate ? 2.35 : 2.7) + st * .018;
+          enemyBullets.push({
+            x: e.x, y: e.y + 22,
+            vx: Math.sin(angle) * speed, vy: Math.cos(angle) * speed,
+            dmg: damage, r: e.midboss ? 5.2 : 4.5, style
+          });
+        }
+        playEnemyLaser(performance.now());
+        return;
+      }
       if (e.form.startsWith('wall')) {
         shootGauntletEnemy(e);
         return;
@@ -3975,7 +4012,7 @@
       const style = enemyBulletStyle(e.form, false);
       const baseVy = e.carrier ? 2.38 + st * .028 : lastWar ? 2.4 + (st - VOID_STAGE_END) * .022 : late ? 2.24 + (st - 10) * .026 : 1.96 + st * .022;
       const baseRadius = (lastWar ? 4 + Math.min(2, e.power) * .75 : late ? 3.9 + Math.min(2, e.power) * .82 : 3.85 + Math.min(3, e.power) * .7) * (style.size || 1);
-      const baseDamage = e.carrier ? Math.max(2, Math.ceil((e.power || 1) * .82)) : Math.max(1, Math.ceil((e.power || 1) * .75));
+      const baseDamage = e.carrier ? Math.max(2, Math.ceil((e.power || 1) * .82)) : Math.max(1, Math.ceil((e.power || 1) * .75)) + 2;
       const pushShot = (x, y, vx, vy, r = baseRadius, dmg = baseDamage) => {
         enemyBullets.push({ x, y, vx, vy, dmg, r, style });
       };
@@ -4123,6 +4160,13 @@
       const late = st >= 11;
       const baseForm = form || bossBulletForm(boss.kind);
       const styleForm = baseForm;
+      const profile = boss.regularHazards ? boss.volleyProfile : null;
+      const willSplit = profile === 'split' && Math.random() < .5;
+      const speedFactor = profile === 'swift' ? 1.5 : profile === 'heavy' ? .78 : profile === 'split' ? .92 : 1;
+      const style = enemyBulletStyle(styleForm, true);
+      if (profile === 'swift') style.shape = 'spear';
+      else if (profile === 'heavy') style.shape = 'coreRing';
+      else if (willSplit) style.shape = 'splitDiamond';
       const speedScale = boss?.kind === 'secretRobot'
         ? boss.phase >= 2 ? 1.18 : 1.08
         : 1.08;
@@ -4134,11 +4178,13 @@
       enemyBullets.push({
         x,
         y,
-        vx: Math.sin(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
-        vy: Math.cos(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale,
-        dmg: boss.kind === 'secretRobot' ? Math.max(1, secretRobotDamage) : Math.max(1, boss.power + damage),
-        r: Math.max(4, lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size),
-        style: enemyBulletStyle(styleForm, true),
+        vx: Math.sin(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale * speedFactor,
+        vy: Math.cos(angle) * (lastWar ? speed * .84 : late ? speed * .9 : speed) * speedScale * speedFactor,
+        dmg: boss.kind === 'secretRobot' ? Math.max(1, secretRobotDamage) : Math.max(1, Math.round((boss.power + damage + (profile === 'heavy' ? 2 : 0)) * (profile === 'swift' ? .6 : 1))),
+        r: Math.max(4, (lastWar ? 7 + Math.floor((st - VOID_STAGE_END) / 5) + size : late ? 7 + Math.floor((st - 11) / 4) + size : 6 + Math.floor(st / 4) + size) * (profile === 'swift' ? .72 : profile === 'heavy' ? 1.2 : 1)),
+        style,
+        splitAfter: willSplit ? 230 + Math.random() * 90 : 0,
+        traveled: 0,
         homingTime: opts.homingTime || 0,
         homingStrength: opts.homingStrength || 0
       });
@@ -4471,7 +4517,15 @@
       boss.patternStep = step + 1;
       const weave = Math.sin((boss.t || 0) / 420);
       const pressure = Math.max(4, Math.min(10, Math.floor((boss.shots || 6) / 3) + boss.phase));
-      const volley = step % 4;
+      let volley = step % 4;
+      if (boss.regularHazards) {
+        volley = Math.floor(Math.random() * 4);
+        if (volley === boss.lastVolley) volley = (volley + 1 + Math.floor(Math.random() * 3)) % 4;
+        boss.lastVolley = volley;
+        const profiles = ['swift', 'heavy', 'split'];
+        const choices = profiles.filter(profile => profile !== boss.volleyProfile);
+        boss.volleyProfile = choices[Math.floor(Math.random() * choices.length)];
+      }
       const fan = (x, y, count, center, spread, speed, form, size = 0, damage = 0) => {
         for (let i = 0; i < count; i++) {
           const offset = count === 1 ? 0 : (i - (count - 1) / 2) * spread;
@@ -4509,12 +4563,12 @@
         playEnemyLaser(performance.now());
         return;
       }
-      if (shootBossDesperation(st, weave)) {
+      if (Math.random() < .45 && shootBossDesperation(st, weave)) {
         flash('DANGER');
         playEnemyLaser(performance.now());
         return;
       }
-      if (shootBossHalfHealthPattern(st, weave, step)) {
+      if (Math.random() < .45 && shootBossHalfHealthPattern(st, weave, step)) {
         flash('PHASE SHIFT');
         playEnemyLaser(performance.now());
         return;
@@ -5329,7 +5383,7 @@
         playWarningSound();
         setLog(`${currentStage().boss} 접근 3초 전.`);
       }
-      if (!boss && stageTime >= nextBossTime) spawnBoss();
+      if (!boss && stageTime >= nextBossTime && !enemies.some(e => e.midboss && !e.dead)) spawnBoss();
 
       bullets.forEach(b => {
         if (b.home) {
@@ -5429,6 +5483,11 @@
           if (e.y < holdY) e.y += e.speed * frameStep;
           else e.y += Math.sin(e.t / 520) * .06 * frameStep;
           e.x += Math.sin(e.t / 760) * .55 * frameStep;
+        } else if (e.midboss) {
+          const holdY = 165;
+          if (e.y < holdY) e.y += e.speed * frameStep;
+          else e.y += Math.sin(e.t / 580) * .12 * frameStep;
+          e.x = clamp(e.x + Math.sin(e.t / 650) * .7 * frameStep, 70, W - 70);
         } else {
           e.y += e.speed * frameStep;
           e.x += Math.sin(e.t / 420) * (e.ground ? .25 : 1.1) * frameStep;
@@ -5448,6 +5507,7 @@
           const voidStage = !isWorldWarChapter() && st >= 11;
           e.fire = e.carrier
             ? Math.max(560, 1040 + Math.random() * 320 - carrierSeaRank * 85)
+            : e.midboss ? 850 + Math.random() * 450
             : Math.max(700, 1180 + Math.random() * 760 - (lastWar ? (st - VOID_STAGE_END) * 22 : voidStage ? (st - 10) * 18 : st * 12));
           shootEnemy(e);
         }
@@ -5532,7 +5592,7 @@
             ? Math.max(920, 1940 - boss.phase * 310)
             : boss.kind === 'cyberWingBoss'
               ? Math.max(1180, 1900 - boss.phase * 220)
-            : Math.max(1600, Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120) * (boss.fireIntervalScale || 1));
+            : Math.max(1120, Math.max(2050, 2920 - Math.min(360, st * 14) - boss.phase * 120) * (boss.fireIntervalScale || 1) * (.68 + Math.random() * .3));
           shootBoss();
         }
       }
@@ -5553,6 +5613,24 @@
         }
         b.x += b.vx * frameStep;
         b.y += b.vy * frameStep;
+        if (b.splitAfter && !b.hit) {
+          b.traveled += Math.hypot(b.vx, b.vy) * frameStep;
+          if (b.traveled >= b.splitAfter) {
+            b.hit = true;
+            const angle = Math.atan2(b.vx, b.vy);
+            const speed = Math.max(2.1, Math.hypot(b.vx, b.vy) * .9);
+            const style = { ...b.style, shape: 'shard' };
+            for (const side of [-1, 0, 1]) {
+              const spread = angle + side * .34;
+              enemyBullets.push({
+                x: b.x, y: b.y,
+                vx: Math.sin(spread) * speed, vy: Math.cos(spread) * speed,
+                dmg: Math.max(1, b.dmg - 1), r: Math.max(4, b.r * .7), style
+              });
+            }
+            explosions.push({ x: b.x, y: b.y, r: 9, life: 170 });
+          }
+        }
       });
 
       handleHits(frameStep);
@@ -5620,13 +5698,14 @@
         }
         if (player.inv <= 0 && hitsPlayer(e, e.r)) {
           e.dead = true;
-          absorbOrDamage(e.power + 2);
+          absorbOrDamage(e.power + (e.carrier ? 2 : 4));
           if (mode !== 'play') return;
         }
       });
 
       enemyBullets.forEach(b => {
         if (!player || mode !== 'play') return;
+        if (b.hit) return;
         if (player.inv <= 0 && hitsPlayer(b, b.r)) {
           b.hit = true;
           absorbOrDamage(b.dmg);
@@ -8660,7 +8739,7 @@
         lastWarBomber: .76, lastWarFrost: .82, lastWarGate: .78, lastWarTurret: .86,
         wallBulwark: .9, wallManta: .8, wallSentinel: .88
       }[e.form] || (/OldBomber/.test(e.form) ? .86 : /Bomber/.test(e.form) ? .84 : e.form?.startsWith?.('rift') ? .9 : 1);
-      ctx.scale(bigScale * depth * 1.08, bigScale * depth * 1.08);
+      ctx.scale(bigScale * depth * 1.08 * (e.midboss ? 1.7 : 1), bigScale * depth * 1.08 * (e.midboss ? 1.7 : 1));
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
@@ -9120,7 +9199,15 @@
       drawEnemyDetail(e);
       ctx.stroke();
       ctx.restore();
-      drawHealth(e.x, e.y - 25, 38, e.hp / e.maxHp);
+      drawHealth(e.x, e.y - (e.midboss ? 64 : 25), e.midboss ? 100 : 38, e.hp / e.maxHp);
+      if (e.midboss) {
+        ctx.save();
+        ctx.fillStyle = '#fef3c7';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('MIDBOSS', e.x, e.y - 72);
+        ctx.restore();
+      }
     }
 
     function drawEnemyDetail(e) {
