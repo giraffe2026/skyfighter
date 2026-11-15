@@ -1201,6 +1201,8 @@
       { name: '공허 절단기', color: '#ec4899', hp: 38, power: 2, shots: 2, speed: 1.48, score: 230, minStage: 15, form: 'riftCutter' }
     ];
 
+    const midbossColors = ['#9bc5cf', '#d3a48d', '#b9bd88', '#aaabd2', '#89c6ad', '#d4a8be', '#b0b9c9', '#d1b784', '#94b9dd', '#c7a8d2'];
+
     const lastWarEnemies = [
       { name: '전쟁 기록 요격기', color: '#fb7185', hp: 40, power: 2, shots: 2, speed: 1.98, score: 260, minStage: 21, form: 'lastWarRecord' },
       { name: '잿빛 함재 드론', color: '#f59e0b', hp: 30, power: 1, shots: 2, speed: 1.72, score: 240, minStage: 21, form: 'lastWarDrone' },
@@ -1497,8 +1499,8 @@
     let stageTime = 0;
     let score = 0;
     let scoreSecretIndex = 0;
-    let carrierSpawnCount = 0;
     let midbossSpawnCount = 0;
+    let nextMidbossTime = 16000;
     let paused = false;
     let messageTimer = 0;
     let message = 'READY';
@@ -2829,8 +2831,8 @@
       cyberWingDuel = false;
       score = 0;
       scoreSecretIndex = 0;
-      carrierSpawnCount = 0;
       midbossSpawnCount = 0;
+      nextMidbossTime = 16000;
       stageTime = 0;
       lastEnemy = 0;
       lastShot = 0;
@@ -3190,11 +3192,11 @@
     }
 
     function carrierHpForStage(type, stageId, seaRank, multiplier = 1) {
-      const rankScale = .95 + seaRank * .32 + Math.max(0, stageId - 3) * .025;
+      const rankScale = stageId === 3 ? .7 : 1.15 + Math.max(0, seaRank - 1) * .42 + Math.max(0, stageId - 3) * .035;
       return Math.round(type.hp * rankScale * multiplier);
     }
 
-    function spawnEnemy() {
+    function spawnEnemy(asMidboss = false) {
       const st = difficultyStage();
       const endlessMultiplier = endlessEnemyMultiplier();
       const ww = isWorldWarChapter();
@@ -3216,51 +3218,48 @@
         if (terrain === 'sea' && e.form === 'gunboat') return [e, e, e];
         return [e];
       });
-      const carrierType = basePool.find(e => e.form === 'escortCarrier');
-      const carrierOnScreen = enemies.some(e => e.carrier);
-      const canSpawnCarrier = terrain === 'sea' && carrierType && !carrierOnScreen && carrierSpawnCount < 2;
+      const carrierType = !ww && !gauntletForms && terrain === 'sea' && st >= 3
+        ? enemyTypes.find(e => e.form === 'escortCarrier')
+        : null;
       const fallbackPool = currentEnemyList().filter(e => {
         if (e.carrier || e.carrierOnly) return false;
         if (e.minStage > st) return false;
         return true;
       });
       const safePool = pool.length ? pool : fallbackPool.length ? fallbackPool : currentEnemyList().filter(e => !e.carrier && !e.carrierOnly);
-      let type = canSpawnCarrier && Math.random() < .1
+      const type = asMidboss && carrierType
         ? carrierType
-        : safePool[Math.floor(Math.random() * safePool.length)];
+        : safePool[asMidboss ? stage.id % safePool.length : Math.floor(Math.random() * safePool.length)];
       if (!type) return;
-      const midbossPool = safePool.filter(e =>
-        ['heli', 'tank', 'gunboat', 'bomber', 'riftShield', 'riftBomber', 'riftCutter',
-          'lastWarBomber', 'lastWarFrost', 'lastWarGate', 'wallBulwark', 'wallManta', 'wallSentinel'].includes(e.form)
-      );
-      const midboss = !type.carrier && st >= 3 && stageTime > 12000 &&
-        stageTime < nextBossTime - 30000 && midbossSpawnCount < 1 &&
-        !enemies.some(e => e.midboss) && midbossPool.length > 0 && Math.random() < .035;
-      if (midboss) {
-        type = midbossPool[Math.floor(Math.random() * midbossPool.length)];
-        midbossSpawnCount++;
-      }
-      if (type.carrier) carrierSpawnCount += 1;
+      const midboss = asMidboss;
+      const midbossDesign = midboss ? stage.id + (ww ? 40 : 0) : 0;
+      if (midboss) midbossSpawnCount++;
       markEnemyEncounter(type.form);
       const scale = ww ? .95 + (st - 1) * .04 : lastWarStage ? 1.02 + (st - VOID_STAGE_END) * .028 : voidStage ? 1 + (st - 11) * .035 : .82 + (st - 1) * .045;
       const hpTone = ww ? .76 : lastWarStage ? .82 : voidStage ? .78 : .66;
       const largeEnemy = ['bomber', 'riftBomber', 'riftShield', 'riftCutter', 'lastWarBomber', 'lastWarFrost', 'lastWarGate', 'wallBulwark', 'wallManta', 'wallSentinel'].includes(type.form) || /OldBomber|Bomber/.test(type.form);
-      const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier * (midboss ? 8 + st * .05 : 1)));
+      const hpValue = type.carrier ? carrierHpForStage(type, st, seaRank, endlessMultiplier) : midboss
+        ? Math.max(120 + st * 28, Math.round(type.hp * scale * hpTone * endlessMultiplier * (8 + st * .05)))
+        : Math.max(3, Math.round(type.hp * scale * hpTone * endlessMultiplier));
       enemies.push({
         ...type,
-        x: 45 + Math.random() * (W - 90),
+        name: midboss ? `${ww ? 'WW ' : ''}Stage ${stage.id} ${type.name || 'Vanguard'}` : type.name,
+        color: midbossDesign && midbossDesign !== 3 ? midbossColors[(midbossDesign - 1) % midbossColors.length] : type.color,
+        x: midboss ? W / 2 : 45 + Math.random() * (W - 90),
         y: -35,
         hp: hpValue,
         maxHp: hpValue,
+        openingCarrier: !!type.carrier && stage.id === 3,
         midboss,
-        score: midboss ? type.score * 8 : type.score,
-        power: Math.max(1, Math.ceil((type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2)) : type.power) * endlessMultiplier)),
+        midbossDesign,
+        score: midboss && !type.carrier ? type.score * 8 : type.score,
+        power: Math.max(1, Math.ceil((type.carrier ? Math.max(2, type.power + Math.floor(seaRank / 2) - (stage.id === 3 ? 1 : 0)) : type.power) * endlessMultiplier)),
         shots: type.carrier ? Math.max(3, Math.min(5, type.shots + Math.floor((seaRank - 1) / 2))) : Math.max(1, Math.min(type.shots, largeEnemy ? 2 : 1)),
         speed: type.speed + (ww ? st * .026 : lastWarStage ? (st - VOID_STAGE_END) * .018 : voidStage ? (st - 10) * .025 : st * .026),
-        fire: type.carrier ? Math.max(540, 1040 - seaRank * 85 + Math.random() * 320) : midboss ? 900 : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
-        launch: type.carrier ? Math.max(760, 1320 - seaRank * 95) : 0,
+        fire: type.carrier ? Math.max(540, (1040 - seaRank * 85 + Math.random() * 320) * (stage.id === 3 ? 1.1 : 1)) : midboss ? 900 : Math.max(760, 1500 + Math.random() * 1250 - (ww ? st * 11 : lastWarStage ? (st - VOID_STAGE_END) * 18 : voidStage ? (st - 10) * 16 : st * 8)),
+        launch: type.carrier ? Math.max(760, (1320 - seaRank * 95) * (stage.id === 3 ? 1.8 : 1)) : 0,
         t: 0,
-        r: type.carrier ? 58 : midboss ? 32 : largeEnemy ? 13 : type.ground ? 18 : 15
+        r: type.carrier ? 58 : midboss ? 44 : largeEnemy ? 13 : type.ground ? 18 : 15
       });
       if (midboss) flash('MIDBOSS INCOMING');
     }
@@ -3353,7 +3352,7 @@
         maxHp: hp,
         power: Math.ceil((tutorial ? 1 : ww ? 2 + Math.ceil(st * .36) : lastWarStage ? 7 + Math.floor((st - VOID_STAGE_END) / 2) : voidStage ? 6 + Math.floor((st - 11) / 2) : 3 + Math.ceil(st * .62)) * endlessMultiplier),
         shots: (tutorial ? 3 : ww ? 6 + Math.ceil(st * .34) : lastWarStage ? 13 + Math.floor((st - VOID_STAGE_END) / 1.8) : voidStage ? 11 + Math.floor((st - 11) / 2) : 8 + Math.ceil(st * .48)) + (gauntletRank ? 2 : 0),
-        fireIntervalScale: gauntletRank ? .92 - gauntletRank * .01 : 1,
+        fireIntervalScale: gauntletRank ? .92 - gauntletRank * .01 : !ww && stage.id === 3 ? 1.1 : 1,
         gauntletRank,
         regularHazards: !tutorial,
         hazardCooldown: 1800,
@@ -4850,7 +4849,7 @@
     }
 
     function playerDamageAgainst(target, amount) {
-      const carrierArmor = target?.carrier ? .72 : 1;
+      const carrierArmor = target?.openingCarrier ? .9 : target?.carrier ? .72 : 1;
       if (!player || player.jet.id !== 'f67') return amount * carrierArmor;
       const voidEnemy = target?.form?.startsWith?.('rift');
       const voidBoss = target === boss && currentStage().id >= 11;
@@ -5373,6 +5372,10 @@
       shootPlayer(now);
 
       const stage = currentStage();
+      if (!boss && !secretRobotDuel && !cyberWingDuel && save.selectedMode !== 'tutorial' &&
+          midbossSpawnCount === 0 && stageTime >= nextMidbossTime && stageTime < nextBossTime - 18000) {
+        spawnEnemy(true);
+      }
       if (!boss && (save.selectedMode === 'endless' || stageTime < 65000) && now - lastEnemy > stage.enemyRate) {
         lastEnemy = now;
         spawnEnemy();
@@ -5479,12 +5482,12 @@
       enemies.forEach(e => {
         e.t += dt;
         if (e.carrier) {
-          const holdY = 150;
+          const holdY = e.midboss ? 240 : 150;
           if (e.y < holdY) e.y += e.speed * frameStep;
           else e.y += Math.sin(e.t / 520) * .06 * frameStep;
           e.x += Math.sin(e.t / 760) * .55 * frameStep;
         } else if (e.midboss) {
-          const holdY = 165;
+          const holdY = 205;
           if (e.y < holdY) e.y += e.speed * frameStep;
           else e.y += Math.sin(e.t / 580) * .12 * frameStep;
           e.x = clamp(e.x + Math.sin(e.t / 650) * .7 * frameStep, 70, W - 70);
@@ -5495,7 +5498,7 @@
         if (e.carrier && e.y > 18) {
           e.launch -= dt;
           if (e.launch <= 0) {
-            e.launch = 1200 + Math.random() * 520;
+            e.launch = (1200 + Math.random() * 520) * (e.openingCarrier ? 1.8 : 1);
             launchCarrierFighter(e, Math.sin(e.t / 700) > 0 ? 1 : -1);
           }
         }
@@ -5506,7 +5509,7 @@
           const lastWar = !isWorldWarChapter() && st > VOID_STAGE_END;
           const voidStage = !isWorldWarChapter() && st >= 11;
           e.fire = e.carrier
-            ? Math.max(560, 1040 + Math.random() * 320 - carrierSeaRank * 85)
+            ? Math.max(560, (1040 + Math.random() * 320 - carrierSeaRank * 85) * (e.openingCarrier ? 1.1 : 1))
             : e.midboss ? 850 + Math.random() * 450
             : Math.max(700, 1180 + Math.random() * 760 - (lastWar ? (st - VOID_STAGE_END) * 22 : voidStage ? (st - 10) * 18 : st * 12));
           shootEnemy(e);
@@ -5809,6 +5812,8 @@
           if (!hinted) setLog(`보스 ${player.endlessBossKills}기 격파. 점수 +${bonus}, 코인 +${coinBonus}.${newPowerMax > previousPowerMax ? ` 최대 파워 ${newPowerMax} 해금.` : ` 현재 최대 파워 ${newPowerMax}.`}`);
           if (newPowerMax > previousPowerMax) flash(`POWER MAX ${newPowerMax}`);
           nextBossTime = stageTime + Math.max(28000, 52000 - difficultyStage() * 1200);
+          midbossSpawnCount = 0;
+          nextMidbossTime = stageTime + 11000;
           bossWarningShown = false;
           return;
         }
@@ -8730,6 +8735,118 @@
       ctx.fill();
     }
 
+    function drawStageMidboss(e) {
+      const id = e.midbossDesign;
+      const wing = 46 + id * 7 % 22;
+      const nose = 46 + id * 5 % 17;
+      const accent = ['#facc15', '#67e8f9', '#fb7185', '#a5b4fc', '#6ee7b7'][id % 5];
+      const dark = shade(e.color, -.38);
+      const light = shade(e.color, .25);
+      ctx.strokeStyle = dark;
+      ctx.lineWidth = 1.8;
+      if (e.carrier || id % 6 === 4) {
+        ctx.fillStyle = dark;
+        poly([[0,-nose-8],[28,-nose],[wing,35],[33,59],[-33,59],[-wing,35],[-28,-nose]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-nose],[22,-nose+7],[wing-9,31],[27,49],[-27,49],[-wing+9,31],[-22,-nose+7]]);
+        ctx.fillStyle = shade(e.color, -.2);
+        ctx.fillRect(-20,-nose+12,40,nose+35);
+        ctx.strokeStyle = light;
+        ctx.beginPath();
+        ctx.moveTo(-8,-nose+18); ctx.lineTo(-8,37);
+        ctx.moveTo(7,-nose+18); ctx.lineTo(7,37);
+        ctx.stroke();
+        ctx.fillStyle = light;
+        poly([[19,-18],[35,-13],[36,18],[20,24]]);
+        for (const side of [-1,1]) {
+          ctx.fillStyle = dark;
+          ctx.fillRect(side * (wing - 15) - 5, 8, 10, 28);
+          ctx.fillStyle = accent;
+          ctx.fillRect(side * (wing - 15) - 2, 12, 4, 7);
+        }
+      } else if (id % 6 === 0) {
+        ctx.fillStyle = dark;
+        for (const side of [-1,1]) ctx.fillRect(side * (wing - 10) - 13, -29, 26, 72);
+        ctx.fillStyle = e.color;
+        poly([[-30,-38],[30,-38],[38,25],[24,45],[-24,45],[-38,25]]);
+        ctx.fillStyle = light;
+        poly([[-23,-21],[23,-21],[18,17],[-18,17]]);
+        ctx.fillStyle = dark;
+        ctx.fillRect(-7,-nose,14,56);
+        ctx.fillStyle = accent;
+        ctx.fillRect(-3,-nose+5,6,18);
+      } else if (id % 6 === 1) {
+        ctx.fillStyle = dark;
+        poly([[0,-nose-9],[12,-16],[wing,16],[wing-16,29],[18,14],[12,48],[0,56],[-12,48],[-18,14],[-wing+16,29],[-wing,16],[-12,-16]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-nose],[9,-16],[wing-8,16],[15,7],[9,41],[0,49],[-9,41],[-15,7],[-wing+8,16],[-9,-16]]);
+        ctx.fillStyle = light;
+        poly([[0,-nose+9],[7,-16],[0,8],[-7,-16]]);
+        for (const side of [-1,1]) {
+          ctx.fillStyle = accent;
+          poly([[side * 19,11],[side * (wing - 15),18],[side * 17,18]]);
+          ctx.fillStyle = dark;
+          ctx.fillRect(side * 10 - 5, 36, 10, 18);
+        }
+      } else if (id % 6 === 2) {
+        ctx.fillStyle = dark;
+        poly([[0,-nose],[17,-29],[24,23],[0,50],[-24,23],[-17,-29]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-nose+5],[12,-25],[16,17],[0,40],[-16,17],[-12,-25]]);
+        for (const side of [-1,1]) {
+          ctx.fillStyle = dark;
+          poly([[side * 16,-13],[side * wing,-25],[side * (wing+8),16],[side * 18,17]]);
+          ctx.fillStyle = light;
+          ctx.beginPath(); ctx.arc(side * wing,-6,12 + id % 5,0,Math.PI * 2); ctx.fill();
+          ctx.fillStyle = dark;
+          ctx.beginPath(); ctx.arc(side * wing,-6,7,0,Math.PI * 2); ctx.fill();
+        }
+        ctx.fillStyle = accent;
+        ctx.fillRect(-4,-30,8,15);
+      } else if (id % 6 === 3) {
+        ctx.fillStyle = dark;
+        poly([[0,-nose], [wing-10,-26],[wing,12],[18,45],[-18,45],[-wing,12],[-wing+10,-26]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-nose+9],[wing-17,-21],[wing-9,8],[14,35],[-14,35],[-wing+9,8],[-wing+17,-21]]);
+        ctx.fillStyle = light;
+        poly([[0,-31],[17,-8],[0,24],[-17,-8]]);
+        for (const side of [-1,1]) {
+          ctx.fillStyle = accent;
+          poly([[side * 20,-12],[side * (wing-18),-12],[side * (wing-12),4],[side * 22,8]]);
+        }
+      } else {
+        ctx.fillStyle = dark;
+        poly([[0,-nose],[15,-18],[wing+10,-20],[wing,12],[28,18],[18,44],[0,51],[-18,44],[-28,18],[-wing,12],[-wing-10,-20],[-15,-18]]);
+        ctx.fillStyle = e.color;
+        poly([[0,-nose+7],[10,-13],[wing-2,-11],[wing-7,7],[20,12],[12,36],[0,42],[-12,36],[-20,12],[-wing+7,7],[-wing+2,-11],[-10,-13]]);
+        ctx.fillStyle = accent;
+        for (const side of [-1,1]) poly([[side * 13,-12],[side * (wing-12),-4],[side * 21,4]]);
+        ctx.fillStyle = light;
+        poly([[0,-nose+12],[7,-12],[0,11],[-7,-12]]);
+      }
+      const variant = Math.floor(id / 6) % 4;
+      for (const side of [-1, 1]) {
+        ctx.fillStyle = variant % 2 ? light : dark;
+        if (variant === 0) {
+          poly([[side * 13,15],[side * 31,39],[side * 20,37],[side * 10,25]]);
+        } else if (variant === 1) {
+          poly([[side * (wing - 9),-9],[side * (wing + 9),-2],[side * (wing + 7),21],[side * (wing - 8),19]]);
+          ctx.fillStyle = accent;
+          ctx.fillRect(side * wing - 3, 8, 6, 11);
+        } else if (variant === 2) {
+          poly([[side * 14,-31],[side * (wing - 8),-39],[side * (wing - 20),-25],[side * 13,-18]]);
+        } else {
+          poly([[side * 22,24],[side * (wing + 2),30],[side * (wing + 8),47],[side * 22,39]]);
+          ctx.fillStyle = accent;
+          ctx.fillRect(side * (wing - 1) - 3, 32, 6, 9);
+        }
+      }
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(0, id % 6 === 0 ? -20 : -8, 4 + id % 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     function drawEnemy(e) {
       const depth = perspectiveScale(e.y, .88, 1.12);
       ctx.save();
@@ -8743,7 +8860,9 @@
       ctx.fillStyle = e.color;
       ctx.strokeStyle = 'rgba(255,255,255,.2)';
       ctx.lineWidth = 1.2;
-      if (e.form.startsWith('wall')) {
+      if (e.midbossDesign && e.midbossDesign !== 3) {
+        drawStageMidboss(e);
+      } else if (e.form.startsWith('wall')) {
         drawGauntletEnemy(e);
       } else if (e.form === 'mq101Drone') {
         ctx.fillStyle = shade(e.color, -.08);
@@ -9196,16 +9315,16 @@
         ctx.fillStyle = '#251313';
         poly([[0,-24],[5,-7],[0,3],[-5,-7]]);
       }
-      drawEnemyDetail(e);
+      if (!e.midbossDesign || e.midbossDesign === 3) drawEnemyDetail(e);
       ctx.stroke();
       ctx.restore();
-      drawHealth(e.x, e.y - (e.midboss ? 64 : 25), e.midboss ? 100 : 38, e.hp / e.maxHp);
+      drawHealth(e.x, e.y - (e.midboss ? 120 : 25), e.midboss ? 100 : 38, e.hp / e.maxHp);
       if (e.midboss) {
         ctx.save();
         ctx.fillStyle = '#fef3c7';
         ctx.font = 'bold 13px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('MIDBOSS', e.x, e.y - 72);
+        ctx.fillText(`MIDBOSS ${e.midbossDesign}`, e.x, e.y - 128);
         ctx.restore();
       }
     }
