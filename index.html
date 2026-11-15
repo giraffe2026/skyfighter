@@ -900,6 +900,7 @@
       { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 16, hp: 12, shots: 5, fireRate: 116, speed: 7.2, bulletSpeed: 12.4, hitbox: 7, startBombs: 3, special: '특수기: 4연장 MSTM. 기본 사격에도 측면 추적탄을 섞는다' },
       { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 8, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
       { id: 'cyber72', name: '사이버-72', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
+      { id: 'mobius', name: '모비우스 편대', role: '전 기체 합동 편대', color: '#dceef8', power: 54, hp: 35, shots: 8, fireRate: 150, speed: 5.4, bulletSpeed: 11.4, hitbox: 12, startBombs: 4, hidden: true, special: '특수기: 모비우스 총공격. 현재 기체와 발키리, 검암초, 블랙버드, 블랙위도우가 일제 사격' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
       { id: 'f67', name: 'F-67 보이드팰컨', role: '공허 가변익 사냥꾼', color: '#7c3aed', power: 18, hp: 10, shots: 4, fireRate: 132, speed: 7.05, bulletSpeed: 11.8, hitbox: 6, startBombs: 3, hidden: true, rewardOnly: true, special: '특수기: 보이드 랜스. Shift로 가변익 고속 비행을 유지하며 공허 적에게 강하다' },
       { id: 'operator', name: '어드민', role: '운영자 전용', color: '#dfe7ef', power: 160000, hp: 160000, shots: 16, fireRate: 42, speed: 10.8, bulletSpeed: 18, hitbox: 3, startBombs: 9999, hidden: true, godMode: true, special: '특수기: 어드민 권한. 전장을 즉시 장악한다' }
@@ -1259,12 +1260,38 @@
         });
     }
 
+    const mobiusVeterans = [
+      { id: 'xb70', color: '#e8edf5', power: 18, bulletSpeed: 12 },
+      { id: 'geomancho', color: '#51cbbd', power: 16, bulletSpeed: 11 },
+      { id: 'sr71', color: '#687b91', power: 14, bulletSpeed: 14 },
+      { id: 'yf23', color: '#9aaeca', power: 15, bulletSpeed: 12 }
+    ];
+
+    function mobiusFleetShips() {
+      const current = jets.filter(j => j.id !== 'mobius');
+      const lead = current.shift();
+      return [lead, ...mobiusVeterans, ...current].map((jet, i) => {
+        const leader = i === 0;
+        const index = i - 1;
+        return {
+          id: jet.id,
+          color: jet.color,
+          power: jet.power,
+          bulletSpeed: jet.bulletSpeed,
+          x: leader ? 0 : ((index % 6) - 2.5) * 40,
+          y: leader ? -118 : -80 + Math.floor(index / 6) * 36,
+          s: leader ? .42 : .25
+        };
+      });
+    }
+
     const skinPalettes = {
       f22: ['#d7e1ea', '#7dd3fc'], f35: ['#a7b0c2', '#c084fc'], f111: ['#b6c98a', '#facc15'], b117: ['#5b6b7c', '#38bdf8'],
       b29: ['#d8c699', '#f97316'], su57: ['#c7f4ff', '#22d3ee'], f16: ['#8bd3ff', '#60a5fa'], a10: ['#8fa37b', '#84cc16'],
       f14: ['#d7d8d0', '#f8fafc'], f15: ['#b6c4d2', '#93c5fd'], fa18: ['#a4bacd', '#2dd4bf'], f72: ['#fb923c', '#facc15'],
       fxx: ['#e0faff', '#67e8f9'], b2: ['#4f5a78', '#818cf8'], geomancho: ['#0f766e', '#2dd4bf'], error: ['#c084fc', '#fb7185'],
       bomberfleet: ['#1f6f7a', '#43d3c4'], kf21: ['#6f7f8f', '#4fb3ff'], darkstar: ['#1f2937', '#38bdf8'],
+      mobius: ['#dceef8', '#55bdf2'],
       adf11f: ['#d9d2bd', '#22d3ee'], adf01: ['#53616f', '#ef4444'], adfx01: ['#8f969d', '#facc15'],
       cfa44: ['#49515a', '#60a5fa'], xfa27: ['#6b7280', '#f97316'], asfx: ['#334155', '#38bdf8'],
       sr71: ['#3f4654', '#ef4444'], yf23: ['#4b5563', '#cbd5e1'], xb70: ['#ffffff', '#facc15'],
@@ -2710,6 +2737,14 @@
         if (input) input.value = '';
         return;
       }
+      if (code === '모비우스1') {
+        if (!unlockJet('mobius', '모비우스 편대 해금. 현재 기체와 옛 에이스들이 합류했다.')) {
+          setLog('모비우스 편대는 이미 해금되어 있다.');
+          flash('UNLOCKED');
+        }
+        if (input) input.value = '';
+        return;
+      }
       if (code === '기린1972') {
         const unlocked = unlockJet('operator', '운영자 전용 기체 해금. 어드민이 출격 가능해졌다.');
         if (!unlocked) {
@@ -3043,6 +3078,7 @@
         save.coins += reward;
         save.cyberStageCleared = true;
         rewards.push('??? 보스 격파 기록 저장');
+        rewards.push('사이버-72 해금 암호: 하늘에 불가능은 없다');
         storeSave();
         stopBgm();
         mode = 'clear';
@@ -3050,7 +3086,7 @@
         paused = false;
         document.getElementById('clearSummary').textContent = '??? 스테이지 클리어';
         document.getElementById('rewardList').innerHTML = rewards.map(r => `<div>${r}</div>`).join('');
-        setLog('Stratowing Eclipse 격파. 무인기 통제 코어가 정지하고 클리어 기록이 저장됐다.');
+        setLog('Stratowing Eclipse 격파. 운영자 코드칸에 "하늘에 불가능은 없다"를 입력하면 사이버-72가 해금된다.');
         renderUI();
         return;
       }
@@ -3375,6 +3411,11 @@
       if (now - lastShot < stats.fireRate) return;
       lastShot = now;
       player.shotCycle = (player.shotCycle || 0) + 1;
+      if (player.jet.id === 'mobius') {
+        shootMobiusFleet();
+        playPlayerLaser(now);
+        return;
+      }
       if (player.jet.id === 'bomberfleet') {
         shootBomberFleet(stats);
         playPlayerLaser(now);
@@ -3944,6 +3985,30 @@
             style: bulletStyleForJet(ship.id)
           });
         }
+      });
+    }
+
+    function shootMobiusFleet(allShips = false) {
+      const ships = mobiusFleetShips();
+      const powerTier = fieldPowerTier();
+      ships.forEach(ship => {
+        const jet = jets.find(j => j.id === ship.id);
+        const source = jet ? jetStats(jet) : ship;
+        const speed = Math.max(10, source.bulletSpeed || 11);
+        const damage = Math.min(8, source.power * (allShips ? .52 : .42)) * (1 + powerTier * .08);
+        bullets.push({
+          x: player.x + ship.x,
+          y: player.y + ship.y - 15 * ship.s,
+          vx: (ship.x / 100) * .32,
+          vy: -speed,
+          dmg: damage,
+          r: (allShips ? 4.2 : 3.6) + powerTier * .18,
+          pierce: 0,
+          home: false,
+          traveled: 0,
+          blast: 0,
+          style: bulletStyleForJet(ship.id)
+        });
       });
     }
 
@@ -4732,6 +4797,10 @@
         boss.hp = 0;
         boss.defeated = true;
         boss.fire = 999999;
+        const defeatedBoss = boss;
+        queueMicrotask(() => {
+          if (boss === defeatedBoss) finishDefeatedBoss();
+        });
       }
       return dmg;
     }
@@ -5084,6 +5153,9 @@
       } else if (id === 'bomberfleet') {
         shootBomberFleet(player.stats);
         specialBlast('함대 총공격', bombDmg * 1.1, 230, 8, false);
+      } else if (id === 'mobius') {
+        shootMobiusFleet(true);
+        specialBlast('모비우스 총공격', bombDmg * 1.15, 250, 9, false);
       } else if (id === 'kf21') {
         player.inv = Math.max(player.inv, 1800);
         player.boostTimer = Math.max(player.boostTimer, 4200);
@@ -5373,7 +5445,7 @@
 
       const stage = currentStage();
       if (!boss && !secretRobotDuel && !cyberWingDuel && save.selectedMode !== 'tutorial' &&
-          midbossSpawnCount === 0 && stageTime >= nextMidbossTime && stageTime < nextBossTime - 18000) {
+          midbossSpawnCount === 0 && stageTime >= nextMidbossTime) {
         spawnEnemy(true);
       }
       if (!boss && (save.selectedMode === 'endless' || stageTime < 65000) && now - lastEnemy > stage.enemyRate) {
@@ -5637,6 +5709,7 @@
       });
 
       handleHits(frameStep);
+      if (mode !== 'play') return;
       updateBossLasers(dt);
       updateBossBombs(dt);
       updateBossTraps(dt);
@@ -5769,6 +5842,10 @@
         }
       });
 
+      finishDefeatedBoss();
+    }
+
+    function finishDefeatedBoss() {
       if (mode === 'play' && boss && (boss.hp <= 0 || boss.defeated)) {
         const defeatedBoss = boss;
         defeatedBoss.hp = 0;
@@ -5844,7 +5921,7 @@
 
     function playerHitZones() {
       if (!player) return [];
-      if (player.jet.id !== 'bomberfleet') {
+      if (player.jet.id !== 'bomberfleet' && player.jet.id !== 'mobius') {
         const id = player.jet.id;
         const base = player.stats.hitbox;
         const wideWingIds = ['b2', 'geomancho', 'b29', 'ww_b29', 'xb70', 'b117'];
@@ -5862,6 +5939,15 @@
           { x: player.x - wingSpread, y: player.y + wingY, r: wingR },
           { x: player.x + wingSpread, y: player.y + wingY, r: wingR },
           { x: player.x, y: player.y + 34, r: tailR }
+        ];
+      }
+      if (player.jet.id === 'mobius') {
+        return [
+          { x: player.x, y: player.y - 100, r: 13 },
+          { x: player.x - 80, y: player.y - 34, r: 15 },
+          { x: player.x + 80, y: player.y - 34, r: 15 },
+          { x: player.x - 75, y: player.y + 48, r: 15 },
+          { x: player.x + 75, y: player.y + 48, r: 15 }
         ];
       }
       return bomberFleetShips().map(ship => {
@@ -7196,6 +7282,22 @@
         ctx.beginPath();
         ctx.arc(0, 8, 50, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.restore();
+        return;
+      } else if (id === 'mobius') {
+        ctx.strokeStyle = 'rgba(85,189,242,.46)';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(0, -120);
+        ctx.lineTo(-104, 75);
+        ctx.moveTo(0, -120);
+        ctx.lineTo(104, 75);
+        ctx.stroke();
+        mobiusFleetShips().forEach(ship => drawJet(ship.x, ship.y, ship.color, ship.id, ship.s, true));
+        ctx.fillStyle = '#8edbff';
+        ctx.beginPath();
+        ctx.arc(0, -118, 2.8, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
         return;
       } else if (id.startsWith('ww_')) {
@@ -8655,6 +8757,7 @@
 
     function jetProportion(id) {
       if (id === 'bomberfleet') return { x: 1, y: 1 };
+      if (id === 'mobius') return { x: 1, y: 1 };
       if (id === 'operator') return { x: .96, y: 1.08 };
       if (id === 'cyber72') return { x: .82, y: 1.08 };
       if (id === 'b29' || id === 'ww_b29') return { x: 1.05, y: 1.08 };
