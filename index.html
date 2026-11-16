@@ -2079,10 +2079,14 @@
       }
       if (stage?.worldWar || isWorldWarChapter()) return worldWarStoryText(faction, stage?.id || save.selectedStage, part, stage);
       if (stage?.forcedJet) {
-        const jetName = jets.find(jet => jet.id === stage.forcedJet)?.name || stage.forcedJet;
+        const jet = stageJet(stage);
+        const jetName = jet.name;
+        const mobiusOverride = jet.id === 'mobius';
         const next = stages.find(candidate => candidate.id === stage.id + 1);
         const text = {
-          before: `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 이 구역에서는 ${jetName} 한 기체로만 출격할 수 있다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다. 보유하지 않은 기체라도 이번 임무에서는 지급되며, 기존 강화 상태는 그대로 적용된다.`,
+          before: mobiusOverride
+            ? `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 운영자 편대 ${jetName}가 고정 기체 제한을 넘어 출격한다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다.`
+            : `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 이 구역에서는 ${jetName} 한 기체로만 출격할 수 있다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다. 보유하지 않은 기체라도 이번 임무에서는 지급되며, 기존 강화 상태는 그대로 적용된다.`,
           after: `${jetName}이 ${stage.boss}를 격파했다. ${next ? `다음 검증 공역 ${next.name}의 신호가 열린다.` : '열 개의 벽이 모두 무너지고 최후의 비행 기록이 완성됐다.'}`,
           fail: `${stage.boss}의 방어선에서 ${jetName}의 신호가 끊겼다. 이 구역은 지정 기체의 장점만큼 약점도 시험한다. 항로를 다시 읽고 재출격하라.`
         };
@@ -2464,6 +2468,13 @@
 
     function currentJet() {
       return availableJets().find(j => j.id === save.selectedJet) || availableJets()[0] || jets[0];
+    }
+
+    function stageJet(stage) {
+      const selected = currentJet();
+      return stage.forcedJet && selected.id !== 'mobius'
+        ? jets.find(jet => jet.id === stage.forcedJet) || selected
+        : selected;
     }
 
     function isDefaultJet(id) {
@@ -2885,7 +2896,7 @@
       initAudio();
       resetBattleState();
       const stage = currentStage();
-      const jet = (stage.forcedJet && jets.find(candidate => candidate.id === stage.forcedJet)) || currentJet();
+      const jet = stageJet(stage);
       const stats = jetStats(jet);
       mode = 'play';
       resultStage = null;
@@ -2911,7 +2922,7 @@
         jet
       };
       const bossName = terrainBossProfile(stage).name;
-      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격${stage.forcedJet ? `: ${jet.name} 고정` : ''}. 보스 ${bossName}를 격파해.`);
+      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격${stage.forcedJet ? `: ${jet.name}${jet.id === 'mobius' ? ' 운영자 편대' : ' 고정'}` : ''}. 보스 ${bossName}를 격파해.`);
       if (save.selectedMode === 'tutorial') {
         nextBossTime = 18000;
         setLog('튜토리얼 출격. 이동, 폭탄, 특수기를 연습하고 Training Drone을 격추해.');
@@ -11927,7 +11938,7 @@
         <div class="card-head"><span class="name">${stageName}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
         <div class="small">${s.name}</div>
         <div class="small">${stagePartLabel(s.id)}</div>
-        ${forcedJet ? `<div class="small">고정 기체: ${forcedJet.name} · 보유/구매 여부와 무관 · 보유 강화 적용</div>` : ''}
+        ${forcedJet ? `<div class="small">고정 기체: ${forcedJet.name} · 보유/구매 여부와 무관 · 보유 강화 적용${save.selectedJet === 'mobius' ? ' · 모비우스 편대 예외' : ''}</div>` : ''}
         <div class="small">보스: ${bossName}</div>
         <div class="small">난이도 ${difficultyMeter(s.id)}</div>
       </button>`;
