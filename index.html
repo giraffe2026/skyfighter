@@ -1261,26 +1261,48 @@
     }
 
     const mobiusVeterans = [
-      { id: 'xb70', color: '#e8edf5', power: 18, bulletSpeed: 12 },
-      { id: 'geomancho', color: '#51cbbd', power: 16, bulletSpeed: 11 },
-      { id: 'sr71', color: '#687b91', power: 14, bulletSpeed: 14 },
-      { id: 'yf23', color: '#9aaeca', power: 15, bulletSpeed: 12 }
+      { id: 'xb70', color: '#e8edf5', power: 24, shots: 4, fireRate: 230, bulletSpeed: 9.7 },
+      { id: 'geomancho', color: '#51cbbd', power: 15, shots: 6, fireRate: 112, bulletSpeed: 10.8 },
+      { id: 'sr71', color: '#687b91', power: 14, shots: 3, fireRate: 86, bulletSpeed: 14.2 },
+      { id: 'yf23', color: '#9aaeca', power: 18, shots: 5, fireRate: 104, bulletSpeed: 12.2 }
+    ];
+
+    const mobiusFleetSlots = [
+      { x: 0, y: -122, s: .48 },
+      { x: -42, y: -78, s: .35 }, { x: 39, y: -88, s: .33 },
+      { x: -83, y: -48, s: .31 }, { x: 75, y: -59, s: .32 },
+      { x: -17, y: -50, s: .31 }, { x: 25, y: -44, s: .30 },
+      { x: -115, y: -12, s: .31 }, { x: 109, y: -23, s: .32 },
+      { x: -56, y: -27, s: .31 }, { x: 57, y: -12, s: .31 },
+      { x: -6, y: -19, s: .34 },
+      { x: -84, y: 8, s: .30 }, { x: 82, y: 18, s: .33 },
+      { x: -132, y: 28, s: .29 }, { x: 135, y: 36, s: .31 },
+      { x: -37, y: 13, s: .32 }, { x: 34, y: 27, s: .31 },
+      { x: 0, y: 49, s: .36 },
+      { x: -103, y: 45, s: .30 }, { x: 105, y: 56, s: .31 },
+      { x: -62, y: 39, s: .31 }, { x: 62, y: 49, s: .29 },
+      { x: -31, y: 69, s: .30 }, { x: 24, y: 70, s: .28 },
+      { x: -126, y: 70, s: .28 }, { x: 131, y: 77, s: .29 },
+      { x: -79, y: 75, s: .29 }
     ];
 
     function mobiusFleetShips() {
-      const current = jets.filter(j => j.id !== 'mobius');
+      const current = jets.filter(j => j.id !== 'mobius' && j.id !== 'operator');
       const lead = current.shift();
       return [lead, ...mobiusVeterans, ...current].map((jet, i) => {
-        const leader = i === 0;
-        const index = i - 1;
+        const slot = mobiusFleetSlots[i];
+        const sway = i ? Math.sin(stageTime / (760 + i * 11) + i * 1.7) * 2.2 : 0;
+        const bob = i ? Math.cos(stageTime / (920 + i * 9) + i * 1.3) * 1.5 : 0;
         return {
           id: jet.id,
           color: jet.color,
           power: jet.power,
+          shots: jet.shots,
+          fireRate: jet.fireRate,
           bulletSpeed: jet.bulletSpeed,
-          x: leader ? 0 : ((index % 6) - 2.5) * 40,
-          y: leader ? -118 : -80 + Math.floor(index / 6) * 36,
-          s: leader ? .42 : .25
+          x: slot.x + sway,
+          y: slot.y + bob,
+          s: slot.s
         };
       });
     }
@@ -2081,11 +2103,11 @@
       if (stage?.forcedJet) {
         const jet = stageJet(stage);
         const jetName = jet.name;
-        const mobiusOverride = jet.id === 'mobius';
+        const operatorOverride = ignoresForcedJet(jet);
         const next = stages.find(candidate => candidate.id === stage.id + 1);
         const text = {
-          before: mobiusOverride
-            ? `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 운영자 편대 ${jetName}가 고정 기체 제한을 넘어 출격한다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다.`
+          before: operatorOverride
+            ? `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 운영자 기체 ${jetName}가 고정 기체 제한을 넘어 출격한다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다.`
             : `The Last War 이후 숨겨진 검증 공역 ${stage.name}이 열렸다. 이 구역에서는 ${jetName} 한 기체로만 출격할 수 있다. 적의 ${stage.boss}를 돌파해야 다음 기록이 열린다. 보유하지 않은 기체라도 이번 임무에서는 지급되며, 기존 강화 상태는 그대로 적용된다.`,
           after: `${jetName}이 ${stage.boss}를 격파했다. ${next ? `다음 검증 공역 ${next.name}의 신호가 열린다.` : '열 개의 벽이 모두 무너지고 최후의 비행 기록이 완성됐다.'}`,
           fail: `${stage.boss}의 방어선에서 ${jetName}의 신호가 끊겼다. 이 구역은 지정 기체의 장점만큼 약점도 시험한다. 항로를 다시 읽고 재출격하라.`
@@ -2470,9 +2492,13 @@
       return availableJets().find(j => j.id === save.selectedJet) || availableJets()[0] || jets[0];
     }
 
+    function ignoresForcedJet(jet) {
+      return jet?.id === 'operator' || jet?.id === 'mobius';
+    }
+
     function stageJet(stage) {
       const selected = currentJet();
-      return stage.forcedJet && selected.id !== 'mobius'
+      return stage.forcedJet && !ignoresForcedJet(selected)
         ? jets.find(jet => jet.id === stage.forcedJet) || selected
         : selected;
     }
@@ -2922,7 +2948,7 @@
         jet
       };
       const bossName = terrainBossProfile(stage).name;
-      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격${stage.forcedJet ? `: ${jet.name}${jet.id === 'mobius' ? ' 운영자 편대' : ' 고정'}` : ''}. 보스 ${bossName}를 격파해.`);
+      setLog(save.selectedMode === 'endless' ? '무한 모드 출격. 최대한 오래 버티며 점수를 올려.' : `${stage.name} 출격${stage.forcedJet ? `: ${jet.name}${ignoresForcedJet(jet) ? ' 운영자 예외' : ' 고정'}` : ''}. 보스 ${bossName}를 격파해.`);
       if (save.selectedMode === 'tutorial') {
         nextBossTime = 18000;
         setLog('튜토리얼 출격. 이동, 폭탄, 특수기를 연습하고 Training Drone을 격추해.');
@@ -3419,14 +3445,16 @@
 
     function shootPlayer(now) {
       const stats = effectiveStats();
+      if (player.jet.id === 'mobius') {
+        if (now - lastShot < 16) return;
+        lastShot = now;
+        player.shotCycle = (player.shotCycle || 0) + 1;
+        if (shootMobiusFleet(now)) playPlayerLaser(now);
+        return;
+      }
       if (now - lastShot < stats.fireRate) return;
       lastShot = now;
       player.shotCycle = (player.shotCycle || 0) + 1;
-      if (player.jet.id === 'mobius') {
-        shootMobiusFleet();
-        playPlayerLaser(now);
-        return;
-      }
       if (player.jet.id === 'bomberfleet') {
         shootBomberFleet(stats);
         playPlayerLaser(now);
@@ -3999,28 +4027,68 @@
       });
     }
 
-    function shootMobiusFleet(allShips = false) {
+    function shootMobiusFleet(now) {
       const ships = mobiusFleetShips();
       const powerTier = fieldPowerTier();
+      const firedAt = player.mobiusFiredAt ||= {};
+      let fired = 0;
       ships.forEach(ship => {
         const jet = jets.find(j => j.id === ship.id);
         const source = jet ? jetStats(jet) : ship;
-        const speed = Math.max(10, source.bulletSpeed || 11);
-        const damage = Math.min(8, source.power * (allShips ? .52 : .42)) * (1 + powerTier * .08);
-        bullets.push({
-          x: player.x + ship.x,
-          y: player.y + ship.y - 15 * ship.s,
-          vx: (ship.x / 100) * .32,
-          vy: -speed,
-          dmg: damage,
-          r: (allShips ? 4.2 : 3.6) + powerTier * .18,
-          pierce: 0,
-          home: false,
-          traveled: 0,
-          blast: 0,
-          style: bulletStyleForJet(ship.id)
+        const interval = player.boostTimer > 0 ? source.fireRate / 1.3 : source.fireRate;
+        if (now - (firedAt[ship.id] ?? -Infinity) < interval) return;
+        firedAt[ship.id] = now;
+        const pattern = playerShotPattern(ship.id, source.shots);
+        const damage = (source.shotPower || source.power / source.shots) * (1 + powerTier * .08);
+        const style = bulletStyleForJet(ship.id);
+        pattern.forEach(shot => {
+          bullets.push({
+            x: player.x + ship.x + shot.offset * ship.s,
+            y: player.y + ship.y - 18 * ship.s + (shot.yOffset || 0),
+            vx: Math.sin(shot.angle) * (shot.sideSpeed || 2),
+            vy: -source.bulletSpeed * (shot.speedScale || 1),
+            dmg: damage * (shot.damageScale || 1),
+            r: Math.max(3, shot.r * .86) + powerTier * .18,
+            pierce: shot.pierce || 0,
+            home: shot.home || false,
+            homingStrength: shot.home ? .055 : 0,
+            explodeAfter: shot.explodeAfter || 0,
+            traveled: 0,
+            blast: shot.blast ? shot.blast * .82 : 0,
+            style
+          });
+          fired++;
         });
       });
+      return fired;
+    }
+
+    function launchMobiusFleetSpecial() {
+      const original = { jet: player.jet, stats: player.stats, x: player.x, y: player.y };
+      try {
+        mobiusFleetShips().forEach(ship => {
+          const jet = jets.find(candidate => candidate.id === ship.id) || mobiusVeterans.find(candidate => candidate.id === ship.id);
+          if (!jet) return;
+          player.jet = jet;
+          player.stats = jets.includes(jet) ? jetStats(jet) : {
+            power: jet.power,
+            shotPower: jet.power / jet.shots,
+            shots: jet.shots,
+            fireRate: jet.fireRate,
+            bulletSpeed: jet.bulletSpeed,
+            bomb: original.stats.bomb
+          };
+          player.x = original.x + ship.x * .84;
+          player.y = original.y + ship.y * .84;
+          activateJetSpecial(jet.id);
+        });
+      } finally {
+        player.jet = original.jet;
+        player.stats = original.stats;
+        player.x = original.x;
+        player.y = original.y;
+      }
+      flash('모비우스 총공격');
     }
 
     function shootGauntletEnemy(e) {
@@ -5165,8 +5233,7 @@
         shootBomberFleet(player.stats);
         specialBlast('함대 총공격', bombDmg * 1.1, 230, 8, false);
       } else if (id === 'mobius') {
-        shootMobiusFleet(true);
-        specialBlast('모비우스 총공격', bombDmg * 1.15, 250, 9, false);
+        launchMobiusFleetSpecial();
       } else if (id === 'kf21') {
         player.inv = Math.max(player.inv, 1800);
         player.boostTimer = Math.max(player.boostTimer, 4200);
@@ -6056,7 +6123,7 @@
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
       const robotFight = boss?.kind === 'secretRobot';
-      const bulletCap = robotFight ? 560 : 720;
+      const bulletCap = player?.jet?.id === 'mobius' ? 1200 : robotFight ? 560 : 720;
       const enemyBulletCap = robotFight ? 560 : 640;
       const explosionCap = robotFight ? 48 : 90;
       const effectCap = robotFight ? 16 : 24;
@@ -7296,19 +7363,7 @@
         ctx.restore();
         return;
       } else if (id === 'mobius') {
-        ctx.strokeStyle = 'rgba(85,189,242,.46)';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(0, -120);
-        ctx.lineTo(-104, 75);
-        ctx.moveTo(0, -120);
-        ctx.lineTo(104, 75);
-        ctx.stroke();
         mobiusFleetShips().forEach(ship => drawJet(ship.x, ship.y, ship.color, ship.id, ship.s, true));
-        ctx.fillStyle = '#8edbff';
-        ctx.beginPath();
-        ctx.arc(0, -118, 2.8, 0, Math.PI * 2);
-        ctx.fill();
         ctx.restore();
         return;
       } else if (id.startsWith('ww_')) {
@@ -11938,7 +11993,7 @@
         <div class="card-head"><span class="name">${stageName}</span><span class="tag">${locked ? 'LOCK' : s.reward + 'C'}</span></div>
         <div class="small">${s.name}</div>
         <div class="small">${stagePartLabel(s.id)}</div>
-        ${forcedJet ? `<div class="small">고정 기체: ${forcedJet.name} · 보유/구매 여부와 무관 · 보유 강화 적용${save.selectedJet === 'mobius' ? ' · 모비우스 편대 예외' : ''}</div>` : ''}
+        ${forcedJet ? `<div class="small">고정 기체: ${forcedJet.name} · 보유/구매 여부와 무관 · 보유 강화 적용${ignoresForcedJet(currentJet()) ? ' · 운영자 기체 예외' : ''}</div>` : ''}
         <div class="small">보스: ${bossName}</div>
         <div class="small">난이도 ${difficultyMeter(s.id)}</div>
       </button>`;
@@ -12473,7 +12528,7 @@
         requestAnimationFrame(loop);
         return;
       }
-      const frameMs = mode === 'play' && !paused ? 1000 / 90 : mode === 'menu' ? 1000 : 1000 / 24;
+      const frameMs = mode === 'play' && !paused ? 1000 / (player?.jet?.id === 'mobius' ? 60 : 90) : mode === 'menu' ? 1000 : 1000 / 24;
       if (now - lastRenderedFrame < frameMs) {
         requestAnimationFrame(loop);
         return;

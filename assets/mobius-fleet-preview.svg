@@ -23,43 +23,41 @@
   </defs>
   <rect width="900" height="700" fill="#101b2d"/>
   <path d="M0 108H900M0 220H900M0 332H900M0 444H900M0 556H900M0 668H900M120 0V700M240 0V700M360 0V700M480 0V700M600 0V700M720 0V700M840 0V700" stroke="#6ab8de" stroke-opacity=".1"/>
-  <path d="M450 146 172 620M450 146 728 620" fill="none" stroke="#55bdf2" stroke-opacity=".42" stroke-width="2"/>
   <text x="44" y="48" fill="#effaff" font-family="Arial,sans-serif" font-size="30" font-weight="700">모비우스 편대</text>
-  <text x="45" y="78" fill="#8fc8e4" font-family="Arial,sans-serif" font-size="16">29 AIRCRAFT · ALL-UNIT FIRE</text>
-  <use href="#fighter" x="414" y="110" width="72" height="84" style="color:#aab7c4"/>
+  <text x="45" y="78" fill="#8fc8e4" font-family="Arial,sans-serif" font-size="16">28 AIRCRAFT · ALL-UNIT FIRE</text>
+  <use href="#fighter" x="414" y="114" width="72" height="84" style="color:#aab7c4"/>
   <circle cx="450" cy="151" r="50" fill="none" stroke="#55bdf2" stroke-opacity=".7"/>
   <text x="505" y="157" fill="#bdeaff" font-family="Arial,sans-serif" font-size="14">F-22 LEAD</text>
-  <use href="#long" x="153" y="225" width="54" height="63" style="color:#e8edf5"/>
-  <use href="#wing" x="261" y="225" width="54" height="63" style="color:#51cbbd"/>
-  <use href="#long" x="369" y="225" width="54" height="63" style="color:#687b91"/>
-  <use href="#delta" x="477" y="225" width="54" height="63" style="color:#9aaeca"/>
-  <use href="#fighter" x="585" y="225" width="54" height="63" style="color:#7c8b9d"/>
-  <use href="#long" x="693" y="225" width="54" height="63" style="color:#8fa46b"/>
-  <text x="180" y="305" text-anchor="middle" fill="#dbeafe" font-family="Arial,sans-serif" font-size="11">발키리</text>
-  <text x="288" y="305" text-anchor="middle" fill="#99f6e4" font-family="Arial,sans-serif" font-size="11">검암초</text>
-  <text x="396" y="305" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="11">블랙버드</text>
-  <text x="504" y="305" text-anchor="middle" fill="#dbeafe" font-family="Arial,sans-serif" font-size="11">블랙위도우</text>
-  <use href="#delta" x="153" y="323" width="54" height="63" style="color:#5b6b7c"/>
-  <use href="#long" x="261" y="323" width="54" height="63" style="color:#c2b28f"/>
-  <use href="#fighter" x="369" y="323" width="54" height="63" style="color:#91d6e9"/>
-  <use href="#fighter" x="477" y="323" width="54" height="63" style="color:#6f91a8"/>
-  <use href="#fighter" x="585" y="323" width="54" height="63" style="color:#66758a"/>
-  <use href="#fighter" x="693" y="323" width="54" height="63" style="color:#67b7ff"/>
-  <use href="#long" x="153" y="406" width="54" height="63" style="color:#6f7d62"/>
-  <use href="#fighter" x="261" y="406" width="54" height="63" style="color:#b5b6ac"/>
-  <use href="#fighter" x="369" y="406" width="54" height="63" style="color:#8f9da8"/>
-  <use href="#fighter" x="477" y="406" width="54" height="63" style="color:#7f93a6"/>
-  <use href="#fighter" x="585" y="406" width="54" height="63" style="color:#6f7f8f"/>
-  <use href="#long" x="693" y="406" width="54" height="63" style="color:#1f2937"/>
-  <use href="#delta" x="153" y="489" width="54" height="63" style="color:#d9d2bd"/>
-  <use href="#long" x="261" y="489" width="54" height="63" style="color:#53616f"/>
-  <use href="#delta" x="369" y="489" width="54" height="63" style="color:#8f969d"/>
-  <use href="#wing" x="477" y="489" width="54" height="63" style="color:#49515a"/>
-  <use href="#fighter" x="585" y="489" width="54" height="63" style="color:#6b7280"/>
-  <use href="#fighter" x="693" y="489" width="54" height="63" style="color:#334155"/>
-  <use href="#fighter" x="261" y="572" width="54" height="63" style="color:#d8f5ff"/>
-  <use href="#fighter" x="369" y="572" width="54" height="63" style="color:#f97316"/>
-  <use href="#fighter" x="477" y="572" width="54" height="63" style="color:#7c3aed"/>
-  <use href="#delta" x="585" y="572" width="54" height="63" style="color:#dfe7ef"/>
+  <use href="#long" x="331" y="213" width="54" height="63" style="color:#e8edf5"/>
+  <use href="#wing" x="509" y="193" width="54" height="63" style="color:#51cbbd"/>
+  <use href="#long" x="240" y="273" width="54" height="63" style="color:#687b91"/>
+  <use href="#delta" x="588" y="251" width="54" height="63" style="color:#9aaeca"/>
+  <use href="#fighter" x="385" y="269" width="54" height="63" style="color:#7c8b9d"/>
+  <use href="#long" x="478" y="281" width="54" height="63" style="color:#8fa46b"/>
+  <text x="358" y="285" text-anchor="middle" fill="#dbeafe" font-family="Arial,sans-serif" font-size="11">발키리</text>
+  <text x="536" y="265" text-anchor="middle" fill="#99f6e4" font-family="Arial,sans-serif" font-size="11">검암초</text>
+  <text x="267" y="345" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="11">블랙버드</text>
+  <text x="615" y="323" text-anchor="middle" fill="#dbeafe" font-family="Arial,sans-serif" font-size="11">블랙위도우</text>
+  <use href="#delta" x="170" y="345" width="54" height="63" style="color:#5b6b7c"/>
+  <use href="#long" x="663" y="323" width="54" height="63" style="color:#c2b28f"/>
+  <use href="#fighter" x="300" y="315" width="54" height="63" style="color:#91d6e9"/>
+  <use href="#fighter" x="548" y="345" width="54" height="63" style="color:#6f91a8"/>
+  <use href="#fighter" x="410" y="331" width="54" height="63" style="color:#66758a"/>
+  <use href="#fighter" x="238" y="385" width="54" height="63" style="color:#67b7ff"/>
+  <use href="#long" x="603" y="405" width="54" height="63" style="color:#6f7d62"/>
+  <use href="#fighter" x="133" y="425" width="54" height="63" style="color:#b5b6ac"/>
+  <use href="#fighter" x="720" y="441" width="54" height="63" style="color:#8f9da8"/>
+  <use href="#fighter" x="342" y="395" width="54" height="63" style="color:#7f93a6"/>
+  <use href="#fighter" x="498" y="423" width="54" height="63" style="color:#6f7f8f"/>
+  <use href="#long" x="423" y="467" width="54" height="63" style="color:#1f2937"/>
+  <use href="#delta" x="196" y="459" width="54" height="63" style="color:#d9d2bd"/>
+  <use href="#long" x="654" y="481" width="54" height="63" style="color:#53616f"/>
+  <use href="#delta" x="287" y="447" width="54" height="63" style="color:#8f969d"/>
+  <use href="#wing" x="559" y="467" width="54" height="63" style="color:#49515a"/>
+  <use href="#fighter" x="355" y="507" width="54" height="63" style="color:#6b7280"/>
+  <use href="#fighter" x="476" y="509" width="54" height="63" style="color:#334155"/>
+  <use href="#fighter" x="146" y="509" width="54" height="63" style="color:#d8f5ff"/>
+  <use href="#fighter" x="711" y="523" width="54" height="63" style="color:#f97316"/>
+  <use href="#fighter" x="249" y="519" width="54" height="63" style="color:#7c3aed"/>
   <text x="450" y="673" text-anchor="middle" fill="#8fc8e4" font-family="Arial,sans-serif" font-size="13">운영자 코드: 모비우스1</text>
 </svg>
