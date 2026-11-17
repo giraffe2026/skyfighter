@@ -899,6 +899,9 @@
       { id: 'cfa44', name: 'CFA-44 Nosferatu', role: 'ADMM 산개', color: '#49515a', power: 14, hp: 9, shots: 7, fireRate: 112, speed: 6.82, bulletSpeed: 11.8, hitbox: 7, startBombs: 3, special: '특수기: 노스페라투 ADMM. 화면을 장악하는 소형 유도탄 무장' },
       { id: 'xfa27', name: 'XFA-27', role: '가변익 멀티', color: '#6b7280', power: 16, hp: 12, shots: 5, fireRate: 116, speed: 7.2, bulletSpeed: 12.4, hitbox: 7, startBombs: 3, special: '특수기: 4연장 MSTM. 기본 사격에도 측면 추적탄을 섞는다' },
       { id: 'asfx', name: 'ASF-X Shinden II', role: '전진익 기동', color: '#334155', power: 13, hp: 8, shots: 6, fireRate: 104, speed: 7.75, bulletSpeed: 12.0, hitbox: 6, startBombs: 3, special: '특수기: 신덴 V/STOL 기동. 고기동 산개탄과 유도 파편을 계속 뿌린다' },
+      { id: 'b2', name: 'B-2 스피릿', role: '비밀 스텔스 폭격', color: '#202634', power: 19, hp: 18, shots: 5, fireRate: 205, speed: 5.4, bulletSpeed: 9.4, hitbox: 12, startBombs: 4, hidden: true, special: '특수기: 스텔스 폭탄 편대를 투하' },
+      { id: 'yf23', name: 'YF-23 블랙위도우', role: '전설 스텔스 제공', color: '#3b4252', power: 18, hp: 14, shots: 5, fireRate: 104, speed: 7.15, bulletSpeed: 12.2, hitbox: 5, startBombs: 3, hidden: true, special: '특수기: 빠른 유도 관통탄' },
+      { id: 'xb70', name: 'XB-70 발키리', role: '전설 초음속 폭격', color: '#e7edf5', power: 24, hp: 22, shots: 4, fireRate: 230, speed: 5.45, bulletSpeed: 9.7, hitbox: 17, startBombs: 6, hidden: true, special: '특수기: 초음속 대형 폭탄 편대를 투하' },
       { id: 'cyber72', name: '사이버-72', role: '숨겨진 사이버 제공기', color: '#d8f5ff', power: 28, hp: 13, shots: 5, fireRate: 92, speed: 8.1, bulletSpeed: 14.4, hitbox: 5, startBombs: 4, hidden: true, rewardOnly: true, special: '특수기: 사이버 스텔스 랩터. 하늘색/백색 코어탄과 유도 사이버 미사일을 동시에 전개' },
       { id: 'mobius', name: '모비우스 편대', role: '전 기체 합동 편대', color: '#dceef8', power: 54, hp: 35, shots: 8, fireRate: 150, speed: 5.4, bulletSpeed: 11.4, hitbox: 12, startBombs: 4, hidden: true, special: '특수기: 모비우스 총공격. 현재 기체와 발키리, 검암초, 블랙버드, 블랙위도우가 일제 사격' },
       { id: 'f72', name: 'F-72 애프터버스트', role: '예측 폭발', color: '#f97316', power: 14, hp: 9, shots: 2, fireRate: 205, speed: 5.95, bulletSpeed: 9.6, hitbox: 8, startBombs: 2, special: '2연장 지연폭발탄. 일정 거리 이동 후 범위 폭발' },
@@ -1283,11 +1286,12 @@
       { x: -62, y: 39, s: .31 }, { x: 62, y: 49, s: .29 },
       { x: -31, y: 69, s: .30 }, { x: 24, y: 70, s: .28 },
       { x: -126, y: 70, s: .28 }, { x: 131, y: 77, s: .29 },
-      { x: -79, y: 75, s: .29 }
+      { x: -79, y: 75, s: .29 }, { x: 79, y: 81, s: .29 }
     ];
 
     function mobiusFleetShips() {
-      const current = jets.filter(j => j.id !== 'mobius' && j.id !== 'operator');
+      const veteranIds = new Set(mobiusVeterans.map(jet => jet.id));
+      const current = jets.filter(j => j.id !== 'mobius' && j.id !== 'operator' && !veteranIds.has(j.id));
       const lead = current.shift();
       return [lead, ...mobiusVeterans, ...current].map((jet, i) => {
         const slot = mobiusFleetSlots[i];
@@ -2780,6 +2784,23 @@
           flash('UNLOCKED');
         }
         if (input) input.value = '';
+        return;
+      }
+      if (code === '옜날친구들') {
+        const oldFriends = ['yf23', 'xb70', 'b2'];
+        const newlyUnlocked = oldFriends.filter(id => !isJetPurchased(id));
+        for (const id of oldFriends) {
+          save.unlockedJets[id] = true;
+          save.hiddenSecretJets[id] = false;
+        }
+        if (newlyUnlocked.length) save.selectedJet = newlyUnlocked[0];
+        const unlockedLastWar = maybeUnlockLastWar();
+        storeSave();
+        tab = 'jets';
+        setLog(newlyUnlocked.length ? '옛 친구들 해금. YF-23 블랙위도우, XB-70 발키리, B-2 스피릿이 격납고에 돌아왔다.' : '옛 친구들은 이미 모두 해금되어 있다.');
+        flash(unlockedLastWar ? 'THE LAST WAR' : 'UNLOCKED');
+        if (input) input.value = '';
+        renderUI();
         return;
       }
       if (code === '기린1972') {
