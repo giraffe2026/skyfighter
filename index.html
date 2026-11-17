@@ -875,6 +875,7 @@
     const LAST_WAR_STAGE_END = 30;
     const MAX_STAGE = 40;
     const MAX_UPGRADE_LEVEL = 5;
+    const OPERATOR_UPGRADE_LEVEL = 25;
     const upgradeCaps = {};
 
     const jets = [
@@ -1472,6 +1473,7 @@
       secretRobotCleared: false,
       cyberStageReady: false,
       cyberStageCleared: false,
+      operatorMaxUpgrades: false,
       kf21CodeVersion: 0,
       tutorialDone: false,
       achievements: {},
@@ -1865,6 +1867,7 @@
       fixed.secretRobotCleared = !!fixed.secretRobotCleared;
       fixed.cyberStageReady = !!fixed.cyberStageReady;
       fixed.cyberStageCleared = !!fixed.cyberStageCleared;
+      fixed.operatorMaxUpgrades = !!fixed.operatorMaxUpgrades;
       fixed.jetMastery = fixed.jetMastery && typeof fixed.jetMastery === 'object' ? fixed.jetMastery : {};
       fixed.unlockedSkins = fixed.unlockedSkins && typeof fixed.unlockedSkins === 'object' ? fixed.unlockedSkins : {};
       fixed.equippedSkins = fixed.equippedSkins && typeof fixed.equippedSkins === 'object' ? fixed.equippedSkins : {};
@@ -1901,7 +1904,9 @@
         if (fixed.equippedSkins[jet.id] && !skinIdsForJet(jet.id).includes(fixed.equippedSkins[jet.id])) fixed.equippedSkins[jet.id] = '';
         for (const key of ['power', 'hp', 'shots', 'rate', 'bomb', 'bombCount', 'speed']) {
           const value = Number(fixed.upgrades[jet.id][key]);
-          fixed.upgrades[jet.id][key] = Number.isFinite(value) ? clamp(Math.round(value), 0, upgradeMaxLevel(key)) : 0;
+          fixed.upgrades[jet.id][key] = fixed.operatorMaxUpgrades
+            ? OPERATOR_UPGRADE_LEVEL
+            : Number.isFinite(value) ? clamp(Math.round(value), 0, upgradeMaxLevel(key, fixed)) : 0;
         }
       }
       fixed.kf21CodeVersion = KF21_CODE_VERSION;
@@ -2803,6 +2808,16 @@
         renderUI();
         return;
       }
+      if (code === '운영자특수강화') {
+        save.operatorMaxUpgrades = true;
+        save = normalizeSave(save);
+        storeSave();
+        setLog('운영자 특수 강화 적용. 모든 기체의 모든 강화가 코인 소모 없이 Lv.25가 됐다.');
+        flash('ALL Lv.25');
+        if (input) input.value = '';
+        renderUI();
+        return;
+      }
       if (code === '기린1972') {
         const unlocked = unlockJet('operator', '운영자 전용 기체 해금. 어드민이 출격 가능해졌다.');
         if (!unlocked) {
@@ -3467,7 +3482,7 @@
     function shootPlayer(now) {
       const stats = effectiveStats();
       if (player.jet.id === 'mobius') {
-        if (now - lastShot < 16) return;
+        if (now - lastShot < 50) return;
         lastShot = now;
         player.shotCycle = (player.shotCycle || 0) + 1;
         if (shootMobiusFleet(now)) playPlayerLaser(now);
@@ -4056,11 +4071,12 @@
       ships.forEach(ship => {
         const jet = jets.find(j => j.id === ship.id);
         const source = jet ? jetStats(jet) : ship;
-        const interval = player.boostTimer > 0 ? source.fireRate / 1.3 : source.fireRate;
+        const boosted = player.boostTimer > 0;
+        const interval = Math.max(boosted ? 100 : 140, boosted ? source.fireRate / 1.3 : source.fireRate);
         if (now - (firedAt[ship.id] ?? -Infinity) < interval) return;
         firedAt[ship.id] = now;
-        const pattern = playerShotPattern(ship.id, source.shots);
-        const damage = (source.shotPower || source.power / source.shots) * (1 + powerTier * .08);
+        const pattern = playerShotPattern(ship.id, Math.min(2, source.shots));
+        const damage = (source.shotPower || source.power / source.shots) * source.shots / pattern.length * (1 + powerTier * .08);
         const style = bulletStyleForJet(ship.id);
         pattern.forEach(shot => {
           bullets.push({
@@ -6144,7 +6160,7 @@
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
       const robotFight = boss?.kind === 'secretRobot';
-      const bulletCap = player?.jet?.id === 'mobius' ? 1200 : robotFight ? 560 : 720;
+      const bulletCap = player?.jet?.id === 'mobius' ? 900 : robotFight ? 560 : 720;
       const enemyBulletCap = robotFight ? 560 : 640;
       const explosionCap = robotFight ? 48 : 90;
       const effectCap = robotFight ? 16 : 24;
@@ -7197,8 +7213,8 @@
       return levels;
     }
 
-    function upgradeMaxLevel(key) {
-      return upgradeCaps[key] || MAX_UPGRADE_LEVEL;
+    function upgradeMaxLevel(key, source = save) {
+      return source?.operatorMaxUpgrades ? OPERATOR_UPGRADE_LEVEL : upgradeCaps[key] || MAX_UPGRADE_LEVEL;
     }
 
     function drawUpgradeOrnaments(id) {
@@ -12175,13 +12191,13 @@
       if (tab === 'shop') {
         const up = save.upgrades[save.selectedJet];
         const upgrades = [
-          ['power', '공격력', '탄 데미지 증가. 최대 Lv.5'],
-          ['hp', '체력', '최대 체력 증가. 최대 Lv.5'],
-          ['shots', '투사체수', '기체별 탄 수 강화. 최대 Lv.5'],
-          ['rate', '연사력', '발사 간격 감소. 최대 Lv.5'],
-          ['bomb', '폭탄', '폭탄 데미지와 범위 증가. 최대 Lv.5'],
-          ['bombCount', '폭탄 개수', '시작 폭탄 수 증가. 최대 Lv.5'],
-          ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가. 최대 Lv.5']
+          ['power', '공격력', '탄 데미지 증가'],
+          ['hp', '체력', '최대 체력 증가'],
+          ['shots', '투사체수', '기체별 탄 수 강화'],
+          ['rate', '연사력', '발사 간격 감소'],
+          ['bomb', '폭탄', '폭탄 데미지와 범위 증가'],
+          ['bombCount', '폭탄 개수', '시작 폭탄 수 증가'],
+          ['speed', '내 친구들이 스피드를 원하고있어!', '기체 이동속도 증가']
         ];
         upgradesEl.innerHTML = upgrades.map(([key, label, desc]) => {
           const level = up[key] || 0;
@@ -12189,7 +12205,7 @@
           const cost = 90 + level * 80 + (key === 'shots' ? 40 : 0) + (key === 'speed' ? 20 : 0);
           return `<div class="upgrade-card">
             <div class="card-head"><span class="name">${label} Lv.${level}</span><span class="tag">${level >= maxLevel ? 'MAX' : cost + 'C'}</span></div>
-            <div class="small">${desc}</div>
+            <div class="small">${desc}. 최대 Lv.${maxLevel}</div>
             <button data-up="${key}" ${save.coins < cost || level >= maxLevel ? 'disabled' : ''}>강화</button>
           </div>`;
         }).join('');
