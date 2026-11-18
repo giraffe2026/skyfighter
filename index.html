@@ -3482,7 +3482,7 @@
     function shootPlayer(now) {
       const stats = effectiveStats();
       if (player.jet.id === 'mobius') {
-        if (now - lastShot < 50) return;
+        if (now - lastShot < 16) return;
         lastShot = now;
         player.shotCycle = (player.shotCycle || 0) + 1;
         if (shootMobiusFleet(now)) playPlayerLaser(now);
@@ -4071,12 +4071,11 @@
       ships.forEach(ship => {
         const jet = jets.find(j => j.id === ship.id);
         const source = jet ? jetStats(jet) : ship;
-        const boosted = player.boostTimer > 0;
-        const interval = Math.max(boosted ? 100 : 140, boosted ? source.fireRate / 1.3 : source.fireRate);
+        const interval = player.boostTimer > 0 ? source.fireRate / 1.3 : source.fireRate;
         if (now - (firedAt[ship.id] ?? -Infinity) < interval) return;
         firedAt[ship.id] = now;
-        const pattern = playerShotPattern(ship.id, Math.min(2, source.shots));
-        const damage = (source.shotPower || source.power / source.shots) * source.shots / pattern.length * (1 + powerTier * .08);
+        const pattern = playerShotPattern(ship.id, source.shots);
+        const damage = (source.shotPower || source.power / source.shots) * (1 + powerTier * .08);
         const style = bulletStyleForJet(ship.id);
         pattern.forEach(shot => {
           bullets.push({
@@ -6160,7 +6159,7 @@
       explosions = explosions.filter(e => e.life > 0);
       pickups = pickups.filter(p => !p.hit && p.y < H + 30);
       const robotFight = boss?.kind === 'secretRobot';
-      const bulletCap = player?.jet?.id === 'mobius' ? 900 : robotFight ? 560 : 720;
+      const bulletCap = player?.jet?.id === 'mobius' ? 6000 : robotFight ? 560 : 720;
       const enemyBulletCap = robotFight ? 560 : 640;
       const explosionCap = robotFight ? 48 : 90;
       const effectCap = robotFight ? 16 : 24;
