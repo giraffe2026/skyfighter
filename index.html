@@ -3486,6 +3486,10 @@
         lastShot = now;
         player.shotCycle = (player.shotCycle || 0) + 1;
         if (shootMobiusFleet(now)) playPlayerLaser(now);
+        if (fieldPowerTier() >= 3 && now - (player.mobiusWingmanShotAt || 0) >= 180) {
+          player.mobiusWingmanShotAt = now;
+          shootWingmen(stats, stats.shotPower);
+        }
         return;
       }
       if (now - lastShot < stats.fireRate) return;
@@ -3569,6 +3573,21 @@
     function wingmanSlots() {
       if (!player || fieldPowerTier() < 3) return [];
       const drift = Math.sin(performance.now() / 190) * 4;
+      if (player.jet.id === 'mobius') {
+        const flank = (side, offset, y, role) => ({
+          x: clamp(player.x + side * (offset + drift), 24, W - 24),
+          y: clamp(player.y + y, 28, H - 28),
+          side, role
+        });
+        const slots = [
+          flank(-1, 174, -50, 'left'), flank(1, 174, -50, 'right'),
+          flank(-1, 184, 32, 'turret'), flank(1, 184, 32, 'turret')
+        ];
+        if (player.fieldPower >= 12) slots.push(flank(-1, 198, -12, 'rearLeft'), flank(1, 198, -12, 'rearRight'));
+        if (player.fieldPower >= 15) slots.push(flank(-1, 172, 82, 'turret'), flank(1, 172, 82, 'turret'));
+        if (player.fieldPower >= 18) slots.push(flank(-1, 190, -106, 'left'), flank(1, 190, -106, 'right'));
+        return slots;
+      }
       const slots = [
         { x: player.x - 52 + drift, y: player.y + 46, side: -1, role: 'left' },
         { x: player.x + 52 - drift, y: player.y + 46, side: 1, role: 'right' }
@@ -3613,6 +3632,7 @@
         xfa27: { type: 'swept', fill: '#6b7280', core: '#f97316', accent: '#ffedd5', bullet: '#f97316' },
         asfx: { type: 'blade', fill: '#334155', core: '#38bdf8', accent: '#e0f2fe', bullet: '#38bdf8' },
         f72: { type: 'booster', fill: '#f97316', core: '#fef08a', accent: '#fb923c', bullet: '#f97316' },
+        mobius: { type: 'microJet', fill: '#dceef8', core: '#38bdf8', accent: '#94d9f4', bullet: '#7dd3fc' },
         operator: { type: 'crown', fill: '#ef4444', core: '#f8fafc', accent: '#facc15', bullet: '#ef4444' }
       };
       return styles[id] || { type: 'turret', fill: '#f472b6', core: '#ffffff', accent: '#a78bfa', bullet: '#f472b6' };
@@ -7053,10 +7073,10 @@
         ctx.arc(player.x, player.y, 32 + Math.sin(performance.now() / 120) * 2.4, 0, Math.PI * 2);
         ctx.stroke();
       }
-      wingmanSlots().forEach(slot => {
-        drawWingman(slot);
-      });
+      const wingmen = wingmanSlots();
+      if (player.jet.id !== 'mobius') wingmen.forEach(drawWingman);
       drawJet(player.x, player.y, skinnedJetColor(player.jet), player.jet.id, .84, true, player.tilt || 0);
+      if (player.jet.id === 'mobius') wingmen.forEach(drawWingman);
       ctx.strokeStyle = 'rgba(255,255,255,.72)';
       playerHitZones().forEach(zone => {
         ctx.beginPath();
@@ -7067,7 +7087,10 @@
     }
 
     function drawWingman(slot) {
-      const style = wingmanStyleForJet(player.jet.id);
+      const baseStyle = wingmanStyleForJet(player.jet.id);
+      const style = player.jet.id === 'mobius' && slot.role === 'turret'
+        ? { ...baseStyle, fill: '#516b7d', core: '#b8f2ff', accent: '#67cce8' }
+        : baseStyle;
       const pulse = Math.sin(performance.now() / 80 + slot.side) * 2;
       ctx.save();
       ctx.globalAlpha = .92;
