@@ -2791,7 +2791,7 @@
         if (input) input.value = '';
         return;
       }
-      if (['옜날친구들', '옛날친구들'].includes(code.normalize('NFKC').replace(/\s+/g, ''))) {
+      if (['옜친구들', '옛친구들', '옜날친구들', '옛날친구들'].includes(code.normalize('NFKC').replace(/\s+/g, ''))) {
         const oldFriends = ['yf23', 'xb70', 'b2'];
         save.unlockedJets ||= { ...defaultSave.unlockedJets };
         save.hiddenSecretJets ||= { ...defaultSave.hiddenSecretJets };
